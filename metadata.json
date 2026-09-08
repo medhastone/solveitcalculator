@@ -1,0 +1,6 @@
+{
+  "name": "SolveIt Calculator",
+  "description": "Every Calculation. One Place. High-precision algorithms delivered through an Apple-inspired SaaS aesthetic.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,694 @@
+import re
+
+html_content = """<div class="w-full bg-surface-container-lowest/80 backdrop-blur-md shadow-sm">
+<div class="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-sm">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm text-on-surface-variant text-body-sm">
+<nav aria-label="Breadcrumb" class="flex items-center gap-1.5 flex-wrap">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Time &amp; Date</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="font-semibold text-on-surface">Birthday Tracker &amp; Solar Orbit</span>
+</nav>
+<div class="flex items-center gap-2 flex-wrap">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container font-label-caps text-label-caps text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+            Astronomical Ephemeris J2000.0
+          </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container font-label-caps text-label-caps text-on-surface-variant">
+            ☀️ 1 Orbit = 365.24219d
+          </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high font-label-caps text-label-caps text-secondary">
+<span class="material-symbols-outlined text-[13px]">lock</span>
+            Client-Side Sandbox
+          </span>
+</div>
+</div>
+<!-- Module Switcher Tabs -->
+<div class="flex items-center gap-1.5 overflow-x-auto pt-space-sm no-scrollbar">
+<a class="shrink-0 px-3.5 py-1.5 rounded-lg bg-primary-container text-on-primary-container font-semibold text-body-sm shadow-sm" href="#workbench">Birthday Tracker</a>
+<a class="shrink-0 px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant text-body-sm transition-colors" href="#engine-age">Age Engine</a>
+<a class="shrink-0 px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant text-body-sm transition-colors" href="#orbit-viz">Solar Orbit Matrix</a>
+<a class="shrink-0 px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant text-body-sm transition-colors" href="#bio-insights">Biometric Insights</a>
+<a class="shrink-0 px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant text-body-sm transition-colors" href="#celestial-grid">Zodiac &amp; Celestial</a>
+<a class="shrink-0 px-3.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant text-body-sm transition-colors" href="#milestones-radar">Milestone Radar</a>
+</div>
+</div>
+</div>
+<!-- SECTION 2: Hero Section -->
+<div class="w-full relative overflow-hidden py-space-xl lg:py-space-2xl">
+<div class="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="flex flex-col items-center text-center max-w-3xl mx-auto">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high text-primary font-label-caps text-label-caps mb-space-sm shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">all_inclusive</span>
+          HELIOCENTRIC TEMPORAL METROLOGY V4.2
+        </div>
+<h1 class="font-display-hero text-display-hero text-on-surface tracking-tight mb-space-sm">
+          Birthday Tracker &amp; <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Solar Orbit</span> Countdown
+        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-space-lg">
+          Track deterministic countdowns to your next birthday, calculate completed solar orbits around the Sun, and unveil biological, astronomical, and generational milestones with sub-second accuracy.
+        </p>
+<!-- Trust Badges -->
+<div class="flex flex-wrap items-center justify-center gap-x-space-md gap-y-space-xs text-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+<span>Accurate Leap-Year Aware</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]">shield</span>
+<span>100% In-Browser Private</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">bolt</span>
+<span>Sub-0.02s Calculation</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5 font-data-mono text-[12px] text-outline">
+            IAU &amp; RFC 3339 Compliant
+          </div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 3: Main Calculator Workbench (Glassmorphism & High-Ergonomics) -->
+<section class="w-full pb-space-2xl" id="workbench">
+<div class="max-w-max-width-calculator mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="bg-surface-container-lowest rounded-xl p-space-md md:p-space-xl shadow-xl relative overflow-hidden">
+<!-- Ambient subtle glow -->
+<div class="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm mb-space-lg">
+<div>
+<span class="font-label-caps text-label-caps text-primary tracking-wider uppercase">Chrono Parameters</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Input Natal Coordinates</h2>
+</div>
+<!-- Quick Presets -->
+<div class="flex items-center gap-1.5 flex-wrap">
+<button class="px-2.5 py-1 text-body-sm rounded bg-surface-container-low hover:bg-surface-container text-on-surface-variant transition-colors" onclick="loadPreset('1995-10-24')" type="button">Millennial (1995)</button>
+<button class="px-2.5 py-1 text-body-sm rounded bg-surface-container-low hover:bg-surface-container text-on-surface-variant transition-colors" onclick="loadPreset('2000-01-01')" type="button">Gen Z (2000)</button>
+<button class="px-2.5 py-1 text-body-sm rounded bg-surface-container-low hover:bg-surface-container text-on-surface-variant transition-colors" onclick="loadPreset('1975-07-14')" type="button">Gen X (1975)</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mb-space-lg">
+<!-- Date of Birth -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-caps text-label-caps text-on-surface-variant flex items-center justify-between" for="input-dob">
+<span>Date of Birth</span>
+<span class="text-primary font-bold">*REQUIRED</span>
+</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low text-on-surface font-data-mono text-data-mono px-3 py-2.5 rounded-lg shadow-sm focus:outline-none focus:bg-surface-container-lowest focus:shadow-md transition-all" id="input-dob" type="date" value="1998-05-18"/>
+</div>
+<span class="text-[12px] text-outline">Gregorian standard (YYYY-MM-DD)</span>
+</div>
+<!-- Time of Birth -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-caps text-label-caps text-on-surface-variant flex items-center justify-between" for="input-tob">
+<span>Time of Birth</span>
+<span class="text-outline">Sub-hour precision</span>
+</label>
+<input class="w-full bg-surface-container-low text-on-surface font-data-mono text-data-mono px-3 py-2.5 rounded-lg shadow-sm focus:outline-none focus:bg-surface-container-lowest transition-all" id="input-tob" type="time" value="08:42"/>
+<span class="text-[12px] text-outline">Local solar orbital time</span>
+</div>
+<!-- Target Epoch -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-caps text-label-caps text-on-surface-variant flex items-center justify-between" for="input-target">
+<span>Evaluation Epoch</span>
+<span class="text-secondary font-semibold">Today (Live)</span>
+</label>
+<input class="w-full bg-surface-container-low text-on-surface font-data-mono text-data-mono px-3 py-2.5 rounded-lg shadow-sm focus:outline-none focus:bg-surface-container-lowest transition-all" id="input-target" type="date" value="2025-02-27"/>
+<span class="text-[12px] text-outline">Reference comparison frame</span>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-sm">
+<div class="flex items-center gap-space-xs">
+<button class="px-5 py-2.5 rounded-lg bg-primary-container text-on-primary-container hover:bg-primary font-semibold text-body-md shadow-md active:scale-[0.98] transition-all flex items-center gap-2" id="btn-compute" onclick="recalculateAll()" type="button">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+              Compute Solar Telemetry
+            </button>
+<button class="px-4 py-2.5 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high font-medium text-body-sm transition-colors flex items-center gap-1.5" onclick="resetForm()" type="button">
+<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+              Reset
+            </button>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-3 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant text-body-sm transition-colors flex items-center gap-1.5" onclick="copyShareLink()" type="button">
+<span class="material-symbols-outlined text-[16px]">share</span>
+              Share Matrix
+            </button>
+<button class="px-3 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant text-body-sm transition-colors flex items-center gap-1.5" onclick="toggleSaveModal()" type="button">
+<span class="material-symbols-outlined text-[16px]">bookmark_add</span>
+              Save Profile
+            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: Solar Orbit & Core Chronological Dashboard -->
+<section class="w-full py-space-xl bg-surface-container-low" id="engine-age">
+<div class="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm mb-space-lg">
+<div>
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">Chronological Telemetry</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Orbital Journey &amp; Exact Age</h2>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-primary font-medium text-body-sm shadow-sm flex items-center gap-1.5 transition-colors" onclick="copySummaryText()">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+            Copy Output
+          </button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-on-surface-variant hover:text-primary font-medium text-body-sm shadow-sm flex items-center gap-1.5 transition-colors" onclick="window.print()">
+<span class="material-symbols-outlined text-[16px]">print</span>
+            Print Card
+          </button>
+</div>
+</div>
+<!-- Bento Grid for Results -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md">
+<!-- Main Primary Card (7 cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest rounded-xl p-space-lg shadow-md flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div>
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider">Exact Current Age</span>
+<div class="font-numerical-display text-numerical-display text-primary mt-1 tracking-tight" id="stat-age-exact">
+                26y 9m 9d
+              </div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1" id="stat-age-born-text">
+                Born Monday, May 18, 1998 at 08:42 AM
+              </p>
+</div>
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]">public</span>
+</div>
+</div>
+<!-- Progress Bar for Current Solar Year -->
+<div class="my-space-lg bg-surface-container-low rounded-xl p-space-md">
+<div class="flex items-center justify-between text-body-sm mb-2">
+<span class="font-medium text-on-surface" id="stat-orbit-label">26 Completed Solar Orbits</span>
+<span class="font-data-mono text-primary font-bold" id="stat-orbit-pct">78.1% along 27th Orbit</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-3 overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-700" id="bar-orbit-progress" style="width: 78.1%;"></div>
+</div>
+<div class="flex items-center justify-between text-[12px] text-outline mt-2">
+<span id="stat-orbit-start">May 18, 2024 (Last Solstice Point)</span>
+<span id="stat-orbit-end">May 18, 2025 (Next Completion)</span>
+</div>
+</div>
+<!-- Granular metric grid -->
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-space-sm pt-space-xs">
+<div class="bg-surface-container-low rounded-lg p-3">
+<span class="font-label-caps text-label-caps text-outline uppercase">Total Days</span>
+<div class="font-data-mono text-[20px] font-bold text-on-surface mt-0.5" id="stat-days">9,782 d</div>
+<span class="text-[11px] text-outline-variant" id="stat-hours">234,768 hours</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3">
+<span class="font-label-caps text-label-caps text-outline uppercase">Solar Distance</span>
+<div class="font-data-mono text-[20px] font-bold text-on-surface mt-0.5" id="stat-distance">~25.18B km</div>
+<span class="text-[11px] text-outline-variant">@ ~29.78 km/s</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3">
+<span class="font-label-caps text-label-caps text-outline uppercase">Synodic Moons</span>
+<div class="font-data-mono text-[20px] font-bold text-on-surface mt-0.5" id="stat-moons">331.2</div>
+<span class="text-[11px] text-outline-variant">Full lunar cycles</span>
+</div>
+</div>
+</div>
+<!-- Next Birthday Live Radar (5 cols) -->
+<div class="lg:col-span-5 bg-surface-container-lowest rounded-xl p-space-lg shadow-md flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-wider">Next Orbital Ingress</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-0.5" id="stat-next-bday-date">May 18, 2025</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="stat-next-bday-turn">Turning 27 Years Old</p>
+</div>
+<div class="text-right">
+<span class="inline-block px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-data-mono text-[12px] font-semibold" id="stat-next-bday-weekday">
+                Sunday
+              </span>
+</div>
+</div>
+<!-- Circular Orbit Visualizer Badge -->
+<div class="flex items-center justify-center my-space-md">
+<div class="relative flex items-center justify-center">
+<svg class="w-40 h-40 transform -rotate-90" viewbox="0 0 120 120">
+<circle class="text-surface-container-high" cx="60" cy="60" fill="transparent" r="50" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary transition-all duration-700" cx="60" cy="60" fill="transparent" id="svg-countdown-ring" r="50" stroke="currentColor" stroke-dasharray="314.159" stroke-dashoffset="68.8" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center justify-center text-center">
+<span class="font-numerical-display text-[32px] text-on-surface leading-none font-bold" id="stat-countdown-days">80</span>
+<span class="font-label-caps text-label-caps text-outline uppercase">Days Remaining</span>
+</div>
+</div>
+</div>
+<!-- Precision Ticker -->
+<div class="bg-surface-container-low rounded-xl p-space-sm text-center">
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wide">Live High-Precision Countdown</span>
+<div class="font-data-mono text-[18px] font-bold text-primary mt-1 tracking-wider" id="live-ticker">
+              79d : 15h : 18m : 22s
+            </div>
+<div class="flex justify-around text-[11px] text-outline mt-1.5">
+<span id="stat-rem-weeks">11.4 Weeks</span>
+<span>•</span>
+<span id="stat-rem-months">2.6 Months</span>
+<span>•</span>
+<span id="stat-half-bday">Half-Bday: Nov 18</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 5: Interactive Heliocentric Solar Orbit Visualization -->
+<section class="w-full py-space-2xl" id="orbit-viz">
+<div class="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="text-center max-w-2xl mx-auto mb-space-xl">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Keplerian Orbital Telemetry</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1">Interactive Heliocentric Trajectory</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+          Your current coordinates along Earth’s 940-million-kilometer annual elliptical circuit around Sol.
+        </p>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-space-md lg:p-space-xl shadow-lg grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
+<!-- SVG Heliocentric Map (7 cols) -->
+<div class="lg:col-span-7 flex items-center justify-center p-space-sm bg-surface-container-low rounded-xl relative overflow-hidden">
+<svg class="w-full max-w-[480px] aspect-square" fill="none" viewbox="0 0 500 500">
+<!-- Background Constellation Stars -->
+<circle cx="80" cy="90" fill="#c3c6d7" opacity="0.6" r="1.5"></circle>
+<circle cx="410" cy="120" fill="#c3c6d7" opacity="0.5" r="2"></circle>
+<circle cx="390" cy="430" fill="#c3c6d7" opacity="0.8" r="1"></circle>
+<circle cx="120" cy="400" fill="#c3c6d7" opacity="0.4" r="1.5"></circle>
+<circle cx="70" cy="280" fill="#c3c6d7" opacity="0.7" r="2"></circle>
+<!-- Orbit Ellipse -->
+<ellipse cx="250" cy="250" rx="190" ry="160" stroke="#dae2fd" stroke-dasharray="6 4" stroke-width="2"></ellipse>
+<!-- Seasonal Markers -->
+<!-- Vernal Equinox (March 20) ~ 0 deg Right -->
+<circle cx="440" cy="250" fill="#006591" r="4"></circle>
+<text fill="#434655" font-family="Inter" font-size="10" font-weight="600" x="445" y="245">Spring Equinox (Mar 20)</text>
+<!-- Summer Solstice (June 21) ~ Top -->
+<circle cx="250" cy="90" fill="#bc4800" r="4"></circle>
+<text fill="#434655" font-family="Inter" font-size="10" font-weight="600" text-anchor="middle" x="250" y="78">Summer Solstice (Jun 21)</text>
+<!-- Autumnal Equinox (Sept 22) ~ Left -->
+<circle cx="60" cy="250" fill="#006591" r="4"></circle>
+<text fill="#434655" font-family="Inter" font-size="10" font-weight="600" text-anchor="end" x="55" y="265">Autumnal Equinox (Sep 22)</text>
+<!-- Winter Solstice (Dec 21) ~ Bottom -->
+<circle cx="250" cy="410" fill="#2563eb" r="4"></circle>
+<text fill="#434655" font-family="Inter" font-size="10" font-weight="600" text-anchor="middle" x="250" y="428">Winter Solstice (Dec 21)</text>
+<!-- Sun in center with glow -->
+<circle cx="250" cy="250" fill="#ffdbcd" opacity="0.4" r="42"></circle>
+<circle cx="250" cy="250" fill="#bc4800" opacity="0.85" r="28"></circle>
+<circle cx="250" cy="250" fill="#ffd54f" r="20"></circle>
+<text fill="#7d2d00" font-family="Inter" font-size="11" font-weight="700" text-anchor="middle" x="250" y="254">SOL</text>
+<!-- Trajectory Path Arcs -->
+<!-- Earth Orbit Traveled Arc (Needs dynamic update) -->
+<path id="svg-orbit-path" d="M 330 115 A 190 160 0 1 1 385 365" fill="transparent" stroke="#2563eb" stroke-linecap="round" stroke-width="4"></path>
+<!-- Current Earth Location -->
+<g id="svg-earth-group" transform="translate(385, 365)">
+<circle class="animate-ping" cx="0" cy="0" fill="#39b8fd" opacity="0.3" r="14"></circle>
+<circle cx="0" cy="0" fill="#2563eb" r="8"></circle>
+<circle cx="0" cy="0" fill="#faf8ff" r="4"></circle>
+</g>
+<text id="svg-earth-text" fill="#004ac6" font-family="Inter" font-size="11" font-weight="700" x="395" y="385">EARTH TODAY (Feb 27)</text>
+<!-- Birth Ingress Marker -->
+<circle id="svg-birth-circle-1" cx="330" cy="115" fill="#bc4800" r="7"></circle>
+<circle id="svg-birth-circle-2" cx="330" cy="115" fill="#ffffff" r="3"></circle>
+<text id="svg-birth-text" fill="#943700" font-family="Inter" font-size="11" font-weight="700" x="340" y="112">BIRTHDAY (May 18)</text>
+</svg>
+</div>
+<!-- Telemetry Breakdown (5 cols) -->
+<div class="lg:col-span-5 space-y-space-md">
+<div class="bg-surface-container-low p-space-md rounded-xl">
+<span class="font-label-caps text-label-caps text-outline uppercase">Orbital Sweep Angle</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-numerical-display text-[32px] text-on-surface font-bold" id="stat-sweep-angle">281.2°</span>
+<span class="font-body-sm text-body-sm text-outline">/ 360.0° Completed</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" id="bar-sweep-progress" style="width: 78.1%;"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="text-[11px] font-label-caps text-outline uppercase">Velocity</span>
+<div class="font-data-mono text-[16px] font-bold text-on-surface mt-1" id="stat-velocity">107,226 km/h</div>
+<span class="text-[11px] text-outline" id="stat-velocity-sec">29.78 km/sec relative</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="text-[11px] font-label-caps text-outline uppercase">Current Distance</span>
+<div class="font-data-mono text-[16px] font-bold text-on-surface mt-1">148.9M km</div>
+<span class="text-[11px] text-outline">0.995 AU (Near Perihelion)</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="text-[11px] font-label-caps text-outline uppercase">Annual Arc Left</span>
+<div class="font-data-mono text-[16px] font-bold text-secondary mt-1" id="stat-arc-left">78.8° (21.9%)</div>
+<span class="text-[11px] text-outline" id="stat-arc-days">80 solar days to nexus</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="text-[11px] font-label-caps text-outline uppercase">Lifetime Orbits</span>
+<div class="font-data-mono text-[16px] font-bold text-primary mt-1" id="stat-lifetime-orbits">26.78 Revs</div>
+<span class="text-[11px] text-outline">Vernal equinox baseline</span>
+</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container text-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">explore</span>
+<span id="stat-diurnal-rotations">You have completed 9,782 diurnal axis rotations since birth.</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 6: Life Progress & Generational Horizon Spectrum -->
+<section class="w-full py-space-xl bg-surface-container-low">
+<div class="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm mb-space-lg">
+<div>
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">Demographic Chronometry</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Generational Horizon &amp; Life Arc</h2>
+</div>
+<div class="text-body-sm text-on-surface-variant" id="stat-generation">
+          Cohort: <span class="font-bold text-on-surface">Generation Z</span> (1997–2012)
+        </div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-md space-y-space-lg">
+<!-- Global Expectancy Gauge -->
+<div>
+<div class="flex items-center justify-between text-body-sm mb-2">
+<span class="font-medium text-on-surface">Statistical Life Trajectory (78.5-Year Actuarial Index)</span>
+<span class="font-data-mono text-primary font-bold" id="stat-life-pct">34.1% Traversed</span>
+</div>
+<div class="w-full bg-surface-container-high h-4 rounded-full overflow-hidden flex">
+<div class="bg-primary h-full transition-all duration-700" id="bar-life-pct" style="width: 34.1%;"></div>
+<div class="bg-surface-container-highest h-full flex-1"></div>
+</div>
+<div class="flex items-center justify-between text-[12px] text-outline mt-1.5">
+<span>Birth (0 yr)</span>
+<span id="stat-life-current">Current: 26.8 yr</span>
+<span>Target Benchmark (78.5 yr)</span>
+</div>
+</div>
+<!-- Milestones Step Track -->
+<div class="grid grid-cols-2 md:grid-cols-6 gap-space-sm pt-space-xs" id="milestones-steps-container">
+<!-- Generated dynamically in React -->
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 7 & 8: Spotify Wrapped-Style Birthday Insights & Milestone Tracker -->
+<section class="w-full py-space-2xl" id="bio-insights">
+<div class="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm mb-space-xl">
+<div>
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Bio-Cosmic Metrics</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Your Solar Life In Perspective</h2>
+</div>
+<span class="text-body-sm text-outline">Recalculated in real time</span>
+</div>
+<!-- Vibrant 4-Card Wrapped Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-2xl">
+<!-- Card 1 -->
+<div class="rounded-xl p-space-lg bg-surface-container-lowest shadow-md flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+<div>
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center mb-space-md">
+<span class="material-symbols-outlined text-[24px]">rocket_launch</span>
+</div>
+<span class="font-label-caps text-label-caps text-outline uppercase">Cosmic Journey</span>
+<div class="font-numerical-display text-[32px] text-on-surface font-bold mt-1" id="card-distance">25.18B km</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-md" id="card-distance-desc">
+            Distance you've ridden through the solar system along Earth’s gravitational well since May 1998.
+          </p>
+</div>
+<!-- Card 2 -->
+<div class="rounded-xl p-space-lg bg-surface-container-lowest shadow-md flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+<div>
+<div class="w-10 h-10 rounded-lg bg-error-container text-on-error-container flex items-center justify-center mb-space-md">
+<span class="material-symbols-outlined text-[24px]">favorite</span>
+</div>
+<span class="font-label-caps text-label-caps text-outline uppercase">Heart Beats</span>
+<div class="font-numerical-display text-[32px] text-on-surface font-bold mt-1" id="card-heartbeats">~986.0M</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-md">
+            Calculated at a baseline resting pulse of 70 BPM without skipping a single ventricular stroke.
+          </p>
+</div>
+<!-- Card 3 -->
+<div class="rounded-xl p-space-lg bg-surface-container-lowest shadow-md flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+<div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center mb-space-md">
+<span class="material-symbols-outlined text-[24px]">air</span>
+</div>
+<span class="font-label-caps text-label-caps text-outline uppercase">Atmospheric Cycles</span>
+<div class="font-numerical-display text-[32px] text-on-surface font-bold mt-1" id="card-breaths">~239.6M</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-md">
+            Breaths of Earth's oxygen-nitrogen envelope cycled through your alveolar capillaries.
+          </p>
+</div>
+<!-- Card 4 -->
+<div class="rounded-xl p-space-lg bg-surface-container-lowest shadow-md flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+<div>
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center mb-space-md">
+<span class="material-symbols-outlined text-[24px]">bedtime</span>
+</div>
+<span class="font-label-caps text-label-caps text-outline uppercase">Circadian Sleep</span>
+<div class="font-numerical-display text-[32px] text-on-surface font-bold mt-1" id="card-sleep">~3,260 Days</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-space-md" id="card-sleep-desc">
+            Equivalent to ~8.9 continuous solar orbits spent processing memories and cellular repair in REM.
+          </p>
+</div>
+</div>
+<!-- Upcoming Chronological Milestones Radar -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md lg:p-space-xl shadow-md" id="milestones-radar">
+<div class="flex items-center justify-between mb-space-md">
+<div>
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Precision Radar</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Upcoming Chronological Benchmarks</h3>
+</div>
+<span class="inline-flex items-center gap-1 text-[12px] font-medium text-secondary">
+<span class="material-symbols-outlined text-[14px]">notifications_active</span>
+            Next threshold alerts active
+          </span>
+</div>
+<div class="space-y-space-xs" id="radar-container">
+<!-- Generated dynamically in React -->
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 9: Astrological, Celestial & Natal Calendar Intelligence -->
+<section class="w-full py-space-2xl bg-surface-container-low" id="celestial-grid">
+<div class="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="text-center max-w-2xl mx-auto mb-space-xl">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-wider">Natal Ephemeris Matrix</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1">Celestial Coordinates of Your Ingress</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2" id="celestial-subtitle">
+          Astronomical positions and cultural calendar indices configured for May 18, 1998.
+        </p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-space-md">
+<!-- Item 1: Western Zodiac -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-outline uppercase">Western Constellation</span>
+<span class="font-headline-md text-primary text-[24px]" id="zodiac-icon">♉</span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface" id="zodiac-name">Taurus</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1" id="zodiac-desc">
+            Fixed Earth sign. Ruled by Venus. Grounded, sensorial, deterministic stability.
+          </p>
+</div>
+<!-- Item 2: Chinese Zodiac -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-outline uppercase">Lunar Zodiac</span>
+<span class="material-symbols-outlined text-secondary text-[24px]">pets</span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface" id="chinese-zodiac-name">Year of the Tiger</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1" id="chinese-zodiac-desc">
+            Earth Element (Wu Yin). Bold, resilient, charismatic, dynamic leadership archetype.
+          </p>
+</div>
+<!-- Item 3: Day of the Week -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-outline uppercase">Weekday Ingress</span>
+<span class="material-symbols-outlined text-outline text-[24px]">calendar_today</span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface" id="weekday-name">Monday</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1" id="weekday-desc">
+            Moon's Day. Dominical Letter D. Historically associated with adaptability and intuition.
+          </p>
+</div>
+<!-- Item 4: Birthstone -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-outline uppercase">Mineral Ingress</span>
+<span class="material-symbols-outlined text-primary text-[24px]">diamond</span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface" id="birthstone-name">Emerald</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1" id="birthstone-desc">
+            Beryl crystal structure. Symbol of renewal, clarity, deep growth, and cognitive endurance.
+          </p>
+</div>
+<!-- Item 5: Birth Flower -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-outline uppercase">Botanical Cohort</span>
+<span class="material-symbols-outlined text-secondary text-[24px]">local_florist</span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface" id="flower-name">Lily of the Valley</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1" id="flower-desc">
+            Associated with sweetness, return of happiness, and late spring temperate blooms.
+          </p>
+</div>
+<!-- Item 6: Seasonal Solstice Station -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-label-caps text-outline uppercase">Seasonal Ingress</span>
+<span class="material-symbols-outlined text-tertiary text-[24px]">wb_sunny</span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface" id="season-name">Late Spring</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1" id="season-desc">
+            Northern Hemisphere: 34 days prior to the Summer Solstice maximum axial tilt.
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 10 & 11: Birthday Celebration Planning Timeline & Real-World Cohorts -->
+<section class="w-full py-space-2xl">
+<div class="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl">
+<!-- Planning Timeline (6 cols) -->
+<div class="lg:col-span-6 space-y-space-md">
+<div>
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Protocol Sequence</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1">Celebration Countdown Schedule</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1" id="protocol-subtitle">
+              Deterministic 30-day preparation roadmap tailored for your upcoming May 18 ingress.
+            </p>
+</div>
+<div class="space-y-space-sm" id="protocol-container">
+<!-- Generated dynamically in React -->
+</div>
+</div>
+<!-- Verified Cohorts & Benchmarks (6 cols) -->
+<div class="lg:col-span-6 bg-surface-container-lowest rounded-xl p-space-lg shadow-md space-y-space-md flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-wider">Reference Epochs</span>
+<span class="font-data-mono text-[12px] text-outline">RFC 3339 Verified</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Comparative Natal Cohorts</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Select an archetype to instantly evaluate alternative historical and generational orbital parameters:
+            </p>
+</div>
+<div class="space-y-space-xs">
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between">
+<div>
+<div class="font-medium text-on-surface text-body-sm">Albert Einstein (March 14, 1879)</div>
+<div class="text-[12px] text-outline">145 Solar Orbits • General Relativity Epoch</div>
+</div>
+<button class="px-3 py-1 rounded bg-surface-container-highest text-primary font-body-sm hover:bg-primary hover:text-on-primary transition-colors" onclick="loadPreset('1879-03-14')" type="button">Load</button>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between">
+<div>
+<div class="font-medium text-on-surface text-body-sm">Apollo 11 Moon Landing (July 20, 1969)</div>
+<div class="text-[12px] text-outline">55.6 Solar Orbits • Lunar Landing Event</div>
+</div>
+<button class="px-3 py-1 rounded bg-surface-container-highest text-primary font-body-sm hover:bg-primary hover:text-on-primary transition-colors" onclick="loadPreset('1969-07-20')" type="button">Load</button>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between">
+<div>
+<div class="font-medium text-on-surface text-body-sm">Turn of the Millennium (January 1, 2000)</div>
+<div class="text-[12px] text-outline">25.1 Solar Orbits • Y2K Epoch Standard</div>
+</div>
+<button class="px-3 py-1 rounded bg-surface-container-highest text-primary font-body-sm hover:bg-primary hover:text-on-primary transition-colors" onclick="loadPreset('2000-01-01')" type="button">Load</button>
+</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-high text-on-surface-variant text-[12px] flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">info</span>
+<span>All leap seconds and Julian intercalary cycles are resolved purely inside your browser.</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 12 & 13: Heliocentric Metrology, How It Works & Educational Science Guide -->
+<section class="w-full py-space-2xl bg-surface-container-low">
+<div class="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
+<div class="max-w-3xl mb-space-xl">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-wider">Astrophysical Calibration</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1">How Solar Orbit Metrology Operates</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">
+          Understanding the mathematical precision between the astronomical tropical year and conventional civil calendars.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mb-space-xl">
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm space-y-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container font-data-mono font-bold text-primary flex items-center justify-center">01</div>
+<h3 class="font-headline-md text-[18px] text-on-surface">The Tropical Year</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            A true solar orbit is calibrated against the Vernal Equinox (365.24219 days), not an even 365 days. SolveIt applies fractional Julian day integration to preserve true orbital angular momentum.
+          </p>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm space-y-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container font-data-mono font-bold text-primary flex items-center justify-center">02</div>
+<h3 class="font-headline-md text-[18px] text-on-surface">Gregorian Intercalary Rules</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Years divisible by 4 are leap years, except centennial years unless they are also divisible by 400. This maintains alignment with the astronomical seasons over centuries.
+          </p>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm space-y-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container font-data-mono font-bold text-primary flex items-center justify-center">03</div>
+<h3 class="font-headline-md text-[18px] text-on-surface">Kepler's Second Law</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Earth's orbital speed varies from 30.29 km/s at perihelion (early January) to 29.29 km/s at aphelion (early July). Your velocity continuously oscillates throughout your annual circuit.
+          </p>
+</div>
+</div>
+<!-- Code Snippet Box with Copy JS Action -->
+<div class="bg-inverse-surface rounded-xl p-space-lg text-inverse-on-surface shadow-xl">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-error"></span>
+<span class="w-3 h-3 rounded-full bg-secondary-container"></span>
+<span class="w-3 h-3 rounded-full bg-primary-container"></span>
+<span class="font-data-mono text-[12px] text-outline-variant ml-2">heliocentric-calc.js</span>
+</div>
+<button class="px-3 py-1 rounded bg-surface-container-lowest/10 hover:bg-surface-container-lowest/20 font-data-mono text-[12px] text-inverse-on-surface flex items-center gap-1.5 transition-colors" onclick="copyCodeBlock()">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+            Copy Algorithm
+          </button>
+</div>
+<pre class="font-data-mono text-[13px] text-inverse-on-surface overflow-x-auto p-space-sm bg-surface-container-lowest/5 rounded leading-relaxed" id="code-snippet"><code>// SolveIt High-Precision Solar Orbit &amp; Countdown Algorithm
+function computeSolarOrbit(birthDate, targetDate = new Date()) {
+  const TROPICAL_YEAR_DAYS = 365.24219;
+  const MS_PER_DAY = 86400000;
+  
+  const diffMs = targetDate.getTime() - birthDate.getTime();
+  const totalDays = diffMs / MS_PER_DAY;
+  const completedOrbits = Math.floor(totalDays / TROPICAL_YEAR_DAYS);
+  const currentOrbitProgress = (totalDays % TROPICAL_YEAR_DAYS) / TROPICAL_YEAR_DAYS;
+  
+  return {
+    completedOrbits,
+    progressPercent: (currentOrbitProgress * 100).toFixed(2),
+    totalDistanceTraversedKm: (totalDays * 86400 * 29.78).toLocaleString()
+  };
+}</code>
+        </pre>
+</div>
+</div>
+</section>
+"""
+
+with open('birthday_tracker_raw.html', 'w') as f:
+    f.write(html_content)
+
