@@ -105,7 +105,7 @@ export default function DailyWageClient() {
     function updateHistoryUI() {
       const count = document.getElementById('history-count');
       const list = document.getElementById('history-list');
-      if (count) count.textContent = calculationHistory.length;
+      if (count) count.textContent = calculationHistory.length.toString();
       if (!list) return;
 
       if (calculationHistory.length === 0) {
