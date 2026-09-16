@@ -2,8 +2,6 @@
 
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import Header from '../../../components/Header';
-import Footer from '../../../components/Footer';
 
 // Federal holidays generator
 function getFederalHolidaysForYear(year: number) {
@@ -260,7 +258,7 @@ Julian Day Number (JDN): ${result.jdn}`;
 
   return (
     <div className="min-h-screen bg-surface text-on-surface flex flex-col font-body-md selection:bg-primary/20">
-      <Header />
+      
 
       {/* Toast Notification */}
       {toastMessage && (
@@ -653,8 +651,6 @@ Julian Day Number (JDN): ${result.jdn}`;
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }

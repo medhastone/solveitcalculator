@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -62,9 +63,6 @@
   --spacing-gutter-desktop: 2rem;
   --spacing-max-width-canvas: 1280px;
   --spacing-max-width-calculator: 840px;
-
-  --font-inter: 'Inter', sans-serif;
-  --font-jetbrains: 'JetBrains Mono', monospace;
 }
 
 :root {
@@ -166,18 +164,18 @@
   --color-on-background: #f1f5f9;
 }
 
-@utility font-display-hero { font-family: var(--font-inter); }
-@utility font-display-hero-mobile { font-family: var(--font-inter); }
-@utility font-headline-lg { font-family: var(--font-inter); }
-@utility font-headline-lg-mobile { font-family: var(--font-inter); }
-@utility font-headline-md { font-family: var(--font-inter); }
-@utility font-body-lg { font-family: var(--font-inter); }
-@utility font-body-md { font-family: var(--font-inter); }
-@utility font-body-sm { font-family: var(--font-inter); }
-@utility font-numerical-display { font-family: var(--font-inter); }
-@utility font-numerical-display-mobile { font-family: var(--font-inter); }
-@utility font-data-mono { font-family: var(--font-jetbrains); }
-@utility font-label-caps { font-family: var(--font-inter); }
+@utility font-display-hero { font-family: var(--font-inter), 'Inter', sans-serif; }
+@utility font-display-hero-mobile { font-family: var(--font-inter), 'Inter', sans-serif; }
+@utility font-headline-lg { font-family: var(--font-inter), 'Inter', sans-serif; }
+@utility font-headline-lg-mobile { font-family: var(--font-inter), 'Inter', sans-serif; }
+@utility font-headline-md { font-family: var(--font-inter), 'Inter', sans-serif; }
+@utility font-body-lg { font-family: var(--font-inter), 'Inter', sans-serif; }
+@utility font-body-md { font-family: var(--font-inter), 'Inter', sans-serif; }
+@utility font-body-sm { font-family: var(--font-inter), 'Inter', sans-serif; }
+@utility font-numerical-display { font-family: var(--font-inter), 'Inter', sans-serif; }
+@utility font-numerical-display-mobile { font-family: var(--font-inter), 'Inter', sans-serif; }
+@utility font-data-mono { font-family: var(--font-mono), 'JetBrains Mono', monospace; }
+@utility font-label-caps { font-family: var(--font-inter), 'Inter', sans-serif; }
 
 @utility text-display-hero { font-size: 56px; line-height: 64px; letter-spacing: -0.03em; font-weight: 600; }
 @utility text-display-hero-mobile { font-size: 36px; line-height: 44px; letter-spacing: -0.025em; font-weight: 600; }
@@ -203,4 +201,18 @@
   ::-webkit-scrollbar {
     display: none;
   }
+  /* Remove native up/down number spin buttons to prevent overlap with unit symbols and clean up UI */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    margin: 0 !important;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield !important;
+    appearance: textfield !important;
+  }
+}@layer base {
+  main > :first-child { margin-top: 0 !important; }
+  main > :last-child { margin-bottom: 0 !important; }
 }

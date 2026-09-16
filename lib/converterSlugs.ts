@@ -231,6 +231,8 @@ export const CANONICAL_POPULAR_PAIRS = [
   { from: 'm', to: 'yd', slug: 'meters-to-yards', cat: 'length' },
   { from: 'g', to: 'oz', slug: 'grams-to-ounces', cat: 'weight' },
   { from: 'oz', to: 'g', slug: 'ounces-to-grams', cat: 'weight' },
+  { from: 'g', to: 'mg', slug: 'grams-to-milligrams', cat: 'weight' },
+  { from: 'mg', to: 'g', slug: 'milligrams-to-grams', cat: 'weight' },
   { from: 'l', to: 'gal', slug: 'liters-to-gallons', cat: 'volume' },
   { from: 'gal', to: 'l', slug: 'gallons-to-liters', cat: 'volume' },
   { from: 'sqft', to: 'm2', slug: 'sqft-to-sqm', cat: 'area' },

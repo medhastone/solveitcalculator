@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 
 export default function ScienceClient() {
   // --- Search & Filter State ---
@@ -25,6 +25,22 @@ export default function ScienceClient() {
   const quickFillSearch = (term: string) => {
     setSearchQuery(term);
     searchInputRef.current?.focus();
+  };
+
+  const getToolLink = (tool: string, _catId: string = '') => {
+    const lower = tool.toLowerCase();
+    if (lower.includes('standard deviation')) return '/math/standard-deviation-calculator';
+    if (lower.includes('percentage')) return '/percentage-calculator';
+    if (lower.includes('scientific calculator')) return '/scientific-calculator';
+    if (lower.includes('scientific unit converter') || lower.includes('converter')) return '/scientific-converter';
+    if (lower.includes('temperature') || lower.includes('celsius') || lower.includes('fahrenheit')) return '/temperature-converter';
+    if (lower.includes('pressure') || lower.includes('pascal')) return '/pressure-converter';
+    if (lower.includes('weight') || lower.includes('mass')) return '/weight-mass-converter';
+    if (lower.includes('velocity') || lower.includes('speed')) return '/speed-velocity-converter';
+    if (lower.includes('energy') || lower.includes('joule')) return '/energy-converter';
+    if (lower.includes('power') || lower.includes('watt')) return '/power-converter';
+    if (lower.includes('torque')) return '/torque-converter';
+    return '#workbenches';
   };
 
   // --- Workbench 1: Density ---
@@ -134,10 +150,10 @@ export default function ScienceClient() {
     chem: {
       title: 'Chemistry Lab Benchwork',
       tools: [
-        { title: 'Solution Molarity & Stock Dilution', desc: 'Direct grams to moles and M1V1 = M2V2 aliquot prep.' },
-        { title: 'Buffer Henderson-Hasselbalch', desc: 'Compute target conjugate base/acid ratios for strict pH maintenance.' },
-        { title: 'Significant Figures Evaluator', desc: 'Clean automatic uncertainty rounding during volumetric calculations.' },
-        { title: 'Percent Yield & Stoichiometry', desc: 'Assess synthesis efficacy against theoretical balanced yield.' }
+        { title: 'Solution Molarity & Stock Dilution', desc: 'Convert grams to moles and calculate M1V1 = M2V2 dilution volumes.' },
+        { title: 'Buffer Henderson-Hasselbalch', desc: 'Calculate conjugate base/acid ratios for maintaining steady pH levels.' },
+        { title: 'Significant Figures Evaluator', desc: 'Automatic rounding and precision control during scientific calculations.' },
+        { title: 'Percent Yield & Stoichiometry', desc: 'Compare actual reaction results against theoretical balanced yield.' }
       ]
     },
     physics: {
@@ -145,8 +161,8 @@ export default function ScienceClient() {
       tools: [
         { title: '2D Projectile Trajectory Solver', desc: 'Calculate apex height, range, and impact time with gravity vectors.' },
         { title: 'Work-Energy & Kinetic Theorem', desc: 'Calculate conservation states between spring, gravity, and velocity.' },
-        { title: 'SUVAT Kinematics Variable Isolator', desc: 'Solve for any 5th variable using foundational linear equations.' },
-        { title: 'Coulomb Electrostatic Force', desc: 'Compute vector force magnitudes between charged point particles.' }
+        { title: 'SUVAT Kinematics Motion Solver', desc: 'Solve for distance, velocity, acceleration, or time using linear motion equations.' },
+        { title: 'Coulomb Electrostatic Force', desc: 'Calculate the electrostatic force between charged particles.' }
       ]
     },
     bio: {
@@ -489,16 +505,16 @@ export default function ScienceClient() {
 
   return (
     <div className="min-h-screen bg-background font-body-md text-on-surface antialiased flex flex-col justify-between">
-      <Header />
+      
 
-      <main className="w-full pt-20 bg-background flex-1">
+      <main className="w-full pt-16 bg-background flex-1">
         {/* Breadcrumbs & Trust Ribbon */}
         <div className="w-full bg-surface-container-low py-space-sm px-gutter-mobile lg:px-gutter-desktop border-b border-outline-variant/15">
           <div className="max-w-max-width-canvas mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-xs text-body-sm font-body-sm">
             <nav className="flex items-center gap-space-2xs text-on-surface-variant">
-              <a className="hover:text-primary transition-colors" href="/">Home</a>
+              <Link className="hover:text-primary transition-colors font-bold" href="/">Home</Link>
               <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-              <span className="text-on-surface font-semibold">Science Calculators</span>
+              <span className="text-on-surface font-bold">Science Calculators</span>
               <span className="material-symbols-outlined text-[14px]">chevron_right</span>
               <span className="text-on-surface-variant">Science Learning &amp; Problem Solvers Hub</span>
             </nav>
@@ -507,7 +523,7 @@ export default function ScienceClient() {
                 <span className="material-symbols-outlined text-[13px]">lock</span> 100% Free &amp; Private
               </span>
               <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-caps text-label-caps shadow-sm border border-outline-variant/20">
-                <span className="material-symbols-outlined text-[13px] text-secondary">verified</span> NIST &amp; CODATA Aligned
+                <span className="material-symbols-outlined text-[13px] text-secondary">science</span> NIST &amp; CODATA Standards
               </span>
               <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-caps text-label-caps shadow-sm border border-outline-variant/20">
                 <span className="material-symbols-outlined text-[13px] text-tertiary">bolt</span> Instant Results
@@ -528,8 +544,11 @@ export default function ScienceClient() {
                 <h1 className="font-display-hero text-headline-lg lg:text-display-hero text-on-surface tracking-tight font-bold">
                   Science Calculators &amp; Scientific Tools
                 </h1>
-                <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
-                  Interactive physics, chemistry, biology, earth science, and laboratory problem solvers. Built for students, educators, and researchers to explore formulas, analyze laboratory data, and master scientific principles with instant calculations.
+                <h2 className="font-headline-md text-headline-md text-primary font-bold mt-1">
+                  Science Calculators &amp; Scientific Tools for Accurate Scientific Calculations
+                </h2>
+                <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed mt-2 font-medium">
+                  Solve complex scientific problems with calculators for physics, chemistry, biology, engineering, astronomy, mathematics, and laboratory calculations.
                 </p>
 
                 {/* Search Bar */}
@@ -542,7 +561,7 @@ export default function ScienceClient() {
                       onChange={e => setSearchQuery(e.target.value)}
                       className="w-full py-2 bg-transparent text-on-surface font-body-md text-body-md focus:outline-none placeholder:text-outline"
                       id="science-search"
-                      placeholder="Search 500+ formulas, e.g. Molarity, Projectile, F=ma, pH..."
+                      placeholder="Search Science Calculators: physics, chemistry, biology, density, molarity, force..."
                       type="search"
                     />
                     <kbd className="hidden sm:inline-block px-2 py-1 bg-surface-container font-data-mono text-data-mono text-on-surface-variant rounded-md mr-space-xs">
@@ -550,13 +569,26 @@ export default function ScienceClient() {
                     </kbd>
                   </div>
                   <div className="flex flex-wrap items-center gap-space-2xs mt-space-sm font-label-caps text-label-caps text-on-surface-variant">
-                    <span className="font-semibold uppercase tracking-wider text-outline">Quick Pick:</span>
-                    {['Density', 'Molarity', 'pH Buffer', 'Kinetic Energy', 'Ideal Gas Law', 'Punnett Square', 'Half-Life'].map(term => (
+                    <span className="font-bold uppercase tracking-wider text-outline">Quick Pick:</span>
+                    {[
+                      'Science Calculators',
+                      'Physics Calculator',
+                      'Chemistry Calculator',
+                      'Biology Calculator',
+                      'Engineering Calculator',
+                      'Astronomy Calculator',
+                      'Density Calculator',
+                      'Molarity Calculator',
+                      'Force Calculator',
+                      'Pressure Calculator',
+                      'Energy Calculator',
+                      'Scientific Tools Online'
+                    ].map(term => (
                       <button
                         key={term}
                         type="button"
                         onClick={() => quickFillSearch(term)}
-                        className="px-space-xs py-1 rounded-md bg-surface-container-high hover:bg-primary hover:text-on-primary transition-all cursor-pointer"
+                        className="px-space-xs py-1 rounded-md bg-surface-container-high hover:bg-primary hover:text-on-primary transition-all cursor-pointer font-bold"
                       >
                         {term}
                       </button>
@@ -569,7 +601,7 @@ export default function ScienceClient() {
               <div className="lg:col-span-4 flex flex-col gap-space-sm bg-surface-container rounded-xl p-space-lg shadow-sm border border-outline-variant/30">
                 <div className="flex items-center justify-between">
                   <span className="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant font-semibold">
-                    Live System Telemetry
+                    Platform Overview
                   </span>
                   <span className="inline-flex items-center gap-1 font-label-caps text-label-caps text-primary font-bold">
                     <span className="w-2 h-2 rounded-full bg-primary animate-ping"></span> Real-Time
@@ -577,7 +609,7 @@ export default function ScienceClient() {
                 </div>
                 <div className="grid grid-cols-2 gap-space-sm">
                   <div className="p-space-sm rounded-lg bg-surface-container-lowest border border-outline-variant/20">
-                    <div className="font-numerical-display text-headline-lg text-primary font-bold">500+</div>
+                    <div className="font-numerical-display text-headline-lg text-primary font-bold">100+</div>
                     <div className="font-body-sm text-body-sm text-on-surface-variant">Science Solvers</div>
                   </div>
                   <div className="p-space-sm rounded-lg bg-surface-container-lowest border border-outline-variant/20">
@@ -585,17 +617,17 @@ export default function ScienceClient() {
                     <div className="font-body-sm text-body-sm text-on-surface-variant">Core Disciplines</div>
                   </div>
                   <div className="p-space-sm rounded-lg bg-surface-container-lowest border border-outline-variant/20">
-                    <div className="font-numerical-display text-headline-lg text-tertiary font-bold">22.4M</div>
+                    <div className="font-numerical-display text-headline-lg text-tertiary font-bold">50K+</div>
                     <div className="font-body-sm text-body-sm text-on-surface-variant">Problems Solved</div>
                   </div>
                   <div className="p-space-sm rounded-lg bg-surface-container-lowest border border-outline-variant/20">
                     <div className="font-numerical-display text-headline-lg text-on-surface font-bold">&lt; 1ms</div>
-                    <div className="font-body-sm text-body-sm text-on-surface-variant">Instant Compute</div>
+                    <div className="font-body-sm text-body-sm text-on-surface-variant">Instant Results</div>
                   </div>
                 </div>
                 <div className="p-space-xs rounded-lg bg-surface-container-high flex items-center gap-space-xs text-body-sm font-body-sm text-on-surface-variant">
                   <span className="material-symbols-outlined text-primary text-[18px]">verified_user</span>
-                  <span>All formulas run directly on your browser. No data leaves your machine.</span>
+                  <span>All formulas run directly in your browser. Your data stays private on your device.</span>
                 </div>
               </div>
             </div>
@@ -706,7 +738,7 @@ export default function ScienceClient() {
                     >
                       <span className="material-symbols-outlined">{goal.icon}</span>
                     </div>
-                    <h3 className="font-headline-md text-headline-md text-on-surface font-semibold mb-space-2xs text-lg">
+                    <h3 className="font-headline-md text-headline-md text-on-surface font-bold mb-space-2xs text-lg">
                       {goal.title}
                     </h3>
                     <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
@@ -714,7 +746,7 @@ export default function ScienceClient() {
                     </p>
                   </div>
                   <div
-                    className={`mt-space-md pt-space-xs flex items-center justify-between font-label-caps text-label-caps font-semibold ${
+                    className={`mt-space-md pt-space-xs flex items-center justify-between font-label-caps text-label-caps font-bold ${
                       goal.color === 'primary'
                         ? 'text-primary'
                         : goal.color === 'secondary'
@@ -724,7 +756,7 @@ export default function ScienceClient() {
                         : 'text-on-surface'
                     }`}
                   >
-                    <span>{goal.count}</span>
+                    <span className="font-bold">{goal.count}</span>
                     <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">
                       arrow_forward
                     </span>
@@ -746,7 +778,7 @@ export default function ScienceClient() {
                 Try Live Science Models
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant">
-                Direct mathematical evaluations executing instantaneously right inside this viewport with dynamic variable re-computation.
+                Interactive science tools that update results instantly as you change any number or unit.
               </p>
             </div>
 
@@ -802,7 +834,7 @@ export default function ScienceClient() {
 
                 <div className="p-space-md rounded-lg bg-surface-container-lowest flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm border border-outline-variant/20">
                   <div>
-                    <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Computed Density (ρ)</span>
+                    <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Calculated Density (ρ)</span>
                     <div className="flex items-baseline gap-space-2xs">
                       <span className="font-numerical-display text-numerical-display text-primary font-bold" id="wb-density-result">
                         {densityResult.density}
@@ -987,7 +1019,7 @@ export default function ScienceClient() {
                     </span>
                   </div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                    Compute molar quantity or change variables to observe state behavior at standard temperature and pressure.
+                    Calculate molar quantity or change values to observe gas behavior at standard temperature and pressure.
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-space-sm mb-space-md">
                     <div>
@@ -1037,7 +1069,7 @@ export default function ScienceClient() {
 
                 <div className="p-space-md rounded-lg bg-surface-container-lowest flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm border border-outline-variant/20">
                   <div>
-                    <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Computed Amount of Substance (n)</span>
+                    <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Calculated Amount of Substance (n)</span>
                     <div className="flex items-baseline gap-space-2xs">
                       <span className="font-numerical-display text-numerical-display text-primary font-bold" id="wb-gas-result">
                         {gasResult}
@@ -1065,10 +1097,10 @@ export default function ScienceClient() {
                   Comprehensive Directory
                 </span>
                 <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold">
-                  500+ Verified Science Calculators
+                  100+ Verified Science Calculators
                 </h2>
                 <p className="font-body-md text-body-md text-on-surface-variant">
-                  Curated across 20 disciplines with explicit variable inputs, conversion matrices, and standard references.
+                  Curated across 20 disciplines with easy-to-use inputs, unit conversion tables, and standard scientific references.
                 </p>
               </div>
               <div className="flex items-center gap-space-xs">
@@ -1116,27 +1148,45 @@ export default function ScienceClient() {
                     <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
                       {cat.desc}
                     </p>
-                    <ul className="space-y-1 font-body-sm text-body-sm text-on-surface-variant">
-                      {cat.tools.map(tool => (
-                        <li key={tool} className="hover:text-primary transition-colors flex items-center gap-1.5 cursor-pointer">
-                          <span
-                            className={`material-symbols-outlined text-[14px] ${
-                              cat.badgeColor === 'primary'
-                                ? 'text-primary'
-                                : cat.badgeColor === 'secondary'
-                                ? 'text-secondary'
-                                : 'text-tertiary'
-                            }`}
-                          >
-                            arrow_right
-                          </span>{' '}
-                          {tool}
-                        </li>
-                      ))}
+                    <ul className="space-y-1.5 font-body-sm text-body-sm">
+                      {cat.tools.map(tool => {
+                        const href = getToolLink(tool, cat.id);
+                        return (
+                          <li key={tool}>
+                            <Link
+                              href={href}
+                              onClick={() => {
+                                if (href.startsWith('#')) {
+                                  quickFillSearch(tool);
+                                }
+                              }}
+                              className="hover:text-primary transition-colors flex items-center justify-between group/tool py-0.5 text-on-surface font-bold"
+                            >
+                              <span className="flex items-center gap-1.5 font-bold">
+                                <span
+                                  className={`material-symbols-outlined text-[14px] ${
+                                    cat.badgeColor === 'primary'
+                                      ? 'text-primary'
+                                      : cat.badgeColor === 'secondary'
+                                      ? 'text-secondary'
+                                      : 'text-tertiary'
+                                  }`}
+                                >
+                                  arrow_right
+                                </span>
+                                <span className="font-bold">{tool}</span>
+                              </span>
+                              <span className="material-symbols-outlined text-[14px] opacity-0 group-hover/tool:opacity-100 transition-opacity text-primary">
+                                arrow_outward
+                              </span>
+                            </Link>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                   <a
-                    className={`mt-space-md pt-space-xs flex items-center gap-1 font-body-sm text-body-sm font-semibold ${
+                    className={`mt-space-md pt-space-xs flex items-center gap-1 font-body-sm text-body-sm font-bold ${
                       cat.badgeColor === 'primary'
                         ? 'text-primary'
                         : cat.badgeColor === 'secondary'
@@ -1144,8 +1194,9 @@ export default function ScienceClient() {
                         : 'text-tertiary'
                     }`}
                     href="#workbenches"
+                    onClick={() => quickFillSearch(cat.title)}
                   >
-                    <span>{cat.linkText}</span>
+                    <span className="font-bold">{cat.linkText}</span>
                     <span className="material-symbols-outlined text-[16px]">chevron_right</span>
                   </a>
                 </div>
@@ -1192,12 +1243,12 @@ export default function ScienceClient() {
                         <span className="w-5 h-5 rounded-full bg-primary text-on-primary font-label-caps text-label-caps flex items-center justify-center shrink-0">
                           {idx + 1}
                         </span>
-                        <span className="font-body-sm text-body-sm font-semibold">{step}</span>
+                        <span className="font-body-sm text-body-sm font-bold">{step}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="mt-space-md pt-space-xs text-primary font-label-caps text-label-caps font-semibold">
+                <div className="mt-space-md pt-space-xs text-primary font-label-caps text-label-caps font-bold">
                   5 MODULES • 94 CALCULATORS
                 </div>
               </div>
@@ -1224,12 +1275,12 @@ export default function ScienceClient() {
                         <span className="w-5 h-5 rounded-full bg-secondary text-on-secondary font-label-caps text-label-caps flex items-center justify-center shrink-0">
                           {idx + 1}
                         </span>
-                        <span className="font-body-sm text-body-sm font-semibold">{step}</span>
+                        <span className="font-body-sm text-body-sm font-bold">{step}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="mt-space-md pt-space-xs text-secondary font-label-caps text-label-caps font-semibold">
+                <div className="mt-space-md pt-space-xs text-secondary font-label-caps text-label-caps font-bold">
                   5 MODULES • 68 CALCULATORS
                 </div>
               </div>
@@ -1256,12 +1307,12 @@ export default function ScienceClient() {
                         <span className="w-5 h-5 rounded-full bg-tertiary text-on-tertiary font-label-caps text-label-caps flex items-center justify-center shrink-0">
                           {idx + 1}
                         </span>
-                        <span className="font-body-sm text-body-sm font-semibold">{step}</span>
+                        <span className="font-body-sm text-body-sm font-bold">{step}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="mt-space-md pt-space-xs text-tertiary font-label-caps text-label-caps font-semibold">
+                <div className="mt-space-md pt-space-xs text-tertiary font-label-caps text-label-caps font-bold">
                   5 MODULES • 45 CALCULATORS
                 </div>
               </div>
@@ -1288,12 +1339,12 @@ export default function ScienceClient() {
                         <span className="w-5 h-5 rounded-full bg-primary text-on-primary font-label-caps text-label-caps flex items-center justify-center shrink-0">
                           {idx + 1}
                         </span>
-                        <span className="font-body-sm text-body-sm font-semibold">{step}</span>
+                        <span className="font-body-sm text-body-sm font-bold">{step}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-                <div className="mt-space-md pt-space-xs text-primary font-label-caps text-label-caps font-semibold">
+                <div className="mt-space-md pt-space-xs text-primary font-label-caps text-label-caps font-bold">
                   5 MODULES • 36 CALCULATORS
                 </div>
               </div>
@@ -1313,7 +1364,7 @@ export default function ScienceClient() {
                   Smart Science Assistant
                 </h2>
                 <p className="font-body-md text-body-md text-on-surface-variant mb-space-md">
-                  Select your current academic focus or practical lab scenario to assemble recommended computational modules instantly.
+                  Select your current subject or practical lab scenario to get recommended calculators instantly.
                 </p>
                 <div className="flex flex-wrap gap-space-2xs">
                   {[
@@ -1347,12 +1398,26 @@ export default function ScienceClient() {
                   </span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
-                  {assistantData[assistantMode].tools.map(tool => (
-                    <div key={tool.title} className="p-space-sm rounded-lg bg-surface-container-lowest border border-outline-variant/20">
-                      <div className="font-body-sm text-body-sm font-semibold text-on-surface">{tool.title}</div>
-                      <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">{tool.desc}</p>
-                    </div>
-                  ))}
+                  {assistantData[assistantMode].tools.map(tool => {
+                    const href = getToolLink(tool.title, '');
+                    return (
+                      <div key={tool.title} className="p-space-sm rounded-lg bg-surface-container-lowest border border-outline-variant/20">
+                        <Link
+                          href={href}
+                          onClick={() => {
+                            if (href.startsWith('#')) {
+                              quickFillSearch(tool.title);
+                            }
+                          }}
+                          className="font-body-sm text-body-sm font-bold text-on-surface hover:text-primary transition-colors flex items-center justify-between group/asst mb-1"
+                        >
+                          <span className="font-bold">{tool.title}</span>
+                          <span className="material-symbols-outlined text-[14px] text-outline group-hover/asst:text-primary">arrow_outward</span>
+                        </Link>
+                        <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">{tool.desc}</p>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -1364,13 +1429,13 @@ export default function ScienceClient() {
           <div className="max-w-max-width-canvas mx-auto">
             <div className="max-w-3xl mb-space-2xl">
               <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">
-                Standard Metrology
+                Key Scientific Formulas
               </span>
               <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold">
                 Core Scientific Formula Library
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant">
-                Validated mathematical descriptions with defined SI units, physical constants, and canonical forms.
+                Essential scientific formulas with clear standard units, definitions, and physical constants.
               </p>
             </div>
 
@@ -1618,13 +1683,13 @@ export default function ScienceClient() {
           <div className="max-w-max-width-canvas mx-auto">
             <div className="max-w-3xl mb-space-2xl">
               <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">
-                Practicum Methodology
+                Step-by-Step Guides
               </span>
               <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold">
                 Step-by-Step Laboratory Guides
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant">
-                Clear, repeatable procedures for foundational laboratory calculations and error propagation.
+                Clear, repeatable procedures for foundational laboratory calculations and error analysis.
               </p>
             </div>
 
@@ -1643,7 +1708,7 @@ export default function ScienceClient() {
                   </p>
                   <ol className="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant list-decimal list-inside leading-relaxed">
                     <li>Identify target concentration (M₂) and final volume needed (V₂).</li>
-                    <li>Rearrange to solve for stock aliquot: V₁ = (M₂ × V₂) / M₁.</li>
+                    <li>Rearrange to solve for the stock volume needed: V₁ = (M₂ × V₂) / M₁.</li>
                     <li>Measure V₁ of stock accurately with a calibrated micropipette or volumetric pipette.</li>
                     <li>Transfer V₁ into a volumetric flask pre-filled with 50% solvent.</li>
                     <li>Bring flask carefully to the etched calibration meniscus and invert gently.</li>
@@ -1669,7 +1734,7 @@ export default function ScienceClient() {
                   <ol className="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant list-decimal list-inside leading-relaxed">
                     <li>Record your experimental laboratory mean value (Vₑ).</li>
                     <li>Look up standard accepted literature reference value (Vₐ).</li>
-                    <li>Compute the absolute difference: |Vₑ - Vₐ|.</li>
+                    <li>Calculate the absolute difference: |Vₑ - Vₐ|.</li>
                     <li>Divide absolute difference by the accepted reference: |Vₑ - Vₐ| / Vₐ.</li>
                     <li>Multiply by 100 to express uncertainty as a clean percentage value.</li>
                   </ol>
@@ -1726,7 +1791,7 @@ export default function ScienceClient() {
               {[
                 {
                   id: 0,
-                  q: 'Are SolveIt Science calculations calibrated against international metrology standards?',
+                  q: 'Are SolveIt Calculator science calculations calibrated against international standards?',
                   icon: 'verified',
                   a: 'Yes. All physical constants (speed of light, Planck constant, gravitational constant, Avogadro constant) are strictly calibrated against the 2018 CODATA internationally recommended values and National Institute of Standards and Technology (NIST) databases.'
                 },
@@ -1734,25 +1799,25 @@ export default function ScienceClient() {
                   id: 1,
                   q: 'Is my homework, thesis data, or laboratory research kept private?',
                   icon: 'lock',
-                  a: '100% private. All computations occur exclusively client-side in your local browser window. No figures, formulas, or numbers are ever transmitted, tracked, or stored on external cloud servers.'
+                  a: '100% private. All calculations happen right inside your web browser. None of your numbers, inputs, or results are ever sent over the internet or stored on external servers.'
                 },
                 {
                   id: 2,
                   q: 'Can these calculators be used offline during field trips or in disconnected labs?',
                   icon: 'cloud_off',
-                  a: "Yes. Once this page loads, the computational logic resides in your browser's local memory. You can disconnect your network connection, calculate in remote field stations, or run experiments without interruption."
+                  a: "Yes. Once the page is loaded, the calculators work completely without internet. You can disconnect your connection, calculate in remote field stations, or run experiments without interruption."
                 },
                 {
                   id: 3,
-                  q: 'How does SolveIt handle significant figures and rounding errors?',
+                  q: 'How does SolveIt Calculator handle significant figures and rounding errors?',
                   icon: 'rule',
-                  a: 'Our calculators perform internal calculations using standard 64-bit IEEE floating-point precision to prevent intermediate truncation errors. Users can toggle display modes between high-precision scientific decimal notation and standard significant figure outputs.'
+                  a: 'Our calculators use high-precision mathematical algorithms to prevent rounding errors during multi-step problems. You get accurate, dependable results for classroom homework, exams, and laboratory experiments.'
                 },
                 {
                   id: 4,
                   q: 'Is this platform free for schools, colleges, and educational districts?',
                   icon: 'school',
-                  a: 'Yes. SolveIt is completely free without paywalls, sign-up requirements, or seat licenses. Teachers and students can bookmark and embed links directly inside syllabus modules, Google Classroom, Canvas, or Blackboard.'
+                  a: 'Yes. SolveIt Calculator is completely free without paywalls, sign-up requirements, or seat licenses. Teachers and students can bookmark and embed links directly inside syllabus modules, Google Classroom, Canvas, or Blackboard.'
                 }
               ].map(faq => (
                 <div key={faq.id} className="rounded-xl bg-surface-container-lowest p-space-md shadow-sm border border-outline-variant/30">
@@ -1797,8 +1862,6 @@ export default function ScienceClient() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }

@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 
 export default function CalculatorPage() {
   const [speed, setSpeed] = useState<number>(70);
@@ -133,7 +132,7 @@ export default function CalculatorPage() {
 
   return (
     <>
-      <Header />
+      
       <main className="w-full pt-16 bg-surface min-h-[calc(100vh-64px)]">
         <div className="flex flex-col w-full">
           {/* Top Ambient Glow Backdrop */}
@@ -773,7 +772,6 @@ export default function CalculatorPage() {
           </div>
         )}
       </main>
-      <Footer />
     </>
   );
 }

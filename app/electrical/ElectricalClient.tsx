@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Link from 'next/link';
+import ElectricalSeoSection from './ElectricalSeoSection';
 
 export default function ElectricalClient() {
   // --- Search & Filter State ---
@@ -245,88 +245,82 @@ export default function ElectricalClient() {
 
   const disciplineData = {
     home: {
-      badge: "DISCIPLINE: RESIDENTIAL CONTRACTING",
-      heading: "NEC Home Feeder & Branch Package",
-      summary: "Recommended sequence for whole-house 100A, 200A, or 400A service entry, kitchen small-appliance branch circuits, and Level 2 EV charging.",
+      badge: "HOME & RESIDENTIAL WIRING",
+      heading: "Home Electrical & Circuit Package",
+      summary: "Recommended calculators for whole-house 100A, 200A, or 400A electrical service, kitchen circuits, and Level 2 EV charging.",
       tools: [
-        { name: "1. NEC Cable & Wire Sizing", link: "#workbench-cable" },
-        { name: "2. 200A Service Demand Calculator", link: "#cat-17" },
-        { name: "3. MCB / Dual-Pole Breaker Sizer", link: "#cat-4" },
-        { name: "4. Conduit Fill (EMT / PVC)", link: "#cat-3" }
+        { name: "1. Wire & Cable Size Sizer", link: "#workbench-cable" },
+        { name: "2. 200A Home Service Panel Calculator", link: "#cat-17" },
+        { name: "3. Circuit Breaker Sizer", link: "#cat-4" },
+        { name: "4. Conduit Pipe Fill Sizer", link: "#cat-3" }
       ]
     },
     solar: {
-      badge: "DISCIPLINE: SOLAR PHOTOVOLTAIC",
-      heading: "Renewable Generation & Storage Suite",
-      summary: "End-to-end solar array modeling from sun peak hours, MPPT string sizing, hybrid inverter capacity, to battery autonomy days.",
+      badge: "SOLAR POWER & STORAGE",
+      heading: "Solar Energy & Battery Package",
+      summary: "Complete solar planning from peak sun hours and charge controllers to battery capacity and backup days.",
       tools: [
-        { name: "1. Solar PV Array Modeler", link: "#workbench-solar" },
+        { name: "1. Solar Panel Array Calculator", link: "#workbench-solar" },
         { name: "2. MPPT Charge Controller Sizer", link: "#cat-9" },
-        { name: "3. LiFePO4 Battery Ah Capacity", link: "#cat-10" },
-        { name: "4. DC String Cable Sizer", link: "#workbench-cable" }
+        { name: "3. Battery Storage Capacity (Ah)", link: "#cat-10" },
+        { name: "4. Solar DC Wire Sizer", link: "#workbench-cable" }
       ]
     },
     industrial: {
-      badge: "DISCIPLINE: INDUSTRIAL POWER",
-      heading: "Medium Voltage & Factory Load Architecture",
-      summary: "Heavy plant engineering tools including copper/aluminum busbar sizing, power factor correction capacitor banks, and MCC feeders.",
+      badge: "FACTORY & COMMERCIAL POWER",
+      heading: "Commercial & Factory Power Setup",
+      summary: "Heavy power tools including copper and aluminum busbar sizing, power factor capacitor banks, and transformer loads.",
       tools: [
-        { name: "1. Busbar Ampacity Sizer (A/mm²)", link: "#cat-18" },
+        { name: "1. Busbar Current Capacity (A/mm²)", link: "#cat-18" },
         { name: "2. Power Factor Correction (kVAr)", link: "#cat-11" },
         { name: "3. Transformer Full Load Amps", link: "#workbench-transformer" },
-        { name: "4. Fault Loop Impedance (Zs)", link: "#cat-4" }
+        { name: "4. Electrical Ground Fault Loop", link: "#cat-4" }
       ]
     },
     motor: {
-      badge: "DISCIPLINE: MOTOR SYSTEMS",
-      heading: "Industrial Induction Drive Workbench",
-      summary: "Evaluate motor full-load currents, across-the-line starting inrush, VFD carrier sizing, and thermal overload settings per NEC 430.",
+      badge: "ELECTRIC MOTORS & DRIVES",
+      heading: "Motor Current & Starter Setup",
+      summary: "Find motor running current, starting surge amps, speed controller sizing, and overload protection settings.",
       tools: [
-        { name: "1. Motor FLA & Starting Workbench", link: "#workbench-motor" },
-        { name: "2. Motor Torque & Synchronous Speed", link: "#cat-7" },
-        { name: "3. VFD Inverter Sizer", link: "#cat-7" },
-        { name: "4. Group Motor Branch Feeder", link: "#cat-18" }
+        { name: "1. Motor Current & Starting Calculator", link: "#workbench-motor" },
+        { name: "2. Motor Torque & Speed Calculator", link: "#cat-7" },
+        { name: "3. Speed Controller (VFD) Sizer", link: "#cat-7" },
+        { name: "4. Motor Feeder Wire Sizer", link: "#cat-18" }
       ]
     },
     transformer: {
-      badge: "DISCIPLINE: TRANSFORMERS & SUBSTATIONS",
-      heading: "Substation Transformer Engineering",
-      summary: "Capacity ratings, secondary FLA, impedance calculations (%Z), and primary overcurrent protection per NEC 450.3.",
+      badge: "TRANSFORMERS & SUBSTATIONS",
+      heading: "Transformer Capacity & Ratings",
+      summary: "Calculate transformer power ratings, primary and secondary currents, voltage step-up/down, and circuit breakers.",
       tools: [
-        { name: "1. Transformer Capacity Workbench", link: "#workbench-transformer" },
-        { name: "2. Percentage Impedance %Z Fault Sizer", link: "#cat-6" },
-        { name: "3. Core & Copper Losses", link: "#cat-6" },
-        { name: "4. Star-Delta Secondary Configuration", link: "#cat-5" }
+        { name: "1. Transformer Power Calculator", link: "#workbench-transformer" },
+        { name: "2. Short Circuit Fault Sizer", link: "#cat-6" },
+        { name: "3. Power Losses & Efficiency", link: "#cat-6" },
+        { name: "4. Three-Phase Voltage Setup", link: "#cat-5" }
       ]
     },
     backup: {
-      badge: "DISCIPLINE: CRITICAL BACKUP & UPS",
-      heading: "Emergency Power & Generator Systems",
-      summary: "Model data center double-conversion UPS runtimes, diesel generator prime kVA, and automatic transfer switch ratings.",
+      badge: "BACKUP POWER & GENERATORS",
+      heading: "Emergency Power & Generator Setup",
+      summary: "Calculate battery backup runtime in hours, generator power needs, fuel consumption, and transfer switches.",
       tools: [
-        { name: "1. Battery Backup Runtime Hours", link: "#cat-10" },
-        { name: "2. Diesel Generator Fuel & Sizing", link: "#cat-8" },
-        { name: "3. ATS Automatic Transfer Switch", link: "#cat-8" },
-        { name: "4. Inverter Surge Capacity", link: "#cat-10" }
+        { name: "1. Battery Backup Runtime in Hours", link: "#cat-10" },
+        { name: "2. Generator Sizing & Fuel Calculator", link: "#cat-8" },
+        { name: "3. Automatic Transfer Switch (ATS)", link: "#cat-8" },
+        { name: "4. Inverter Surge Power Sizer", link: "#cat-10" }
       ]
     },
     electronics: {
-      badge: "DISCIPLINE: ELECTRONICS & RLC",
-      heading: "Component Design & Signal Processing",
-      summary: "Analog electronics, LED droppers, 555 timers, op-amp gains, and resonant RLC AC filter calculations.",
+      badge: "ELECTRONICS & CIRCUITS",
+      heading: "Circuits & Electronic Components",
+      summary: "Calculate LED resistors, timers, filter frequencies, and component values with easy formulas.",
       tools: [
-        { name: "1. LED Current Limiting Resistor", link: "#cat-12" },
-        { name: "2. Complex Impedance Z = √(R²+X²)", link: "#cat-13" },
+        { name: "1. LED Resistor Calculator", link: "#cat-12" },
+        { name: "2. Circuit Impedance Calculator", link: "#cat-13" },
         { name: "3. Resistor Color Code (4/5 Band)", link: "#cat-14" },
-        { name: "4. LC Resonant Frequency", link: "#cat-13" }
+        { name: "4. Resonant Frequency Calculator", link: "#cat-13" }
       ]
     }
-  };
-
-  // --- FAQ State ---
-  const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({});
-  const toggleFaq = (idx: number) => {
-    setOpenFaqs(prev => ({ ...prev, [idx]: !prev[idx] }));
   };
 
   // --- 20-Category Directory Data ---
@@ -335,380 +329,380 @@ export default function ElectricalClient() {
       num: '01',
       id: 'cat-1',
       title: 'Basic Electrical',
-      desc: 'Foundational circuit principles, fundamental laws, and basic energetic conversions.',
-      badge: 'FUNDAMENTAL SUITE',
-      tag: 'NEC / IEC BASE',
+      desc: "Ohm's law, power formulas, and circuit basics.",
+      badge: 'FUNDAMENTALS',
+      tag: 'BASIC LAWS',
       count: '8 Tools',
       color: 'primary',
       tools: [
-        "Ohm's Law Calculator (V = I × R)",
+        "Ohm's Law Calculator",
         "Voltage, Current & Resistance",
-        "DC Power Calculator (P = V × I)",
-        "Joule's Law Heating / Heat Loss",
-        "Electrical Energy (kWh & Joules)",
-        "AC Power Triangle (P, Q, S)",
-        "Electrical Efficiency (η = Pout/Pin)",
-        "Conductance, Susceptance & Admittance"
+        "DC Power Calculator",
+        "Joule's Law Heating",
+        "Electrical Energy (kWh)",
+        "AC Power Triangle",
+        "Electrical Efficiency",
+        "Conductance & Admittance"
       ]
     },
     {
       num: '02',
       id: 'cat-2',
       title: 'Power Calculators',
-      desc: 'Precise bidirectional conversions across electrical ratings and mechanical power units.',
-      badge: 'POWER METRICS',
-      tag: 'EXACT FLOATS',
-      count: '12 Tools',
+      desc: 'Convert between watts, amps, volts, kW, and kVA.',
+      badge: 'POWER CONVERSIONS',
+      tag: 'POWER FORMULAS',
+      count: '8 Tools',
       color: 'secondary',
       tools: [
-        "Watts to Amps & Amps to Watts",
-        "Volts to Watts & Watts to Volts",
-        "kW to Amps & Amps to kW",
-        "kVA to Amps & Amps to kVA",
-        "kW to kVA & kVA to kW",
-        "Horsepower (HP) to Watts & kW",
-        "Horsepower to Amps (1Φ & 3Φ)",
-        "BTU/hr to Kilowatts"
+        "Watts to Amps",
+        "Volts to Watts",
+        "kW to Amps",
+        "kVA to Amps",
+        "kW to kVA",
+        "Horsepower to kW",
+        "Horsepower to Amps",
+        "BTU/hr to kW"
       ]
     },
     {
       num: '03',
       id: 'cat-3',
       title: 'Cable & Wire Sizing',
-      desc: 'Conductor thermal capacity, distance voltage degradation, and raceway fill geometry.',
-      badge: 'MOST POPULAR',
-      tag: 'NEC 310.16 COMPLIANT',
-      count: '9 Tools',
+      desc: 'Wire gauge, voltage drop, and conduit fill.',
+      badge: 'POPULAR TOOLS',
+      tag: 'WIRE SIZING',
+      count: '8 Tools',
       color: 'primary',
-      featuredTool: 'Cable Size Calculator (AWG & mm²)',
+      featuredTool: 'Cable Size Calculator',
       tools: [
-        "American Wire Gauge (AWG) Index",
-        "SWG to Metric mm² Conversion",
-        "Ampacity Sizer (NEC Table 310.16)",
-        "Voltage Drop Calculator (1Φ & 3Φ)",
-        "Conductor Resistance (R = ρL/A)",
-        "Conduit Fill Sizer (EMT, PVC, RMC 40%)",
-        "Ambient Temperature & Bundling Derating",
-        "Max Run Length at 3% Drop Threshold"
+        "AWG Wire Gauge Index",
+        "SWG to mm² Converter",
+        "Ampacity Sizer",
+        "Voltage Drop Calculator",
+        "Conductor Resistance",
+        "Conduit Fill Sizer",
+        "Temperature Derating",
+        "Max Run Length"
       ]
     },
     {
       num: '04',
       id: 'cat-4',
       title: 'Circuit Protection',
-      desc: 'Overcurrent trip curves, short-circuit ratings, prospective fault currents, and fuses.',
-      badge: 'TRIP CURVES',
-      tag: 'IEC 60898 & 60947',
+      desc: 'Breakers, fuse ratings, and trip curves.',
+      badge: 'PROTECTION',
+      tag: 'SAFETY & TRIPPING',
       count: '7 Tools',
       color: 'secondary',
       tools: [
-        "MCB Curve Sizer (Type B, C, D Trip)",
-        "MCCB Industrial Breaker Sizer",
-        "HRC Fuse Sizing & I²t Let-Through",
-        "Circuit Breaker Frame & Trip Rating",
-        "Earth Fault Loop Impedance (Zs = Ze + (R1+R2))",
-        "Prospective Short-Circuit Current (PSCC)",
-        "Protective Relay Time-Current Coordination"
+        "MCB Curve Sizer (B, C, D)",
+        "MCCB Industrial Breaker",
+        "HRC Fuse Sizing",
+        "Frame & Trip Rating",
+        "Earth Fault Impedance",
+        "Short-Circuit Current",
+        "Relay Coordination"
       ]
     },
     {
       num: '05',
       id: 'cat-5',
       title: 'Three Phase Systems',
-      desc: 'Polyphase load balancing, neutral current vectors, and Delta-Wye impedance networks.',
-      badge: 'POLYPHASE',
-      tag: 'IEEE 141 RED BOOK',
+      desc: '3-phase power, voltage, and load balancing.',
+      badge: 'THREE-PHASE',
+      tag: 'DISTRIBUTION',
       count: '8 Tools',
       color: 'primary',
       tools: [
-        "Three-Phase Power (P = √3 × V × I × PF)",
-        "Three-Phase Current Calculator",
-        "Line vs Phase Voltage & Current (√3)",
-        "Neutral Current in Unbalanced 3Φ Systems",
-        "Voltage & Current Imbalance Factor (NEMA)",
-        "Symmetrical Load Balancing Optimizer",
-        "Star-Delta (Wye-Δ) Conversion Network",
-        "Two-Wattmeter Method 3Φ Power Factor"
+        "Three-Phase Power",
+        "Three-Phase Current",
+        "Line vs Phase Voltage",
+        "Neutral Current (3Φ)",
+        "Voltage Imbalance",
+        "Load Balancing",
+        "Star-Delta Conversion",
+        "Two-Wattmeter Method"
       ]
     },
     {
       num: '06',
       id: 'cat-6',
       title: 'Transformers',
-      desc: 'Substation sizing, percentage impedance %Z, core/copper losses, and primary protection.',
-      badge: 'MAGNETIC CORE',
-      tag: 'IEEE C57.12',
-      count: '6 Tools',
+      desc: 'kVA rating, full-load amps, and protection.',
+      badge: 'TRANSFORMERS',
+      tag: 'VOLTAGE CONVERSION',
+      count: '5 Tools',
       color: 'primary',
-      featuredTool: 'Transformer kVA Sizer & Rating',
+      featuredTool: 'Transformer kVA Sizer',
       tools: [
-        "Primary & Secondary Full-Load Amps (FLA)",
-        "Core & Copper Losses & Efficiency",
-        "Turns Ratio & Secondary Induced Voltage",
-        "Percentage Impedance (%Z) Fault Current",
-        "Transformer Inrush & NEC 450.3 Protection"
+        "Primary & Secondary FLA",
+        "Core & Copper Losses",
+        "Turns Ratio & Voltage",
+        "Impedance Fault Current",
+        "Transformer Inrush"
       ]
     },
     {
       num: '07',
       id: 'cat-7',
       title: 'Motors',
-      desc: 'Induction motor full-load currents, locked-rotor surges, torque, and VFD parameters.',
-      badge: 'ELECTROMECHANICAL',
-      tag: 'NEMA MG-1',
-      count: '8 Tools',
+      desc: 'Motor FLA, starting surge, and controllers.',
+      badge: 'MOTORS & DRIVES',
+      tag: 'MOTOR FLA',
+      count: '7 Tools',
       color: 'secondary',
-      featuredTool: 'Motor Full Load Amps (FLA) Sizer',
+      featuredTool: 'Motor Full Load Amps',
       tools: [
-        "Shaft Power & Mechanical Output kW",
-        "Motor Efficiency Standard (IE1 to IE4)",
-        "Motor Torque (Nm & lb-ft) from RPM",
-        "Synchronous Speed & Slip Percentage",
-        "Starting Current & Locked Rotor kVA/HP",
-        "Variable Frequency Drive (VFD) Sizing",
-        "Thermal Overload Relay Setting Threshold"
+        "Shaft Power & Output kW",
+        "Motor Efficiency (IE1–IE4)",
+        "Motor Torque from RPM",
+        "Speed & Slip %",
+        "Starting Current (LRA)",
+        "VFD Sizing",
+        "Thermal Overload Setting"
       ]
     },
     {
       num: '08',
       id: 'cat-8',
       title: 'Generators & DG Sets',
-      desc: 'Prime vs Standby diesel generators, transient motor start skVA, fuel burn rate, and ATS.',
-      badge: 'ISLANDED POWER',
-      tag: 'ISO 8528 STANDARDS',
+      desc: 'Generator kVA sizing, fuel use, and switches.',
+      badge: 'GENERATORS',
+      tag: 'BACKUP POWER',
       count: '6 Tools',
       color: 'primary',
       tools: [
-        "Generator Prime & Standby kVA Sizer",
-        "Generator Fuel Consumption Calculator",
-        "Alternator Full-Load Efficiency & Derating",
-        "Maximum Starting kVA (Motor Inrush Step)",
-        "Continuous Running Load Demand Factor",
-        "Automatic Transfer Switch (ATS) Sizing"
+        "Prime & Standby kVA",
+        "Fuel Consumption",
+        "Alternator Derating",
+        "Max Starting kVA",
+        "Demand Factor",
+        "Transfer Switch (ATS)"
       ]
     },
     {
       num: '09',
       id: 'cat-9',
       title: 'Solar Energy (PV)',
-      desc: 'Solar array capacity kWp, MPPT charge controllers, grid-tie/hybrid inverters, and LCOE.',
-      badge: 'RENEWABLES',
-      tag: 'IEC 62548 SPEC',
-      count: '9 Tools',
+      desc: 'Solar panels, controllers, and battery storage.',
+      badge: 'SOLAR POWER',
+      tag: 'CLEAN ENERGY',
+      count: '8 Tools',
       color: 'tertiary',
-      featuredTool: 'Solar PV Array Wattage & Sizing',
+      featuredTool: 'Solar PV Array Sizer',
       tools: [
-        "MPPT Solar Charge Controller Sizer",
-        "Solar Inverter (Grid-Tie / Hybrid) Rating",
-        "Annual Solar Yield (kWh/kWp/year)",
-        "Levelized Cost of Electricity (LCOE $/kWh)",
-        "Solar Financial ROI & Simple Payback",
-        "PV DC String Cable & Voltage Drop Sizer",
-        "Solar Azimuth & Tilt Angle Optimizer",
-        "Complete Off-Grid Autonomy Sizer"
+        "MPPT Charge Controller",
+        "Solar Inverter Rating",
+        "Annual Solar Yield",
+        "LCOE Energy Cost",
+        "Solar Payback & ROI",
+        "DC Cable Voltage Drop",
+        "Tilt & Azimuth Angle",
+        "Off-Grid Autonomy"
       ]
     },
     {
       num: '10',
       id: 'cat-10',
       title: 'Batteries & UPS Systems',
-      desc: "Amp-hour (Ah) requirements, C-rate charge curves, Peukert's equation, and runtime.",
-      badge: 'ENERGY STORAGE',
-      tag: 'IEEE 485 / 1188',
+      desc: 'Battery runtime, Ah capacity, and UPS sizing.',
+      badge: 'BATTERY BACKUP',
+      tag: 'ENERGY STORAGE',
       count: '7 Tools',
       color: 'secondary',
       tools: [
-        "Battery Backup Runtime Hours (Peukert)",
-        "Inverter Battery Capacity (Ah) Sizer",
-        "Battery C-Rate & Charging Time (0.2C/0.5C)",
-        "Battery Bank Wiring Calculator",
-        "Online Double-Conversion UPS Sizer",
-        "Lead-Acid vs LiFePO4 Cycle Life Estimator",
-        "Inverter Surge Overload Capacity"
+        "Backup Runtime Hours",
+        "Battery Capacity (Ah)",
+        "C-Rate & Charge Time",
+        "Battery Bank Wiring",
+        "Online UPS Sizer",
+        "Lead-Acid vs LiFePO4",
+        "Surge Overload Capacity"
       ]
     },
     {
       num: '11',
       id: 'cat-11',
       title: 'Power Quality',
-      desc: 'Capacitor bank kVAr sizing, THD harmonic distortion analysis, and APFC panels.',
-      badge: 'GRID PURITY',
-      tag: 'IEEE 519-2022',
+      desc: 'Power factor correction and harmonics.',
+      badge: 'POWER FACTOR',
+      tag: 'POWER QUALITY',
       count: '7 Tools',
       color: 'primary',
       tools: [
-        "Power Factor Correction (Capacitor kVAr)",
-        "Total Harmonic Distortion (% THD-V & THD-I)",
-        "Voltage Unbalance Factor (VUF)",
-        "Reactive Power Q (VAr / kVAr)",
-        "Automatic PF Correction (APFC) Steps Sizer",
-        "Passive Harmonic Detuned Filter Sizing",
-        "K-Factor Transformer Rating for Harmonics"
+        "Power Factor Correction",
+        "Harmonic Distortion (% THD)",
+        "Voltage Unbalance (VUF)",
+        "Reactive Power (kVAr)",
+        "APFC Steps Sizer",
+        "Harmonic Filter Sizing",
+        "K-Factor Transformer"
       ]
     },
     {
       num: '12',
       id: 'cat-12',
       title: 'Electronics',
-      desc: 'Signal conditioning, bias divider calculations, timing circuits, and operational amplifiers.',
-      badge: 'ANALOG CIRCUITS',
-      tag: 'MICROVOLT MODEL',
+      desc: 'LED resistors, voltage dividers, and timers.',
+      badge: 'ELECTRONICS',
+      tag: 'CIRCUIT DESIGN',
       count: '8 Tools',
       color: 'secondary',
       tools: [
-        "LED Current Limiting Resistor (R = (Vs-Vf)/If)",
-        "Voltage Divider Rule (Loaded & Unloaded)",
-        "Current Divider Rule Calculator",
-        "Capacitor Charge / Discharge Transient",
-        "Inductor Energy Storage (E = ½LI²)",
-        "RC Time Constant (τ = R × C)",
-        "555 Timer Astable & Monostable Mode",
-        "Op-Amp Inverting & Non-Inverting Gain"
+        "LED Limiting Resistor",
+        "Voltage Divider Rule",
+        "Current Divider Rule",
+        "Capacitor Transient",
+        "Inductor Energy Storage",
+        "RC Time Constant",
+        "555 Timer Calculator",
+        "Op-Amp Gain Sizer"
       ]
     },
     {
       num: '13',
       id: 'cat-13',
       title: 'RLC & AC Circuits',
-      desc: 'Reactance, complex phasor impedance Z, resonant frequency, and phase shift angles.',
-      badge: 'PHASOR ANALYSIS',
-      tag: 'COMPLEX NUMBERS',
+      desc: 'Impedance, reactance, and resonant frequency.',
+      badge: 'AC CIRCUITS',
+      tag: 'REACTANCE',
       count: '6 Tools',
       color: 'primary',
       tools: [
-        "Capacitive Reactance Xc = 1 / (2πfC)",
-        "Inductive Reactance Xl = 2πfL",
-        "Complex AC Impedance Z = √(R² + X²)",
-        "LC Resonant Frequency f = 1 / (2π√LC)",
-        "Series & Parallel RLC Quality Factor (Q)",
-        "Signal Frequency to Wavelength (λ = c/f)"
+        "Capacitive Reactance",
+        "Inductive Reactance",
+        "AC Impedance",
+        "Resonant Frequency",
+        "RLC Quality Factor (Q)",
+        "Signal Wavelength"
       ]
     },
     {
       num: '14',
       id: 'cat-14',
       title: 'Component Tools',
-      desc: 'Standard color coding, SMD code decoders, transistor bias points, and diode parameters.',
-      badge: 'BENCHMARK LAB',
-      tag: 'EIA/IEC 60062',
+      desc: 'Resistor color codes, SMD codes, and diodes.',
+      badge: 'COMPONENTS',
+      tag: 'COLOR CODES',
       count: '6 Tools',
       color: 'secondary',
       tools: [
-        "4-Band & 5-Band Resistor Color Code",
-        "SMD 3-Digit, 4-Digit & EIA-96 Code",
-        "Ceramic & Tantalum Capacitor Markings",
-        "Inductor Color Codes & Core Inductance",
-        "BJT Transistor Saturation & Bias Point",
-        "Zener Diode Voltage Regulator Resistor"
+        "Resistor Color Codes",
+        "SMD Resistor Codes",
+        "Capacitor Markings",
+        "Inductor Color Codes",
+        "BJT Transistor Bias",
+        "Zener Diode Regulator"
       ]
     },
     {
       num: '15',
       id: 'cat-15',
       title: 'Lighting & Photometrics',
-      desc: 'Illuminance levels, Room Cavity Ratios (RCR), lumen maintenance, and LED retrofits.',
-      badge: 'IESNA STANDARDS',
-      tag: 'LUMEN METHOD',
+      desc: 'Room lighting needs, lux to lumens, and LED.',
+      badge: 'LIGHTING',
+      tag: 'LUMENS & LUX',
       count: '6 Tools',
       color: 'primary',
       tools: [
-        "Illuminance Lux to Lumens (Area Sizer)",
-        "Foot-Candles to Lux Unit Converter",
-        "Room Cavity Ratio (RCR) Lighting Fixtures",
-        "LED vs Incandescent / HID Energy Savings",
-        "Office, Retail & Warehouse Recommended Lux",
-        "Emergency Egress Lighting Battery Sizer"
+        "Lux to Lumens Sizer",
+        "Foot-Candles to Lux",
+        "Room Cavity Ratio (RCR)",
+        "LED Energy Savings",
+        "Recommended Lux Levels",
+        "Emergency Egress Lighting"
       ]
     },
     {
       num: '16',
       id: 'cat-16',
       title: 'Energy & Utility Cost',
-      desc: 'Tiered utility billing tariffs, time-of-use (TOU) arbitrage, and peak demand billing charges.',
-      badge: 'UTILITY AUDITING',
-      tag: 'TARIFF MODELING',
+      desc: 'Electricity bills, appliance costs, and savings.',
+      badge: 'ENERGY BILLS',
+      tag: 'COST SAVINGS',
       count: '6 Tools',
       color: 'secondary',
       tools: [
-        "Electricity Bill Calculator",
-        "Appliance Energy Cost Calculator",
-        "Carbon Footprint (CO2 kg/kWh Emission)",
-        "Time-of-Use (TOU) Peak Shifting Optimizer",
-        "15-Minute Peak Demand Surcharge Estimator",
-        "Annual Building Energy Consumption Audit"
+        "Electricity Bill Sizer",
+        "Appliance Energy Cost",
+        "Carbon Footprint (CO2)",
+        "Peak Shifting (TOU)",
+        "Peak Demand Surcharge",
+        "Building Energy Audit"
       ]
     },
     {
       num: '17',
       id: 'cat-17',
       title: 'Home Electrical',
-      desc: 'Residential NEC standard calculations, main breaker sizing, and heat pump circuits.',
-      badge: 'RESIDENTIAL CODE',
-      tag: 'NEC ARTICLE 220',
+      desc: 'Panel sizing, branch circuits, and EV charging.',
+      badge: 'HOME WIRING',
+      tag: 'RESIDENTIAL',
       count: '6 Tools',
       color: 'primary',
       tools: [
-        "Whole-House 100A/200A/400A Demand Sizer",
-        "NEC Branch Circuit Wire & Romex (NM-B)",
-        "240V Dual-Pole Breaker & Appliance Sizing",
-        "Room-by-Room Wattage Allocator",
-        "Air Conditioner / Heat Pump Circuit (MCA/MOP)",
-        "EV Level 2 Charger 50A/60A Feeder Sizer"
+        "100A–400A Service Demand",
+        "Branch Circuit Wire (Romex)",
+        "240V Appliance Breaker",
+        "Room Wattage Allocator",
+        "Heat Pump Circuit (MCA)",
+        "EV Level 2 Charger Feeder"
       ]
     },
     {
       num: '18',
       id: 'cat-18',
       title: 'Industrial Electrical',
-      desc: 'Plant diversity factors, Motor Control Centers (MCC), busbars, and factory substations.',
-      badge: 'HEAVY INDUSTRIAL',
-      tag: 'IEEE 141 RED BOOK',
+      desc: 'Plant load, busbar ampacity, and MCC panels.',
+      badge: 'INDUSTRIAL',
+      tag: 'FACTORY LOADS',
       count: '6 Tools',
       color: 'secondary',
       tools: [
-        "Plant Diversity & Coincidence Demand Factor",
-        "Motor Control Center (MCC) Busbar Rating",
-        "Copper & Aluminum Busbar Ampacity (A/mm²)",
-        "Unit Substation kVA & Primary Switchgear",
-        "Factory Maximum Continuous Demand Load",
-        "Group Motor Installation Branch Feeder Sizer"
+        "Plant Diversity Factor",
+        "MCC Busbar Rating",
+        "Busbar Ampacity (A/mm²)",
+        "Substation Switchgear",
+        "Continuous Demand Load",
+        "Group Motor Feeder"
       ]
     },
     {
       num: '19',
       id: 'cat-19',
       title: 'EV & Electric Mobility',
-      desc: 'Level 1, 2, and DC fast charging runtimes, wire feeders, and driving cost benchmarks.',
-      badge: 'ELECTROMOBILITY',
-      tag: 'SAE J1772 & CCS',
+      desc: 'EV charge time, charger breaker, and costs.',
+      badge: 'EV CHARGING',
+      tag: 'CHARGING SPEED',
       count: '5 Tools',
       color: 'primary',
       tools: [
-        "EV Charging Time (Level 1, 2 & DCFC 350kW)",
-        "EV Charger Breaker & Feeder Sizer (NEC 625)",
-        "Usable Battery Pack kWh Capacity from SoC",
-        "EV vs Gasoline Operating Cost per Mile",
-        "Charging Power kW = V × A × √3"
+        "EV Charging Time",
+        "EV Charger Breaker",
+        "Usable Battery kWh",
+        "EV vs Gas Cost / Mile",
+        "Charging Power (kW)"
       ]
     },
     {
       num: '20',
       id: 'cat-20',
       title: 'Electrical Unit Conversions',
-      desc: 'SI multi-prefix converter from sub-pico to giga across physical electrical parameters.',
-      badge: 'UNIVERSAL SI',
-      tag: 'NIST SP 811 EXACT',
-      count: '8 Systems',
+      desc: 'Quick conversions for volts, amps, and watts.',
+      badge: 'CONVERSIONS',
+      tag: 'UNIT CONVERTER',
+      count: '8 Units',
       color: 'secondary',
       tools: [
-        "Voltage Converter: V, mV, µV, kV, MV",
-        "Current Converter: A, mA, µA, kA",
-        "Resistance: Ω, mΩ, kΩ, MΩ",
-        "Power: W, kW, MW, HP, BTU/hr, Cal/s",
-        "Frequency: Hz, kHz, MHz, GHz, rad/s",
-        "Capacitance: pF, nF, µF, mF, Farads",
-        "Inductance: nH, µH, mH, Henry",
-        "Energy: Joules, Wh, kWh, MWh, BTU"
+        "Voltage (V, mV, kV)",
+        "Current (A, mA, kA)",
+        "Resistance (Ω, kΩ, MΩ)",
+        "Power (W, kW, HP)",
+        "Frequency (Hz, kHz, MHz)",
+        "Capacitance (µF, nF, pF)",
+        "Inductance (mH, µH, H)",
+        "Energy (kWh, Wh, Joules)"
       ]
     }
   ];
@@ -729,13 +723,13 @@ export default function ElectricalClient() {
 
   return (
     <div className="min-h-screen bg-background font-body-md text-on-surface antialiased flex flex-col justify-between">
-      <Header />
+      
 
-      <main className="w-full pt-20 bg-background flex-1">
+      <main className="w-full pt-16 bg-background flex-1">
         {/* Verification & Electrical Standards Sub-Bar */}
-        <div className="w-full bg-surface-container-low border-b border-outline-variant/15 sticky top-20 z-40 backdrop-blur-md bg-surface-container-low/95">
+        <div className="w-full bg-surface-container-low border-b border-outline-variant/15 sticky top-16 z-40 backdrop-blur-md bg-surface-container-low/95">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-2xs flex flex-col md:flex-row items-center justify-between gap-space-xs">
-            <div className="flex items-center gap-space-xs overflow-x-auto w-full md:w-auto no-scrollbar py-1 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">
+            <div className="flex items-center gap-space-xs overflow-x-auto w-full no-scrollbar py-1 text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">
               <span className="px-space-xs py-1 rounded-md bg-primary-container text-on-primary-container font-semibold whitespace-nowrap flex items-center gap-1 shadow-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary-fixed"></span>All Electrical Tools
               </span>
@@ -748,17 +742,6 @@ export default function ElectricalClient() {
               <a className="px-space-xs py-1 rounded-md hover:bg-surface-container hover:text-on-surface whitespace-nowrap transition-colors" href="#cat-12">Electronics &amp; RLC</a>
               <a className="px-space-xs py-1 rounded-md hover:bg-surface-container hover:text-on-surface whitespace-nowrap transition-colors" href="#directory">All 20 Categories</a>
             </div>
-            <div className="hidden lg:flex items-center gap-space-sm font-label-caps text-label-caps text-on-surface-variant">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container text-primary font-semibold">
-                <span className="material-symbols-outlined text-[14px]">verified</span>NEC 2024 &amp; IEC 60364
-              </span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container text-secondary font-semibold">
-                <span className="material-symbols-outlined text-[14px]">memory</span>IEEE 1584 &amp; 519
-              </span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>Fast &amp; Secure Calculations
-              </span>
-            </div>
           </div>
         </div>
 
@@ -766,22 +749,16 @@ export default function ElectricalClient() {
         <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop pt-space-xl pb-space-2xl">
           <div className="flex flex-col gap-space-md max-w-4xl">
             {/* Breadcrumbs */}
-            <nav className="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
-              <a className="hover:text-primary transition-colors" href="/">Home</a>
-              <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-              <span className="text-on-surface font-medium">Electrical Calculators</span>
-              <span className="ml-space-xs px-2 py-0.5 rounded bg-surface-container-high text-primary font-label-caps text-label-caps uppercase">
-                Electrical Calculators &amp; Tools
-              </span>
+            <nav className="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant" aria-label="Breadcrumb">
+              <Link className="hover:text-primary transition-colors" href="/">Home</Link>
+              <span className="text-outline">&gt;</span>
+              <span className="text-on-surface font-semibold">Electrical calculators</span>
             </nav>
 
             {/* Headline & Subtitle */}
             <h1 className="font-headline-lg text-headline-lg lg:font-display-hero lg:text-display-hero text-on-surface font-bold tracking-tight">
-              Electrical Calculators &amp; Engineering Tools
+              Electrical Calculators &amp; Sizing Tools
             </h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
-              Easy-to-use electrical calculators, wire gauge sizing tools, transformer capacity planners, motor current estimators, solar setup designers, and circuit breaker tools. Compliant with NEC and IEC standards.
-            </p>
 
             {/* Real-time Quick Metric Strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-sm pt-space-xs">
@@ -791,14 +768,14 @@ export default function ElectricalClient() {
                 <span className="font-body-sm text-body-sm text-on-surface-variant block mt-0.5">Across 20 Categories</span>
               </div>
               <div className="p-space-sm rounded-xl bg-surface-container-low shadow-sm border border-outline-variant/20">
-                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant block">Standard Frameworks</span>
-                <span className="font-numerical-display-mobile text-numerical-display-mobile text-on-surface font-bold">NEC / IEC</span>
-                <span className="font-body-sm text-body-sm text-on-surface-variant block mt-0.5">2024 NFPA &amp; IEEE Red Book</span>
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant block">Industry Standards</span>
+                <span className="font-numerical-display-mobile text-numerical-display-mobile text-on-surface font-bold">NEC &amp; IEC</span>
+                <span className="font-body-sm text-body-sm text-on-surface-variant block mt-0.5">Standard Electrical Codes</span>
               </div>
               <div className="p-space-sm rounded-xl bg-surface-container-low shadow-sm border border-outline-variant/20">
-                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant block">Calculations Solved</span>
-                <span className="font-numerical-display-mobile text-numerical-display-mobile text-secondary font-bold">18.5M+</span>
-                <span className="font-body-sm text-body-sm text-on-surface-variant block mt-0.5">Locally &amp; Privately</span>
+                <span className="font-label-caps text-label-caps uppercase text-on-surface-variant block">Calculations Run</span>
+                <span className="font-numerical-display-mobile text-numerical-display-mobile text-secondary font-bold">100K+</span>
+                <span className="font-body-sm text-body-sm text-on-surface-variant block mt-0.5">Fast &amp; Accurate</span>
               </div>
               <div className="p-space-sm rounded-xl bg-surface-container-low shadow-sm border border-outline-variant/20">
                 <span className="font-label-caps text-label-caps uppercase text-on-surface-variant block">Instant Results</span>
@@ -817,7 +794,7 @@ export default function ElectricalClient() {
                   onChange={e => setSearchQuery(e.target.value)}
                   className="w-full py-2 bg-transparent text-on-surface font-body-md text-body-md focus:outline-none placeholder:text-outline"
                   id="quickSearchInput"
-                  placeholder="Jump directly to any calculator (e.g. 'Voltage Drop', 'Transformer FLA', 'Ohm', 'AWG')..."
+                  placeholder="Jump directly to any calculator (e.g. 'Voltage Drop', 'Transformer Current', 'Ohm', 'Wire Size')..."
                   type="text"
                 />
                 <kbd className="hidden sm:inline-block px-2.5 py-1 text-xs font-data-mono text-on-surface-variant bg-surface-container rounded-md mr-2 shadow-inner">
@@ -827,10 +804,10 @@ export default function ElectricalClient() {
               <div className="flex flex-wrap items-center gap-2 mt-space-xs font-label-caps text-label-caps text-on-surface-variant">
                 <span className="uppercase tracking-wider font-semibold">Fast Shortcuts:</span>
                 {[
-                  { label: 'Cable Sizer', href: '#workbench-cable' },
-                  { label: 'Transformer kVA', href: '#workbench-transformer' },
-                  { label: 'Motor FLA', href: '#workbench-motor' },
-                  { label: 'Solar PV Array', href: '#workbench-solar' },
+                  { label: 'Wire Sizer', href: '#workbench-cable' },
+                  { label: 'Transformer Power', href: '#workbench-transformer' },
+                  { label: 'Motor Current', href: '#workbench-motor' },
+                  { label: 'Solar Panels', href: '#workbench-solar' },
                   { label: 'Conduit Fill', href: '#cat-3' },
                   { label: 'Power Factor', href: '#cat-11' },
                   { label: "Ohm's Law", href: '#cat-1' }
@@ -838,7 +815,7 @@ export default function ElectricalClient() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="px-2.5 py-1 rounded-full bg-surface-container hover:bg-primary hover:text-on-primary transition-all cursor-pointer"
+                    className="px-2.5 py-1 rounded-full bg-surface-container hover:bg-primary hover:text-on-primary transition-all cursor-pointer font-bold"
                   >
                     {item.label}
                   </a>
@@ -870,73 +847,73 @@ export default function ElectricalClient() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
               {[
                 {
-                  title: 'Size A Cable',
+                  title: 'Wire Sizing & Drop',
                   count: '9 Tools',
-                  desc: 'Calculate AWG / mm², ensure voltage drop < 3%, determine conduit fill limits, and apply ambient temperature derating.',
-                  action: 'Launch Cable Workbench',
+                  desc: 'AWG wire gauge, voltage drop, and conduit fill.',
+                  action: 'Size Wire',
                   icon: 'electric_bolt',
                   color: 'primary',
                   link: '#workbench-cable'
                 },
                 {
-                  title: 'Design A Circuit',
+                  title: 'Circuit Breakers',
                   count: '7 Tools',
-                  desc: 'Size MCB/MCCB breakers, verify prospective short-circuit current (PSCC), evaluate fault loop impedance, and coordinate tripping.',
-                  action: 'Evaluate Breakers & Relays',
+                  desc: 'Breaker ratings, fuses, and overload protection.',
+                  action: 'Check Breakers',
                   icon: 'power',
                   color: 'secondary',
                   link: '#cat-4'
                 },
                 {
-                  title: 'Build A Solar System',
+                  title: 'Solar PV Systems',
                   count: '9 Tools',
-                  desc: 'Size photovoltaic array kWp, match MPPT charge controller limits, model LiFePO4 battery banks, and configure hybrid inverters.',
-                  action: 'Open Solar Modeler',
+                  desc: 'Solar panel wattage, batteries, and inverters.',
+                  action: 'Plan Solar',
                   icon: 'wb_sunny',
                   color: 'tertiary',
                   link: '#workbench-solar'
                 },
                 {
-                  title: 'Size Industrial Plant',
+                  title: 'Industrial Power',
                   count: '6 Tools',
-                  desc: 'Design copper/aluminum busbar capacity, calculate transformer kVA, size APFC capacitor banks to attain 0.98 power factor.',
-                  action: 'Check Substation Specs',
+                  desc: 'Commercial loads, transformers, and busbars.',
+                  action: 'Plant Power',
                   icon: 'factory',
                   color: 'primary',
                   link: '#workbench-transformer'
                 },
                 {
-                  title: 'Calculate Battery Backup',
+                  title: 'Battery Backup',
                   count: '7 Tools',
-                  desc: 'Determine UPS runtime hours, compute battery capacity in Amp-hours (Ah), evaluate Depth of Discharge (DoD), and series arrays.',
-                  action: 'Simulate Runtime',
+                  desc: 'Runtime hours, Ah capacity, and UPS sizing.',
+                  action: 'Check Battery',
                   icon: 'battery_charging_full',
                   color: 'secondary',
                   link: '#cat-10'
                 },
                 {
-                  title: 'Size A Motor & VFD',
+                  title: 'Electric Motors',
                   count: '8 Tools',
-                  desc: 'Full-load current (FLA), locked-rotor starting current (Code letters A-V), thermal overload relay threshold, and torque output.',
-                  action: 'Calculate Motor Limits',
+                  desc: 'Motor FLA, starting surge, and protection.',
+                  action: 'Size Motor',
                   icon: 'settings_slow_motion',
                   color: 'primary',
                   link: '#workbench-motor'
                 },
                 {
-                  title: 'Calculate Home Load',
+                  title: 'Home Panel Demand',
                   count: '6 Tools',
-                  desc: 'NEC 220 service load calculation for 100A, 200A, or 400A panels, plus heat pump and EV Level 2 dedicated feeder verification.',
-                  action: 'Size Residential Panel',
+                  desc: '100A–400A panel demand and EV circuits.',
+                  action: 'Home Panel',
                   icon: 'roofing',
                   color: 'tertiary',
                   link: '#cat-17'
                 },
                 {
-                  title: 'Reduce Utility Cost',
+                  title: 'Energy & Utility Bills',
                   count: '6 Tools',
-                  desc: 'Analyze peak demand kW penalties, power factor low-pf penalties, time-of-use (TOU) arbitrage, and lighting retrofits.',
-                  action: 'Audit Energy Costs',
+                  desc: 'Appliance costs, peak hours, and savings.',
+                  action: 'Power Savings',
                   icon: 'query_stats',
                   color: 'secondary',
                   link: '#cat-16'
@@ -970,7 +947,7 @@ export default function ElectricalClient() {
                     </p>
                   </div>
                   <div
-                    className={`mt-space-md flex items-center gap-1 font-body-sm text-body-sm font-semibold ${
+                    className={`mt-space-md flex items-center gap-1 font-body-sm text-body-sm font-bold ${
                       card.color === 'primary'
                         ? 'text-primary'
                         : card.color === 'secondary'
@@ -1017,7 +994,7 @@ export default function ElectricalClient() {
                     </div>
                     <div>
                       <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg">Cable Sizing &amp; Ampacity</h3>
-                      <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">NEC Table 310.16 &amp; IEC 60364-5-52</span>
+                      <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">NEC &amp; IEC Standards</span>
                     </div>
                   </div>
                   <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-label-caps text-label-caps font-semibold">
@@ -1116,7 +1093,7 @@ export default function ElectricalClient() {
                 <div className="mt-space-xs pt-space-xs border-t border-surface-container flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant">
                   <span className="flex items-center gap-1">
                     <span className="material-symbols-outlined text-[16px] text-emerald-600">check_circle</span>
-                    {cableResult.isCompliant ? 'NEC Section 210.19(A) < 3% branch criteria satisfied' : 'Voltage drop exceeds recommended 3% threshold'}
+                    {cableResult.isCompliant ? 'Voltage drop < 3% compliant' : 'Voltage drop exceeds 3%'}
                   </span>
                   <span className="font-data-mono text-xs text-primary">ρ = 10.4 Ω·cmil/ft</span>
                 </div>
@@ -1133,7 +1110,7 @@ export default function ElectricalClient() {
                     </div>
                     <div>
                       <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg">Transformer Full-Load &amp; Protection</h3>
-                      <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Three-Phase kVA to Amps Sizing</span>
+                      <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">3-Phase kVA Sizing</span>
                     </div>
                   </div>
                   <span className="px-2.5 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-caps text-label-caps font-semibold">
@@ -1219,8 +1196,8 @@ export default function ElectricalClient() {
                   </div>
                 </div>
                 <div className="mt-space-xs pt-space-xs border-t border-surface-container flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant">
-                  <span>Turns Ratio (Np/Ns): <span className="font-data-mono font-semibold text-on-surface" id="wb2-out-ratio">{transformerResult.ratio}:1</span></span>
-                  <span className="font-data-mono text-xs text-secondary">Assumes 3-Phase Symmetrical Load</span>
+                  <span>Turns Ratio: <span className="font-data-mono font-semibold text-on-surface" id="wb2-out-ratio">{transformerResult.ratio}:1</span></span>
+                  <span className="font-data-mono text-xs text-secondary">Balanced 3Φ Load</span>
                 </div>
               </div>
             </div>
@@ -1234,8 +1211,8 @@ export default function ElectricalClient() {
                       <span className="material-symbols-outlined text-[20px]">mode_fan</span>
                     </div>
                     <div>
-                      <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg">Three-Phase Motor FLA &amp; Overload</h3>
-                      <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">NEC Table 430.250 &amp; NEMA MG-1</span>
+                      <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg">Motor FLA &amp; Overload</h3>
+                      <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">NEC &amp; NEMA Standards</span>
                     </div>
                   </div>
                   <span className="px-2.5 py-1 rounded-full bg-surface-container-high text-primary font-label-caps text-label-caps font-semibold">
@@ -1335,7 +1312,7 @@ export default function ElectricalClient() {
                 </div>
                 <div className="mt-space-xs pt-space-xs border-t border-surface-container flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant">
                   <span>Shaft Mechanical Power: <span className="font-data-mono font-semibold text-on-surface" id="wb3-out-kw">{motorResult.kw} kW</span></span>
-                  <span className="font-data-mono text-xs text-primary">NEC 430.22 branch factor (1.25×)</span>
+                  <span className="font-data-mono text-xs text-primary">NEC 430.22 (1.25×)</span>
                 </div>
               </div>
             </div>
@@ -1349,8 +1326,8 @@ export default function ElectricalClient() {
                       <span className="material-symbols-outlined text-[20px]">solar_power</span>
                     </div>
                     <div>
-                      <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg">Solar PV Array &amp; Battery Storage</h3>
-                      <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Solar &amp; Battery Sizing Calculator</span>
+                      <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg">Solar PV &amp; Storage</h3>
+                      <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">PV &amp; Battery Sizer</span>
                     </div>
                   </div>
                   <span className="px-2.5 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-caps text-label-caps font-semibold">
@@ -1435,7 +1412,7 @@ export default function ElectricalClient() {
                   </div>
                 </div>
                 <div className="mt-space-xs pt-space-xs border-t border-surface-container flex items-center justify-between font-body-sm text-body-sm text-on-surface-variant">
-                  <span>LiFePO4 80% Depth of Discharge &amp; 80% System PR Applied</span>
+                  <span>LiFePO4 80% DoD &amp; 80% PR</span>
                   <span className="font-data-mono text-xs text-tertiary">DC String Loss &lt; 1.5%</span>
                 </div>
               </div>
@@ -1495,7 +1472,7 @@ export default function ElectricalClient() {
                       {cat.featuredTool && (
                         <li>
                           <a
-                            className="flex items-center justify-between py-1 px-2 rounded hover:bg-surface-container transition-colors font-semibold text-primary"
+                            className="flex items-center justify-between py-1 px-2 rounded hover:bg-surface-container transition-colors font-bold text-primary"
                             href="#workbench-cable"
                           >
                             <span>{cat.featuredTool}</span>
@@ -1506,7 +1483,7 @@ export default function ElectricalClient() {
                       {cat.tools.map(tool => (
                         <li key={tool}>
                           <a
-                            className="flex items-center justify-between py-1 px-2 rounded hover:bg-surface-container transition-colors"
+                            className="flex items-center justify-between py-1 px-2 rounded hover:bg-surface-container transition-colors font-bold text-on-surface hover:text-primary"
                             href="#"
                           >
                             <span>{tool}</span>
@@ -1549,12 +1526,12 @@ export default function ElectricalClient() {
             {/* Step Indicator Tracker */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-space-xs mb-space-lg">
               {[
-                { step: 1, label: 'Load Profile', sub: '28.5 kWh/day' },
-                { step: 2, label: 'PV Array Size', sub: '7.4 kWp Peak' },
-                { step: 3, label: 'Battery Bank', sub: '20.4 kWh LiFePO4' },
-                { step: 4, label: 'Inverter / MPPT', sub: '8 kW Hybrid 48V' },
-                { step: 5, label: 'DC Cable & Breaker', sub: '10 AWG <2% drop' },
-                { step: 6, label: 'Capex & ROI', sub: '5.8 yr Payback' }
+                { step: 1, label: 'Energy Usage', sub: '28.5 kWh/day' },
+                { step: 2, label: 'Solar Array Size', sub: '7.4 kW Peak' },
+                { step: 3, label: 'Battery Storage', sub: '20.4 kWh LiFePO4' },
+                { step: 4, label: 'Inverter & Controller', sub: '8 kW Hybrid 48V' },
+                { step: 5, label: 'Wire & Breakers', sub: '10 AWG <2% drop' },
+                { step: 6, label: 'Cost & Savings', sub: '5.8 yr Payback' }
               ].map(s => (
                 <button
                   key={s.step}
@@ -1655,7 +1632,7 @@ export default function ElectricalClient() {
                   </h3>
                 </div>
                 <span className="px-2.5 py-1 rounded bg-surface-container text-on-surface-variant font-data-mono text-xs">
-                  4 Coordinated Tools
+                  Recommended Tools
                 </span>
               </div>
               <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
@@ -1668,7 +1645,7 @@ export default function ElectricalClient() {
                     className="p-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors flex items-center justify-between border border-outline-variant/20"
                     href={tool.link}
                   >
-                    <span className="font-body-sm text-body-sm font-medium text-on-surface">{tool.name}</span>
+                    <span className="font-body-sm text-body-sm font-bold text-on-surface">{tool.name}</span>
                     <span className="material-symbols-outlined text-[16px] text-primary">arrow_forward</span>
                   </a>
                 ))}
@@ -1681,13 +1658,13 @@ export default function ElectricalClient() {
         <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-3xl">
           <div className="mb-space-lg">
             <span className="font-label-caps text-label-caps uppercase text-primary font-semibold tracking-wider block mb-1">
-              Comparative Metrology
+              HELPFUL COMPARISONS
             </span>
             <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">
-              Technical Trade-Offs &amp; Architecture Comparisons
+              Electrical Concepts &amp; Equipment Compared
             </h2>
             <p className="font-body-md text-body-md text-on-surface-variant">
-              Definitive engineering comparisons across alternating paradigms.
+              Simple, clear comparisons to help you choose the right equipment and understand key electrical ratings.
             </p>
           </div>
 
@@ -1696,25 +1673,25 @@ export default function ElectricalClient() {
             <div className="p-space-lg rounded-2xl bg-surface-container-low shadow-sm border border-outline-variant/30">
               <div className="flex items-center justify-between mb-space-sm">
                 <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg">
-                  kW (Real Power) vs kVA (Apparent Power)
+                  Real Power (kW) vs Total Power (kVA)
                 </h3>
                 <span className="px-2.5 py-0.5 rounded bg-surface-container font-label-caps text-label-caps text-primary">
-                  PF = kW / kVA
+                  Power Factor
                 </span>
               </div>
               <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md leading-relaxed">
-                <strong>kW</strong> measures the active power consumed by resistive loads to do mechanical work or emit heat. <strong>kVA</strong> represents the total apparent vector power that transformers, cables, and alternators must transmit to sustain magnetic fields in inductive equipment.
+                <strong>kW (Kilowatts)</strong> measures the real, usable power that does mechanical work or generates heat. <strong>kVA (Kilovolt-Amps)</strong> represents total power delivered to the circuit, including the power needed to create magnetic fields in transformers and motors.
               </p>
               <div className="grid grid-cols-2 gap-space-xs text-xs font-data-mono">
                 <div className="p-space-xs rounded bg-surface-container-lowest border border-outline-variant/20">
                   <span className="block text-primary font-bold mb-1">Real Power (kW)</span>
-                  P = V × I × cos(θ)<br />
-                  Billed by commercial utility meters as kWh consumed.
+                  Actual power used by appliances and equipment.<br />
+                  Shows up on electric bills as kWh.
                 </div>
                 <div className="p-space-xs rounded bg-surface-container-lowest border border-outline-variant/20">
-                  <span className="block text-secondary font-bold mb-1">Apparent Power (kVA)</span>
-                  S = V × I (or √3 × VL × IL)<br />
-                  Defines equipment thermal rating and peak demand penalization.
+                  <span className="block text-secondary font-bold mb-1">Total Power (kVA)</span>
+                  Total electrical capacity needed.<br />
+                  Used to size transformers and generators.
                 </div>
               </div>
             </div>
@@ -1723,23 +1700,23 @@ export default function ElectricalClient() {
             <div className="p-space-lg rounded-2xl bg-surface-container-low shadow-sm border border-outline-variant/30">
               <div className="flex items-center justify-between mb-space-sm">
                 <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg">
-                  MCB (Miniature) vs MCCB (Molded Case)
+                  Standard Breakers (MCB) vs Industrial Breakers (MCCB)
                 </h3>
                 <span className="px-2.5 py-0.5 rounded bg-surface-container font-label-caps text-label-caps text-secondary">
-                  Trip Tech
+                  Breaker Types
                 </span>
               </div>
               <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md leading-relaxed">
-                <strong>MCBs</strong> are fixed-trip modular devices suited up to 125A in sub-panels with interrupting capacities up to 10–15 kA. <strong>MCCBs</strong> support adjustable thermal-magnetic trip parameters up to 2,500A with massive short-circuit withstands exceeding 100 kA.
+                <strong>MCBs</strong> are compact circuit breakers used in homes and offices for circuits up to 125A. <strong>MCCBs</strong> are heavy-duty breakers with adjustable trip settings for commercial buildings and factories up to 2,500A.
               </p>
               <div className="grid grid-cols-2 gap-space-xs text-xs font-data-mono">
                 <div className="p-space-xs rounded bg-surface-container-lowest border border-outline-variant/20">
-                  <span className="block text-primary font-bold mb-1">MCB Characteristics</span>
-                  Max 125A, Fixed thermal trip, DIN-rail mounted, residential &amp; branch circuits.
+                  <span className="block text-primary font-bold mb-1">Standard MCB</span>
+                  Up to 125A, fixed trip ratings, standard home and apartment panels.
                 </div>
                 <div className="p-space-xs rounded bg-surface-container-lowest border border-outline-variant/20">
-                  <span className="block text-secondary font-bold mb-1">MCCB Characteristics</span>
-                  Up to 2,500A, Microprocessor trip units, adjustable Ir, Isd, Ii, main switchgear.
+                  <span className="block text-secondary font-bold mb-1">Industrial MCCB</span>
+                  Up to 2,500A, adjustable settings, main commercial power panels.
                 </div>
               </div>
             </div>
@@ -1755,16 +1732,16 @@ export default function ElectricalClient() {
                 </span>
               </div>
               <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md leading-relaxed">
-                Lead-acid cells degrade severely beyond 50% Depth of Discharge (DoD), yielding ~500–1,000 cycles. Lithium Iron Phosphate (LiFePO4) operates comfortably at 80–90% DoD for 4,000–6,000+ cycles with flat discharge curves and zero thermal runaway risks.
+                Lead-acid batteries degrade quickly if discharged past 50%, lasting ~500–1,000 cycles. Lithium Iron Phosphate (LiFePO4) batteries safely discharge up to 80–90%, lasting 4,000+ cycles while being much lighter and more efficient.
               </p>
               <div className="grid grid-cols-2 gap-space-xs text-xs font-data-mono">
                 <div className="p-space-xs rounded bg-surface-container-lowest border border-outline-variant/20">
                   <span className="block text-on-surface-variant font-bold mb-1">Lead-Acid / AGM</span>
-                  50% Usable DoD, 500–800 cycles, heavy weight (30 Wh/kg), Peukert effect loss.
+                  50% usable capacity, 500–800 cycles, heavy weight.
                 </div>
                 <div className="p-space-xs rounded bg-surface-container-lowest border border-outline-variant/20">
                   <span className="block text-tertiary font-bold mb-1">Lithium LiFePO4</span>
-                  80-90% Usable DoD, 4,000+ cycles, lightweight (100+ Wh/kg), 96% round-trip efficiency.
+                  80–90% usable capacity, 4,000+ cycles, lightweight, fast charging.
                 </div>
               </div>
             </div>
@@ -1773,27 +1750,23 @@ export default function ElectricalClient() {
             <div className="p-space-lg rounded-2xl bg-surface-container-low shadow-sm border border-outline-variant/30">
               <div className="flex items-center justify-between mb-space-sm">
                 <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg">
-                  Star (Wye) vs Delta (Δ) Configurations
+                  Star (Wye) vs Delta Three-Phase Wiring
                 </h3>
                 <span className="px-2.5 py-0.5 rounded bg-surface-container font-label-caps text-label-caps text-primary">
-                  3Φ Topologies
+                  3-Phase Wiring
                 </span>
               </div>
               <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md leading-relaxed">
-                <strong>Wye (Star)</strong> features a common neutral center-tap providing two voltages (e.g. 208V Line-to-Line and 120V Line-to-Neutral). <strong>Delta</strong> carries only three ungrounded conductors, ideal for balanced long-distance power distribution and high motor starting torque.
+                <strong>Wye (Star)</strong> wiring includes a center neutral wire providing two voltages (such as 208V and 120V for standard outlets). <strong>Delta</strong> uses three hot wires without a neutral, which is ideal for heavy motor loads and high-power distribution.
               </p>
               <div className="grid grid-cols-2 gap-space-xs text-xs font-data-mono">
                 <div className="p-space-xs rounded bg-surface-container-lowest border border-outline-variant/20">
-                  <span className="block text-primary font-bold mb-1">Wye (Y) Features</span>
-                  V_line = √3 × V_phase<br />
-                  I_line = I_phase<br />
-                  Provides neutral for 120V loads.
+                  <span className="block text-primary font-bold mb-1">Wye (Star) Setup</span>
+                  Provides neutral for 120V outlets &amp; 208V power.
                 </div>
                 <div className="p-space-xs rounded bg-surface-container-lowest border border-outline-variant/20">
-                  <span className="block text-secondary font-bold mb-1">Delta (Δ) Features</span>
-                  V_line = V_phase<br />
-                  I_line = √3 × I_phase<br />
-                  Traps 3rd harmonics internally.
+                  <span className="block text-secondary font-bold mb-1">Delta Setup</span>
+                  High starting torque for heavy industrial motors.
                 </div>
               </div>
             </div>
@@ -1811,7 +1784,7 @@ export default function ElectricalClient() {
                 Step-by-Step Electrical Guides
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant">
-                Clear, standard-compliant methodologies with NFPA 70 / NEC guidelines explained simply.
+                Clear, easy-to-follow explanations for common electrical sizing rules.
               </p>
             </div>
 
@@ -1824,21 +1797,21 @@ export default function ElectricalClient() {
                     <span className="font-label-caps text-label-caps uppercase font-bold">GUIDE 01</span>
                   </div>
                   <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg mb-2">
-                    How to Size Conductors for Voltage Drop (3% Rule)
+                    How to Choose Wire Size for Voltage Drop (3% Rule)
                   </h3>
                   <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                    NEC Informational Note 210.19(A) recommends that conductor size be engineered such that the maximum voltage drop does not exceed 3% on branch circuits, and 5% total to the furthest outlet.
+                    Electrical guidelines recommend keeping maximum voltage drop under 3% on branch circuits (and 5% total) to ensure equipment operates at full power and efficiency over long wire runs.
                   </p>
                   <div className="my-3 p-2 rounded-lg bg-surface-container font-data-mono text-xs text-on-surface">
-                    VD = (2 × K × I × L) / CM (Single Phase)<br />
-                    VD = (1.732 × K × I × L) / CM (Three Phase)
+                    Single Phase: VD = (2 × K × I × L) / CM<br />
+                    Three Phase: VD = (1.732 × K × I × L) / CM
                   </div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                    Where K is copper resistivity (12.9 Ω·cmil/ft at 75°C), I is current, L is one-way run in feet, and CM is circular mils cross-section.
+                    Where K is conductor resistance, I is current in Amps, L is length in feet, and CM is the wire cross-section area.
                   </p>
                 </div>
-                <a className="mt-4 font-body-sm text-body-sm text-primary font-semibold flex items-center gap-1" href="#workbench-cable">
-                  Test on Cable Workbench <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                <a className="mt-4 font-body-sm text-body-sm text-primary font-bold flex items-center gap-1" href="#workbench-cable">
+                  Calculate Wire Size <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                 </a>
               </div>
 
@@ -1850,22 +1823,22 @@ export default function ElectricalClient() {
                     <span className="font-label-caps text-label-caps uppercase font-bold">GUIDE 02</span>
                   </div>
                   <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg mb-2">
-                    NEC Table 310.16 Ampacity Derating Rules
+                    Understanding Wire Temperature &amp; Bundling Adjustments
                   </h3>
                   <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                    Conductor base ampacity must be derated whenever conductors are subjected to elevated ambient temperatures exceeding 30°C (86°F), or bundled in conduit exceeding three current-carrying conductors.
+                    Wire current carrying capacity is adjusted whenever cables run through hot locations (above 30°C / 86°F) or when multiple wires are bundled together in the same conduit.
                   </p>
                   <div className="my-3 p-2 rounded-lg bg-surface-container font-data-mono text-xs text-on-surface">
-                    I_derated = I_table × Temp_Factor × Bundle_Factor<br />
-                    4–6 Conductors: Derate to 80%<br />
-                    7–9 Conductors: Derate to 70%
+                    Adjusted Current = Table Amps × Temp Factor × Bundle Factor<br />
+                    4–6 Wires: Multiply by 0.80<br />
+                    7–9 Wires: Multiply by 0.70
                   </div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                    Always select the terminal temperature rating (typically 75°C on modern breakers) even when employing 90°C THHN wire.
+                    Always use the breaker terminal rating (usually 75°C) to make sure connections stay safe and cool.
                   </p>
                 </div>
-                <a className="mt-4 font-body-sm text-body-sm text-secondary font-semibold flex items-center gap-1" href="#cat-3">
-                  Review Derating Tables <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                <a className="mt-4 font-body-sm text-body-sm text-secondary font-bold flex items-center gap-1" href="#cat-3">
+                  Check Wire Sizing Tables <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                 </a>
               </div>
 
@@ -1877,99 +1850,31 @@ export default function ElectricalClient() {
                     <span className="font-label-caps text-label-caps uppercase font-bold">GUIDE 03</span>
                   </div>
                   <h3 className="font-headline-md text-headline-md text-on-surface font-semibold text-lg mb-2">
-                    Calculating 3-Phase Motor FLA &amp; Overcurrent
+                    Finding 3-Phase Motor Current &amp; Breaker Sizes
                   </h3>
                   <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                    Per NEC 430.6(A)(1), motor feeder and branch circuit components must be sized from standard NEC Table 430.250 values rather than motor nameplates.
+                    Standard electrical guidelines size motor wires and circuit breakers using standard full-load current tables to prevent nuisance tripping during motor startup.
                   </p>
                   <div className="my-3 p-2 rounded-lg bg-surface-container font-data-mono text-xs text-on-surface">
-                    Branch Conductors = 125% of Table FLA<br />
-                    Inverse-Time Breaker = 250% of Table FLA<br />
-                    Thermal Overload Relay = 115%–125% of Nameplate FLA
+                    Branch Wires = 125% of Motor Full-Load Amps<br />
+                    Circuit Breaker = 250% of Motor Full-Load Amps<br />
+                    Overload Protection = 115%–125% of Nameplate Amps
                   </div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                    This decoupling ensures safe branch clearing during startup without triggering nuisance trips under 6× inrush surges.
+                    This setup ensures the circuit breaker will not trip during high startup motor currents while keeping the wiring safe.
                   </p>
                 </div>
-                <a className="mt-4 font-body-sm text-body-sm text-tertiary font-semibold flex items-center gap-1" href="#workbench-motor">
-                  Compute Motor Currents <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                <a className="mt-4 font-body-sm text-body-sm text-tertiary font-bold flex items-center gap-1" href="#workbench-motor">
+                  Calculate Motor Current <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                 </a>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Section 9: Comprehensive FAQ Accordion */}
-        <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-3xl">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-space-xl">
-              <span className="font-label-caps text-label-caps uppercase text-primary font-semibold tracking-wider block mb-1">
-                HELP &amp; QUESTIONS
-              </span>
-              <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">
-                Frequently Asked Questions
-              </h2>
-              <p className="font-body-md text-body-md text-on-surface-variant">
-                Helpful answers on calculation accuracy, privacy, and using these tools offline.
-              </p>
-            </div>
-
-            <div className="space-y-space-sm">
-              {[
-                {
-                  id: 1,
-                  q: 'Are these calculations compliant with the latest 2024 NEC and IEC codes?',
-                  a: 'Yes. All algorithms are calibrated to the National Electrical Code (NFPA 70) 2024 edition, IEC 60364 electrical installations standards, and IEEE standards (such as IEEE 141 and IEEE 519-2022). Formulas are verified against tabulated baseline examples directly from code appendices.'
-                },
-                {
-                  id: 2,
-                  q: 'How does SolveIt keep my data private and secure?',
-                  a: 'All calculations happen privately on your device or computer. We never store or transmit your project numbers, wiring details, or project data over the internet. Everything stays safely on your machine.'
-                },
-                {
-                  id: 3,
-                  q: 'Can these calculators be operated offline or on job sites without internet?',
-                  a: 'Yes. Once this page is loaded in your mobile or laptop browser cache, every core interactive workbench and directory lookup function remains 100% operational without active cellular or Wi-Fi connectivity.'
-                },
-                {
-                  id: 4,
-                  q: 'What is the difference between Single-Phase and Three-Phase Voltage Drop?',
-                  a: 'In single-phase circuits, current must travel out along the ungrounded phase conductor and return along the neutral conductor, multiplying the distance by 2. In balanced three-phase systems, line currents sum to zero at the star neutral point; therefore, the geometric factor is √3 (approximately 1.732) rather than 2, resulting in lower line-to-line voltage loss.'
-                },
-                {
-                  id: 5,
-                  q: 'What standard is used for Transformer inrush and overcurrent protection?',
-                  a: 'Our models follow NEC Table 450.3(B) for transformers operating under 1,000 Volts. If secondary overcurrent protection is not provided, primary protection is generally limited to 125% of rated primary FLA. If secondary protection is provided at 125%, primary protection may be increased up to 250% to prevent nuisance tripping during initial core magnetization.'
-                }
-              ].map(faq => (
-                <div key={faq.id} className="rounded-xl bg-surface-container-lowest p-space-md shadow-sm border border-outline-variant/30">
-                  <button
-                    type="button"
-                    onClick={() => toggleFaq(faq.id)}
-                    className="w-full flex items-center justify-between text-left font-headline-md text-headline-md text-on-surface font-semibold text-base focus:outline-none cursor-pointer"
-                  >
-                    <span>{faq.q}</span>
-                    <span
-                      className={`material-symbols-outlined text-primary text-[20px] transition-transform duration-200 ${
-                        openFaqs[faq.id] ? 'rotate-180' : 'rotate-0'
-                      }`}
-                    >
-                      expand_more
-                    </span>
-                  </button>
-                  {openFaqs[faq.id] && (
-                    <div className="mt-space-sm pt-space-xs border-t border-surface-container font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-                      {faq.a}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Section 9: Comprehensive Long SEO Content, 15-Question FAQ Accordion & JSON-LD Schemas */}
+        <ElectricalSeoSection />
       </main>
-
-      <Footer />
     </div>
   );
 }

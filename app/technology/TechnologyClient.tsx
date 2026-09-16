@@ -1,13 +1,26 @@
 'use client';
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Link from 'next/link';
 
 export default function TechnologyClient() {
   // Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
+  const [showResultsDropdown, setShowResultsDropdown] = useState(false);
+  const [selectedResultIndex, setSelectedResultIndex] = useState(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  // Close search dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+        setShowResultsDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Keyboard shortcut '/' to focus search
   useEffect(() => {
@@ -16,18 +29,69 @@ export default function TechnologyClient() {
         e.preventDefault();
         searchInputRef.current?.focus();
         searchInputRef.current?.select();
+        setShowResultsDropdown(true);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Category Filtering & Navigation
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const navChipsRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  // Check scroll bounds for arrows and gradient masks
+  const checkNavScroll = () => {
+    const el = navChipsRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 5);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 5);
+  };
+
+  useEffect(() => {
+    checkNavScroll();
+    const el = navChipsRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', checkNavScroll, { passive: true });
+    window.addEventListener('resize', checkNavScroll);
+    return () => {
+      el.removeEventListener('scroll', checkNavScroll);
+      window.removeEventListener('resize', checkNavScroll);
+    };
+  }, []);
+
+  const scrollNavChips = (direction: 'left' | 'right') => {
+    const el = navChipsRef.current;
+    if (!el) return;
+    const distance = direction === 'left' ? -280 : 280;
+    el.scrollBy({ left: distance, behavior: 'smooth' });
+    setTimeout(checkNavScroll, 350);
+  };
+
+  const handleCategorySelect = (catId: string, buttonEl?: HTMLElement | null) => {
+    const nextCat = selectedCategory === catId ? 'all' : catId;
+    setSelectedCategory(nextCat);
+    if (buttonEl) {
+      buttonEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+    const dirEl = document.getElementById('directory');
+    if (dirEl) {
+      dirEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setTimeout(checkNavScroll, 400);
+  };
+
   const quickFilter = (term: string) => {
+    setSelectedCategory('all');
     setSearchQuery(term);
+    setShowResultsDropdown(true);
+    setSelectedResultIndex(0);
     searchInputRef.current?.focus();
     const dirEl = document.getElementById('directory');
     if (dirEl) {
-      dirEl.scrollIntoView({ behavior: 'smooth' });
+      dirEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -342,7 +406,7 @@ export default function TechnologyClient() {
   const techCategories = [
     {
       id: 'networking',
-      name: 'Networking',
+      name: 'Networking & IP',
       icon: 'lan',
       color: 'text-primary',
       count: '12 tools',
@@ -438,7 +502,7 @@ export default function TechnologyClient() {
     },
     {
       id: 'frontend',
-      name: 'Web Dev & UI Units',
+      name: 'Web & Frontend',
       icon: 'web',
       color: 'text-primary',
       count: '9 tools',
@@ -456,7 +520,7 @@ export default function TechnologyClient() {
     },
     {
       id: 'storage',
-      name: 'Storage & Data Systems',
+      name: 'Storage & RAID',
       icon: 'save',
       color: 'text-tertiary',
       count: '9 tools',
@@ -474,7 +538,7 @@ export default function TechnologyClient() {
     },
     {
       id: 'cloud',
-      name: 'Cloud Computing',
+      name: 'Cloud & DevOps',
       icon: 'cloud_queue',
       color: 'text-primary',
       count: '9 tools',
@@ -510,7 +574,7 @@ export default function TechnologyClient() {
     },
     {
       id: 'database',
-      name: 'Database Tools',
+      name: 'Database & SQL',
       icon: 'database',
       color: 'text-secondary',
       count: '8 tools',
@@ -527,7 +591,7 @@ export default function TechnologyClient() {
     },
     {
       id: 'hardware',
-      name: 'Server & Infra',
+      name: 'Systems & Hardware',
       icon: 'dns',
       color: 'text-primary',
       count: '9 tools',
@@ -690,9 +754,13 @@ export default function TechnologyClient() {
 
   // Filtered categories
   const filteredTechCategories = useMemo(() => {
-    if (!searchQuery.trim()) return techCategories;
+    let list = techCategories;
+    if (selectedCategory !== 'all') {
+      list = list.filter(cat => cat.id === selectedCategory);
+    }
+    if (!searchQuery.trim()) return list;
     const q = searchQuery.toLowerCase();
-    return techCategories
+    return list
       .map(cat => ({
         ...cat,
         tools: cat.tools.filter(
@@ -700,64 +768,246 @@ export default function TechnologyClient() {
         )
       }))
       .filter(cat => cat.tools.length > 0 || cat.name.toLowerCase().includes(q));
-  }, [searchQuery, techCategories]);
+  }, [searchQuery, selectedCategory, techCategories]);
+
+  // Flattened searchable tools collection with workbench links
+  const allSearchableTools = useMemo(() => {
+    const list: Array<{
+      name: string;
+      meta: string;
+      categoryName: string;
+      categoryId: string;
+      categoryIcon: string;
+      categoryColor: string;
+      link: string;
+      isWorkbench: boolean;
+    }> = [];
+
+    techCategories.forEach(cat => {
+      cat.tools.forEach(t => {
+        let link = t.link;
+        if (!link) {
+          // Check for workbench match
+          const tLower = t.name.toLowerCase();
+          if (tLower.includes('subnet') && !tLower.includes('ipv6')) {
+            link = '#workbench-subnet';
+          } else if (tLower.includes('download') || (tLower.includes('bandwidth') && cat.id === 'bandwidth')) {
+            link = '#workbench-speed';
+          } else if (tLower.includes('entropy') || tLower.includes('password')) {
+            link = '#workbench-crypto';
+          } else if (tLower.includes('raid')) {
+            link = '#workbench-raid';
+          } else {
+            link = `#${cat.id}`;
+          }
+        }
+        const isWorkbench = link.startsWith('#workbench-');
+        list.push({
+          name: t.name,
+          meta: t.meta,
+          categoryName: cat.name,
+          categoryId: cat.id,
+          categoryIcon: cat.icon,
+          categoryColor: cat.color,
+          link,
+          isWorkbench
+        });
+      });
+    });
+    return list;
+  }, [techCategories]);
+
+  // Real-time live matching tools
+  const matchingTools = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase().trim();
+    return allSearchableTools.filter(
+      t =>
+        t.name.toLowerCase().includes(q) ||
+        t.meta.toLowerCase().includes(q) ||
+        t.categoryName.toLowerCase().includes(q)
+    );
+  }, [searchQuery, allSearchableTools]);
+
+  // Select tool from live search
+  const handleSelectTool = (tool: { name: string; link: string; categoryId: string }) => {
+    setShowResultsDropdown(false);
+    if (tool.link.startsWith('#')) {
+      const el = document.querySelector(tool.link) as HTMLElement | null;
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('ring-4', 'ring-primary', 'transition-all', 'duration-300');
+        setTimeout(() => {
+          el.classList.remove('ring-4', 'ring-primary');
+        }, 2000);
+        return;
+      }
+    }
+    const dirEl = document.getElementById('directory');
+    if (dirEl) {
+      dirEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  // Keyboard navigation for search results
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') {
+      setShowResultsDropdown(false);
+      searchInputRef.current?.blur();
+    } else if (e.key === 'ArrowDown') {
+      if (matchingTools.length > 0) {
+        e.preventDefault();
+        setShowResultsDropdown(true);
+        setSelectedResultIndex(prev => (prev + 1) % matchingTools.length);
+      }
+    } else if (e.key === 'ArrowUp') {
+      if (matchingTools.length > 0) {
+        e.preventDefault();
+        setShowResultsDropdown(true);
+        setSelectedResultIndex(prev => (prev - 1 + matchingTools.length) % matchingTools.length);
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (matchingTools.length > 0 && showResultsDropdown) {
+        const selected = matchingTools[selectedResultIndex] || matchingTools[0];
+        if (selected) {
+          handleSelectTool(selected);
+        }
+      } else {
+        setShowResultsDropdown(false);
+        const dirEl = document.getElementById('directory');
+        if (dirEl) {
+          dirEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+  };
+
+  // Sub-navigation filter chips below breadcrumb
+  const navChips = [
+    { id: 'all', label: 'All Tech & Dev', icon: 'apps' },
+    { id: 'networking', label: 'Networking & IP', icon: 'lan' },
+    { id: 'bandwidth', label: 'Internet & Bandwidth', icon: 'speed' },
+    { id: 'security', label: 'Cybersecurity & Cryptography', icon: 'shield' },
+    { id: 'dev-tools', label: 'Developer Utilities', icon: 'terminal' },
+    { id: 'frontend', label: 'Web & Frontend', icon: 'web' },
+    { id: 'storage', label: 'Storage & RAID', icon: 'save' },
+    { id: 'cloud', label: 'Cloud & DevOps', icon: 'cloud_queue' },
+    { id: 'algo-math', label: 'Algorithms & Data', icon: 'data_object' },
+    { id: 'database', label: 'Database & SQL', icon: 'database' },
+    { id: 'hardware', label: 'Systems & Hardware', icon: 'dns' },
+    { id: 'devops', label: 'DevOps & SRE', icon: 'published_with_changes' },
+    { id: 'encoding', label: 'Encoding & Formats', icon: 'code' },
+    { id: 'datascience', label: 'Data Science & Stats', icon: 'analytics' },
+    { id: 'iot', label: 'IoT & Embedded', icon: 'developer_board' },
+    { id: 'blockchain', label: 'Blockchain & Web3', icon: 'currency_bitcoin' },
+    { id: 'conversions', label: 'Tech Conversions', icon: 'sync_alt' }
+  ];
 
   return (
     <div className="bg-surface font-body-md text-body-md text-on-surface min-h-screen flex flex-col justify-between">
-      <Header />
+      
 
       <main className="w-full pt-16 bg-surface min-h-[calc(100vh-64px)] flex-1">
-        {/* TOP SUB-NAVIGATION CATEGORY FILTER & TRUST STRIP */}
-        <section className="w-full bg-surface-container-low/80 backdrop-blur-md sticky top-16 z-40 border-b border-outline-variant/20">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-xs flex flex-col md:flex-row md:items-center justify-between gap-space-xs">
-            {/* Horizontal Scrollable Category Chips */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 no-scrollbar text-body-sm font-body-sm">
-              <a className="px-3 py-1 rounded-full bg-primary text-on-primary font-label-caps text-label-caps whitespace-nowrap shadow-sm" href="#all">
-                All Tech &amp; Dev
-              </a>
-              <a className="px-3 py-1 rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface whitespace-nowrap transition-colors" href="#networking">
-                Networking &amp; IP
-              </a>
-              <a className="px-3 py-1 rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface whitespace-nowrap transition-colors" href="#bandwidth">
-                Internet &amp; Bandwidth
-              </a>
-              <a className="px-3 py-1 rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface whitespace-nowrap transition-colors" href="#security">
-                Cybersecurity &amp; Cryptography
-              </a>
-              <a className="px-3 py-1 rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface whitespace-nowrap transition-colors" href="#dev-tools">
-                Developer Utilities
-              </a>
-              <a className="px-3 py-1 rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface whitespace-nowrap transition-colors" href="#frontend">
-                Web &amp; Frontend
-              </a>
-              <a className="px-3 py-1 rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface whitespace-nowrap transition-colors" href="#storage">
-                Storage &amp; RAID
-              </a>
-              <a className="px-3 py-1 rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface whitespace-nowrap transition-colors" href="#cloud">
-                Cloud &amp; DevOps
-              </a>
-              <a className="px-3 py-1 rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface whitespace-nowrap transition-colors" href="#algo-math">
-                Algorithms &amp; Data
-              </a>
-              <a className="px-3 py-1 rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface whitespace-nowrap transition-colors" href="#database">
-                Database &amp; SQL
-              </a>
-              <a className="px-3 py-1 rounded-full bg-surface-container-high hover:bg-surface-variant text-on-surface whitespace-nowrap transition-colors" href="#hardware">
-                Systems &amp; Hardware
-              </a>
+        {/* BREADCRUMB NAVIGATION BAR */}
+        <section aria-label="Breadcrumb Navigation" className="w-full bg-surface-container-low/70 py-space-xs border-b border-outline-variant/20">
+          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center justify-between gap-space-xs text-body-sm font-body-sm">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-space-xs text-on-surface-variant flex-wrap font-medium">
+              <Link className="hover:text-primary transition-colors flex items-center gap-1 font-semibold text-on-surface-variant" href="/">
+                <span className="material-symbols-outlined text-[16px]">home</span>
+                Home
+              </Link>
+              <span className="text-outline-variant select-none">/</span>
+              <span className="text-on-surface font-bold">Technology Calculators &amp; Developer Tools</span>
+            </nav>
+            <div className="hidden sm:flex items-center gap-2 text-label-caps text-[11px] text-on-surface-variant font-label-caps">
+              <span className="inline-flex items-center gap-1 text-primary font-bold">
+                <span className="material-symbols-outlined text-[14px]">code</span> Client-Side Execution
+              </span>
             </div>
+          </div>
+        </section>
+
+        {/* TOP SUB-NAVIGATION CATEGORY FILTER & TRUST STRIP */}
+        <section className="w-full bg-surface-container-low/90 backdrop-blur-md sticky top-16 z-40 border-b border-outline-variant/20 shadow-xs">
+          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-xs flex flex-col md:flex-row md:items-center justify-between gap-space-xs">
+            {/* Interactive Horizontal Sliding Carousel Container */}
+            <div className="relative min-w-0 flex-1 flex items-center">
+              {/* Left Scroll Button */}
+              <button
+                type="button"
+                onClick={() => scrollNavChips('left')}
+                aria-label="Slide categories left"
+                className={`hidden sm:flex items-center justify-center w-7 h-7 rounded-full bg-surface-container-highest/90 text-on-surface hover:bg-primary hover:text-on-primary transition-all shadow-xs shrink-0 mr-1.5 cursor-pointer z-10 ${
+                  canScrollLeft ? 'opacity-100' : 'opacity-30 cursor-not-allowed pointer-events-none'
+                }`}
+              >
+                <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+              </button>
+
+              {/* Left Gradient Fade */}
+              {canScrollLeft && (
+                <div className="absolute left-7 top-0 bottom-0 w-6 bg-gradient-to-r from-surface-container-low to-transparent pointer-events-none z-1 hidden sm:block"></div>
+              )}
+
+              {/* Scrollable Category Chips Track */}
+              <div
+                ref={navChipsRef}
+                onWheel={(e) => {
+                  if (navChipsRef.current && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+                    navChipsRef.current.scrollLeft += e.deltaY;
+                    checkNavScroll();
+                  }
+                }}
+                className="flex items-center gap-1.5 overflow-x-auto py-1 no-scrollbar text-body-sm font-body-sm scroll-smooth min-w-0 flex-1 overscroll-x-contain"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {navChips.map(chip => {
+                  const isActive = selectedCategory === chip.id;
+                  return (
+                    <button
+                      key={chip.id}
+                      type="button"
+                      onClick={(e) => handleCategorySelect(chip.id, e.currentTarget)}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full whitespace-nowrap text-[13px] font-medium transition-all cursor-pointer shrink-0 ${
+                        isActive
+                          ? 'bg-primary text-on-primary font-bold shadow-sm ring-2 ring-primary/30 scale-100'
+                          : 'bg-surface-container-high hover:bg-surface-variant text-on-surface hover:text-primary hover:scale-102 active:scale-98'
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-[15px]">{chip.icon}</span>
+                      <span>{chip.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Right Gradient Fade */}
+              {canScrollRight && (
+                <div className="absolute right-7 top-0 bottom-0 w-6 bg-gradient-to-l from-surface-container-low to-transparent pointer-events-none z-1 hidden sm:block"></div>
+              )}
+
+              {/* Right Scroll Button */}
+              <button
+                type="button"
+                onClick={() => scrollNavChips('right')}
+                aria-label="Slide categories right"
+                className={`hidden sm:flex items-center justify-center w-7 h-7 rounded-full bg-surface-container-highest/90 text-on-surface hover:bg-primary hover:text-on-primary transition-all shadow-xs shrink-0 ml-1.5 cursor-pointer z-10 ${
+                  canScrollRight ? 'opacity-100' : 'opacity-30 cursor-not-allowed pointer-events-none'
+                }`}
+              >
+                <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+              </button>
+            </div>
+
             {/* Trust Standards Badges */}
-            <div className="hidden lg:flex items-center gap-space-xs shrink-0 font-label-caps text-label-caps text-on-surface-variant">
+            <div className="hidden xl:flex items-center gap-space-xs shrink-0 font-label-caps text-label-caps text-on-surface-variant pl-2 border-l border-outline-variant/30">
               <span className="inline-flex items-center gap-1 text-primary">
-                <span className="material-symbols-outlined text-[14px]">verified</span> 100% Free &amp; Private
+                <span className="material-symbols-outlined text-[14px]">verified</span> 100% Free
               </span>
               <span className="text-outline-variant">•</span>
               <span className="inline-flex items-center gap-1">
                 <span className="material-symbols-outlined text-[14px]">lock</span> Local Sandbox
-              </span>
-              <span className="text-outline-variant">•</span>
-              <span className="inline-flex items-center gap-1">
-                <span className="material-symbols-outlined text-[14px]">bolt</span> RFC Verified
               </span>
             </div>
           </div>
@@ -785,7 +1035,7 @@ export default function TechnologyClient() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-space-sm mb-space-xl">
               <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-shadow border border-outline-variant/20">
                 <div className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-1">Tool Roster</div>
-                <div className="font-numerical-display text-numerical-display text-on-surface font-bold">500+</div>
+                <div className="font-numerical-display text-numerical-display text-on-surface font-bold">100+</div>
                 <div className="font-body-sm text-body-sm text-secondary flex items-center gap-1 mt-1 font-medium">
                   <span className="material-symbols-outlined text-[15px]">widgets</span> Active Web Calculators
                 </div>
@@ -799,7 +1049,7 @@ export default function TechnologyClient() {
               </div>
               <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-shadow border border-outline-variant/20">
                 <div className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-1">Operations Evaluated</div>
-                <div className="font-numerical-display text-numerical-display text-on-surface font-bold">28.5M+</div>
+                <div className="font-numerical-display text-numerical-display text-on-surface font-bold">25K+</div>
                 <div className="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-1">
                   <span className="material-symbols-outlined text-[15px]">trending_up</span> Monthly Browser Solves
                 </div>
@@ -813,23 +1063,183 @@ export default function TechnologyClient() {
               </div>
             </div>
 
-            {/* Developer Command Bar & Quick Jump Query Tags */}
-            <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-md border border-outline-variant/30">
-              <div className="flex items-center gap-space-sm bg-surface-container-low px-space-md py-space-sm rounded-lg mb-space-sm border border-outline-variant/20">
-                <span className="material-symbols-outlined text-primary text-[22px]">terminal</span>
+            {/* Developer Command Bar & Live Instant Tool Search */}
+            <div ref={searchContainerRef} className="relative bg-surface-container-lowest p-space-md rounded-xl shadow-md border border-outline-variant/30">
+              <div className="flex items-center gap-space-sm bg-surface-container-low px-space-md py-space-sm rounded-lg mb-space-sm border border-outline-variant/20 focus-within:ring-2 focus-within:ring-primary/40 focus-within:border-primary transition-all">
+                <span className="material-symbols-outlined text-primary text-[24px] shrink-0">search</span>
                 <input
                   ref={searchInputRef}
                   value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  className="w-full bg-transparent outline-none font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant"
+                  onChange={e => {
+                    setSearchQuery(e.target.value);
+                    setShowResultsDropdown(true);
+                    setSelectedResultIndex(0);
+                  }}
+                  onFocus={() => {
+                    if (searchQuery.trim().length > 0) {
+                      setShowResultsDropdown(true);
+                    }
+                  }}
+                  onKeyDown={handleSearchKeyDown}
+                  className="w-full bg-transparent outline-none font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant py-0.5"
                   id="tool-search-input"
-                  placeholder="Search 500+ technology calculators, RFC tools, CIDR ranges, SHA hashes, RAID..."
+                  placeholder="Search 100+ technology calculators (e.g. Subnet, Bandwidth, RAID, SHA-256, Entropy, Cron)..."
                   type="text"
+                  autoComplete="off"
                 />
-                <span className="hidden sm:inline-flex items-center font-data-mono text-data-mono text-[11px] bg-surface-container-highest px-2 py-0.5 rounded text-on-surface-variant">
-                  Press &apos;/&apos; to search
+                {/* Active Match Count Badge */}
+                {searchQuery.trim().length > 0 && (
+                  <span className="bg-primary/10 text-primary text-[12px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap hidden sm:inline-flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                    {matchingTools.length} {matchingTools.length === 1 ? 'tool' : 'tools'}
+                  </span>
+                )}
+                {/* Clear Button */}
+                {searchQuery.trim().length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery('');
+                      setShowResultsDropdown(false);
+                      searchInputRef.current?.focus();
+                    }}
+                    title="Clear search"
+                    className="text-on-surface-variant hover:text-on-surface p-1 rounded-full hover:bg-surface-container-high transition-colors cursor-pointer shrink-0"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">close</span>
+                  </button>
+                )}
+                <span className="hidden sm:inline-flex items-center font-data-mono text-data-mono text-[11px] bg-surface-container-highest px-2 py-0.5 rounded text-on-surface-variant shrink-0">
+                  {showResultsDropdown ? 'Esc to close' : "Press '/'"}
                 </span>
               </div>
+
+              {/* LIVE SEARCH AUTOCOMPLETE DROPDOWN PANEL */}
+              {showResultsDropdown && searchQuery.trim().length > 0 && (
+                <div className="absolute left-0 right-0 top-full mt-2 bg-surface-container-lowest/98 backdrop-blur-xl rounded-xl shadow-2xl border border-outline-variant/40 z-50 overflow-hidden">
+                  {/* Results Header */}
+                  <div className="px-space-md py-2.5 bg-surface-container-low/70 border-b border-outline-variant/20 flex items-center justify-between text-body-sm text-body-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="font-label-caps text-label-caps text-primary font-bold uppercase tracking-wider text-[11px]">
+                        Live Tool Search
+                      </span>
+                      <span className="text-on-surface-variant text-[12px]">
+                        • Found <strong className="text-on-surface font-semibold">{matchingTools.length}</strong> matching {matchingTools.length === 1 ? 'tool' : 'tools'}
+                      </span>
+                    </div>
+                    <span className="text-[11px] font-data-mono text-on-surface-variant hidden md:inline-block">
+                      ↑↓ to navigate • Enter to select • Esc to exit
+                    </span>
+                  </div>
+
+                  {/* Results List */}
+                  {matchingTools.length > 0 ? (
+                    <div className="max-h-80 overflow-y-auto divide-y divide-outline-variant/10 overscroll-contain">
+                      {matchingTools.map((tool, idx) => {
+                        const isSelected = idx === selectedResultIndex;
+                        return (
+                          <button
+                            key={`${tool.categoryId}-${tool.name}-${idx}`}
+                            type="button"
+                            onClick={() => handleSelectTool(tool)}
+                            onMouseEnter={() => setSelectedResultIndex(idx)}
+                            className={`w-full px-space-md py-2.5 text-left flex items-center justify-between gap-space-sm transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-primary/10 border-l-4 border-primary pl-3'
+                                : 'hover:bg-surface-container-low border-l-4 border-transparent'
+                            }`}
+                          >
+                            <div className="flex items-center gap-space-sm min-w-0 flex-1">
+                              <span
+                                className={`w-7 h-7 rounded-lg bg-surface-container flex items-center justify-center shrink-0 ${tool.categoryColor}`}
+                              >
+                                <span className="material-symbols-outlined text-[16px]">{tool.categoryIcon}</span>
+                              </span>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="font-medium text-on-surface text-[14px]">
+                                    {tool.name}
+                                  </span>
+                                  {tool.isWorkbench && (
+                                    <span className="inline-flex items-center gap-0.5 px-2 py-0.2 rounded text-[10px] font-bold bg-primary text-on-primary shadow-xs uppercase">
+                                      <span className="material-symbols-outlined text-[11px]">bolt</span> Live Solver
+                                    </span>
+                                  )}
+                                  <span className="font-data-mono text-[11px] bg-surface-container px-1.5 py-0.5 rounded text-on-surface-variant">
+                                    {tool.meta}
+                                  </span>
+                                </div>
+                                <div className="text-[12px] text-on-surface-variant flex items-center gap-1 mt-0.5">
+                                  <span>in {tool.categoryName}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <span className="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary shrink-0">
+                              arrow_forward
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    /* Empty Search State */
+                    <div className="p-space-lg text-center">
+                      <span className="material-symbols-outlined text-[36px] text-on-surface-variant/60 mb-2">search_off</span>
+                      <p className="font-medium text-on-surface mb-1">
+                        No direct tool matches for &ldquo;{searchQuery}&rdquo;
+                      </p>
+                      <p className="text-body-sm text-body-sm text-on-surface-variant mb-space-md">
+                        Try searching by standard RFC, protocol name, or click any common tool below:
+                      </p>
+                      <div className="flex flex-wrap justify-center gap-1.5 max-w-lg mx-auto">
+                        {[
+                          'Subnet Calculator',
+                          'Download Time',
+                          'Password Entropy',
+                          'RAID Storage',
+                          'SHA-256',
+                          'Cron Parser',
+                          'UUID Generator',
+                          'Aspect Ratio'
+                        ].map(suggestion => (
+                          <button
+                            key={suggestion}
+                            type="button"
+                            onClick={() => quickFilter(suggestion)}
+                            className="px-2.5 py-1 rounded-full bg-surface-container hover:bg-primary hover:text-on-primary text-[12px] font-medium transition-colors cursor-pointer"
+                          >
+                            {suggestion}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Dropdown Footer CTA */}
+                  {matchingTools.length > 0 && (
+                    <div className="p-space-xs bg-surface-container-low/90 border-t border-outline-variant/20 flex items-center justify-between px-space-md">
+                      <span className="text-[12px] text-on-surface-variant">
+                        Filtering active in directory below
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowResultsDropdown(false);
+                          const dirEl = document.getElementById('directory');
+                          if (dirEl) {
+                            dirEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                        }}
+                        className="text-primary hover:underline text-[12px] font-semibold flex items-center gap-1 cursor-pointer"
+                      >
+                        View all in Directory Grid <span className="material-symbols-outlined text-[14px]">arrow_downward</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Common Queries Row */}
               <div className="flex flex-wrap items-center gap-2 font-body-sm text-body-sm">
                 <span className="font-label-caps text-label-caps text-on-surface-variant uppercase">Common Queries:</span>
                 {[
@@ -958,20 +1368,20 @@ export default function TechnologyClient() {
                     >
                       <span className="material-symbols-outlined text-[24px]">{goal.icon}</span>
                     </div>
-                    <h3 className="font-headline-md text-headline-md text-on-surface text-[18px] mb-1 font-semibold">
+                    <h3 className="font-headline-md text-headline-md text-on-surface text-[18px] mb-1 font-bold">
                       {goal.title}
                     </h3>
                     <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">{goal.desc}</p>
                   </div>
-                  <div className="mt-space-md flex items-center justify-between text-on-surface font-label-caps text-label-caps font-semibold">
+                  <div className="mt-space-md flex items-center justify-between text-on-surface font-label-caps text-label-caps font-bold">
                     <span
-                      className={
+                      className={`font-bold ${
                         goal.color === 'primary'
                           ? 'text-primary'
                           : goal.color === 'secondary'
                           ? 'text-secondary'
                           : 'text-tertiary'
-                      }
+                      }`}
                     >
                       {goal.tools}
                     </span>
@@ -1504,20 +1914,36 @@ export default function TechnologyClient() {
         {/* SECTION 4: COMPLETE 20-CATEGORY TECHNOLOGY DIRECTORY */}
         <section className="w-full py-space-3xl bg-surface-container-low/20 border-t border-outline-variant/20" id="directory">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-2xl">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-xl">
               <div>
                 <span className="font-label-caps text-label-caps text-primary uppercase tracking-wider block mb-1 font-bold">
                   Index &amp; Roster
                 </span>
                 <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-                  Complete 20-Category Technology Directory
+                  {selectedCategory === 'all'
+                    ? 'Complete 20-Category Technology Directory'
+                    : `${techCategories.find(c => c.id === selectedCategory)?.name || 'Category'} Tools`}
                 </h2>
                 <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl mt-1">
-                  Browse through 500+ deterministic developer calculators, converters, sizing matrices, and network engines.
+                  {selectedCategory === 'all'
+                    ? 'Browse through 100+ deterministic developer calculators, converters, sizing matrices, and network engines.'
+                    : `Filtered view showing dedicated tools for ${techCategories.find(c => c.id === selectedCategory)?.name}.`}
                 </p>
               </div>
-              <div className="mt-4 md:mt-0 font-label-caps text-label-caps bg-surface-container-high px-3 py-1 rounded-full text-on-surface border border-outline-variant/30">
-                524 VERIFIED CLIENT-SIDE WORKBENCHES
+              <div className="mt-4 md:mt-0 flex items-center gap-2">
+                {selectedCategory !== 'all' && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCategory('all')}
+                    className="font-label-caps text-label-caps bg-primary text-on-primary px-3.5 py-1.5 rounded-full font-bold hover:bg-primary-container transition-colors shadow-sm flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[15px]">close</span>
+                    Show All (20 Categories)
+                  </button>
+                )}
+                <div className="font-label-caps text-label-caps bg-surface-container-high px-3 py-1 rounded-full text-on-surface border border-outline-variant/30">
+                  {filteredTechCategories.reduce((acc, cat) => acc + cat.tools.length, 0)} TOOLS IN VIEW
+                </div>
               </div>
             </div>
 
@@ -1540,15 +1966,19 @@ export default function TechnologyClient() {
                       {cat.count}
                     </span>
                   </div>
-                  <ul className="space-y-1.5 font-body-sm text-body-sm text-on-surface-variant">
+                  <ul className="space-y-2.5 font-body-sm text-body-sm">
                     {cat.tools.map(tool => (
                       <li key={tool.name}>
                         <a
-                          className="hover:text-primary transition-colors flex items-center justify-between"
+                          className="group flex items-center justify-between font-bold text-on-surface hover:text-primary py-1 px-1.5 -mx-1.5 rounded-md hover:bg-surface-container/60 transition-all"
                           href={tool.link || '#workbenches'}
                         >
-                          <span>{tool.name}</span>
-                          <span className="font-data-mono text-[11px] text-outline">{tool.meta}</span>
+                          <span className="font-bold leading-snug">
+                            {tool.name}
+                          </span>
+                          <span className="text-primary font-bold text-[14px] transition-transform duration-200 group-hover:translate-x-1 shrink-0 select-none ml-2">
+                            →
+                          </span>
                         </a>
                       </li>
                     ))}
@@ -1590,7 +2020,7 @@ export default function TechnologyClient() {
                   </div>
                   <h4 className="font-headline-md text-headline-md text-[15px] text-on-surface mb-1 font-semibold">{item.title}</h4>
                   <p className="font-body-sm text-body-sm text-on-surface-variant text-[12px] mb-space-sm leading-snug">{item.desc}</p>
-                  <a className="font-label-caps text-label-caps text-primary hover:underline mt-auto font-semibold" href={item.link}>
+                  <a className="font-label-caps text-label-caps text-primary hover:underline mt-auto font-bold" href={item.link}>
                     {item.cta}
                   </a>
                 </div>
@@ -1643,7 +2073,7 @@ export default function TechnologyClient() {
                       <span className="material-symbols-outlined text-[20px]">{item.icon}</span> {item.title}
                     </div>
                     <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-sm leading-relaxed">{item.desc}</p>
-                    <a className={`font-data-mono text-data-mono text-[12px] ${item.color} hover:underline font-medium`} href={item.link}>
+                    <a className={`font-data-mono text-data-mono text-[12px] ${item.color} hover:underline font-bold`} href={item.link}>
                       {item.linkText}
                     </a>
                   </div>
@@ -1664,7 +2094,7 @@ export default function TechnologyClient() {
                 Technology &amp; Architecture Reference Guides
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl leading-relaxed">
-                Deep-dive technical guides demystifying the low-level math running inside SolveItCalculator workbenches.
+                Deep-dive technical guides demystifying the low-level math running inside SolveIt Calculator workbenches.
               </p>
             </div>
 
@@ -1686,7 +2116,7 @@ export default function TechnologyClient() {
                 </div>
                 <div className="pt-space-sm border-t border-surface-container flex items-center justify-between text-body-sm text-body-sm text-on-surface-variant">
                   <span>6 min read</span>
-                  <a href="#workbench-subnet" className="font-semibold text-primary hover:underline">Read Guide →</a>
+                  <a href="#workbench-subnet" className="font-bold text-primary hover:underline">Read Guide →</a>
                 </div>
               </article>
 
@@ -1705,7 +2135,7 @@ export default function TechnologyClient() {
                 </div>
                 <div className="pt-space-sm border-t border-surface-container flex items-center justify-between text-body-sm text-body-sm text-on-surface-variant">
                   <span>8 min read</span>
-                  <a href="#workbench-crypto" className="font-semibold text-tertiary hover:underline">Read Guide →</a>
+                  <a href="#workbench-crypto" className="font-bold text-tertiary hover:underline">Read Guide →</a>
                 </div>
               </article>
 
@@ -1726,7 +2156,7 @@ export default function TechnologyClient() {
                 </div>
                 <div className="pt-space-sm border-t border-surface-container flex items-center justify-between text-body-sm text-body-sm text-on-surface-variant">
                   <span>5 min read</span>
-                  <a href="#workbench-raid" className="font-semibold text-secondary hover:underline">Read Guide →</a>
+                  <a href="#workbench-raid" className="font-bold text-secondary hover:underline">Read Guide →</a>
                 </div>
               </article>
             </div>
@@ -1851,7 +2281,7 @@ export default function TechnologyClient() {
               {[
                 {
                   q: 'Are calculations performed client-side or sent to a backend server?',
-                  a: 'All SolveItCalculator technology calculators execute strictly 100% client-side inside your browser sandbox using compiled WebAssembly and native ECMAScript. No IP addresses, subnet configurations, cryptographic keys, tokens, or network topology inputs are ever logged, cached, or transmitted over the wire.'
+                  a: 'All SolveIt Calculator technology calculators execute strictly 100% client-side inside your browser sandbox using compiled WebAssembly and native ECMAScript. No IP addresses, subnet configurations, cryptographic keys, tokens, or network topology inputs are ever logged, cached, or transmitted over the wire.'
                 },
                 {
                   q: 'Which RFC and networking standards do these tools comply with?',
@@ -1863,10 +2293,10 @@ export default function TechnologyClient() {
                 },
                 {
                   q: 'Can I use these developer utilities completely offline?',
-                  a: 'Yes. SolveItCalculator is registered as a Progressive Web Application (PWA). Once loaded in your browser, the service worker caches all static assets and mathematical execution scripts, allowing you to use subnet calculators, hash generators, JSON formatters, and RAID planners in air-gapped datacenter environments without internet access.'
+                  a: 'Yes. SolveIt Calculator is registered as a Progressive Web Application (PWA). Once loaded in your browser, the service worker caches all static assets and mathematical execution scripts, allowing you to use subnet calculators, hash generators, JSON formatters, and RAID planners in air-gapped datacenter environments without internet access.'
                 },
                 {
-                  q: 'How does SolveItCalculator handle IEEE 754 floating-point accuracy?',
+                  q: 'How does SolveIt Calculator handle IEEE 754 floating-point accuracy?',
                   a: 'For critical calculations requiring absolute mathematical precision—such as financial amortizations, high-precision bit shifts, and massive hash computations—we enforce arbitrary-precision BigInt and decimal libraries to eliminate the typical IEEE 754 binary floating-point rounding errors (e.g., 0.1 + 0.2 ≠ 0.30000000000000004).'
                 }
               ].map((faq, idx) => (
@@ -1916,8 +2346,6 @@ export default function TechnologyClient() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }

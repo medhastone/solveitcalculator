@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import Header from '../../../components/Header';
-import Footer from '../../../components/Footer';
 import Link from 'next/link';
 
 function getZodiacSign(month: number, day: number) {
@@ -274,7 +272,7 @@ export default function AgeCalculatorClient() {
 
   return (
     <div className="bg-surface font-body-md text-body-md text-on-surface">
-      <Header />
+      
       <main className="w-full pt-16 bg-surface min-h-[calc(100vh-64px)]">
         <div className="flex flex-col w-full">
           
@@ -1146,7 +1144,7 @@ export default function AgeCalculatorClient() {
                       <span className="font-body-sm font-semibold text-on-surface text-[13px]">FIRE Forecaster</span>
                       <span className="font-label-caps text-[10px] text-on-surface-variant mt-0.5">Retirement Wealth</span>
                     </Link>
-                    <Link href="/health" className="bg-surface-container-lowest p-3.5 rounded-xl shadow-sm hover:shadow-md hover:bg-surface-container-high transition-all flex flex-col items-center text-center">
+                    <Link href="/health-fitness-calculators" className="bg-surface-container-lowest p-3.5 rounded-xl shadow-sm hover:shadow-md hover:bg-surface-container-high transition-all flex flex-col items-center text-center">
                       <span className="material-symbols-outlined text-secondary-container text-[24px] mb-2">monitor_heart</span>
                       <span className="font-body-sm font-semibold text-on-surface text-[13px]">Biological Age</span>
                       <span className="font-label-caps text-[10px] text-on-surface-variant mt-0.5">VO2 &amp; Biomarkers</span>
@@ -1184,7 +1182,6 @@ export default function AgeCalculatorClient() {
 
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

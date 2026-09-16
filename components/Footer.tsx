@@ -1,157 +1,429 @@
-'use client';
+"use client";
 
-/* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { getCurrentTheme, toggleTheme } from '../lib/theme';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { getCurrentTheme, toggleTheme } from "../lib/theme";
 
 export default function Footer() {
   const [isDark, setIsDark] = useState<boolean>(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsDark(getCurrentTheme() === 'dark');
+      setIsDark(getCurrentTheme() === "dark");
     }, 0);
 
     const handleThemeChange = (e: Event) => {
       const customEvent = e as CustomEvent<string>;
       if (customEvent.detail) {
-        setIsDark(customEvent.detail === 'dark');
+        setIsDark(customEvent.detail === "dark");
       } else {
-        setIsDark(getCurrentTheme() === 'dark');
+        setIsDark(getCurrentTheme() === "dark");
       }
     };
 
-    window.addEventListener('solveit-theme-change', handleThemeChange);
-    window.addEventListener('storage', handleThemeChange);
+    window.addEventListener("solveit-theme-change", handleThemeChange);
+    window.addEventListener("storage", handleThemeChange);
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('solveit-theme-change', handleThemeChange);
-      window.removeEventListener('storage', handleThemeChange);
+      window.removeEventListener("solveit-theme-change", handleThemeChange);
+      window.removeEventListener("storage", handleThemeChange);
     };
   }, []);
 
   const handleToggle = () => {
     const next = toggleTheme();
-    setIsDark(next === 'dark');
+    setIsDark(next === "dark");
   };
 
   return (
     <footer className="w-full bg-surface-container-lowest border-t border-outline-variant/30 mt-space-3xl transition-colors duration-150">
       <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop pt-space-2xl pb-space-xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl pb-space-2xl border-b border-outline-variant/30">
-          <div className="lg:col-span-4">
-            <div className="flex items-center gap-2 mb-3">
-              <img alt="SolveIt Brand Logo" className="h-12 w-auto object-contain" src="/logo.png"/>
+          <div className="lg:col-span-4 pr-8">
+            <div className="mb-5">
+              <Link
+                href="/"
+                className="inline-flex items-center focus:outline-none group select-none py-1 relative h-14 sm:h-16 md:h-20 aspect-[238/54]"
+                aria-label="SolveIt Calculator Homepage"
+              >
+                <Image
+                  src="/logo.png"
+                  alt="SolveIt Calculator Brand Logo"
+                  className="object-contain block transition-transform duration-150 group-hover:scale-[1.02]"
+                  fill
+                  sizes="(max-width: 640px) 150px, 200px"
+                />
+              </Link>
             </div>
-            <p className="font-body-sm text-body-sm text-on-surface-variant max-w-sm mb-4">
-              &quot;Every Calculation. One Place.&quot; High-precision algorithms delivered through an Apple-inspired SaaS aesthetic. Zero fluff, 100% client-side execution.
+            <p className="font-body-sm text-body-sm text-on-surface-variant max-w-sm mb-6 leading-relaxed">
+              &quot;Every Calculation. One Place.&quot; The world's most
+              comprehensive directory of high-precision mathematical, financial,
+              and scientific tools. Powered by client-side execution for
+              absolute privacy.
             </p>
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-low text-on-surface font-label-caps text-label-caps border border-outline-variant/30">
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                <span>Online Engine v4.2.5</span>
-              </div>
               <button
                 type="button"
                 onClick={handleToggle}
-                aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                aria-label={
+                  isDark ? "Switch to Light Mode" : "Switch to Dark Mode"
+                }
                 title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-                className="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer border border-outline-variant/30"
+                className="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-primary transition-all shadow-sm border border-outline-variant/30 cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[18px]">
-                  {isDark ? 'light_mode' : 'dark_mode'}
+                <span className="material-symbols-outlined text-[20px]">
+                  {isDark ? "light_mode" : "dark_mode"}
                 </span>
               </button>
             </div>
           </div>
-          <div className="lg:col-span-2">
-            <p className="font-label-caps text-label-caps text-on-surface uppercase font-bold tracking-wider mb-4">
-              <Link href="/business" className="hover:text-primary transition-colors">Business &amp; Finance</Link>
-            </p>
-            <ul className="space-y-2 font-body-sm text-body-sm text-on-surface-variant">
-              <li><Link href="/business" className="hover:text-primary font-medium text-primary transition-colors">Business Suite Hub</Link></li>
-              <li><Link href="/finance" className="hover:text-primary transition-colors">Finance &amp; Mortgages</Link></li>
-              <li><Link href="/business#category-profit" className="hover:text-primary transition-colors">Profit Margin &amp; Markup</Link></li>
-              <li><Link href="/business#category-saas" className="hover:text-primary transition-colors">SaaS Rule of 40 &amp; ARR</Link></li>
-              <li><Link href="/business#category-startup" className="hover:text-primary transition-colors">Cash Runway &amp; Burn Rate</Link></li>
-              <li><Link href="/business#category-ecommerce" className="hover:text-primary transition-colors">Ecommerce &amp; FBA Net</Link></li>
-              <li><Link href="/fire-forecaster" className="hover:text-primary transition-colors">FIRE Forecaster</Link></li>
-            </ul>
-          </div>
-          <div className="lg:col-span-2">
-            <p className="font-label-caps text-label-caps text-on-surface uppercase font-bold tracking-wider mb-4">
-              <Link href="/health" className="hover:text-primary transition-colors">Health &amp; Fitness</Link>
-            </p>
-            <ul className="space-y-2 font-body-sm text-body-sm text-on-surface-variant">
-              <li><Link href="/health/bmi" className="hover:text-primary transition-colors">BMI &amp; Body Mass Index</Link></li>
-              <li><Link href="/health#bmr-card" className="hover:text-primary transition-colors">Mifflin BMR Baseline</Link></li>
-              <li><Link href="/health#tdee-card" className="hover:text-primary transition-colors">TDEE Caloric Needs</Link></li>
-              <li><Link href="/health#navy-card" className="hover:text-primary transition-colors">Navy Body Fat Matrix</Link></li>
-              <li><Link href="/health#zone2-card" className="hover:text-primary transition-colors">Target Heart Rate Zones</Link></li>
-              <li><Link href="/health#water-card" className="hover:text-primary transition-colors">Daily Hydration Volume</Link></li>
-            </ul>
-          </div>
-          <div className="lg:col-span-2">
-            <p className="font-label-caps text-label-caps text-on-surface uppercase font-bold tracking-wider mb-4">
-              <Link href="/technology" className="hover:text-primary transition-colors">Technology &amp; Dev</Link>
-            </p>
-            <ul className="space-y-2 font-body-sm text-body-sm text-on-surface-variant">
-              <li><Link href="/technology" className="hover:text-primary font-medium text-primary transition-colors">Technology Hub</Link></li>
-              <li><Link href="/technology#workbench-subnet" className="hover:text-primary transition-colors">Subnet &amp; CIDR Sizer</Link></li>
-              <li><Link href="/technology#workbench-speed" className="hover:text-primary transition-colors">Bandwidth &amp; Download</Link></li>
-              <li><Link href="/technology#workbench-crypto" className="hover:text-primary transition-colors">Password Entropy Bits</Link></li>
-              <li><Link href="/technology#workbench-raid" className="hover:text-primary transition-colors">RAID Array Capacity</Link></li>
-              <li><Link href="/technology#directory" className="hover:text-primary transition-colors">500+ Dev Workbenches</Link></li>
-            </ul>
-          </div>
-          <div className="lg:col-span-2">
-            <p className="font-label-caps text-label-caps text-on-surface uppercase font-bold tracking-wider mb-4">
-              <Link href="/education" className="hover:text-primary transition-colors">Education &amp; Science</Link>
-            </p>
-            <ul className="space-y-2 font-body-sm text-body-sm text-on-surface-variant">
-              <li><Link href="/science" className="hover:text-primary font-medium text-primary transition-colors">Science Tools Hub</Link></li>
-              <li><Link href="/education" className="hover:text-primary font-medium text-primary transition-colors">Education Hub</Link></li>
-              <li><Link href="/science#workbenches" className="hover:text-primary transition-colors">Density &amp; Molarity Models</Link></li>
-              <li><Link href="/education#workbench-gpa" className="hover:text-primary transition-colors">Target GPA Predictor</Link></li>
-              <li><Link href="/education#workbench-final" className="hover:text-primary transition-colors">Final Exam Needed</Link></li>
-              <li><Link href="/math" className="hover:text-primary transition-colors">Math Solvers &amp; Stats</Link></li>
-            </ul>
-          </div>
-          <div className="lg:col-span-2">
-            <p className="font-label-caps text-label-caps text-on-surface uppercase font-bold tracking-wider mb-4">
-              <Link href="/time-date" className="hover:text-primary transition-colors">Time &amp; Date Suite</Link>
-            </p>
-            <ul className="space-y-2 font-body-sm text-body-sm text-on-surface-variant">
-              <li><Link href="/time-date/birthday-tracker" className="hover:text-primary font-medium text-primary transition-colors">Birthday Tracker &amp; Solar Orbit</Link></li>
-              <li><Link href="/time-date/age-calculator" className="hover:text-primary transition-colors">Exact Age Calculator</Link></li>
-              <li><Link href="/time-date/date-difference" className="hover:text-primary transition-colors">Date Difference &amp; Delta</Link></li>
-              <li><Link href="/time-date/days-calculator" className="hover:text-primary transition-colors">Business Days &amp; Holidays</Link></li>
-              <li><Link href="/time-date/world-clock-grid" className="hover:text-primary transition-colors">World Clock Matrix</Link></li>
-              <li><Link href="/time-date/countdown-timer" className="hover:text-primary transition-colors">High-Precision Countdown</Link></li>
-            </ul>
-          </div>
-          <div className="lg:col-span-2">
-            <p className="font-label-caps text-label-caps text-on-surface uppercase font-bold tracking-wider mb-4">
-              <Link href="/electrical" className="hover:text-primary transition-colors">Electrical &amp; Construction</Link>
-            </p>
-            <ul className="space-y-2 font-body-sm text-body-sm text-on-surface-variant">
-              <li><Link href="/electrical" className="hover:text-primary font-medium text-primary transition-colors">Electrical Tools Hub</Link></li>
-              <li><Link href="/electrical#workbench-cable" className="hover:text-primary transition-colors">Cable Sizing &amp; Ampacity</Link></li>
-              <li><Link href="/electrical#workbench-transformer" className="hover:text-primary transition-colors">Transformer FLA &amp; kVA</Link></li>
-              <li><Link href="/electrical#workbench-motor" className="hover:text-primary transition-colors">Motor FLA &amp; Overload</Link></li>
-              <li><Link href="/electrical#workbench-solar" className="hover:text-primary transition-colors">Solar PV Array &amp; Battery</Link></li>
-              <li><Link href="/home-construction" className="hover:text-primary transition-colors">Home &amp; Construction</Link></li>
-              <li><Link href="/home-construction#concrete-calc" className="hover:text-primary transition-colors">Concrete Volume Solver</Link></li>
-            </ul>
+
+          <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
+            <div>
+              <h4 className="font-headline-sm text-body-lg text-on-surface font-bold mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-[18px]">
+                  payments
+                </span>{" "}
+                Finance
+              </h4>
+              <ul className="space-y-2.5 font-body-sm text-body-sm text-on-surface-variant">
+                <li>
+                  <Link
+                    href="/finance"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block group-hover:bg-primary"></span>{" "}
+                    Finance Hub
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/finance/mortgage-calculator"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Mortgages
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/investing-and-growth"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Investing (SIP/CAGR)
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/finance/emi-calculator"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    EMI & Loans
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/retirement-and-super"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Retirement (401k)
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/global-tax-calculator"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Tax Brackets
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/credit-cards-and-revolving"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Credit Cards
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-headline-sm text-body-lg text-on-surface font-bold mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-secondary text-[18px]">
+                  vital_signs
+                </span>{" "}
+                Health
+              </h4>
+              <ul className="space-y-2.5 font-body-sm text-body-sm text-on-surface-variant">
+                <li>
+                  <Link
+                    href="/health"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Health Hub
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/health/bmi"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    BMI Calculator
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/health#bmr-card"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    BMR Estimator
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/health#tdee-card"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    TDEE & Macros
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/health#navy-card"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Body Fat %
+                  </Link>
+                </li>
+              </ul>
+
+              <h4 className="font-headline-sm text-body-lg text-on-surface font-bold mt-8 mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-tertiary text-[18px]">
+                  domain
+                </span>{" "}
+                Business
+              </h4>
+              <ul className="space-y-2.5 font-body-sm text-body-sm text-on-surface-variant">
+                <li>
+                  <Link
+                    href="/business"
+                    className="hover:text-tertiary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Business Hub
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/business#category-profit"
+                    className="hover:text-tertiary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Margin & Markup
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/business#category-startup"
+                    className="hover:text-tertiary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Cash Runway
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-headline-sm text-body-lg text-on-surface font-bold mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-[18px]">
+                  functions
+                </span>{" "}
+                Math & Science
+              </h4>
+              <ul className="space-y-2.5 font-body-sm text-body-sm text-on-surface-variant">
+                <li>
+                  <Link
+                    href="/math"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Math Hub
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/percentage-calculator"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Percentages
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/math#quick-solve"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Scientific Solver
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/math#quick-solve"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Fractions
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/science"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Science Hub
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/science#workbenches"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Molarity
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/education"
+                    className="hover:text-primary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Education (GPA)
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-headline-sm text-body-lg text-on-surface font-bold mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-secondary text-[18px]">
+                  build
+                </span>{" "}
+                Utilities
+              </h4>
+              <ul className="space-y-2.5 font-body-sm text-body-sm text-on-surface-variant">
+                <li>
+                  <Link
+                    href="/time-date"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Date & Time Hub
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/time-date/age-calculator"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Exact Age
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/conversions"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Metric Conversions
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/electrical"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Electrical Engineering
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/home-construction"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Home Construction
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/technology"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Tech & Dev
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/automotive-calculators-estimators"
+                    className="hover:text-secondary transition-colors flex items-center gap-1"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-outline-variant inline-block"></span>{" "}
+                    Automotive
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div className="pt-space-lg flex flex-col md:flex-row items-center justify-between gap-4 font-body-sm text-body-sm text-on-surface-variant">
-          <p>© 2025 SolveItCalculator.com. All mathematical models tested and verified for educational &amp; analytical purposes.</p>
+
+        {/* Footer Bottom Bar */}
+        <div className="pt-8 flex flex-col lg:flex-row items-center justify-between gap-6 font-body-sm text-body-sm text-on-surface-variant">
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6">
+            <p>
+              © {new Date().getFullYear()} SolveItCalculator.com. All rights
+              reserved.
+            </p>
+          </div>
           <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px] text-primary">security</span> Local Client Compute</span>
-            <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px] text-primary">speed</span> 60 FPS Fluid UI</span>
+            <Link
+              href="/privacy"
+              className="hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms-of-use"
+              className="hover:text-primary transition-colors"
+            >
+              Terms of Use
+            </Link>
+            <Link
+              href="/about-us"
+              className="hover:text-primary transition-colors"
+            >
+              About Us
+            </Link>
           </div>
         </div>
       </div>

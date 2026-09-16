@@ -3,21 +3,39 @@ import type { Metadata } from 'next';
 import TimeDateClient from './TimeDateClient';
 
 export const metadata: Metadata = {
-  title: 'Time & Date Calculators | Temporal Intelligence Workbench | SolveIt',
-  description: 'High-precision computational suite for chronological age, working day intervals, timesheets, countdowns, and global time zone shifts.',
+  title: 'Time & Date Calculators – Age, Duration, Date Difference & More | SolveItCalculator',
+  description: 'Use free time and date calculators to calculate age, date differences, countdowns, business days, time duration, deadlines, and more. Fast and accurate tools.',
+  keywords: [
+    'Time and Date Calculators',
+    'Age Calculator',
+    'Date Calculator',
+    'Date Difference Calculator',
+    'Time Calculator',
+    'Duration Calculator',
+    'Business Days Calculator',
+    'Work Hours Calculator',
+    'Countdown Calculator',
+    'Days Between Dates Calculator',
+    'Time Zone Calculator',
+    'Week Calculator',
+    'Deadline Calculator',
+    'Date Countdown Tool',
+    'Online Time Calculator',
+  ],
   alternates: {
-    canonical: 'https://solveitcalculator.com/time-date/',
+    canonical: 'https://solveitcalculator.com/time-date-calculators/',
   },
   openGraph: {
-    title: 'Time & Date Calculators | Temporal Intelligence Workbench',
-    description: 'High-precision computational suite for chronological age, working day intervals, timesheets, countdowns, and global time zone shifts.',
-    url: 'https://solveitcalculator.com/time-date/',
+    title: 'Time & Date Calculators | Free Age, Duration & Date Tools',
+    description: 'Calculate age, time differences, countdowns, business days, deadlines, and schedules with free Time & Date Calculators from SolveItCalculator.',
+    url: 'https://solveitcalculator.com/time-date-calculators/',
+    siteName: 'SolveItCalculator',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Time & Date Calculators | Temporal Intelligence Workbench',
-    description: 'High-precision computational suite for chronological age, working day intervals, timesheets, countdowns, and global time zone shifts.',
+    title: 'Time & Date Calculators | Free Age, Duration & Date Tools',
+    description: 'Calculate age, date differences, time duration, workdays, countdowns, deadlines, and schedules with free calculators from SolveItCalculator.',
   },
 };
 
@@ -26,16 +44,21 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'CollectionPage',
-      '@id': 'https://solveitcalculator.com/time-date/',
-      url: 'https://solveitcalculator.com/time-date/',
-      name: 'Time & Date Calculators | Temporal Intelligence Workbench',
-      description: 'High-precision computational suite for chronological age, working day intervals, timesheets, countdowns, and global time zone shifts.',
+      '@id': 'https://solveitcalculator.com/time-date-calculators/',
+      url: 'https://solveitcalculator.com/time-date-calculators/',
+      name: 'Time & Date Calculators – Age, Duration, Date Difference & More | SolveItCalculator',
+      description: 'Use free time and date calculators to calculate age, date differences, countdowns, business days, time duration, deadlines, and more. Fast and accurate tools.',
       inLanguage: 'en-US',
       isPartOf: {
         '@type': 'WebSite',
         '@id': 'https://solveitcalculator.com/#website',
         url: 'https://solveitcalculator.com/',
-        name: 'SolveIt Calculator',
+        name: 'SolveItCalculator',
+      },
+      about: {
+        '@type': 'Thing',
+        name: 'Time and Date Calculators',
+        description: 'Find free Time & Date Calculators for age calculations, date differences, countdowns, work hours, business days, deadlines, schedules, and productivity planning. Accurate, fast, and easy to use.',
       },
       breadcrumb: {
         '@type': 'BreadcrumbList',
@@ -50,7 +73,7 @@ const jsonLd = {
             '@type': 'ListItem',
             position: 2,
             name: 'Time & Date',
-            item: 'https://solveitcalculator.com/time-date/',
+            item: 'https://solveitcalculator.com/time-date-calculators/',
           },
         ],
       },
@@ -63,7 +86,7 @@ const jsonLd = {
           name: 'How do business day calculators handle federal bank holidays?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'SolveIt engines evaluate calendar spans using codified United States Federal Reserve holiday schedules (5 U.S.C. 6103) as well as UK Banking calendars. Fixed holidays falling on Saturdays are observed on Friday; Sunday holidays roll to Monday.',
+            text: 'SolveIt calculators evaluate calendar spans using official United States Federal Reserve holiday schedules as well as UK Banking calendars. Fixed holidays falling on Saturdays are observed on Friday; Sunday holidays roll to Monday.',
           },
         },
         {
@@ -106,3 +129,4 @@ export default function TimeDatePage() {
     </>
   );
 }
+

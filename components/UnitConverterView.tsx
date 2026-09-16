@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import Header from './Header';
-import Footer from './Footer';
 import {
   CategoryDefinition,
   UnitDefinition,
@@ -379,8 +377,6 @@ export default function UnitConverterView({
           })
         }}
       />
-
-      <Header />
 
       <main className="pt-24 sm:pt-28 pb-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
         {/* =========================================================================
@@ -1404,8 +1400,6 @@ export default function UnitConverterView({
           <span>{toastMsg}</span>
         </div>
       )}
-
-      <Footer />
     </div>
   );
 }

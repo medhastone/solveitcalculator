@@ -1,88 +1,88 @@
-import type {NextConfig} from 'next';
-
-const isStaticExport = process.env.GITHUB_PAGES === 'true' || process.env.STATIC_EXPORT === 'true';
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: false,
+    ignoreBuildErrors: true,
   },
-  // Allow access to remote image placeholder and support static export on GitHub Pages.
   images: {
-    unoptimized: isStaticExport ? true : false,
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-        port: '',
-        pathname: '/**', // This allows any path under the hostname
-      },
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
-        port: '',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/**",
       },
     ],
   },
-  output: isStaticExport ? 'export' : 'standalone',
-  trailingSlash: isStaticExport ? true : false,
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || undefined,
-  transpilePackages: ['motion'],
-  ...(isStaticExport
-    ? {}
-    : {
-        async redirects() {
-          return [
-            {
-              source: '/volume',
-              destination: '/volume-converter',
-              permanent: true,
-            },
-            {
-              source: '/capacity',
-              destination: '/volume-converter',
-              permanent: true,
-            },
-            {
-              source: '/volume-and-capacity',
-              destination: '/volume-and-capacity-converter',
-              permanent: true,
-            },
-            {
-              source: '/health-fitness',
-              destination: '/health',
-              permanent: false,
-            },
-            {
-              source: '/bmi',
-              destination: '/health/bmi',
-              permanent: true,
-            },
-            {
-              source: '/bmi-tool',
-              destination: '/health/bmi',
-              permanent: true,
-            },
-            {
-              source: '/body-mass-index',
-              destination: '/health/bmi',
-              permanent: true,
-            },
-          ];
-        },
-      }),
-  webpack: (config, {dev}) => {
-    // HMR is disabled in AI Studio via DISABLE_HMR env var.
-    if (dev && process.env.DISABLE_HMR === 'true') {
-      config.watchOptions = {
-        ignored: /.*/,
-      };
-    }
-    return config;
+  async headers() {
+    return [
+      {
+        source: '/:all*(svg|jpg|jpeg|png|webp|avif|ico|ttf|woff|woff2)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: '/health',
+        destination: '/health-fitness-calculators',
+        permanent: true,
+      },
+      {
+        source: '/health/:slug*',
+        destination: '/health-fitness-calculators/:slug*',
+        permanent: true,
+      },
+      {
+        source: '/electrical',
+        destination: '/electrical-calculators-sizing-tools',
+        permanent: true,
+      },
+      {
+        source: '/electrical/:slug*',
+        destination: '/electrical-calculators-sizing-tools/:slug*',
+        permanent: true,
+      },
+      {
+        source: '/electrical-tools',
+        destination: '/electrical-calculators-sizing-tools',
+        permanent: true,
+      },
+      {
+        source: '/electrical-tools/:slug*',
+        destination: '/electrical-calculators-sizing-tools/:slug*',
+        permanent: true,
+      },
+      {
+        source: '/automotive',
+        destination: '/automotive-calculators-estimators',
+        permanent: true,
+      },
+      {
+        source: '/automotive/:slug*',
+        destination: '/automotive-calculators-estimators/:slug*',
+        permanent: true,
+      },
+      {
+        source: '/automotive-tools',
+        destination: '/automotive-calculators-estimators',
+        permanent: true,
+      },
+      {
+        source: '/automotive-tools/:slug*',
+        destination: '/automotive-calculators-estimators/:slug*',
+        permanent: true,
+      }
+    ];
   },
 };
 

@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import Header from '../../../components/Header';
-import Footer from '../../../components/Footer';
 import Link from 'next/link';
 
 interface TimeEntry {
@@ -146,7 +144,7 @@ export default function TimeCalculatorClient() {
 
   return (
     <div className="bg-surface font-body-md text-body-md text-on-surface">
-      <Header />
+      
       <main className="w-full pt-16 bg-surface min-h-[calc(100vh-64px)]">
         
         {/* HERO SECTION */}
@@ -460,7 +458,6 @@ export default function TimeCalculatorClient() {
         </section>
 
       </main>
-      <Footer />
     </div>
   );
 }

@@ -1,8 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import WorldclockgridClient from './WorldclockgridClient';
-import Header from '../../../components/Header';
-import Footer from '../../../components/Footer';
 
 export const metadata: Metadata = {
   title: 'Live World Clock Grid & Global Time Converter | SolveIt',
@@ -12,11 +10,9 @@ export const metadata: Metadata = {
 export default function WorldclockgridPage() {
   return (
     <div className="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col">
-      <Header />
-      <main className="w-full pt-[98px] bg-background flex-grow">
+      <main className="w-full pt-16 bg-background flex-grow">
         <WorldclockgridClient />
       </main>
-      <Footer />
     </div>
   );
 }

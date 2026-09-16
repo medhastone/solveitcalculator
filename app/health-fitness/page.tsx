@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import HealthClient from '../health/HealthClient';
+import HealthClient from '../health-fitness-calculators/HealthClient';
 
 export const metadata: Metadata = {
   title: 'Health & Fitness Calculators | Evidence-Based Clinical Tools | SolveIt',

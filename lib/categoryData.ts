@@ -164,10 +164,10 @@ export const CATEGORY_RICH_DATA: Record<string, CategoryMetaRecord> = {
       { label: 'Kilograms to Pounds', from: 'kg', to: 'lb' },
       { label: 'Pounds to Kilograms', from: 'lb', to: 'kg' },
       { label: 'Grams to Ounces', from: 'g', to: 'oz' },
+      { label: 'Grams to Pounds', from: 'g', to: 'lb' },
+      { label: 'Grams to Kilograms', from: 'g', to: 'kg' },
+      { label: 'Grams to Milligrams', from: 'g', to: 'mg' },
       { label: 'Ounces to Grams', from: 'oz', to: 'g' },
-      { label: 'Stones to Kilograms', from: 'st', to: 'kg' },
-      { label: 'Metric Tonnes to US Tons', from: 't', to: 'us_ton' },
-      { label: 'Pounds to Ounces', from: 'lb', to: 'oz' },
       { label: 'Milligrams to Grams', from: 'mg', to: 'g' }
     ],
     benchmarks: [

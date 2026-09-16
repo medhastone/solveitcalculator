@@ -4,7 +4,6 @@ import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { CONVERSION_CATEGORIES } from '@/lib/conversions';
 import { CANONICAL_POPULAR_PAIRS } from '@/lib/converterSlugs';
 
@@ -38,8 +37,8 @@ export default function ConvertDirectoryPage() {
   }, [searchQuery]);
 
   return (
-    <div className="bg-[#FAF8FF] dark:bg-[#090D16] text-[#131B2E] dark:text-slate-100 min-h-screen transition-colors duration-200">
-      <Header />
+    <div className="bg-surface text-on-surface min-h-screen transition-colors duration-200">
+      
 
       <main className="pt-24 sm:pt-28 pb-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
         {/* Hub Hero */}
@@ -241,8 +240,6 @@ export default function ConvertDirectoryPage() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }

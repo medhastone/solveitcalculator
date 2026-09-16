@@ -1,14 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 
 export const dynamic = 'force-static';
 
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col bg-surface text-on-surface">
-      <Header />
       <main className="flex-1 flex items-center justify-center pt-24 pb-16 px-4">
         <div className="max-w-md w-full text-center p-8 rounded-3xl bg-surface-container-low border border-outline-variant/40 shadow-xl">
           <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4">
@@ -34,7 +31,6 @@ export default function NotFound() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

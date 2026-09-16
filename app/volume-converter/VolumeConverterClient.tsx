@@ -1,8 +1,8 @@
 'use client';
 
-/* eslint-disable @next/next/no-img-element */
 import React, { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Conversion factors to SI base (Liters)
 const toLiters: Record<string, number> = {
@@ -262,7 +262,7 @@ export default function VolumeConverterClient() {
   const handleShare = useCallback(() => {
     if (typeof navigator !== 'undefined' && navigator.share) {
       navigator.share({
-        title: 'SolveIt Volume Converter',
+        title: 'SolveIt Calculator Volume Converter',
         text: `${inputValue} ${unitNames[fromUnit]} = ${outputDisplay} ${unitNames[toUnit]}`,
         url: window.location.href
       }).catch(() => {});
@@ -284,7 +284,7 @@ export default function VolumeConverterClient() {
   // Export JSON action
   const handleExportJSON = useCallback(() => {
     const payload = {
-      calculator: 'SolveIt Universal Volume Converter',
+      calculator: 'SolveIt Calculator Universal Volume Converter',
       timestamp: new Date().toISOString(),
       input: { value: inputValue, unit: fromUnit, unitName: unitNames[fromUnit] },
       output: { value: parseFloat(outputDisplay.replace(/,/g, '')), unit: toUnit, unitName: unitNames[toUnit] },
@@ -357,89 +357,8 @@ export default function VolumeConverterClient() {
       )}
 
       {/* FIXED TOP HEADER */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex flex-col">
-        {/* Brand Nav Header */}
-        <header className="w-full bg-surface/85 backdrop-blur-xl border-b border-outline-variant/40 shadow-[0_1px_8px_rgba(0,0,0,0.03)]">
-          <div className="h-16 max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop flex items-center justify-between gap-space-md">
-            <div className="flex items-center gap-space-lg">
-              <Link className="flex items-center gap-space-sm focus:outline-none" href="/">
-                <img
-                  alt="SolveIt Calculator Brand Logo"
-                  className="h-12 w-auto object-contain"
-                  src="/logo.png"
-                  referrerPolicy="no-referrer"
-                />
-              </Link>
-              <nav className="hidden lg:flex items-center gap-space-2xs p-1">
-                <Link className="px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" href="/time-date">
-                  Time &amp; Date
-                </Link>
-                <Link className="px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" href="/health">
-                  Health
-                </Link>
-                <Link className="px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" href="/conversions">
-                  Conversions
-                </Link>
-                <div className="relative group">
-                  <button className="px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm flex items-center gap-1 cursor-default">
-                    Calculator Categories
-                    <span className="material-symbols-outlined text-[16px] transition-transform group-hover:rotate-180">expand_more</span>
-                  </button>
-                  <div className="absolute top-full right-0 mt-1 w-48 bg-surface-container rounded-xl shadow-lg border border-outline-variant/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col py-2 z-50">
-                    <Link href="/time-date" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Time &amp; Date</Link>
-                    <Link href="/health" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Health &amp; Fitness</Link>
-                    <Link href="/conversions" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Conversions</Link>
-                    <Link href="/automotive" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Automotive</Link>
-                    <Link href="/finance" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Financial</Link>
-                    <Link href="/math" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Math</Link>
-                    <Link href="/" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors border-t border-outline-variant/30 mt-1 pt-2 font-medium">All Categories</Link>
-                  </div>
-                </div>
-              </nav>
-            </div>
-            <div className="flex items-center gap-space-xs sm:gap-space-sm">
-              <button
-                className="flex items-center justify-between w-44 md:w-56 px-3 py-1.5 rounded-xl bg-surface-container-low border border-outline-variant/50 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all focus:outline-none shadow-[inset_0_1px_0_0_rgba(255,255,255,0.8)]"
-                type="button"
-                onClick={() => {
-                  const input = document.getElementById('quickLookupInput');
-                  if (input) input.focus();
-                }}
-              >
-                <span className="flex items-center gap-space-xs text-body-sm font-body-sm">
-                  <span className="material-symbols-outlined text-[18px]">search</span>Quick search...
-                </span>
-                <kbd className="font-data-mono text-label-caps bg-surface-container-highest text-on-surface px-1.5 py-0.5 rounded border border-outline-variant/40 shadow-sm">⌘K</kbd>
-              </button>
-              <div className="h-5 w-px bg-outline-variant/40 hidden sm:block"></div>
-              <button
-                aria-label="Favorites"
-                className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${
-                  isFavorited ? 'text-tertiary bg-surface-container-high' : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
-                }`}
-                type="button"
-                onClick={() => {
-                  setIsFavorited(!isFavorited);
-                  showToast(!isFavorited ? 'Added Volume Converter to bookmarks' : 'Removed from bookmarks');
-                }}
-              >
-                <span className="material-symbols-outlined text-[20px]">bookmark</span>
-              </button>
-              <button
-                aria-label="Toggle theme"
-                className="w-9 h-9 rounded-xl flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
-                type="button"
-                onClick={handleToggleTheme}
-              >
-                <span className="material-symbols-outlined text-[20px]">light_mode</span>
-              </button>
-            </div>
-          </div>
-        </header>
-      </div>
-
       {/* MAIN BODY CONTENT */}
-      <main className="w-full pt-[98px] bg-background min-h-[calc(100vh-380px)]">
+      <main className="w-full pt-16 bg-background min-h-[calc(100vh-380px)]">
         <div className="flex flex-col w-full text-on-surface">
           {/* ================================================================= */}
           {/* SECTION 1: HERO & TELEMETRY                                      */}
@@ -1560,11 +1479,11 @@ export default function VolumeConverterClient() {
               {/* FAQ 3 */}
               <details className="group bg-surface-container-lowest rounded-2xl p-5 shadow-sm transition-all [&_summary::-webkit-details-marker]:hidden">
                 <summary className="flex items-center justify-between cursor-pointer font-headline-md text-[17px] font-semibold text-on-surface">
-                  <span>How does SolveIt ensure zero floating-point arithmetic errors?</span>
+                  <span>How does SolveIt Calculator ensure zero floating-point arithmetic errors?</span>
                   <span className="material-symbols-outlined text-[20px] text-outline group-open:rotate-180 transition-transform">expand_more</span>
                 </summary>
                 <p className="font-body-md text-body-md text-on-surface-variant mt-3 leading-relaxed">
-                  JavaScript uses IEEE 754 double-precision 64-bit binary floating-point numbers, which inherently cause rounding anomalies when storing base-10 fractions (such as 0.1 + 0.2 = 0.30000000000000004). SolveIt&apos;s computational engine applies integer-scaled pivot transformations and guard-digit epsilon trimming (10⁻¹²) before presenting rounded results to the user.
+                  JavaScript uses IEEE 754 double-precision 64-bit binary floating-point numbers, which inherently cause rounding anomalies when storing base-10 fractions (such as 0.1 + 0.2 = 0.30000000000000004). SolveIt Calculator&apos;s computational engine applies integer-scaled pivot transformations and guard-digit epsilon trimming (10⁻¹²) before presenting rounded results to the user.
                 </p>
               </details>
 
@@ -1586,7 +1505,7 @@ export default function VolumeConverterClient() {
                   <span className="material-symbols-outlined text-[20px] text-outline group-open:rotate-180 transition-transform">expand_more</span>
                 </summary>
                 <p className="font-body-md text-body-md text-on-surface-variant mt-3 leading-relaxed">
-                  No. SolveIt operates on a zero-telemetry computational philosophy. All mathematical calculations, unit mappings, and slider recalibrations execute 100% locally inside your web browser&apos;s V8 or JavaScriptCore engine in under 5 milliseconds. No personal data, IP addresses, or conversion parameters are ever transmitted to any cloud database.
+                  No. SolveIt Calculator operates on a zero-telemetry computational philosophy. All mathematical calculations, unit mappings, and slider recalibrations execute 100% locally inside your web browser&apos;s V8 or JavaScriptCore engine in under 5 milliseconds. No personal data, IP addresses, or conversion parameters are ever transmitted to any cloud database.
                 </p>
               </details>
             </div>
@@ -1624,14 +1543,20 @@ export default function VolumeConverterClient() {
         <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop pt-space-2xl pb-space-xl">
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-space-xl pb-space-2xl border-b border-outline-variant/30">
             <div className="col-span-2 lg:col-span-1">
-              <div className="flex items-center gap-space-sm mb-space-sm">
-                <img
-                  alt="SolveIt Calculator Brand Logo"
-                  className="h-7 w-auto object-contain"
-                  src="https://lh3.googleusercontent.com/aida/AEtjO1UgJbbnQgYLzjhb_qeEsC93I-1XXreecdK60mdw1th0D_7ITk1wgo3Q4m2srbFlLTmLTaMFDIQIpoLg1XvURUxBibragjTBtbJyUlLfXmPT6PF9K8w_muzxBArKo_j4tNBT5eQa-DpjL7MC0aMTvrREQnm5Hs_wAAk9rnx5RjkiPKyCM65Rha3EkGznyImbA9ByITNU1_cyybhjmDcChmrXHczyoj6e0gjGjbauvA7kHd9fqlPyWDO9sT4"
-                  referrerPolicy="no-referrer"
-                />
-                <span className="font-headline-md text-headline-md text-on-surface tracking-tight">SolveIt</span>
+              <div className="mb-space-sm">
+                <Link
+                  href="/"
+                  className="inline-flex items-center focus:outline-none group select-none py-1 relative h-14 sm:h-16 md:h-20 aspect-[238/54]"
+                  aria-label="SolveIt Calculator Homepage"
+                >
+                  <Image
+                    alt="SolveIt Calculator Brand Logo"
+                    className="object-contain block transition-transform duration-150 group-hover:scale-[1.02]"
+                    src="/logo.png"
+                    fill
+                    sizes="(max-width: 640px) 150px, 200px"
+                  />
+                </Link>
               </div>
               <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
                 Precision-engineered computational suites designed with architectural minimalism and algorithmic authority.
@@ -1678,7 +1603,7 @@ export default function VolumeConverterClient() {
                 <li className="hover:text-on-surface cursor-pointer transition-colors">Methodology &amp; Sources</li>
                 <li className="hover:text-on-surface cursor-pointer transition-colors">Editorial Standards</li>
                 <li className="hover:text-on-surface cursor-pointer transition-colors">Privacy Policy</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Terms of Service</li>
+                <li className="hover:text-on-surface cursor-pointer transition-colors">Terms of Use</li>
               </ul>
             </div>
           </div>
@@ -1694,7 +1619,7 @@ export default function VolumeConverterClient() {
               </div>
             </div>
             <div className="flex items-center gap-space-md">
-              <span className="text-on-surface font-medium">© 2025 SolveIt Inc. All rights reserved.</span>
+              <span className="text-on-surface font-medium">© 2025 SolveIt Calculator. All rights reserved.</span>
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-[18px] hover:text-on-surface cursor-pointer">public</span>
                 <span className="material-symbols-outlined text-[18px] hover:text-on-surface cursor-pointer">terminal</span>

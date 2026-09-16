@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 
 export default function MathHubClient() {
   // --- Search & Filter State ---
@@ -49,17 +48,18 @@ export default function MathHubClient() {
 
   const evaluateScientific = () => {
     try {
+      const safeEval = (str: string) => Function(`"use strict"; return (${str})`)();
       let expr = calcInput
         .replace(/pi/g, Math.PI.toString())
-        .replace(/sin\(([^)]+)\)/g, (_, a) => Math.sin(Number(eval(a))).toFixed(4))
-        .replace(/cos\(([^)]+)\)/g, (_, a) => Math.cos(Number(eval(a))).toFixed(4))
-        .replace(/tan\(([^)]+)\)/g, (_, a) => Math.tan(Number(eval(a))).toFixed(4))
-        .replace(/sqrt\(([^)]+)\)/g, (_, a) => Math.sqrt(Number(eval(a))).toString())
-        .replace(/log\(([^)]+)\)/g, (_, a) => Math.log10(Number(eval(a))).toFixed(4))
-        .replace(/ln\(([^)]+)\)/g, (_, a) => Math.log(Number(eval(a))).toFixed(4))
+        .replace(/sin\(([^)]+)\)/g, (_, a) => Math.sin(Number(safeEval(a))).toFixed(4))
+        .replace(/cos\(([^)]+)\)/g, (_, a) => Math.cos(Number(safeEval(a))).toFixed(4))
+        .replace(/tan\(([^)]+)\)/g, (_, a) => Math.tan(Number(safeEval(a))).toFixed(4))
+        .replace(/sqrt\(([^)]+)\)/g, (_, a) => Math.sqrt(Number(safeEval(a))).toString())
+        .replace(/log\(([^)]+)\)/g, (_, a) => Math.log10(Number(safeEval(a))).toFixed(4))
+        .replace(/ln\(([^)]+)\)/g, (_, a) => Math.log(Number(safeEval(a))).toFixed(4))
         .replace(/\^/g, '**');
-      // eslint-disable-next-line no-eval
-      const res = Function(`"use strict"; return (${expr})`)();
+       
+      const res = safeEval(expr);
       setCalcResult(Number(res).toFixed(4).replace(/\.?0+$/, ''));
     } catch {
       setCalcResult('Syntax Error');
@@ -256,7 +256,7 @@ export default function MathHubClient() {
           desc: 'Comparative price percentage deltas, profit markup ratios, and experimental error margin calculations.',
           type: 'Rate & Delta Analyzer',
           breakdown: 'Includes: Dynamic comparison bars, decimal conversions',
-          link: '#quick-solve'
+          link: '/percentage-calculator'
         };
       case 'Calculus':
         return {
@@ -472,31 +472,54 @@ export default function MathHubClient() {
 
   // Filtered categories
   const filteredCategories = useMemo(() => {
-    if (!searchQuery.trim()) return mathCategories;
+    let cats = mathCategories;
+    
+    if (activeTab !== 'all') {
+      cats = cats.filter(cat => {
+        if (activeTab === 'algebra' && cat.id === 'algebra') return true;
+        if (activeTab === 'geometry' && (cat.id === 'geometry' || cat.id === 'triangles')) return true;
+        if (activeTab === 'trig' && (cat.id === 'trig' || cat.id === 'triangles')) return true;
+        if (activeTab === 'stats' && cat.id === 'statistics') return true;
+        if (activeTab === 'calculus' && cat.id === 'sequences') return true;
+        return false;
+      });
+    }
+
+    if (!searchQuery.trim()) return cats;
+    
     const q = searchQuery.toLowerCase();
-    return mathCategories.filter(
+    return cats.filter(
       cat =>
         cat.title.toLowerCase().includes(q) ||
         cat.desc.toLowerCase().includes(q) ||
         cat.tools.some(t => t.toLowerCase().includes(q))
     );
-  }, [searchQuery, mathCategories]);
+  }, [searchQuery, activeTab, mathCategories]);
 
   return (
     <div className="min-h-screen bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col">
-      <Header />
+      
 
-      <main className="w-full pt-20 bg-surface flex-1">
+      <main className="w-full pt-16 bg-surface flex-1">
         {/* Telemetry Bar & Sub-Navigation */}
+        <div className="w-full bg-surface-container-lowest border-b border-outline-variant/20">
+          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-xs">
+            <nav className="flex items-center text-sm font-medium text-on-surface-variant">
+              <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+              <span className="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+              <span className="text-on-surface">Math Calculators</span>
+            </nav>
+          </div>
+        </div>
         <div className="w-full bg-surface-container-low border-b border-outline-variant/20">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-xs flex flex-wrap items-center justify-between gap-space-sm font-label-caps text-label-caps text-on-surface-variant">
             <div className="flex flex-wrap items-center gap-space-sm">
               <span className="inline-flex items-center gap-space-2xs text-primary font-semibold">
-                <span className="material-symbols-outlined text-[15px]">verified</span> Step-by-Step Verified Accuracy
+                <span className="material-symbols-outlined text-[15px]">calculate</span> Step-by-Step Solutions
               </span>
               <span className="text-outline-variant">•</span>
               <span className="inline-flex items-center gap-space-2xs">
-                <span className="material-symbols-outlined text-[15px] text-secondary">school</span> Student &amp; Educator Verified
+                <span className="material-symbols-outlined text-[15px] text-secondary">school</span> Educator-Aligned Math
               </span>
               <span className="text-outline-variant hidden sm:inline">•</span>
               <span className="hidden sm:inline-flex items-center gap-space-2xs">
@@ -515,37 +538,37 @@ export default function MathHubClient() {
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-xs flex items-center justify-between overflow-x-auto gap-space-xs">
             <div className="flex items-center gap-space-xs py-space-2xs">
               <button
-                onClick={() => setActiveTab('all')}
+                onClick={() => { setActiveTab('all'); document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className={`px-space-sm py-space-xs rounded-lg font-label-caps text-label-caps font-semibold whitespace-nowrap transition-all ${
                   activeTab === 'all'
                     ? 'bg-primary-container text-on-primary-container shadow-sm'
                     : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
                 }`}
               >
-                All Math (500+)
+                All Math (100+)
               </button>
               <button
-                onClick={() => setActiveTab('algebra')}
+                onClick={() => { setActiveTab('algebra'); document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className={`px-space-sm py-space-xs rounded-lg font-label-caps text-label-caps transition-all whitespace-nowrap ${
                   activeTab === 'algebra'
                     ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm'
                     : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
                 }`}
               >
-                Algebra &amp; Polynomials
+                Algebra & Polynomials
               </button>
               <button
-                onClick={() => setActiveTab('geometry')}
+                onClick={() => { setActiveTab('geometry'); document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className={`px-space-sm py-space-xs rounded-lg font-label-caps text-label-caps transition-all whitespace-nowrap ${
                   activeTab === 'geometry'
                     ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm'
                     : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
                 }`}
               >
-                Geometry &amp; Spatial
+                Geometry & Spatial
               </button>
               <button
-                onClick={() => setActiveTab('trig')}
+                onClick={() => { setActiveTab('trig'); document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className={`px-space-sm py-space-xs rounded-lg font-label-caps text-label-caps transition-all whitespace-nowrap ${
                   activeTab === 'trig'
                     ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm'
@@ -555,41 +578,37 @@ export default function MathHubClient() {
                 Trigonometry
               </button>
               <button
-                onClick={() => setActiveTab('stats')}
+                onClick={() => { setActiveTab('stats'); document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className={`px-space-sm py-space-xs rounded-lg font-label-caps text-label-caps transition-all whitespace-nowrap ${
                   activeTab === 'stats'
                     ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm'
                     : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
                 }`}
               >
-                Statistics &amp; Probability
+                Statistics & Probability
               </button>
               <button
-                onClick={() => setActiveTab('calculus')}
+                onClick={() => { setActiveTab('calculus'); document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className={`px-space-sm py-space-xs rounded-lg font-label-caps text-label-caps transition-all whitespace-nowrap ${
                   activeTab === 'calculus'
                     ? 'bg-primary-container text-on-primary-container font-semibold shadow-sm'
                     : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
                 }`}
               >
-                Calculus &amp; Limits
+                Calculus & Limits
               </button>
-              <a
-                href="#formulas"
+              <button
+                onClick={() => document.getElementById('formulas')?.scrollIntoView({ behavior: 'smooth' })}
                 className="px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-label-caps text-label-caps transition-all whitespace-nowrap"
               >
                 Formula Matrix
-              </a>
-              <a
-                href="#exam-prep"
+              </button>
+              <button
+                onClick={() => document.getElementById('exam-prep')?.scrollIntoView({ behavior: 'smooth' })}
                 className="px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-label-caps text-label-caps transition-all whitespace-nowrap"
               >
                 Exam Prep Suites
-              </a>
-            </div>
-            <div className="hidden lg:flex items-center gap-space-xs font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap">
-              <span className="px-space-xs py-space-2xs rounded bg-surface-container-high font-data-mono">ALG-4.1</span>
-              <span>CAS-KERNEL ACTIVE</span>
+              </button>
             </div>
           </div>
         </div>
@@ -619,7 +638,7 @@ export default function MathHubClient() {
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
                     className="w-full bg-transparent px-space-sm py-space-sm font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none"
-                    placeholder="Search 500+ solvers, equations, formulas (e.g., 'quadratic', 'standard deviation', 'unit circle', '3/4 + 1/8')..."
+                    placeholder="Search 100+ solvers, equations, formulas (e.g., 'quadratic', 'standard deviation', 'unit circle', '3/4 + 1/8')..."
                     type="text"
                   />
                   <div className="flex items-center gap-space-2xs mr-space-sm">
@@ -663,25 +682,7 @@ export default function MathHubClient() {
               </div>
             </div>
 
-            {/* Telemetry Stats Strip */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-md pt-space-xl mt-space-xl border-t border-outline-variant/20 bg-surface-container-low/60 rounded-xl p-space-md">
-              <div className="flex flex-col">
-                <span className="font-headline-md text-headline-md font-bold text-primary font-data-mono">500+</span>
-                <span className="font-label-caps text-label-caps text-on-surface-variant">MATH CALCULATORS</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-headline-md text-headline-md font-bold text-on-surface font-data-mono">1,000+</span>
-                <span className="font-label-caps text-label-caps text-on-surface-variant">FORMULAS &amp; GUIDES</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-headline-md text-headline-md font-bold text-secondary font-data-mono">8.4M+</span>
-                <span className="font-label-caps text-label-caps text-on-surface-variant">PROBLEMS SOLVED</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-headline-md text-headline-md font-bold text-on-surface font-data-mono">100%</span>
-                <span className="font-label-caps text-label-caps text-on-surface-variant">FREE &amp; PRIVATE TO USE</span>
-              </div>
-            </div>
+
           </div>
         </section>
 
@@ -977,15 +978,20 @@ export default function MathHubClient() {
                 </div>
               </div>
               <div className="pt-space-md flex items-center justify-between border-t border-outline-variant/15 mt-space-sm">
-                <span className="font-label-caps text-label-caps text-on-surface-variant">COMMERCE &amp; SCIENCE</span>
+                <Link
+                  href="/percentage-calculator"
+                  className="text-primary font-semibold font-body-sm text-body-sm inline-flex items-center gap-1 hover:underline"
+                >
+                  Full Universal Engine <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+                </Link>
                 <button
                   onClick={() => {
                     setPctInitial(120);
                     setPctFinal(156);
                   }}
-                  className="text-primary font-semibold font-body-sm text-body-sm inline-flex items-center gap-space-2xs hover:underline"
+                  className="text-on-surface-variant font-medium font-body-sm text-body-sm inline-flex items-center gap-space-2xs hover:text-primary"
                 >
-                  Reset ($120 → $156) <span className="material-symbols-outlined text-[16px]">refresh</span>
+                  Reset <span className="material-symbols-outlined text-[16px]">refresh</span>
                 </button>
               </div>
             </div>
@@ -1147,17 +1153,19 @@ export default function MathHubClient() {
                   <h3 className="font-headline-md text-headline-md font-bold text-on-surface mb-space-xs">{cat.title}</h3>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">{cat.desc}</p>
                   <ul className="space-y-space-xs font-body-sm text-body-sm">
-                    {cat.tools.map((tool, idx) => (
+                    {cat.tools.map((tool, idx) => {
+                      const slug = tool.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+                      return (
                       <li key={idx}>
-                        <a
-                          href="#quick-solve"
+                        <Link
+                          href={`/math/${slug}`}
                           className="text-primary hover:underline flex items-center justify-between group-hover:text-primary transition-colors"
                         >
                           <span>{tool}</span>
                           <span className="material-symbols-outlined text-[14px]">arrow_outward</span>
-                        </a>
+                        </Link>
                       </li>
-                    ))}
+                    );})}
                   </ul>
                 </div>
                 <div className="pt-space-md mt-space-md bg-surface-container-low/60 rounded-lg p-space-xs text-on-surface-variant font-label-caps text-label-caps border border-outline-variant/15">
@@ -1913,7 +1921,7 @@ export default function MathHubClient() {
               <span className="font-label-caps text-label-caps text-on-surface-variant mt-space-2xs">SI &amp; Imperial Standards</span>
             </Link>
             <Link
-              href="/health"
+              href="/health-fitness-calculators"
               className="bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow group flex flex-col items-center text-center"
             >
               <div className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors mb-space-sm">
@@ -1923,7 +1931,7 @@ export default function MathHubClient() {
               <span className="font-label-caps text-label-caps text-on-surface-variant mt-space-2xs">BMR, TDEE &amp; Macro</span>
             </Link>
             <Link
-              href="/automotive"
+              href="/automotive-calculators-estimators"
               className="bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow group flex flex-col items-center text-center"
             >
               <div className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors mb-space-sm">
@@ -1957,8 +1965,6 @@ export default function MathHubClient() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }

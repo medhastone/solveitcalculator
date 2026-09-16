@@ -1,8 +1,8 @@
 'use client';
 
-/* eslint-disable @next/next/no-img-element */
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import CategoryVisualizer from './CategoryVisualizer';
 import VolumeConverterClient from '@/app/volume-converter/VolumeConverterClient';
 import {
@@ -19,6 +19,17 @@ interface CategoryConverterViewProps {
 }
 
 const TABLE_BASE_VALUES = [0.1, 0.5, 1, 2, 5, 10, 20, 50, 100, 500, 1000];
+
+const DEDICATED_PAIRS: Record<string, string> = {
+  'g-to-oz': '/conversion/gram-to-ounces',
+  'oz-to-g': '/conversion/ounces-to-grams',
+  'g-to-lb': '/conversion/gram-to-pound',
+  'lb-to-g': '/conversion/pound-to-gram',
+  'g-to-kg': '/conversion/gram-to-kilogram',
+  'kg-to-g': '/conversion/kilograms-to-grams',
+  'g-to-mg': '/conversion/gram-to-milligram',
+  'mg-to-g': '/conversion/milligram-to-gram',
+};
 
 export default function CategoryConverterView({ categoryId }: CategoryConverterViewProps) {
   // If volume, render the dedicated VolumeConverterClient
@@ -159,6 +170,8 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
       const uTo = units.find((u) => u.id === chip.to) || units[1] || units[0];
       const conv = convertValue(1, category.id, uFrom.id, uTo.id);
       const factorStr = conv.resultNumber >= 1 ? `×${conv.resultNumber.toFixed(4)}` : `÷${(1 / conv.resultNumber).toFixed(4)}`;
+      const dedicatedKey = `${uFrom.id}-to-${uTo.id}`;
+      const dedicatedUrl = DEDICATED_PAIRS[dedicatedKey] || null;
       return {
         title: chip.label,
         traffic: trafficCounts[idx % trafficCounts.length],
@@ -166,7 +179,8 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
         val: 1,
         from: uFrom.id,
         to: uTo.id,
-        factor: factorStr
+        factor: factorStr,
+        dedicatedUrl
       };
     });
   }, [richData.popularChips, units, category.id]);
@@ -230,7 +244,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
   const handleShare = useCallback(() => {
     if (typeof navigator !== 'undefined' && navigator.share) {
       navigator.share({
-        title: `SolveIt ${category.name} Converter`,
+        title: `SolveIt Calculator ${category.name} Converter`,
         text: `${inputValue} ${fromUnit.name} = ${formattedResult} ${toUnit.name}`,
         url: window.location.href
       }).catch(() => {});
@@ -254,7 +268,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
   // Export JSON action
   const handleExportJSON = useCallback(() => {
     const payload = {
-      calculator: `SolveIt Universal ${category.name} Converter`,
+      calculator: `SolveIt Calculator Universal ${category.name} Converter`,
       timestamp: new Date().toISOString(),
       input: { value: inputValue, unit: fromUnit.id, unitName: fromUnit.name },
       output: {
@@ -408,12 +422,14 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
         <header className="w-full bg-surface/85 backdrop-blur-xl border-b border-outline-variant/40 shadow-[0_1px_8px_rgba(0,0,0,0.03)]">
           <div className="h-16 max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop flex items-center justify-between gap-space-md">
             <div className="flex items-center gap-space-lg">
-              <Link className="flex items-center gap-space-sm focus:outline-none" href="/">
-                <img
+              <Link className="flex items-center gap-space-sm focus:outline-none relative h-12 aspect-[238/54]" href="/">
+                <Image
                   alt="SolveIt Calculator Brand Logo"
-                  className="h-12 w-auto object-contain"
+                  className="object-contain"
                   src="/logo.png"
-                  referrerPolicy="no-referrer"
+                  fill
+                  sizes="200px"
+                  priority
                 />
               </Link>
               <nav className="hidden lg:flex items-center gap-space-2xs p-1">
@@ -435,7 +451,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                     <Link href="/time-date" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Time &amp; Date</Link>
                     <Link href="/health" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Health &amp; Fitness</Link>
                     <Link href="/conversions" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Conversions</Link>
-                    <Link href="/automotive" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Automotive</Link>
+                    <Link href="/automotive-calculators-estimators" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Automotive</Link>
                     <Link href="/finance" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Financial</Link>
                     <Link href="/math" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors">Math</Link>
                     <Link href="/" className="px-4 py-2 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-colors border-t border-outline-variant/30 mt-1 pt-2 font-medium">All Categories</Link>
@@ -977,13 +993,22 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                       <div className="font-data-mono text-body-sm text-on-surface-variant mt-1">{card.formula}</div>
                     </div>
                     <div className="mt-4 pt-3 flex items-center justify-between">
-                      <button
-                        className="text-primary font-body-sm text-body-sm font-semibold hover:underline flex items-center gap-1 cursor-pointer"
-                        onClick={() => setConversion(card.val, card.from, card.to)}
-                        type="button"
-                      >
-                        Compute <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                      </button>
+                      {card.dedicatedUrl ? (
+                        <Link
+                          className="text-primary font-body-sm text-body-sm font-semibold hover:underline flex items-center gap-1 cursor-pointer"
+                          href={card.dedicatedUrl}
+                        >
+                          Open Tool <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                        </Link>
+                      ) : (
+                        <button
+                          className="text-primary font-body-sm text-body-sm font-semibold hover:underline flex items-center gap-1 cursor-pointer"
+                          onClick={() => setConversion(card.val, card.from, card.to)}
+                          type="button"
+                        >
+                          Compute <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                        </button>
+                      )}
                       <span className="text-[12px] text-outline font-data-mono">{card.factor}</span>
                     </div>
                   </div>
@@ -1012,16 +1037,25 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                       Standard unit symbol: <span className="font-data-mono text-primary font-bold">{mainU.symbol}</span>. System classification: <span className="capitalize">{mainU.system || 'Standard'}</span>.
                     </p>
                   </div>
-                  <button
-                    className="mt-4 w-full py-1.5 rounded-lg bg-surface-container-lowest text-primary hover:bg-primary hover:text-on-primary font-label-caps text-label-caps transition-all cursor-pointer"
-                    onClick={() => {
-                      const target = units[(idx + 1) % units.length];
-                      setConversion(1, mainU.id, target.id);
-                    }}
-                    type="button"
-                  >
-                    Select {mainU.symbol}
-                  </button>
+                  {mainU.id === 'g' ? (
+                    <Link
+                      href="/conversion/gram"
+                      className="mt-4 w-full py-1.5 rounded-lg bg-surface-container-lowest text-primary hover:bg-primary hover:text-on-primary font-label-caps text-label-caps transition-all cursor-pointer flex justify-center items-center"
+                    >
+                      Select {mainU.symbol}
+                    </Link>
+                  ) : (
+                    <button
+                      className="mt-4 w-full py-1.5 rounded-lg bg-surface-container-lowest text-primary hover:bg-primary hover:text-on-primary font-label-caps text-label-caps transition-all cursor-pointer"
+                      onClick={() => {
+                        const target = units[(idx + 1) % units.length];
+                        setConversion(1, mainU.id, target.id);
+                      }}
+                      type="button"
+                    >
+                      Select {mainU.symbol}
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
@@ -1299,92 +1333,6 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
           </section>
         </div>
       </main>
-
-      {/* FOOTER */}
-      <footer className="w-full bg-surface-container-lowest border-t border-outline-variant/30 mt-space-3xl">
-        <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop pt-space-2xl pb-space-xl">
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-space-xl pb-space-2xl border-b border-outline-variant/30">
-            <div className="col-span-2 lg:col-span-1">
-              <div className="flex items-center gap-space-sm mb-space-sm">
-                <img
-                  alt="SolveIt Calculator Brand Logo"
-                  className="h-7 w-auto object-contain"
-                  src="https://lh3.googleusercontent.com/aida/AEtjO1UgJbbnQgYLzjhb_qeEsC93I-1XXreecdK60mdw1th0D_7ITk1wgo3Q4m2srbFlLTmLTaMFDIQIpoLg1XvURUxBibragjTBtbJyUlLfXmPT6PF9K8w_muzxBArKo_j4tNBT5eQa-DpjL7MC0aMTvrREQnm5Hs_wAAk9rnx5RjkiPKyCM65Rha3EkGznyImbA9ByITNU1_cyybhjmDcChmrXHczyoj6e0gjGjbauvA7kHd9fqlPyWDO9sT4"
-                  referrerPolicy="no-referrer"
-                />
-                <span className="font-headline-md text-headline-md text-on-surface tracking-tight">SolveIt</span>
-              </div>
-              <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                Precision-engineered computational suites designed with architectural minimalism and algorithmic authority.
-              </p>
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-surface-container-low border border-outline-variant/40 text-on-surface-variant font-label-caps text-label-caps">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                Engine v4.2.0 • 2025 Verified
-              </div>
-            </div>
-            <div>
-              <p className="font-label-caps text-label-caps text-on-surface uppercase tracking-wider mb-space-md">Financial Engines</p>
-              <ul className="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant">
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Mortgage &amp; Amortization</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Investment Compounder</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Roth IRA vs 401(k)</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Federal Tax Bracket 2025</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">SaaS Burn &amp; Runway</li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-label-caps text-label-caps text-on-surface uppercase tracking-wider mb-space-md">Math &amp; Engineering</p>
-              <ul className="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant">
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Scientific Matrix Solver</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Integral &amp; Differential</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Statistics &amp; Variance</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Fourier Fast Transform</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Hex / Binary Converter</li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-label-caps text-label-caps text-on-surface uppercase tracking-wider mb-space-md">Health &amp; Everyday</p>
-              <ul className="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant">
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Macro &amp; TDEE Calibrator</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Body Fat Hydrostatic</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Global Time Zone Offset</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Metric &amp; Imperial Flow</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Fuel Economy &amp; EV Range</li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-label-caps text-label-caps text-on-surface uppercase tracking-wider mb-space-md">Platform &amp; Legal</p>
-              <ul className="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant">
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Developer APIs</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Methodology &amp; Sources</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Editorial Standards</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Privacy Policy</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Terms of Service</li>
-              </ul>
-            </div>
-          </div>
-          <div className="pt-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-on-surface-variant">
-            <div className="flex items-center gap-space-lg">
-              <div className="flex items-center gap-space-xs">
-                <span className="material-symbols-outlined text-[18px] text-primary">verified_user</span>
-                <span>256-Bit Encrypted Local Processing</span>
-              </div>
-              <div className="flex items-center gap-space-xs hidden sm:flex">
-                <span className="material-symbols-outlined text-[18px] text-primary">speed</span>
-                <span>Zero Latency Compute</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-space-md">
-              <span className="text-on-surface font-medium">© 2025 SolveIt Inc. All rights reserved.</span>
-              <div className="flex items-center gap-space-xs">
-                <span className="material-symbols-outlined text-[18px] hover:text-on-surface cursor-pointer">public</span>
-                <span className="material-symbols-outlined text-[18px] hover:text-on-surface cursor-pointer">terminal</span>
-                <span className="material-symbols-outlined text-[18px] hover:text-on-surface cursor-pointer">rss_feed</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

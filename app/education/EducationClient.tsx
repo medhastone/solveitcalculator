@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import Link from 'next/link';
 import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 
 export default function EducationClient() {
   // --- Search & Filter State ---
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeSubTab, setActiveSubTab] = useState('all');
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Keyboard shortcut '/' focus search
@@ -372,51 +371,20 @@ export default function EducationClient() {
 
   return (
     <div className="min-h-screen bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col">
-      <Header />
+      
 
-      <main className="w-full pt-20 bg-surface flex-1">
-        {/* Section 1: Sub-navigation & Metrology Badges Strip */}
-        <section className="w-full bg-surface-container-low py-space-xs shadow-sm border-b border-outline-variant/30">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop flex flex-col md:flex-row items-center justify-between gap-space-sm">
-            {/* Sub-nav tabs */}
-            <nav className="flex items-center gap-space-2xs overflow-x-auto w-full md:w-auto py-1 text-nowrap">
-              {[
-                { id: 'all', label: 'All Education Tools', icon: 'apps', href: '#directory' },
-                { id: 'gpa', label: 'GPA & Grades', href: '#workbench-gpa' },
-                { id: 'exams', label: 'Exam Prep & Curves', href: '#directory' },
-                { id: 'attendance', label: 'Attendance & Pacing', href: '#workbench-attendance' },
-                { id: 'study', label: 'Study Planner', href: '#directory' },
-                { id: 'college', label: 'College & Aid', href: '#recommender' },
-                { id: 'citations', label: 'Research & Citations', href: '#citations' },
-                { id: 'teacher', label: 'Teacher Tools', href: '#directory' }
-              ].map(tab => (
-                <a
-                  key={tab.id}
-                  href={tab.href}
-                  onClick={() => setActiveSubTab(tab.id)}
-                  className={`px-space-xs py-1 rounded-md font-body-sm transition-colors flex items-center gap-1 ${
-                    activeSubTab === tab.id
-                      ? 'bg-primary text-on-primary shadow-sm font-medium'
-                      : 'text-on-surface-variant hover:bg-surface-container'
-                  }`}
-                >
-                  {tab.icon && <span className="material-symbols-outlined text-[16px]">{tab.icon}</span>}
-                  {tab.label}
-                </a>
-              ))}
+      <main className="w-full pt-16 bg-surface flex-1">
+        {/* Breadcrumb Navigation Bar */}
+        <section className="w-full bg-surface-container-low/70 py-space-xs border-b border-outline-variant/20">
+          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center justify-between gap-space-xs text-body-sm font-body-sm">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-space-xs text-on-surface-variant flex-wrap">
+              <Link className="hover:text-primary transition-colors flex items-center gap-1" href="/">
+                <span className="material-symbols-outlined text-[16px]">home</span>
+                Home
+              </Link>
+              <span className="text-outline-variant">/</span>
+              <span className="text-on-surface font-medium">Education Calculators</span>
             </nav>
-            {/* Metrology Trust Badges */}
-            <div className="flex items-center gap-space-xs overflow-x-auto w-full md:w-auto text-nowrap">
-              <span className="inline-flex items-center gap-1 text-[11px] font-data-mono bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-full">
-                <span className="material-symbols-outlined text-[14px] text-primary">verified</span> Student &amp; Educator Verified
-              </span>
-              <span className="inline-flex items-center gap-1 text-[11px] font-data-mono bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-full">
-                <span className="material-symbols-outlined text-[14px] text-secondary">bolt</span> Instant Client-Side Math
-              </span>
-              <span className="inline-flex items-center gap-1 text-[11px] font-data-mono bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-full">
-                <span className="material-symbols-outlined text-[14px] text-primary">lock</span> 100% Air-Gapped Private
-              </span>
-            </div>
           </div>
         </section>
 
@@ -427,22 +395,22 @@ export default function EducationClient() {
           <div className="absolute top-12 right-12 w-64 h-64 bg-secondary-container/10 rounded-full blur-2xl pointer-events-none"></div>
 
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop relative z-10 flex flex-col items-center text-center">
-            {/* Breadcrumb & Overline */}
+            {/* Overline Badge */}
             <div className="flex items-center gap-space-xs text-on-surface-variant font-label-caps uppercase tracking-wider mb-space-xs">
-              <span className="text-primary font-bold">ACADEMIC SUCCESS &amp; LEARNING HUB</span>
+              <span className="text-primary font-bold">SOLVEITCALCULATOR • ACADEMIC SUCCESS &amp; LEARNING HUB</span>
             </div>
-            {/* Main Headline */}
+            {/* Main Headline H1 & Hero Title */}
             <h1 className="font-headline-lg text-headline-lg md:font-display-hero md:text-display-hero text-on-surface tracking-tight font-bold max-w-4xl">
               Education Calculators &amp; Academic Planning Tools
             </h1>
             <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-space-sm leading-relaxed">
-              Easy-to-use GPA calculators, final grade planners, study schedule helpers, citation makers, and exam score tools. Designed for students, parents, and teachers.
+              Plan your studies, track grades, calculate GPA, manage attendance, estimate exam scores, and achieve your academic goals with free educational calculators.
             </p>
 
             {/* Metric Telemetry Strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-sm w-full max-w-3xl mt-space-lg mb-space-lg">
               <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
-                <span className="font-numerical-display-mobile text-primary font-bold">500+</span>
+                <span className="font-numerical-display-mobile text-primary font-bold">100+</span>
                 <span className="font-label-caps text-on-surface-variant uppercase mt-1">Education Tools</span>
               </div>
               <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
@@ -450,7 +418,7 @@ export default function EducationClient() {
                 <span className="font-label-caps text-on-surface-variant uppercase mt-1">SUBJECTS &amp; GRADES</span>
               </div>
               <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
-                <span className="font-numerical-display-mobile text-on-surface font-bold">8.2M+</span>
+                <span className="font-numerical-display-mobile text-on-surface font-bold">55K+</span>
                 <span className="font-label-caps text-on-surface-variant uppercase mt-1">PROBLEMS SOLVED</span>
               </div>
               <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
@@ -469,7 +437,7 @@ export default function EducationClient() {
                   onChange={e => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-12 py-3.5 bg-transparent text-on-surface font-body-md focus:outline-none placeholder:text-outline"
                   id="edu-search-input"
-                  placeholder="Search weighted GPA, finals score, attendance rules, APA citations, SAT conversions..."
+                  placeholder="Search Education Calculators: GPA, grades, CGPA, attendance, study planner, exam score, scholarship..."
                   type="text"
                 />
                 <kbd className="absolute right-4 px-2 py-0.5 bg-surface-container font-data-mono text-[11px] text-on-surface-variant rounded shadow-sm">
@@ -480,12 +448,16 @@ export default function EducationClient() {
               <div className="flex flex-wrap items-center justify-center gap-space-2xs mt-space-sm text-center">
                 <span className="font-label-caps text-outline uppercase mr-1">Trending:</span>
                 {[
-                  'Weighted GPA',
-                  'Final Grade Needed',
-                  'Attendance 75% Rule',
-                  'Pomodoro Pacer',
-                  'APA 7th Generator',
-                  'SAT/ACT Concordance'
+                  'GPA Calculator',
+                  'CGPA Calculator',
+                  'Grade Calculator',
+                  'Final Grade Calculator',
+                  'Attendance Calculator',
+                  'Study Planner Calculator',
+                  'Exam Score Calculator',
+                  'Scholarship Calculator',
+                  'Student Loan Calculator',
+                  'Semester GPA Calculator'
                 ].map(pill => (
                   <button
                     key={pill}
@@ -1000,18 +972,72 @@ export default function EducationClient() {
           </div>
         </section>
 
-        {/* Section 5: Comprehensive 10-Category Academic Directory (500+ Tools) */}
+        {/* Section 5: Comprehensive 10-Category Academic Directory & Popular Categories */}
         <section className="w-full py-space-3xl bg-surface" id="directory">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-xl">
+            {/* Category Description & Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-lg">
               <div>
-                <span className="font-label-caps text-primary uppercase tracking-wider font-semibold">CALCULATOR DIRECTORY</span>
+                <span className="font-label-caps text-primary uppercase tracking-wider font-semibold">EDUCATION CALCULATOR DIRECTORY</span>
                 <h2 className="font-headline-lg text-headline-lg text-on-surface mt-1 font-bold">Explore All Academic Tools</h2>
+                <p className="font-body-md text-body-md text-on-surface-variant max-w-3xl mt-2 leading-relaxed">
+                  Find free Education Calculators &amp; Academic Planning Tools for GPA, CGPA, grades, attendance, study planning, exam scores, scholarships, student loans, and academic success. Fast, accurate, and easy-to-use calculators for students and educators worldwide.
+                </p>
               </div>
-              <div className="flex items-center gap-2 mt-3 md:mt-0 font-data-mono text-on-surface-variant text-[12px]">
+              <div className="flex items-center gap-2 mt-3 md:mt-0 font-data-mono text-on-surface-variant text-[12px] shrink-0">
                 <span>Categorical Coverage: 10 Disciplines</span>
                 <span>•</span>
-                <span className="text-primary font-bold">500+ Calculators &amp; Tools</span>
+                <span className="text-primary font-bold">100+ Calculators &amp; Tools</span>
+              </div>
+            </div>
+
+            {/* Popular Calculator Categories Grid */}
+            <div className="mb-space-2xl">
+              <div className="flex items-center justify-between mb-space-sm">
+                <h3 className="font-headline-md text-headline-md text-on-surface font-bold flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary text-[20px]">stars</span>
+                  Popular Calculator Categories
+                </h3>
+                <span className="font-label-caps text-[11px] text-on-surface-variant uppercase">Core Student Hub</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-space-sm">
+                {[
+                  { name: 'GPA Calculators', icon: 'school', count: '14 Tools', link: '#workbench-gpa' },
+                  { name: 'CGPA Calculators', icon: 'grade', count: '8 Tools', link: '#workbench-gpa' },
+                  { name: 'Grade Calculators', icon: 'assignment_turned_in', count: '12 Tools', link: '#workbench-final' },
+                  { name: 'Final Exam Calculators', icon: 'calculate', count: '9 Tools', link: '#workbench-final' },
+                  { name: 'Attendance Calculators', icon: 'event_available', count: '11 Tools', link: '#workbench-attendance' },
+                  { name: 'Percentage Calculators', icon: 'percent', count: '10 Tools', link: '/percentage-calculator' },
+                  { name: 'Study Time Calculators', icon: 'timer', count: '16 Tools', link: '#directory' },
+                  { name: 'Scholarship Calculators', icon: 'workspace_premium', count: '7 Tools', link: '#directory' },
+                  { name: 'Student Loan Calculators', icon: 'payments', count: '10 Tools', link: '#directory' },
+                  { name: 'College Cost Calculators', icon: 'account_balance', count: '8 Tools', link: '#directory' },
+                  { name: 'Academic Planning Tools', icon: 'calendar_month', count: '15 Tools', link: '#directory' },
+                  { name: 'Exam Score Calculators', icon: 'quiz', count: '14 Tools', link: '#directory' },
+                ].map(item => (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    onClick={() => {
+                      if (item.link === '#directory') {
+                        setSearchQuery(item.name.replace(' Calculators', '').replace(' Tools', ''));
+                      }
+                    }}
+                    className="p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/30 hover:border-primary/50 hover:shadow-xs transition-all flex items-center justify-between group"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span className="material-symbols-outlined text-primary text-[18px] group-hover:scale-110 transition-transform">
+                        {item.icon}
+                      </span>
+                      <span className="font-body-sm text-body-sm font-semibold text-on-surface group-hover:text-primary transition-colors">
+                        {item.name}
+                      </span>
+                    </div>
+                    <span className="font-data-mono text-[10px] text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">
+                      {item.count}
+                    </span>
+                  </a>
+                ))}
               </div>
             </div>
 
@@ -1041,10 +1067,18 @@ export default function EducationClient() {
                       {cat.tools.map((tool, idx) => (
                         <li
                           key={idx}
-                          className="flex items-center justify-between py-1 border-b border-surface-container-low hover:text-primary cursor-pointer transition-colors"
+                          onClick={() => {
+                            setSearchQuery(tool);
+                            const searchEl = document.getElementById('edu-search-input');
+                            if (searchEl) {
+                              searchEl.scrollIntoView({ behavior: 'smooth' });
+                              searchEl.focus();
+                            }
+                          }}
+                          className="group flex items-center justify-between py-1.5 border-b border-surface-container-low hover:text-primary cursor-pointer transition-colors"
                         >
-                          <span>{tool}</span>
-                          <span className="material-symbols-outlined text-[16px] text-outline">chevron_right</span>
+                          <span className="font-bold text-on-surface group-hover:text-primary transition-colors">{tool}</span>
+                          <span className="material-symbols-outlined text-[16px] text-outline group-hover:text-primary group-hover:translate-x-0.5 transition-all">chevron_right</span>
                         </li>
                       ))}
                     </ul>
@@ -1502,8 +1536,6 @@ export default function EducationClient() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }

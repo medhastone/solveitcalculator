@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Header from '../../../components/Header';
-import Footer from '../../../components/Footer';
+import Image from 'next/image';
 
 export default function WorkHoursClient() {
   const [mounted, setMounted] = useState(false);
@@ -180,7 +179,7 @@ export default function WorkHoursClient() {
 
   return (
     <div className="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col">
-      <Header />
+      
       <main className="w-full pt-16 bg-background flex-grow">
         <div className="flex flex-col w-full">
           {/* BREADCRUMBS & COMPLIANCE TELEMETRY STRIP */}
@@ -959,7 +958,9 @@ export default function WorkHoursClient() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
                 {/* PERSONA 1: SOFTWARE ENGINEER */}
                 <div className="rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden flex flex-col">
-                  <img className="w-full h-44 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyt0GeKVryhuZwdTQB_yYgZ0TOIX3IFvRya9YIcYV4teoI_DerdUDUgGsS6WYnaFMAhzA9vVidkFBQ8ZIlSRJ6NNeRqkQxkfUHvEw0JMRPwjrMFYdkQ9iGBjpZXyA6_OxcjzrJ-I2oejqzDSBELh0YFFpQPF09qFFLQ5LI_lk3oTMxZ7q8KAUsw0TgeWiuhNhFj-Ip0cjYaoberERjhw0vFqlCHbf5U-0ASihNUTq2hQJCUzzsPB7I" alt="Professional software engineer" />
+                  <div className="relative w-full h-44">
+                    <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyt0GeKVryhuZwdTQB_yYgZ0TOIX3IFvRya9YIcYV4teoI_DerdUDUgGsS6WYnaFMAhzA9vVidkFBQ8ZIlSRJ6NNeRqkQxkfUHvEw0JMRPwjrMFYdkQ9iGBjpZXyA6_OxcjzrJ-I2oejqzDSBELh0YFFpQPF09qFFLQ5LI_lk3oTMxZ7q8KAUsw0TgeWiuhNhFj-Ip0cjYaoberERjhw0vFqlCHbf5U-0ASihNUTq2hQJCUzzsPB7I" alt="Professional software engineer" fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" referrerPolicy="no-referrer" />
+                  </div>
                   <div className="p-4 flex flex-col gap-2 flex-grow">
                     <span className="font-label-caps text-label-caps text-primary uppercase">Tech &amp; Engineering</span>
                     <h3 className="font-headline-md text-headline-md text-on-surface">Devin K. — Senior SRE</h3>
@@ -974,7 +975,9 @@ export default function WorkHoursClient() {
                 </div>
                 {/* PERSONA 2: ICU NURSE */}
                 <div className="rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden flex flex-col">
-                  <img className="w-full h-44 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5RDIeRtjPbzSqHcjZQf8sWrx09xhqwQ6b8ftun9iCCsE2hxmmsC52Kqk-VHDsJf-DfdYZfLCGjfnjOCt2t-BLYSB8s6jEsBDx284Mysxlqyu0lOZYjboGvcDamjdiNYImZu0qAx0jClWrjBOe-IiyJj5-3BZ4_eLZGmeF7x1JYzPBPVil5NkBdeifYn6I76Fu9_oFwXKbDpfiqgL49aPiQ59NA-H1-JJwOj6pjAvmK36Rmn_gaVSC" alt="Healthcare clinical specialist" />
+                  <div className="relative w-full h-44">
+                    <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5RDIeRtjPbzSqHcjZQf8sWrx09xhqwQ6b8ftun9iCCsE2hxmmsC52Kqk-VHDsJf-DfdYZfLCGjfnjOCt2t-BLYSB8s6jEsBDx284Mysxlqyu0lOZYjboGvcDamjdiNYImZu0qAx0jClWrjBOe-IiyJj5-3BZ4_eLZGmeF7x1JYzPBPVil5NkBdeifYn6I76Fu9_oFwXKbDpfiqgL49aPiQ59NA-H1-JJwOj6pjAvmK36Rmn_gaVSC" alt="Healthcare clinical specialist" fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" referrerPolicy="no-referrer" />
+                  </div>
                   <div className="p-4 flex flex-col gap-2 flex-grow">
                     <span className="font-label-caps text-label-caps text-tertiary uppercase">Clinical Healthcare</span>
                     <h3 className="font-headline-md text-headline-md text-on-surface">Maria S. — Travel ICU Nurse</h3>
@@ -989,7 +992,9 @@ export default function WorkHoursClient() {
                 </div>
                 {/* PERSONA 3: FREELANCE CONSULTANT */}
                 <div className="rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden flex flex-col">
-                  <img className="w-full h-44 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGCsWITqRGtkpTMfW_0-qoHiQ2gE_xlXi6miZC4kER8fUXjaD8kPYsoPZQhYW-iBmSTaPhnM74Ul_kZ_5LZBO0cOCPrr1dymPku488KxY00ZT-jGPiMmBRtWFrjYClWd4MjFI7CGytaXNawivzdhyUKOad4PTYjsU35i5oS_jrCB0Voys3pstMHGVXbmrsD1xiSdhAX4T-SgMuGo-Cqx_SnYH5S_n94rx_a7PjwQudzbwN9o7-JTl8" alt="Architectural and brand designer" />
+                  <div className="relative w-full h-44">
+                    <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGCsWITqRGtkpTMfW_0-qoHiQ2gE_xlXi6miZC4kER8fUXjaD8kPYsoPZQhYW-iBmSTaPhnM74Ul_kZ_5LZBO0cOCPrr1dymPku488KxY00ZT-jGPiMmBRtWFrjYClWd4MjFI7CGytaXNawivzdhyUKOad4PTYjsU35i5oS_jrCB0Voys3pstMHGVXbmrsD1xiSdhAX4T-SgMuGo-Cqx_SnYH5S_n94rx_a7PjwQudzbwN9o7-JTl8" alt="Architectural and brand designer" fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" referrerPolicy="no-referrer" />
+                  </div>
                   <div className="p-4 flex flex-col gap-2 flex-grow">
                     <span className="font-label-caps text-label-caps text-secondary uppercase">Independent Advisory</span>
                     <h3 className="font-headline-md text-headline-md text-on-surface">Alex P. — Brand Strategist</h3>
@@ -1004,7 +1009,9 @@ export default function WorkHoursClient() {
                 </div>
                 {/* PERSONA 4: RETAIL SUPERVISOR */}
                 <div className="rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden flex flex-col">
-                  <img className="w-full h-44 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsttEfNY8E8pBd1tCOH2Bsr7y_waTLYwXyBoFoT4Qcs1pKKuj8FOAM0i7SGobpp4iZGTuk0CMEJN0J8maYZaVbRmlheg7HbpQ3UnJN2CnZnNT6WmURA5kJt8Rbj0F-9D3OzEdhzD8coxSO65tdZ14QB1rgb5dkd1i_HtG9vHZaRCrdmSM1xLAqz8PHydKYWBDR2ysK3sprCkxJnMllDxKRK8U-KeIfHQPJwdYRi2VsJ84zwyWs3c1N" alt="Logistics team leader" />
+                  <div className="relative w-full h-44">
+                    <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsttEfNY8E8pBd1tCOH2Bsr7y_waTLYwXyBoFoT4Qcs1pKKuj8FOAM0i7SGobpp4iZGTuk0CMEJN0J8maYZaVbRmlheg7HbpQ3UnJN2CnZnNT6WmURA5kJt8Rbj0F-9D3OzEdhzD8coxSO65tdZ14QB1rgb5dkd1i_HtG9vHZaRCrdmSM1xLAqz8PHydKYWBDR2ysK3sprCkxJnMllDxKRK8U-KeIfHQPJwdYRi2VsJ84zwyWs3c1N" alt="Logistics team leader" fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" referrerPolicy="no-referrer" />
+                  </div>
                   <div className="p-4 flex flex-col gap-2 flex-grow">
                     <span className="font-label-caps text-label-caps text-on-surface uppercase">Operations &amp; Retail</span>
                     <h3 className="font-headline-md text-headline-md text-on-surface">Marcus R. — Store Lead</h3>
@@ -1277,7 +1284,6 @@ export default function WorkHoursClient() {
           </section>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

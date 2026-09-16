@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 
 interface CurrencyConfig {
   symbol: string;
@@ -420,7 +418,7 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
 
   return (
     <div className="bg-surface font-body-md text-body-md text-on-surface min-h-screen flex flex-col">
-      <Header />
+      
       <main className="w-full pt-16 bg-surface flex-1">
         <div className="flex flex-col w-full">
           
@@ -1725,7 +1723,6 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
 
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

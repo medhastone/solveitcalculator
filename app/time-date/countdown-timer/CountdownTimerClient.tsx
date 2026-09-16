@@ -2,8 +2,6 @@
 
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import Header from '../../../components/Header';
-import Footer from '../../../components/Footer';
 
 interface EventPreset {
   name: string;
@@ -242,7 +240,7 @@ Total Seconds: ${countdown.totalSeconds.toLocaleString()}s`;
 
   return (
     <div className="min-h-screen bg-surface text-on-surface flex flex-col font-body-md selection:bg-primary/20">
-      <Header />
+      
 
       {/* Toast Notification */}
       {toastMessage && (
@@ -498,8 +496,6 @@ Total Seconds: ${countdown.totalSeconds.toLocaleString()}s`;
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }

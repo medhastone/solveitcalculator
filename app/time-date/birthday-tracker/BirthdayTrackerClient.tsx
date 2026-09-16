@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 
 export default function BirthdayTrackerClient() {
   const [mounted, setMounted] = useState(false);
@@ -330,7 +328,7 @@ export default function BirthdayTrackerClient() {
 
   return (
     <div className="bg-surface font-body-md text-body-md text-on-surface min-h-screen flex flex-col">
-      <Header />
+      
       <main className="w-full pt-16 bg-surface flex-1">
         <div className="flex flex-col w-full">
           {/* SECTION 1: Breadcrumbs & Meta bar */}
@@ -1319,7 +1317,6 @@ function computeSolarOrbit(birthDate, targetDate = new Date()) {
 
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

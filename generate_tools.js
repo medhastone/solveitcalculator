@@ -1,0 +1,481 @@
+const fs = require('fs');
+
+const comprehensiveTools = [
+  // Finance & Banking & Loans
+  {
+    id: "mortgage-calc",
+    title: "Mortgage Payment Calculator",
+    name: "Mortgage Payment Calculator",
+    link: "/finance/mortgage-calculator",
+    category: "finance",
+    label: "Finance",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Calculate monthly home loan payments, PITI, amortization, and escrow.",
+    keywords: ["mortgage", "home loan", "piti", "amortization", "escrow", "interest rate", "housing", "property", "refinance"]
+  },
+  {
+    id: "investing-growth",
+    title: "Investing & Growth Compounder",
+    name: "Investing & Growth Compounder",
+    link: "/investing-and-growth",
+    category: "finance",
+    label: "Finance",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Calculate compound interest, SIP returns, CAGR, and long-term portfolio growth.",
+    keywords: ["investing", "growth", "sip", "compound interest", "cagr", "roi", "mutual fund", "stocks", "dividend"]
+  },
+  {
+    id: "emi-calc",
+    title: "EMI Loan Calculator",
+    name: "Equated Monthly Installment (EMI) Calculator",
+    link: "/finance/emi-calculator",
+    category: "finance",
+    label: "Finance",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Calculate monthly installments, interest breakdown, and payoff timelines for any loan.",
+    keywords: ["emi", "loan", "installment", "personal loan", "car loan", "debt", "repayment", "principal"]
+  },
+  {
+    id: "fire-forecaster",
+    title: "FIRE Forecaster & Retirement",
+    name: "Financial Independence, Retire Early (FIRE) Calculator",
+    link: "/finance/fire-forecaster",
+    category: "finance",
+    label: "Finance",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Determine your FIRE number, safe withdrawal rate (SWR), and target retirement age.",
+    keywords: ["fire", "financial independence", "retire early", "retirement", "swr", "4% rule", "nest egg", "savings rate"]
+  },
+  {
+    id: "salary-payroll",
+    title: "Salary & Payroll Calculator",
+    name: "Gross to Net Pay & Salary Breakdown",
+    link: "/salary-and-payroll",
+    category: "finance",
+    label: "Finance",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Convert hourly, weekly, monthly, and annual wages with tax and deduction estimates.",
+    keywords: ["salary", "payroll", "paycheck", "wages", "hourly", "gross to net", "take home pay", "income", "compensation"]
+  },
+  {
+    id: "daily-wage",
+    title: "Daily Wage Planner",
+    name: "Daily Wage & Shift Calculator",
+    link: "/daily-wage-calculator",
+    category: "finance",
+    label: "Finance",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Calculate daily earnings, overtime rates, and shift compensation.",
+    keywords: ["daily wage", "shift", "overtime", "hourly pay", "earnings", "work pay", "freelance rate"]
+  },
+  {
+    id: "global-tax",
+    title: "Global Tax Calculator",
+    name: "Income & Global Tax Engine",
+    link: "/global-tax-calculator",
+    category: "tax",
+    label: "Tax",
+    badgeClass: "bg-error-container text-error",
+    desc: "Comprehensive tax liability calculator across US, UK, Canada, Australia, Germany, and India.",
+    keywords: ["tax", "income tax", "global tax", "vat", "gst", "1099", "w2", "brackets", "deductions"]
+  },
+  {
+    id: "gst-calc",
+    title: "GST / VAT Calculator",
+    name: "GST & Sales Tax Inclusive/Exclusive Calculator",
+    link: "/tax-calculator",
+    category: "tax",
+    label: "Tax",
+    badgeClass: "bg-error-container text-error",
+    desc: "Calculate Goods and Services Tax (GST) or VAT amounts and gross/net values.",
+    keywords: ["gst", "vat", "sales tax", "tax inclusive", "tax exclusive", "reverse tax", "invoice"]
+  },
+  {
+    id: "banking-cash",
+    title: "Banking & Cash Accounts",
+    name: "Checking, APY & Cash Account Manager",
+    link: "/banking-and-cash-accounts",
+    category: "finance",
+    label: "Banking",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Calculate checking fees, APY yields, overdraft protection, and minimum balance costs.",
+    keywords: ["banking", "checking", "savings", "apy", "cash", "bank fees", "overdraft", "atm"]
+  },
+  {
+    id: "credit-cards",
+    title: "Credit Cards & Revolving Debt",
+    name: "Credit Card Payoff & 0% APR Transfer Calculator",
+    link: "/credit-cards-and-revolving",
+    category: "finance",
+    label: "Credit",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Optimize balance transfers, avalanche vs snowball payoff strategies, and minimize APR interest.",
+    keywords: ["credit card", "apr", "balance transfer", "debt payoff", "snowball", "avalanche", "minimum payment", "fico"]
+  },
+  {
+    id: "savings-liquidity",
+    title: "Savings & Liquidity Hub",
+    name: "HYSA, CD Ladders & Emergency Fund",
+    link: "/savings-and-liquidity",
+    category: "finance",
+    label: "Savings",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Model High-Yield Savings Accounts (HYSA), Certificate of Deposit ladders, and emergency funds.",
+    keywords: ["savings", "hysa", "cd ladder", "emergency fund", "liquidity", "interest", "apy", "certificate of deposit"]
+  },
+  {
+    id: "loans-amortization",
+    title: "Loans & Amortization Suite",
+    name: "Comprehensive Loan Amortization Schedule",
+    link: "/loans-and-amortization",
+    category: "finance",
+    label: "Loans",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Detailed amortization schedules with extra principal payments for auto, student, and personal loans.",
+    keywords: ["loan", "amortization", "schedule", "extra payments", "principal reduction", "auto loan", "student loan"]
+  },
+  {
+    id: "mortgages-real-estate",
+    title: "Mortgages & Real Estate Debt",
+    name: "PITI, 15 vs 30 Year, Refi & ARM Analyzer",
+    link: "/mortgages-and-real-estate-debt",
+    category: "finance",
+    label: "Mortgage",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Compare 15-year vs 30-year fixed mortgages, adjustable rate mortgages (ARM), and refinance break-even.",
+    keywords: ["mortgage", "real estate", "refinance", "15 vs 30", "arm", "piti", "closing costs", "home equity"]
+  },
+  {
+    id: "retirement-super",
+    title: "Retirement & Superannuation Hub",
+    name: "401(k), Superannuation & Pension Forecaster",
+    link: "/retirement-and-super",
+    category: "finance",
+    label: "Retirement",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Simulate employer 401(k) matches, Australian Superannuation, Roth conversions, and pension growth.",
+    keywords: ["retirement", "401k", "superannuation", "super", "ira", "roth", "pension", "annuity", "nest egg"]
+  },
+
+  // Health & Fitness
+  {
+    id: "bmi-calc",
+    title: "BMI Calculator & Body Composition",
+    name: "Body Mass Index (BMI) & Ideal Weight Calculator",
+    link: "/health/bmi",
+    category: "health",
+    label: "Health",
+    badgeClass: "bg-error-container text-error",
+    desc: "Calculate BMI, healthy weight ranges, body fat percentage, and prime index.",
+    keywords: ["bmi", "body mass index", "weight", "height", "obesity", "underweight", "ideal weight", "body fat", "health"]
+  },
+  {
+    id: "health-hub",
+    title: "Health & Fitness Suite",
+    name: "BMR, TDEE & Calorie Deficit Calculator",
+    link: "/health",
+    category: "health",
+    label: "Health",
+    badgeClass: "bg-error-container text-error",
+    desc: "Calculate Basal Metabolic Rate (BMR), Total Daily Energy Expenditure (TDEE), and macro goals.",
+    keywords: ["health", "bmr", "tdee", "calories", "calorie deficit", "macro", "metabolism", "fitness", "nutrition"]
+  },
+
+  // Math & Statistics
+  {
+    id: "percentage-calc",
+    title: "Percentage Calculator & Delta",
+    name: "Percentage Increase, Decrease & Difference Solver",
+    link: "/percentage-calculator",
+    category: "math",
+    label: "Math",
+    badgeClass: "bg-secondary-fixed text-secondary",
+    desc: "Solve percentage increase, percent off discounts, profit margins, and percentage differences.",
+    keywords: ["percentage", "percent", "percent change", "discount", "margin", "markup", "fraction to percent", "math", "delta"]
+  },
+  {
+    id: "scientific-calc",
+    title: "Scientific Calculator Suite",
+    name: "Advanced Scientific, Trigonometry & Logarithm Solver",
+    link: "/scientific-calculator",
+    category: "math",
+    label: "Math",
+    badgeClass: "bg-secondary-fixed text-secondary",
+    desc: "Solve complex algebraic equations, trigonometry (sin, cos, tan), square roots, logs, and powers.",
+    keywords: ["scientific", "trigonometry", "sin", "cos", "tan", "sqrt", "log", "exponent", "algebra", "equations", "math"]
+  },
+  {
+    id: "math-hub",
+    title: "Math & Statistics Hub",
+    name: "Geometry, Statistics, Standard Deviation & Formulas",
+    link: "/math",
+    category: "math",
+    label: "Math",
+    badgeClass: "bg-secondary-fixed text-secondary",
+    desc: "Comprehensive math solvers including standard deviation, permutations, combinations, and fractions.",
+    keywords: ["math", "statistics", "standard deviation", "variance", "fractions", "geometry", "probability", "mean", "median"]
+  },
+
+  // Time & Date
+  {
+    id: "age-calc",
+    title: "Age Calculator & Chronological Exact Age",
+    name: "Exact Chronological Age in Years, Months, Days, Hours",
+    link: "/time-date/age-calculator",
+    category: "time-date",
+    label: "Time & Date",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Calculate exact age down to the second, next milestone birthdays, and day of the week born.",
+    keywords: ["age", "birthday", "how old am i", "chronological age", "birth date", "date of birth", "years old"]
+  },
+  {
+    id: "date-difference",
+    title: "Date Difference & Duration Calculator",
+    name: "Days Between Two Dates & Working Business Days",
+    link: "/time-date/date-difference",
+    category: "time-date",
+    label: "Time & Date",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Calculate the exact number of days, weeks, business working days, and holidays between dates.",
+    keywords: ["date difference", "days between", "date duration", "business days", "working days", "calendar days", "weeks between"]
+  },
+  {
+    id: "work-hours",
+    title: "Work Hours & Timesheet Calculator",
+    name: "Work Hours, Shift Times & Pay Rate Timesheet",
+    link: "/time-date/work-hours",
+    category: "time-date",
+    label: "Time & Date",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Track daily clock-in/out times, lunch break deductions, gross hours, and overtime pay.",
+    keywords: ["work hours", "timesheet", "time card", "shift hours", "clock in clock out", "overtime", "break deduction"]
+  },
+  {
+    id: "world-clock",
+    title: "World Clock & Time Zone Grid",
+    name: "Global Time Zone Converter & Corridor Planner",
+    link: "/time-date/world-clock-grid",
+    category: "time-date",
+    label: "Time & Date",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Compare local times across global timezones (UTC, EST, PST, GMT, CET, IST, JST) with daylight saving.",
+    keywords: ["world clock", "time zone", "timezone converter", "utc", "gmt", "est", "pst", "ist", "meeting planner"]
+  },
+  {
+    id: "time-date-hub",
+    title: "Time & Date Hub",
+    name: "Master Time, Date, Calendar & Countdown Suite",
+    link: "/time-date",
+    category: "time-date",
+    label: "Time & Date",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Central suite for countdown timers, birthday trackers, DST transitions, and meeting corridors.",
+    keywords: ["time", "date", "calendar", "countdown", "timer", "stopwatch", "dst", "dst transition"]
+  },
+
+  // Conversions & Metrology
+  {
+    id: "conversions-hub",
+    title: "Universal Unit Converter Hub",
+    name: "Complete Metric, Imperial & Engineering Unit Converter",
+    link: "/conversions",
+    category: "conversion",
+    label: "Conversion",
+    badgeClass: "bg-surface-container-highest text-on-surface",
+    desc: "Convert across 25+ categories: length, weight, volume, temperature, pressure, energy, speed, power.",
+    keywords: ["conversion", "unit converter", "metric", "imperial", "convert", "measurement", "units", "calculator"]
+  },
+  {
+    id: "length-converter",
+    title: "Length & Distance Converter",
+    name: "Meters, Feet, Inches, Miles, Kilometers Converter",
+    link: "/length-converter",
+    category: "conversion",
+    label: "Conversion",
+    badgeClass: "bg-surface-container-highest text-on-surface",
+    desc: "Convert between millimeters, centimeters, meters, kilometers, inches, feet, yards, and miles.",
+    keywords: ["length", "distance", "meters", "feet", "inches", "miles", "km", "centimeters", "yards"]
+  },
+  {
+    id: "weight-converter",
+    title: "Weight & Mass Converter",
+    name: "Kilograms, Pounds, Ounces, Grams, Tons Converter",
+    link: "/weight-converter",
+    category: "conversion",
+    label: "Conversion",
+    badgeClass: "bg-surface-container-highest text-on-surface",
+    desc: "Convert grams, kilograms, pounds (lbs), ounces (oz), stones, and metric tons with exact precision.",
+    keywords: ["weight", "mass", "kg", "lbs", "pounds", "ounces", "grams", "kilograms", "stone", "ton"]
+  },
+  {
+    id: "volume-converter",
+    title: "Volume & Capacity Converter",
+    name: "Liters, Gallons, Milliliters, Fluid Ounces, Cups",
+    link: "/volume-converter",
+    category: "conversion",
+    label: "Conversion",
+    badgeClass: "bg-surface-container-highest text-on-surface",
+    desc: "Convert liters, gallons, cups, tablespoons, milliliters, and cubic meters.",
+    keywords: ["volume", "capacity", "liters", "gallons", "ml", "fl oz", "cups", "tablespoon", "cubic feet"]
+  },
+  {
+    id: "temperature-converter",
+    title: "Temperature Converter",
+    name: "Celsius, Fahrenheit & Kelvin Precision Converter",
+    link: "/temperature-converter",
+    category: "conversion",
+    label: "Conversion",
+    badgeClass: "bg-surface-container-highest text-on-surface",
+    desc: "Convert temperatures between Celsius (°C), Fahrenheit (°F), Kelvin (K), and Rankine.",
+    keywords: ["temperature", "celsius", "fahrenheit", "kelvin", "heat", "weather temp"]
+  },
+  {
+    id: "pressure-converter",
+    title: "Pressure Converter",
+    name: "PSI, Bar, Pascals, Atmosphere, mmHg Converter",
+    link: "/pressure-converter",
+    category: "conversion",
+    label: "Conversion",
+    badgeClass: "bg-surface-container-highest text-on-surface",
+    desc: "Convert pressure units including Psi, Bar, kPa, MPa, Pascals, and standard atmospheres.",
+    keywords: ["pressure", "psi", "bar", "pascal", "kpa", "atm", "torr", "mmhg", "tire pressure"]
+  },
+  {
+    id: "speed-converter",
+    title: "Speed & Velocity Converter",
+    name: "MPH, KM/H, Knots, Mach & m/s Converter",
+    link: "/speed-converter",
+    category: "conversion",
+    label: "Conversion",
+    badgeClass: "bg-surface-container-highest text-on-surface",
+    desc: "Convert miles per hour (mph), kilometers per hour (km/h), knots, and meters per second.",
+    keywords: ["speed", "velocity", "mph", "kmh", "knots", "mach", "mps", "acceleration"]
+  },
+  {
+    id: "energy-converter",
+    title: "Energy & Work Converter",
+    name: "Joules, Calories, Kilowatt-Hours, BTUs Converter",
+    link: "/energy-converter",
+    category: "conversion",
+    label: "Conversion",
+    badgeClass: "bg-surface-container-highest text-on-surface",
+    desc: "Convert Joules, kilojoules, dietary calories (kcal), BTUs, and kilowatt-hours (kWh).",
+    keywords: ["energy", "joules", "calories", "kcal", "kwh", "btu", "work", "power"]
+  },
+  {
+    id: "data-storage-converter",
+    title: "Data Storage & Byte Converter",
+    name: "Bytes, Kilobytes, Megabytes, Gigabytes, Terabytes",
+    link: "/data-storage-converter",
+    category: "technology",
+    label: "Tech",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Convert between Bits, Bytes, KB, MB, GB, TB, PB (decimal 1000 and binary 1024 basis).",
+    keywords: ["data storage", "bytes", "gb", "mb", "tb", "gigabytes", "megabytes", "terabytes", "kib"]
+  },
+
+  // Construction & Trades
+  {
+    id: "construction-hub",
+    title: "Home & Construction Calculators",
+    name: "Concrete Yardage, Framing, Drywall, Flooring, Roof Pitch",
+    link: "/home-construction",
+    category: "construction",
+    label: "Construction",
+    badgeClass: "bg-tertiary-fixed text-tertiary",
+    desc: "Calculate concrete bags/yards, framing lumber studs, drywall sheets, tile sqft, and roof pitch.",
+    keywords: ["construction", "concrete", "framing", "drywall", "lumber", "roof pitch", "flooring", "square feet", "contractor"]
+  },
+
+  // Automotive
+  {
+    id: "automotive-hub",
+    title: "Automotive & Engineering Calculators",
+    name: "Engine RPM, Gear Ratios, Speed, Fuel MPG, EV Range",
+    link: "/automotive",
+    category: "automotive",
+    label: "Automotive",
+    badgeClass: "bg-surface-container-highest text-on-surface-variant",
+    desc: "Calculate engine RPM from tire diameter and gear ratios, fuel economy (MPG vs L/100km), and EV range.",
+    keywords: ["automotive", "car", "engine", "rpm", "gear ratio", "speed at rpm", "fuel economy", "mpg", "ev range", "tire size"]
+  },
+  {
+    id: "gear-ratio",
+    title: "Gear Ratio & Speed at RPM Calculator",
+    name: "Transmission & Differential Speed at RPM Solver",
+    link: "/gear-ratio-calculator",
+    category: "automotive",
+    label: "Automotive",
+    badgeClass: "bg-surface-container-highest text-on-surface-variant",
+    desc: "Calculate vehicle speed from engine RPM, transmission gears, axle ratio, and tire radius.",
+    keywords: ["gear ratio", "rpm", "transmission", "differential", "top speed", "drivetrain", "mph at rpm"]
+  },
+
+  // Electrical
+  {
+    id: "electrical-hub",
+    title: "Electrical & Wire Sizing Calculators",
+    name: "Ohm's Law, AWG Wire Gauge, Voltage Drop, Solar",
+    link: "/electrical",
+    category: "electrical",
+    label: "Electrical",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Calculate Ohm's Law (V=IR), AWG copper wire gauge size, AC/DC voltage drop, and solar battery runtimes.",
+    keywords: ["electrical", "ohms law", "voltage drop", "awg", "wire size", "amps", "volts", "watts", "kw to amps", "solar battery"]
+  },
+
+  // Science & Physics
+  {
+    id: "science-hub",
+    title: "Science & Physics Hub",
+    name: "Density, Molarity, Velocity, Kinetic Energy & Half-Life",
+    link: "/science",
+    category: "science",
+    label: "Science",
+    badgeClass: "bg-secondary-fixed text-secondary",
+    desc: "Physics and chemistry calculators for molar mass, solution molarity, density, velocity, and radioactive half-life.",
+    keywords: ["science", "physics", "chemistry", "density", "molarity", "kinetic energy", "velocity", "half life", "mass"]
+  },
+
+  // Business & Startups
+  {
+    id: "business-hub",
+    title: "Business & Startup Calculators",
+    name: "Profit Margin, Runway, Burn Rate, Break-Even & SaaS",
+    link: "/business",
+    category: "business",
+    label: "Business",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Calculate gross profit margins, cash runway months, monthly burn rate, break-even unit sales, and SaaS churn.",
+    keywords: ["business", "margin", "profit", "runway", "burn rate", "break even", "saas", "cac", "ltv", "markup"]
+  },
+
+  // Education & GPA
+  {
+    id: "education-hub",
+    title: "Education & GPA Suite",
+    name: "College GPA, Weighted High School GPA & Final Exam Score",
+    link: "/education",
+    category: "education",
+    label: "Education",
+    badgeClass: "bg-secondary-fixed-dim text-on-secondary-fixed-variant",
+    desc: "Calculate 4.0 / 5.0 GPA, final exam score needed to get a target grade, and attendance thresholds.",
+    keywords: ["education", "gpa", "college gpa", "final exam", "grade calculator", "target grade", "weighted gpa", "percentile"]
+  },
+
+  // Technology & Dev
+  {
+    id: "technology-hub",
+    title: "Technology & Developer Tools",
+    name: "IPv4 Subnet Masks, RAID Storage, Bandwidth & Aspect Ratio",
+    link: "/technology",
+    category: "technology",
+    label: "Tech",
+    badgeClass: "bg-primary-fixed text-primary",
+    desc: "Calculate CIDR IPv4 subnets, usable host IPs, RAID array capacity & redundancy, and video aspect ratios.",
+    keywords: ["technology", "dev", "subnet", "ipv4", "cidr", "raid", "bandwidth", "aspect ratio", "ip address", "network"]
+  }
+];
+
+fs.writeFileSync('lib/searchData.ts', `export const allUniqueTools = ${JSON.stringify(comprehensiveTools, null, 2)};\n`);
+console.log("Updated searchData.ts with all tools");

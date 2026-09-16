@@ -1,0 +1,517 @@
+
+> ai-studio-applet@0.1.0 lint
+> eslint .
+
+
+/app/applet/app/business/BusinessClient.tsx
+  197:9  warning  The 'categories' array makes the dependencies of useMemo Hook (at line 406) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'categories' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+/app/applet/app/conversion/gram-to-pound/GramToPoundClient.tsx
+  118:6  warning  React Hook useMemo has a missing dependency: 'POUNDS_PER_GRAM'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/app/applet/app/conversion/grams-to-tablespoons/GramsToTablespoonsClient.tsx
+  218:5  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/conversion/grams-to-tablespoons/GramsToTablespoonsClient.tsx:218:5
+  216 |
+  217 |   useEffect(() => {
+> 218 |     handleParseRecipe();
+      |     ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  219 |   }, [spoonStandard]);
+  220 |
+  221 |   const copyResult = () => {  react-hooks/set-state-in-effect
+  219:6  warning  React Hook useEffect has a missing dependency: 'handleParseRecipe'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-hooks/exhaustive-deps
+
+/app/applet/app/conversion/grams-to-teaspoons/GramsToTeaspoonsClient.tsx
+  221:5  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/conversion/grams-to-teaspoons/GramsToTeaspoonsClient.tsx:221:5
+  219 |
+  220 |   useEffect(() => {
+> 221 |     handleParseRecipe();
+      |     ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  222 |   }, [spoonStandard]);
+  223 |
+  224 |   const copyResult = () => {  react-hooks/set-state-in-effect
+  222:6  warning  React Hook useEffect has a missing dependency: 'handleParseRecipe'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/exhaustive-deps
+
+/app/applet/app/education/EducationClient.tsx
+  215:9  warning  The 'academicCategories' array makes the dependencies of useMemo Hook (at line 371) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'academicCategories' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+/app/applet/app/electrical/ElectricalClient.tsx
+  333:9   warning  The 'categoriesList' array makes the dependencies of useMemo Hook (at line 728) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'categoriesList' in its own useMemo() Hook  react-hooks/exhaustive-deps
+  770:15  warning  Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages                                                                              @next/next/no-html-link-for-pages
+
+/app/applet/app/fire-forecaster/FireForecasterClient.tsx
+  45:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/fire-forecaster/FireForecasterClient.tsx:45:5
+  43 |
+  44 |   useEffect(() => {
+> 45 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  46 |   }, []);
+  47 |
+  48 |   const curSym = currency;  react-hooks/set-state-in-effect
+
+/app/applet/app/home-construction/HomeConstructionClient.tsx
+  172:9  warning  The 'taxonomyClusters' array makes the dependencies of useMemo Hook (at line 353) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'taxonomyClusters' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+/app/applet/app/math/MathHubClient.tsx
+   54:63  warning  Compilation Skipped: The 'eval' function is not supported
+
+Eval is an anti-pattern in JavaScript, and the code executed cannot be evaluated by React Compiler.
+
+/app/applet/app/math/MathHubClient.tsx:54:63
+  52 |       let expr = calcInput
+  53 |         .replace(/pi/g, Math.PI.toString())
+> 54 |         .replace(/sin\(([^)]+)\)/g, (_, a) => Math.sin(Number(eval(a))).toFixed(4))
+     |                                                               ^^^^ The 'eval' function is not supported
+  55 |         .replace(/cos\(([^)]+)\)/g, (_, a) => Math.cos(Number(eval(a))).toFixed(4))
+  56 |         .replace(/tan\(([^)]+)\)/g, (_, a) => Math.tan(Number(eval(a))).toFixed(4))
+  57 |         .replace(/sqrt\(([^)]+)\)/g, (_, a) => Math.sqrt(Number(eval(a))).toString())
+
+                                                                                                    react-hooks/unsupported-syntax
+   55:63  warning  Compilation Skipped: The 'eval' function is not supported
+
+Eval is an anti-pattern in JavaScript, and the code executed cannot be evaluated by React Compiler.
+
+/app/applet/app/math/MathHubClient.tsx:55:63
+  53 |         .replace(/pi/g, Math.PI.toString())
+  54 |         .replace(/sin\(([^)]+)\)/g, (_, a) => Math.sin(Number(eval(a))).toFixed(4))
+> 55 |         .replace(/cos\(([^)]+)\)/g, (_, a) => Math.cos(Number(eval(a))).toFixed(4))
+     |                                                               ^^^^ The 'eval' function is not supported
+  56 |         .replace(/tan\(([^)]+)\)/g, (_, a) => Math.tan(Number(eval(a))).toFixed(4))
+  57 |         .replace(/sqrt\(([^)]+)\)/g, (_, a) => Math.sqrt(Number(eval(a))).toString())
+  58 |         .replace(/log\(([^)]+)\)/g, (_, a) => Math.log10(Number(eval(a))).toFixed(4))
+
+                                         react-hooks/unsupported-syntax
+   56:63  warning  Compilation Skipped: The 'eval' function is not supported
+
+Eval is an anti-pattern in JavaScript, and the code executed cannot be evaluated by React Compiler.
+
+/app/applet/app/math/MathHubClient.tsx:56:63
+  54 |         .replace(/sin\(([^)]+)\)/g, (_, a) => Math.sin(Number(eval(a))).toFixed(4))
+  55 |         .replace(/cos\(([^)]+)\)/g, (_, a) => Math.cos(Number(eval(a))).toFixed(4))
+> 56 |         .replace(/tan\(([^)]+)\)/g, (_, a) => Math.tan(Number(eval(a))).toFixed(4))
+     |                                                               ^^^^ The 'eval' function is not supported
+  57 |         .replace(/sqrt\(([^)]+)\)/g, (_, a) => Math.sqrt(Number(eval(a))).toString())
+  58 |         .replace(/log\(([^)]+)\)/g, (_, a) => Math.log10(Number(eval(a))).toFixed(4))
+  59 |         .replace(/ln\(([^)]+)\)/g, (_, a) => Math.log(Number(eval(a))).toFixed(4))
+
+  react-hooks/unsupported-syntax
+   57:65  warning  Compilation Skipped: The 'eval' function is not supported
+
+Eval is an anti-pattern in JavaScript, and the code executed cannot be evaluated by React Compiler.
+
+/app/applet/app/math/MathHubClient.tsx:57:65
+  55 |         .replace(/cos\(([^)]+)\)/g, (_, a) => Math.cos(Number(eval(a))).toFixed(4))
+  56 |         .replace(/tan\(([^)]+)\)/g, (_, a) => Math.tan(Number(eval(a))).toFixed(4))
+> 57 |         .replace(/sqrt\(([^)]+)\)/g, (_, a) => Math.sqrt(Number(eval(a))).toString())
+     |                                                                 ^^^^ The 'eval' function is not supported
+  58 |         .replace(/log\(([^)]+)\)/g, (_, a) => Math.log10(Number(eval(a))).toFixed(4))
+  59 |         .replace(/ln\(([^)]+)\)/g, (_, a) => Math.log(Number(eval(a))).toFixed(4))
+  60 |         .replace(/\^/g, '**');
+
+                                                     react-hooks/unsupported-syntax
+   58:65  warning  Compilation Skipped: The 'eval' function is not supported
+
+Eval is an anti-pattern in JavaScript, and the code executed cannot be evaluated by React Compiler.
+
+/app/applet/app/math/MathHubClient.tsx:58:65
+  56 |         .replace(/tan\(([^)]+)\)/g, (_, a) => Math.tan(Number(eval(a))).toFixed(4))
+  57 |         .replace(/sqrt\(([^)]+)\)/g, (_, a) => Math.sqrt(Number(eval(a))).toString())
+> 58 |         .replace(/log\(([^)]+)\)/g, (_, a) => Math.log10(Number(eval(a))).toFixed(4))
+     |                                                                 ^^^^ The 'eval' function is not supported
+  59 |         .replace(/ln\(([^)]+)\)/g, (_, a) => Math.log(Number(eval(a))).toFixed(4))
+  60 |         .replace(/\^/g, '**');
+  61 |        
+
+                                                                                                                                 react-hooks/unsupported-syntax
+   59:62  warning  Compilation Skipped: The 'eval' function is not supported
+
+Eval is an anti-pattern in JavaScript, and the code executed cannot be evaluated by React Compiler.
+
+/app/applet/app/math/MathHubClient.tsx:59:62
+  57 |         .replace(/sqrt\(([^)]+)\)/g, (_, a) => Math.sqrt(Number(eval(a))).toString())
+  58 |         .replace(/log\(([^)]+)\)/g, (_, a) => Math.log10(Number(eval(a))).toFixed(4))
+> 59 |         .replace(/ln\(([^)]+)\)/g, (_, a) => Math.log(Number(eval(a))).toFixed(4))
+     |                                                              ^^^^ The 'eval' function is not supported
+  60 |         .replace(/\^/g, '**');
+  61 |        
+  62 |       const res = Function(`"use strict"; return (${expr})`)();
+
+                                                                                                                                                        react-hooks/unsupported-syntax
+  290:9   warning  The 'mathCategories' array makes the dependencies of useMemo Hook (at line 483) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'mathCategories' in its own useMemo() Hook                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   react-hooks/exhaustive-deps
+
+/app/applet/app/science/ScienceClient.tsx
+   179:9   warning  The 'categoriesList' array makes the dependencies of useMemo Hook (at line 488) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'categoriesList' in its own useMemo() Hook  react-hooks/exhaustive-deps
+   499:15  warning  Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages                                                                              @next/next/no-html-link-for-pages
+  1383:27  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                    react/no-unescaped-entities
+
+/app/applet/app/technology/TechnologyClient.tsx
+  342:9  warning  The 'techCategories' array makes the dependencies of useMemo Hook (at line 703) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'techCategories' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+/app/applet/app/time-date/TimeDateClient.tsx
+  136:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/time-date/TimeDateClient.tsx:136:5
+  134 |
+  135 |   useEffect(() => {
+> 136 |     setMounted(true);
+      |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  137 |     setIsDark(getCurrentTheme() === 'dark');
+  138 |     const currentDate = new Date();
+  139 |     setNow(currentDate);  react-hooks/set-state-in-effect
+
+/app/applet/app/time-date/age-calculator/AgeCalculatorClient.tsx
+    75:5    error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/time-date/age-calculator/AgeCalculatorClient.tsx:75:5
+  73 |
+  74 |   useEffect(() => {
+> 75 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  76 |     const interval = setInterval(() => {
+  77 |       const d = new Date();
+  78 |       const h = String(d.getHours()).padStart(2, '0');  react-hooks/set-state-in-effect
+    88:23   error  Error: Cannot call impure function during render
+
+`performance.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/app/applet/app/time-date/age-calculator/AgeCalculatorClient.tsx:88:23
+  86 |   const data = useMemo(() => {
+  87 |     if (!mounted) return null;
+> 88 |     const startTime = performance.now();
+     |                       ^^^^^^^^^^^^^^^^^ Cannot call impure function
+  89 |     
+  90 |     if (!birthDate || !targetDate) return null;
+  91 |                                                                                                                                                                                                                                                                                                                                                                                      react-hooks/purity
+   178:21   error  Error: Cannot call impure function during render
+
+`performance.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/app/applet/app/time-date/age-calculator/AgeCalculatorClient.tsx:178:21
+  176 |     const lifeExpPercent = Math.min(100, (yDiff / 78.5) * 100).toFixed(1);
+  177 |
+> 178 |     const endTime = performance.now();
+      |                     ^^^^^^^^^^^^^^^^^ Cannot call impure function
+  179 |     const microCalcSpeed = (endTime - startTime).toFixed(2);
+  180 |
+  181 |     return {                                                                                                                                                                                                                                                                                                                                                react-hooks/purity
+  1035:72   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  1050:44   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  1059:92   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  1095:216  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  1104:36   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  1104:58   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+
+/app/applet/app/time-date/async-team-handover/AsyncteamhandoverClient.tsx
+   19:5    error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/time-date/async-team-handover/AsyncteamhandoverClient.tsx:19:5
+  17 |   
+  18 |   useEffect(() => {
+> 19 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |     setUtcTime(new Date());
+  21 |     const timer = setInterval(() => {
+  22 |       setUtcTime(new Date());  react-hooks/set-state-in-effect
+  150:104  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  150:126  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  182:254  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  182:268  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  182:273  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  182:293  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  195:34   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  195:43   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  199:38   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  199:41   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  199:46   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  199:61   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  199:171  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  199:178  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  199:186  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  199:255  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+  199:264  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react/no-unescaped-entities
+
+/app/applet/app/time-date/birthday-tracker/BirthdayTrackerClient.tsx
+  19:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/time-date/birthday-tracker/BirthdayTrackerClient.tsx:19:5
+  17 |
+  18 |   useEffect(() => {
+> 19 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |     const now = new Date();
+  21 |     setLiveNow(now);
+  22 |     setTargetDate(now.toISOString().split('T')[0]);  react-hooks/set-state-in-effect
+
+/app/applet/app/time-date/date-difference/DateDifferenceClient.tsx
+   22:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/time-date/date-difference/DateDifferenceClient.tsx:22:5
+  20 |   
+  21 |   useEffect(() => {
+> 22 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  23 |     setSysToday(new Date().toISOString().split('T')[0]);
+  24 |   }, []);
+  25 |  react-hooks/set-state-in-effect
+  799:32  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react/no-unescaped-entities
+  799:49  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react/no-unescaped-entities
+
+/app/applet/app/time-date/dst-transition-tracker/DsttransitiontrackerClient.tsx
+   19:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/time-date/dst-transition-tracker/DsttransitiontrackerClient.tsx:19:5
+  17 |   
+  18 |   useEffect(() => {
+> 19 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |     setUtcTime(new Date());
+  21 |     const timer = setInterval(() => {
+  22 |       setUtcTime(new Date());  react-hooks/set-state-in-effect
+  204:78  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react/no-unescaped-entities
+  204:91  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react/no-unescaped-entities
+  216:57  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react/no-unescaped-entities
+  216:69  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react/no-unescaped-entities
+  220:40  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react/no-unescaped-entities
+  220:57  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react/no-unescaped-entities
+
+/app/applet/app/time-date/global-meeting-matrix/GlobalmeetingmatrixClient.tsx
+   29:5    error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/time-date/global-meeting-matrix/GlobalmeetingmatrixClient.tsx:29:5
+  27 |   
+  28 |   useEffect(() => {
+> 29 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  30 |     setUtcTime(new Date());
+  31 |     const timer = setInterval(() => {
+  32 |       setUtcTime(new Date());  react-hooks/set-state-in-effect
+  209:314  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unescaped-entities
+  214:59   error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unescaped-entities
+
+/app/applet/app/time-date/multi-city-corridor/MulticitycorridorClient.tsx
+  19:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/time-date/multi-city-corridor/MulticitycorridorClient.tsx:19:5
+  17 |   
+  18 |   useEffect(() => {
+> 19 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |     setUtcTime(new Date());
+  21 |     const timer = setInterval(() => {
+  22 |       setUtcTime(new Date());  react-hooks/set-state-in-effect
+
+/app/applet/app/time-date/time-calculator/TimeCalculatorClient.tsx
+  46:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/time-date/time-calculator/TimeCalculatorClient.tsx:46:5
+  44 |
+  45 |   useEffect(() => {
+> 46 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  47 |     setUtcTime(new Date());
+  48 |     const timer = setInterval(() => {
+  49 |       setUtcTime(new Date());  react-hooks/set-state-in-effect
+
+/app/applet/app/time-date/time-zone-overlap/TimeZoneOverlapClient.tsx
+   36:5    error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/time-date/time-zone-overlap/TimeZoneOverlapClient.tsx:36:5
+  34 |
+  35 |   useEffect(() => {
+> 36 |     setMounted(true);
+     |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  37 |     setUtcTime(new Date());
+  38 |     const timer = setInterval(() => {
+  39 |       setUtcTime(new Date());  react-hooks/set-state-in-effect
+  114:6    warning  React Hook useMemo has a missing dependency: 'getConcurrentCount'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/exhaustive-deps
+  478:66   error    Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/app/applet/app/time-date/time-zone-overlap/TimeZoneOverlapClient.tsx:478:66
+  476 |
+  477 |                 {activeLocations.map(loc => {
+> 478 |                   const nowUtcMs = utcTime ? utcTime.getTime() : Date.now();
+      |                                                                  ^^^^^^^^^^ Cannot call impure function
+  479 |                   const localDate = new Date(nowUtcMs + loc.utcOffset * 3600 * 1000);
+  480 |                   const h = localDate.getUTCHours();
+  481 |                   const m = localDate.getUTCMinutes();                                                                                                                                                    react-hooks/purity
+  668:62   error    Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/app/applet/app/time-date/time-zone-overlap/TimeZoneOverlapClient.tsx:668:62
+  666 |           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+  667 |             {activeLocations.slice(0, 4).map((loc, idx) => {
+> 668 |               const nowUtcMs = utcTime ? utcTime.getTime() : Date.now();
+      |                                                              ^^^^^^^^^^ Cannot call impure function
+  669 |               const localDate = new Date(nowUtcMs + loc.utcOffset * 3600 * 1000);
+  670 |               const h = localDate.getUTCHours();
+  671 |               const m = String(localDate.getUTCMinutes()).padStart(2, '0');                                        react-hooks/purity
+  924:319  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react/no-unescaped-entities
+  924:348  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react/no-unescaped-entities
+  942:66   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react/no-unescaped-entities
+  942:71   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react/no-unescaped-entities
+
+/app/applet/app/time-date/work-hours/WorkHoursClient.tsx
+    92:5    error    Error: Cannot reassign variable after render completes
+
+Reassigning `weeklyAccum` after render has completed can cause inconsistent behavior on subsequent renders. Consider using state instead.
+
+/app/applet/app/time-date/work-hours/WorkHoursClient.tsx:92:5
+  90 |   const processedLedger = ledger.map(shift => {
+  91 |     const res = calcShift(shift.clockIn, shift.clockOut, shift.breakMins, shift.otRule, shift.rate, (shift as any).forceOT, weeklyAccum);
+> 92 |     weeklyAccum += res.decHrs;
+     |     ^^^^^^^^^^^ Cannot reassign `weeklyAccum` after render completes
+  93 |     return { ...shift, ...res };
+  94 |   });
+  95 |                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/immutability
+   171:5    error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/app/time-date/work-hours/WorkHoursClient.tsx:171:5
+  169 |
+  170 |   useEffect(() => {
+> 171 |     setMounted(true);
+      |     ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  172 |     setUtcTime(new Date());
+  173 |     const timer = setInterval(() => {
+  174 |       setUtcTime(new Date());  react-hooks/set-state-in-effect
+   939:74   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unescaped-entities
+   939:88   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unescaped-entities
+   962:19   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @next/next/no-img-element
+   977:19   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @next/next/no-img-element
+   992:19   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @next/next/no-img-element
+  1007:19   warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @next/next/no-img-element
+  1184:143  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unescaped-entities
+  1184:160  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unescaped-entities
+  1193:141  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unescaped-entities
+  1202:38   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unescaped-entities
+  1202:49   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unescaped-entities
+  1202:358  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unescaped-entities
+  1202:370  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        react/no-unescaped-entities
+
+/app/applet/components/conversion/DynamicConverterClient.tsx
+  24:5  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/components/conversion/DynamicConverterClient.tsx:24:5
+  22 |
+  23 |   useEffect(() => {
+> 24 |     setCurrentFrom(initialFrom);
+     |     ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  25 |     setCurrentTo(initialTo);
+  26 |   }, [initialFrom, initialTo]);
+  27 |                                                                            react-hooks/set-state-in-effect
+  33:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/app/applet/components/conversion/DynamicConverterClient.tsx:33:7
+  31 |     const val = parseFloat(fromValue);
+  32 |     if (!isNaN(val)) {
+> 33 |       setToValue((val * ratio).toLocaleString('en-US', { maximumFractionDigits: 6 }));
+     |       ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  34 |     } else {
+  35 |       setToValue('');
+  36 |     }  react-hooks/set-state-in-effect
+
+✖ 91 problems (68 errors, 23 warnings)
+

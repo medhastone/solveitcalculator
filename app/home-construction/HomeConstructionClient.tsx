@@ -2,13 +2,10 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 
 export default function HomeConstructionClient() {
   // --- Search & Filter State ---
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeSubTab, setActiveSubTab] = useState('all');
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Keyboard shortcut '/' focus search
@@ -176,7 +173,7 @@ export default function HomeConstructionClient() {
       title: 'House & Structural',
       icon: 'foundation',
       count: '18 Tools',
-      desc: 'Foundation to rafters structural sizing and materials.',
+      desc: 'Foundation, framing & structural material sizing.',
       tools: [
         'Whole House Construction Cost Model',
         'Cement, Sand & Aggregate Proportioning',
@@ -190,7 +187,7 @@ export default function HomeConstructionClient() {
       title: 'Concrete & Masonry',
       icon: 'view_in_ar',
       count: '24 Tools',
-      desc: 'Volumetric yardage, mixes, pre-cast, and footings.',
+      desc: 'Slab yardage, footings & premix bag counts.',
       tools: [
         'Cubic Yard Concrete Slab Volume',
         'Cylindrical Pier & Post Hole Pour',
@@ -204,7 +201,7 @@ export default function HomeConstructionClient() {
       title: 'Brick, Block & Wall',
       icon: 'domain',
       count: '15 Tools',
-      desc: 'Modular units, mortar ratios, and retaining structures.',
+      desc: 'Brick units, CMU block count & mortar ratios.',
       tools: [
         'Standard Modular Brick (3/8" Mortar)',
         '8×8×16 Concrete Block (CMU) Counter',
@@ -218,7 +215,7 @@ export default function HomeConstructionClient() {
       title: 'Roofing & Enclosures',
       icon: 'roofing',
       count: '21 Tools',
-      desc: 'Slope multipliers, weather membranes, and flashing.',
+      desc: 'Pitch multipliers, shingles, squares & underlayment.',
       tools: [
         'Roof Pitch to Slope Angle Multiplier',
         'Asphalt Shingles & Ridge Bundles',
@@ -232,7 +229,7 @@ export default function HomeConstructionClient() {
       title: 'Flooring & Tile Layout',
       icon: 'floor',
       count: '19 Tools',
-      desc: 'Hardwood planks, vinyl click, tile, and carpet yardage.',
+      desc: 'Hardwood, vinyl plank, tile & carpet coverage.',
       tools: [
         'Ceramic / Porcelain Tile with Grout Lines',
         'Hardwood Floor Board Footage Yield',
@@ -246,7 +243,7 @@ export default function HomeConstructionClient() {
       title: 'Paint, Finishes & Drywall',
       icon: 'format_paint',
       count: '17 Tools',
-      desc: 'Surface coatings, 4×8 & 4×12 gypsum, and joint compound.',
+      desc: 'Wall paint gallons, drywall sheets & joint mud.',
       tools: [
         'Drywall Sheets & Screw Grid Sizer',
         'Joint Compound / Mud & Tape Length',
@@ -260,7 +257,7 @@ export default function HomeConstructionClient() {
       title: 'Lumber & Carpentry',
       icon: 'carpenter',
       count: '26 Tools',
-      desc: 'Board footage, dimensional framing, spans, and trims.',
+      desc: 'Board feet, stud spacing & subfloor layout.',
       tools: [
         'Board Foot (BF) Volumetric Calculator',
         '2×4 & 2×6 Stud Count at 16" / 24" O.C.',
@@ -274,7 +271,7 @@ export default function HomeConstructionClient() {
       title: 'Decks, Patios & Porches',
       icon: 'deck',
       count: '16 Tools',
-      desc: 'Decking boards, stair stringers, and baluster safety spacing.',
+      desc: 'Deck boards, joists, stair risers & balusters.',
       tools: [
         'Deck Surface Board Count & Screws',
         'Stair Stringer, Tread & Riser Geometry',
@@ -288,7 +285,7 @@ export default function HomeConstructionClient() {
       title: 'Fences & Enclosures',
       icon: 'fence',
       count: '12 Tools',
-      desc: 'Posts, rails, pickets, and concrete anchor footings.',
+      desc: 'Posts, rails, pickets & concrete footing bags.',
       tools: [
         'Post Spacing & Run Optimization (6\'/8\')',
         'Post Hole Concrete Premix Bags',
@@ -302,7 +299,7 @@ export default function HomeConstructionClient() {
       title: 'Landscaping & Soil',
       icon: 'landscape',
       count: '22 Tools',
-      desc: 'Bulk materials, mulch coverage, sod, and earthworks.',
+      desc: 'Mulch volume, topsoil, gravel & sod roll area.',
       tools: [
         'Mulch Bed Cubic Yards (3" Depth)',
         'Screened Topsoil & Compost Tonnage',
@@ -316,7 +313,7 @@ export default function HomeConstructionClient() {
       title: 'Mechanical & HVAC',
       icon: 'hvac',
       count: '15 Tools',
-      desc: 'BTU loads, air exchange CFM, pipe flows, and septic volume.',
+      desc: 'BTU room loads, airflow CFM & pipe sizing.',
       tools: [
         'BTU Heating & AC Load per Room Volume',
         'Ductwork CFM & Static Pressure Loss',
@@ -330,7 +327,7 @@ export default function HomeConstructionClient() {
       title: 'Metrology & Costs',
       icon: 'calculate',
       count: '30+ Tools',
-      desc: 'Geometry conversion matrix and trade cost models.',
+      desc: 'Square footage, fractions & project cost models.',
       tools: [
         'Multi-Room Square Footage Aggregator',
         'Decimal Feet to 1/16" Inches Fraction',
@@ -354,64 +351,25 @@ export default function HomeConstructionClient() {
 
   return (
     <div className="min-h-screen bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col">
-      <Header />
+      
 
-      <main className="w-full pt-20 bg-surface flex-1">
-        {/* Category Sub-Navigation Strip */}
-        <div className="w-full bg-surface-container-low border-b border-outline-variant/30">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop h-10 flex items-center">
-            <nav className="flex items-center gap-space-xs overflow-x-auto w-full text-body-sm font-body-sm">
-              {[
-                { id: 'all', label: 'All Construction Tools' },
-                { id: 'materials', label: 'Materials & Estimators' },
-                { id: 'workflows', label: 'Project Workflows' },
-                { id: 'diy', label: 'DIY vs Contractor' },
-                { id: 'costs', label: 'Cost Estimators' },
-                { id: 'geometry', label: 'Measurement & Geometry' },
-                { id: 'guides', label: 'Guides & Learning' }
-              ].map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveSubTab(tab.id)}
-                  className={`px-space-xs py-1 rounded-md whitespace-nowrap transition-all ${
-                    activeSubTab === tab.id
-                      ? 'bg-surface-container-highest text-primary font-semibold'
-                      : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
+      <main className="w-full pt-16 bg-surface flex-1">
+        {/* Breadcrumb Navigation */}
+        <div className="w-full border-b border-outline-variant/20 bg-surface-container-lowest/50">
+          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-2.5">
+            <nav className="flex items-center gap-2 text-xs text-on-surface-variant font-medium">
+              <Link href="/" className="hover:text-primary transition-colors flex items-center gap-1">
+                <span className="material-symbols-outlined text-[15px]">home</span>
+                <span>Home</span>
+              </Link>
+              <span className="text-outline-variant">/</span>
+              <span className="text-on-surface font-semibold flex items-center gap-1">
+                <span className="material-symbols-outlined text-[15px] text-primary">architecture</span>
+                <span>Home &amp; Construction Calculators</span>
+              </span>
             </nav>
           </div>
         </div>
-
-        {/* SECTION 0: METROLOGY TELEMETRY TICKER */}
-        <section className="w-full bg-surface-container-low/80 backdrop-blur-md border-b border-outline-variant/30 py-space-xs px-gutter-mobile lg:px-gutter-desktop">
-          <div className="max-w-max-width-canvas mx-auto flex flex-wrap items-center justify-between gap-y-space-xs gap-x-space-md text-on-surface-variant font-label-caps text-label-caps">
-            <div className="flex items-center gap-space-xs">
-              <span className="inline-flex items-center justify-center w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-              <span className="tracking-wider uppercase text-on-surface font-headline-md text-xs font-semibold">
-                Deterministic Metrology Feed
-              </span>
-              <span className="text-outline-variant">|</span>
-              <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[15px] text-primary">verified</span> ASTM C94 &amp; IBC 2024 Calibrated
-              </span>
-            </div>
-            <div className="flex flex-wrap items-center gap-x-space-lg gap-y-space-2xs">
-              <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[15px] text-secondary">trending_up</span> 10% Waste Factor Auto-Compounding
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-[15px] text-primary">bolt</span> 0.04ms Local WASM Execution
-              </span>
-              <span className="flex items-center gap-1 text-on-surface">
-                <span className="material-symbols-outlined text-[15px] text-primary">lock</span> Air-Gapped Sandbox: Zero Telemetry
-              </span>
-            </div>
-          </div>
-        </section>
 
         {/* SECTION 1: HERO & REAL-TIME SEARCH */}
         <section className="w-full relative overflow-hidden py-space-3xl px-gutter-mobile lg:px-gutter-desktop bg-surface">
@@ -421,19 +379,19 @@ export default function HomeConstructionClient() {
             {/* Metrology Overline Badge */}
             <div className="inline-flex items-center gap-space-xs px-space-md py-space-2xs rounded-full bg-surface-container-high text-primary font-label-caps text-label-caps uppercase tracking-widest shadow-sm">
               <span className="material-symbols-outlined text-[16px]">architecture</span>
-              <span>Trade-Grade Construction &amp; Structural Architecture Engine</span>
+              <span>SolveIt Calculator • Construction &amp; Building Estimation</span>
             </div>
             <h1 className="mt-space-md font-display-hero text-headline-lg lg:text-display-hero text-on-surface tracking-tight font-bold max-w-4xl">
-              Home &amp; Construction Calculators
+              Home &amp; Construction Calculators for Smarter Building Projects
             </h1>
-            <p className="mt-space-md font-body-lg text-body-lg text-on-surface-variant max-w-3xl leading-relaxed">
-              Deterministic material estimators, structural load formulas, project cost models, and trade-grade calculators for builders, architects, and homeowners. Calculate concrete, roofing, lumber, drywall, and renovations with zero guesswork.
+            <p className="mt-space-md font-body-md text-body-md text-on-surface-variant max-w-3xl leading-relaxed">
+              Explore free Home &amp; Construction Calculators designed for homeowners, contractors, builders, architects, renovators, and DIY enthusiasts. Calculate flooring area, concrete volume, paint coverage, roofing materials, drywall sheets, landscaping needs, room dimensions, renovation costs, and more using accurate and easy-to-use tools.
             </p>
 
             {/* Key Performance Metrics Bar */}
             <div className="mt-space-xl grid grid-cols-2 md:grid-cols-4 gap-space-md w-full max-w-3xl">
               <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
-                <span className="font-data-mono font-bold text-headline-md text-primary">500+</span>
+                <span className="font-data-mono font-bold text-headline-md text-primary">100+</span>
                 <span className="font-label-caps text-label-caps text-on-surface-variant uppercase mt-0.5">Calculators &amp; Specs</span>
               </div>
               <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
@@ -504,64 +462,61 @@ export default function HomeConstructionClient() {
                 </span>
                 <h2 className="font-headline-lg text-headline-lg text-on-surface mt-0.5 font-bold">I Want To...</h2>
               </div>
-              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
-                Launch orchestrated multi-stage estimators that guide material takeoffs from excavation through final trim finishing.
-              </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
               {[
                 {
                   title: 'Build A House',
-                  desc: 'Full lifecycle: foundation footings, framing studs, truss pitch, drywall sheets, and budget model.',
+                  desc: 'Footings, framing, roof pitch, drywall & whole-house cost model.',
                   icon: 'home_work',
                   link: '#workflow-anchor',
                   meta: '8 Linked Modules'
                 },
                 {
                   title: 'Pour Concrete',
-                  desc: 'Patios, grade slabs, post piers, volumetric premix 60/80lb bag counts, and ASTM slump ratios.',
+                  desc: 'Slabs, post piers, 60/80lb bag counts & slump ratios.',
                   icon: 'view_in_ar',
                   link: '#concrete-calc',
                   meta: 'Cubic Yards & Rebar'
                 },
                 {
                   title: 'Paint A Room',
-                  desc: 'Wall & ceiling area, window/door subtractions, primer coats, sheen spread rates, and gallon yields.',
+                  desc: 'Wall area, window/door subtractions & gallon yield.',
                   icon: 'format_paint',
                   link: '#paint-calc',
                   meta: 'Gallons & Primer'
                 },
                 {
                   title: 'Build A Deck',
-                  desc: 'Footing spacing, ledger flashing, joist spans (12"/16"), deck boards, balusters, and stair risers.',
+                  desc: 'Footing spacing, joist spans, deck boards & stair risers.',
                   icon: 'deck',
                   link: '#lumber-calc',
                   meta: 'Lumber & Hardware'
                 },
                 {
                   title: 'Landscape Yard',
-                  desc: 'Mulch volume, screened topsoil depth, river gravel base, sod roll dimensions, and seed density.',
+                  desc: 'Mulch volume, topsoil depth, gravel base & sod roll area.',
                   icon: 'yard',
                   link: '#landscaping',
-                  meta: 'Tons & Cubic Yards'
+                  meta: 'Tons & Yards'
                 },
                 {
                   title: 'Build A Wall',
-                  desc: 'Standard modular brick, 8x8x16 CMU blocks, Type N/S mortar bags, sand ratios, and geogrid ties.',
+                  desc: 'Modular brick, CMU blocks, mortar bags & geogrid ties.',
                   icon: 'domain',
                   link: '#brick-calc',
                   meta: 'Masonry Units'
                 },
                 {
                   title: 'Replace Roofing',
-                  desc: 'Pitch slope multipliers, squares (100 sq ft), bundles of architectural shingles, and underlayment rolls.',
+                  desc: 'Pitch slope multipliers, squares & architectural bundles.',
                   icon: 'roofing',
                   link: '#roof-calc',
                   meta: 'Pitch & Bundles'
                 },
                 {
                   title: 'Renovate A Room',
-                  desc: 'Kitchen and bathroom overhaul: tile grout grids, luxury vinyl flooring, cabinets, and plumbing rough-ins.',
+                  desc: 'Tile layout, luxury vinyl flooring, cabinets & budget tally.',
                   icon: 'handyman',
                   link: '#remodel-calc',
                   meta: 'Budget & Materials'
@@ -839,7 +794,7 @@ export default function HomeConstructionClient() {
                     <h3 className="font-headline-md text-headline-md text-on-surface font-bold">Tile &amp; Grout Layout</h3>
                   </div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
-                    12&quot;×24&quot; &amp; 12&quot;×12&quot; layout solver with 1/8&quot; grout lines and 15% diagonal waste allowance.
+                    12&quot;×24&quot; &amp; 12&quot;×12&quot; grid solver with 1/8&quot; grout lines and 15% cut waste.
                   </p>
                   <div className="mt-space-md p-space-sm bg-surface-container-low rounded-lg border border-outline-variant/20">
                     <div className="flex justify-between font-label-caps text-label-caps text-on-surface-variant">
@@ -874,7 +829,7 @@ export default function HomeConstructionClient() {
                     <h3 className="font-headline-md text-headline-md text-on-surface font-bold">Framing Studs &amp; Plates</h3>
                   </div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
-                    16&quot; and 24&quot; on-center wall framing, double top plates, sole plates, and corner stud packs.
+                    16&quot; &amp; 24&quot; on-center framing, top plates, sole plates &amp; corner packs.
                   </p>
                   <div className="mt-space-md p-space-sm bg-surface-container-low rounded-lg border border-outline-variant/20">
                     <div className="flex justify-between font-label-caps text-label-caps text-on-surface-variant">
@@ -909,7 +864,7 @@ export default function HomeConstructionClient() {
                     <h3 className="font-headline-md text-headline-md text-on-surface font-bold">Roof Pitch &amp; Shingles</h3>
                   </div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
-                    Slope conversion (e.g. 6:12 slope = 1.118 multiplier), rafter span, squares, and bundles.
+                    Pitch slope factors, rafter spans, roof squares &amp; shingle bundles.
                   </p>
                   <div className="mt-space-md p-space-sm bg-surface-container-low rounded-lg border border-outline-variant/20">
                     <div className="flex justify-between font-label-caps text-label-caps text-on-surface-variant">
@@ -947,7 +902,7 @@ export default function HomeConstructionClient() {
                 </h2>
               </div>
               <div className="font-body-sm text-body-sm text-on-surface-variant font-medium">
-                500+ Specialized metrology &amp; sizing tools
+                100+ Specialized metrology &amp; sizing tools
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
@@ -1290,7 +1245,7 @@ export default function HomeConstructionClient() {
                   </div>
                   <div className="mt-space-sm font-data-mono text-headline-md text-on-surface font-bold">(L × W × D) / 27</div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
-                    Where L and W are in feet, and D is in fractional feet (depth in inches ÷ 12). Add +10% standard volumetric spill loss.
+                    L and W in feet, D in inches ÷ 12. Includes +10% standard volumetric spill margin.
                   </p>
                 </div>
                 <div className="mt-space-md pt-space-xs font-label-caps text-label-caps text-outline border-t border-outline-variant/15">
@@ -1306,7 +1261,7 @@ export default function HomeConstructionClient() {
                   </div>
                   <div className="mt-space-sm font-data-mono text-headline-md text-on-surface font-bold">Area / 32 or 48</div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
-                    Divide total wall + ceiling sq ft by 32 (for 4×8 sheets) or 48 (for 4×12 sheets). Include +12% scrap cutting allowance.
+                    Wall + ceiling sq ft ÷ 32 (4×8) or 48 (4×12). Includes +12% scrap cutting allowance.
                   </p>
                 </div>
                 <div className="mt-space-md pt-space-xs font-label-caps text-label-caps text-outline border-t border-outline-variant/15">
@@ -1322,11 +1277,11 @@ export default function HomeConstructionClient() {
                   </div>
                   <div className="mt-space-sm font-data-mono text-headline-md text-on-surface font-bold">Net Area / 350 × C</div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
-                    Net area after deducting standard doors (21 sq ft) and windows (15 sq ft). C = coats. 1 gallon yields ~350–400 sq ft.
+                    Net wall area ÷ 350 sq ft/gal × coats after window and door deductions.
                   </p>
                 </div>
                 <div className="mt-space-md pt-space-xs font-label-caps text-label-caps text-outline border-t border-outline-variant/15">
-                  Primer: 250–300 sq ft/gal on bare drywall
+                  Primer: 250–300 sq ft/gal
                 </div>
               </div>
               {/* Formula 4 */}
@@ -1338,11 +1293,11 @@ export default function HomeConstructionClient() {
                   </div>
                   <div className="mt-space-sm font-data-mono text-headline-md text-on-surface font-bold">(Area × Pitch) / 100</div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
-                    Multiply horizontal footprint by the pitch slope factor (e.g., 6:12 = 1.118). 1 Square = 100 sq ft = 3 standard shingle bundles.
+                    Footprint × pitch multiplier ÷ 100 sq ft per square (3 bundles). +10% waste.
                   </p>
                 </div>
                 <div className="mt-space-md pt-space-xs font-label-caps text-label-caps text-outline border-t border-outline-variant/15">
-                  Include +10% starter/hip/valley waste
+                  1 Square = 100 Sq Ft = 3 Bundles
                 </div>
               </div>
             </div>
@@ -1360,7 +1315,7 @@ export default function HomeConstructionClient() {
                 Engineered for Both Trades &amp; Homeowners
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant">
-                Switch perspectives with one toggle: from jobsite bid margins down to weekend hardware store shopping lists.
+                Switch perspectives: from jobsite bid margins down to hardware store shopping lists.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-space-xl">
@@ -1377,17 +1332,17 @@ export default function HomeConstructionClient() {
                     Professional Contractor Suite
                   </h3>
                   <p className="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
-                    High-density metrology tools built for estimators, general contractors, and structural engineers.
+                    High-density metrology tools for estimators, builders &amp; structural engineers.
                   </p>
                   <div className="mt-space-md space-y-space-xs">
                     <div className="flex items-start gap-space-xs">
                       <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check</span>
                       <div>
                         <span className="font-headline-md text-headline-md text-base text-on-surface font-bold">
-                          ASTM C94 Concrete Batching Verification
+                          ASTM C94 Concrete Batching
                         </span>
                         <p className="font-body-sm text-body-sm text-on-surface-variant">
-                          Verify mix cylinder compression (PSI) and slump tolerance metrics.
+                          Mix cylinder compression (PSI) and slump tolerance metrics.
                         </p>
                       </div>
                     </div>
@@ -1395,10 +1350,10 @@ export default function HomeConstructionClient() {
                       <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check</span>
                       <div>
                         <span className="font-headline-md text-headline-md text-base text-on-surface font-bold">
-                          Labor Multiplier &amp; Trade Burden Rates
+                          Labor Burden &amp; Overhead Rates
                         </span>
                         <p className="font-body-sm text-body-sm text-on-surface-variant">
-                          Factor worker compensation, local union scale, and overhead percentages.
+                          Workers comp, regional scale &amp; project margin factors.
                         </p>
                       </div>
                     </div>
@@ -1406,10 +1361,10 @@ export default function HomeConstructionClient() {
                       <span className="material-symbols-outlined text-primary text-[20px] shrink-0">check</span>
                       <div>
                         <span className="font-headline-md text-headline-md text-base text-on-surface font-bold">
-                          BOM CSV &amp; PDF Jobsite Export
+                          BOM Takeoff &amp; PDF Export
                         </span>
                         <p className="font-body-sm text-body-sm text-on-surface-variant">
-                          One-click materials takeoff sheet export directly into your quoting workflow.
+                          Instant materials schedule export into your estimating pipeline.
                         </p>
                       </div>
                     </div>
@@ -1436,17 +1391,17 @@ export default function HomeConstructionClient() {
                     Homeowner Project Center
                   </h3>
                   <p className="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
-                    Zero-jargon calculators that translate complex engineering units into clean shopping cart tallies.
+                    Zero-jargon tools translating engineering units into hardware shopping tallies.
                   </p>
                   <div className="mt-space-md space-y-space-xs">
                     <div className="flex items-start gap-space-xs">
                       <span className="material-symbols-outlined text-secondary text-[20px] shrink-0">check</span>
                       <div>
                         <span className="font-headline-md text-headline-md text-base text-on-surface font-bold">
-                          Store Bag &amp; Carton Translators
+                          Store Bag &amp; Carton Counters
                         </span>
                         <p className="font-body-sm text-body-sm text-on-surface-variant">
-                          Know exactly how many 80lb Quikrete bags or tile boxes to load in your vehicle.
+                          Exact counts of 80lb concrete bags or tile cartons to purchase.
                         </p>
                       </div>
                     </div>
@@ -1454,10 +1409,10 @@ export default function HomeConstructionClient() {
                       <span className="material-symbols-outlined text-secondary text-[20px] shrink-0">check</span>
                       <div>
                         <span className="font-headline-md text-headline-md text-base text-on-surface font-bold">
-                          Smart Tool Rental Checklist
+                          Tool Rental Sizer
                         </span>
                         <p className="font-body-sm text-body-sm text-on-surface-variant">
-                          Calculates plate compactor, wet tile saw, and paint sprayer rental durations.
+                          Rental recommendations for plate compactors, wet saws &amp; sprayers.
                         </p>
                       </div>
                     </div>
@@ -1465,10 +1420,10 @@ export default function HomeConstructionClient() {
                       <span className="material-symbols-outlined text-secondary text-[20px] shrink-0">check</span>
                       <div>
                         <span className="font-headline-md text-headline-md text-base text-on-surface font-bold">
-                          Step-By-Step Visual Instructions
+                          Visual Prep Steps
                         </span>
                         <p className="font-body-sm text-body-sm text-on-surface-variant">
-                          Plain-English explanations for screeding, mortar buttering, and paint cut-ins.
+                          Step-by-step guides for screeding, leveling &amp; clean cuts.
                         </p>
                       </div>
                     </div>
@@ -1496,7 +1451,7 @@ export default function HomeConstructionClient() {
                 Head-to-Head Trade Material Comparisons
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant">
-                Objective comparisons based on lifecycle durability, 25-year total cost of ownership, and installation complexity.
+                Objective trade benchmarks for cost, durability and installation effort.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
@@ -1512,22 +1467,20 @@ export default function HomeConstructionClient() {
                       Poured Concrete Slab
                     </span>
                     <p className="text-on-surface-variant">
-                      <strong className="text-on-surface">$6–$12 / sq ft</strong> installed
+                      <strong className="text-on-surface">$6–$12 / sq ft</strong>
                     </p>
                     <p className="text-on-surface-variant">Lifespan: 30+ years</p>
-                    <p className="text-on-surface-variant">Risk: Prone to hairline frost-heave cracks</p>
-                    <p className="text-on-surface-variant">DIY Effort: High (time-sensitive pour)</p>
+                    <p className="text-on-surface-variant">DIY Effort: High</p>
                   </div>
                   <div className="space-y-1 border-l border-outline-variant/20 pl-space-md">
                     <span className="font-label-caps text-label-caps text-outline uppercase font-semibold">
                       Interlocking Pavers
                     </span>
                     <p className="text-on-surface-variant">
-                      <strong className="text-on-surface">$12–$22 / sq ft</strong> installed
+                      <strong className="text-on-surface">$12–$22 / sq ft</strong>
                     </p>
                     <p className="text-on-surface-variant">Lifespan: 50+ years</p>
-                    <p className="text-on-surface-variant">Risk: Joint sand weed growth</p>
-                    <p className="text-on-surface-variant">DIY Effort: Moderate (modular pace)</p>
+                    <p className="text-on-surface-variant">DIY Effort: Moderate</p>
                   </div>
                 </div>
               </div>
@@ -1535,7 +1488,7 @@ export default function HomeConstructionClient() {
               {/* Comparison 2 */}
               <div className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30">
                 <div className="flex items-center justify-between pb-space-xs border-b border-outline-variant/30">
-                  <h3 className="font-headline-md text-headline-md text-on-surface font-bold">Asphalt Shingles vs. Standing Seam Metal</h3>
+                  <h3 className="font-headline-md text-headline-md text-on-surface font-bold">Asphalt Shingles vs. Standing Seam</h3>
                   <span className="font-data-mono text-xs text-primary font-bold">Roofing</span>
                 </div>
                 <div className="grid grid-cols-2 gap-space-md mt-space-md font-body-sm text-body-sm">
@@ -1547,19 +1500,17 @@ export default function HomeConstructionClient() {
                       <strong className="text-on-surface">$4.50–$7.50 / sq ft</strong>
                     </p>
                     <p className="text-on-surface-variant">Lifespan: 20–25 years</p>
-                    <p className="text-on-surface-variant">Wind Rating: Up to 110–130 MPH</p>
-                    <p className="text-on-surface-variant">Weight: ~240 lbs / Square</p>
+                    <p className="text-on-surface-variant">Wind: 110–130 MPH</p>
                   </div>
                   <div className="space-y-1 border-l border-outline-variant/20 pl-space-md">
                     <span className="font-label-caps text-label-caps text-outline uppercase font-semibold">
                       Standing Seam Metal
                     </span>
                     <p className="text-on-surface-variant">
-                      <strong className="text-on-surface">$11.00–$18.00 / sq ft</strong>
+                      <strong className="text-on-surface">$11–$18 / sq ft</strong>
                     </p>
                     <p className="text-on-surface-variant">Lifespan: 50–70 years</p>
-                    <p className="text-on-surface-variant">Wind Rating: Class 4 (140+ MPH)</p>
-                    <p className="text-on-surface-variant">Weight: ~150 lbs / Square (Light)</p>
+                    <p className="text-on-surface-variant">Wind: Class 4 (140+ MPH)</p>
                   </div>
                 </div>
               </div>
@@ -1567,7 +1518,7 @@ export default function HomeConstructionClient() {
               {/* Comparison 3 */}
               <div className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30">
                 <div className="flex items-center justify-between pb-space-xs border-b border-outline-variant/30">
-                  <h3 className="font-headline-md text-headline-md text-on-surface font-bold">Pressure-Treated Pine vs. Composite</h3>
+                  <h3 className="font-headline-md text-headline-md text-on-surface font-bold">Treated Pine vs. Composite</h3>
                   <span className="font-data-mono text-xs text-primary font-bold">Decking</span>
                 </div>
                 <div className="grid grid-cols-2 gap-space-md mt-space-md font-body-sm text-body-sm">
@@ -1576,22 +1527,20 @@ export default function HomeConstructionClient() {
                       Treated Pine (PT)
                     </span>
                     <p className="text-on-surface-variant">
-                      <strong className="text-on-surface">$20–$35 / sq ft</strong> built
+                      <strong className="text-on-surface">$20–$35 / sq ft</strong>
                     </p>
-                    <p className="text-on-surface-variant">Maintenance: Annual stain &amp; seal</p>
+                    <p className="text-on-surface-variant">Maintenance: Annual seal</p>
                     <p className="text-on-surface-variant">Lifespan: 15–20 years</p>
-                    <p className="text-on-surface-variant">Splintering: Yes over time</p>
                   </div>
                   <div className="space-y-1 border-l border-outline-variant/20 pl-space-md">
                     <span className="font-label-caps text-label-caps text-outline uppercase font-semibold">
-                      Composite (Trex / TimberTech)
+                      Composite (Trex)
                     </span>
                     <p className="text-on-surface-variant">
-                      <strong className="text-on-surface">$40–$70 / sq ft</strong> built
+                      <strong className="text-on-surface">$40–$70 / sq ft</strong>
                     </p>
-                    <p className="text-on-surface-variant">Maintenance: Soap and water wash</p>
+                    <p className="text-on-surface-variant">Maintenance: Soap &amp; water</p>
                     <p className="text-on-surface-variant">Lifespan: 25–40 years</p>
-                    <p className="text-on-surface-variant">Splintering: Zero / UV Stabilized</p>
                   </div>
                 </div>
               </div>
@@ -1608,22 +1557,20 @@ export default function HomeConstructionClient() {
                       Porcelain Tile
                     </span>
                     <p className="text-on-surface-variant">
-                      <strong className="text-on-surface">$8–$18 / sq ft</strong> installed
+                      <strong className="text-on-surface">$8–$18 / sq ft</strong>
                     </p>
-                    <p className="text-on-surface-variant">Waterproof: 100% impervious (&lt;0.5%)</p>
-                    <p className="text-on-surface-variant">Subfloor: Rigid cement backer required</p>
-                    <p className="text-on-surface-variant">Feel: Cool to touch, hard surface</p>
+                    <p className="text-on-surface-variant">Waterproof: 100% impervious</p>
+                    <p className="text-on-surface-variant">Subfloor: Cement backer</p>
                   </div>
                   <div className="space-y-1 border-l border-outline-variant/20 pl-space-md">
                     <span className="font-label-caps text-label-caps text-outline uppercase font-semibold">
-                      Luxury Vinyl Plank (LVP)
+                      Luxury Vinyl (LVP)
                     </span>
                     <p className="text-on-surface-variant">
-                      <strong className="text-on-surface">$4–$9 / sq ft</strong> installed
+                      <strong className="text-on-surface">$4–$9 / sq ft</strong>
                     </p>
                     <p className="text-on-surface-variant">Waterproof: 100% synthetic core</p>
-                    <p className="text-on-surface-variant">Subfloor: Floating click, forgiving</p>
-                    <p className="text-on-surface-variant">Feel: Warm underfoot, softer</p>
+                    <p className="text-on-surface-variant">Subfloor: Floating click</p>
                   </div>
                 </div>
               </div>
@@ -1649,12 +1596,12 @@ export default function HomeConstructionClient() {
                   </span>
                   <div>
                     <h3 className="font-headline-md text-headline-md text-base text-on-surface hover:text-primary cursor-pointer transition-colors font-bold">
-                      How to Calculate Concrete Volume Without Ordering Shortfall
+                      How to Calculate Concrete Volume Accurately
                     </h3>
                     <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
-                      Understanding form deflections, ground spillage, and why a true 10% safety multiplier prevents catastrophic cold joints.
+                      Form deflections, ground spillage &amp; why 10% safety prevents cold joints.
                     </p>
-                    <span className="font-data-mono text-[12px] text-outline mt-2 inline-block">7 min read • ASTM C94 Reference</span>
+                    <span className="font-data-mono text-[12px] text-outline mt-2 inline-block">7 min read • ASTM C94</span>
                   </div>
                 </article>
                 <article className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex gap-space-md items-start">
@@ -1663,10 +1610,10 @@ export default function HomeConstructionClient() {
                   </span>
                   <div>
                     <h3 className="font-headline-md text-headline-md text-base text-on-surface hover:text-primary cursor-pointer transition-colors font-bold">
-                      Demystifying Roof Pitch Ratios: From Degrees to Squares
+                      Demystifying Roof Pitch Ratios: Degrees to Squares
                     </h3>
                     <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
-                      Converting steep slopes into precise multiplication factors: how a 12:12 pitch expands flat rafter area by a massive 1.414 multiplier.
+                      Converting steep slope ratios into exact horizontal area multipliers.
                     </p>
                     <span className="font-data-mono text-[12px] text-outline mt-2 inline-block">5 min read • IBC Chapter 15</span>
                   </div>
@@ -1677,12 +1624,12 @@ export default function HomeConstructionClient() {
                   </span>
                   <div>
                     <h3 className="font-headline-md text-headline-md text-base text-on-surface hover:text-primary cursor-pointer transition-colors font-bold">
-                      Tile Layout &amp; Centerline Alignment Heuristics
+                      Tile Layout &amp; Centerline Alignment Rules
                     </h3>
                     <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
-                      How establishing a dead-center grid avoids thin sliver cuts at room perimeters while optimizing tile carton purchase batches.
+                      How dead-center grids prevent thin edge cuts and minimize carton waste.
                     </p>
-                    <span className="font-data-mono text-[12px] text-outline mt-2 inline-block">6 min read • ANSI A108.02</span>
+                    <span className="font-data-mono text-[12px] text-outline mt-2 inline-block">6 min read • ANSI A108</span>
                   </div>
                 </article>
               </div>
@@ -1736,8 +1683,6 @@ export default function HomeConstructionClient() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }

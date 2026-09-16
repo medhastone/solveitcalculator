@@ -39,11 +39,6 @@ export default function WorldclockgridClient() {
   
   const currentUtcHour = utcTime ? utcTime.getUTCHours() : 0;
 
-  
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   if (!mounted) return null;
 
   return (
@@ -154,7 +149,7 @@ export default function WorldclockgridClient() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-space-md">
             {cities.map(loc => {
-              const nowUtcMs = utcTime ? utcTime.getTime() : Date.now();
+              const nowUtcMs = utcTime ? utcTime.getTime() : new Date("2025-01-01T00:00:00Z").getTime();
               const localDate = new Date(nowUtcMs + loc.utcOffset * 3600 * 1000);
               const h = localDate.getUTCHours();
               const m = String(localDate.getUTCMinutes()).padStart(2, '0');
@@ -233,11 +228,11 @@ export default function WorldclockgridClient() {
             </details>
             <details className="group bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
               <summary className="flex items-center justify-between p-space-md font-body-sm text-body-sm font-semibold text-on-surface cursor-pointer select-none">
-                <span>Why do some nodes show 'Flex' instead of 'In Office'?</span>
+                <span>Why do some nodes show &apos;Flex&apos; instead of &apos;In Office&apos;?</span>
                 <span className="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
               </summary>
               <div className="px-space-md pb-space-md text-body-sm font-body-sm text-on-surface-variant border-t border-surface-container pt-space-xs">
-                In modern remote work environments, core working hours are typically defined as 09:00 to 17:00 (In Office). "Flex" hours refer to the shoulder periods (e.g., 07:00-09:00 and 17:00-22:00) where team members may be available for asynchronous communication, but should not be expected to join mandatory synchronous meetings.
+                In modern remote work environments, core working hours are typically defined as 09:00 to 17:00 (In Office). &quot;Flex&quot; hours refer to the shoulder periods (e.g., 07:00-09:00 and 17:00-22:00) where team members may be available for asynchronous communication, but should not be expected to join mandatory synchronous meetings.
               </div>
             </details>
           </div>

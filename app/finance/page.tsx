@@ -3,8 +3,8 @@ import { Metadata } from 'next';
 import FinanceHubClient from './FinanceHubClient';
 
 export const metadata: Metadata = {
-  title: 'Financial Calculators & Wealth Planning Hub | SolveIt',
-  description: 'Deterministic financial calculators and forecasting models for debt servicing, yield curves, statutory tax brackets, early retirement, and capital preservation. Executed strictly client-side with sub-millisecond latency.',
+  title: 'SolveIt Calculator - Financial Intelligence & Calculators Hub',
+  description: "The world's most comprehensive and rigorous financial calculators ecosystem. Accurately model mortgages, project retirement portfolios, simulate taxes, compute daily wages, and optimize investments—engineered with zero tracking and institutional precision.",
 };
 
 export default function FinancePage() {

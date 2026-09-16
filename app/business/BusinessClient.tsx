@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import Link from 'next/link';
 import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 
 export default function BusinessClient() {
   // --- Search & Filter State ---
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeSubTab, setActiveSubTab] = useState('all');
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Keyboard shortcut '/' focus search
@@ -186,8 +185,8 @@ export default function BusinessClient() {
       };
     } else {
       return {
-        title: 'Blended Customer Acquisition Cost (CAC) & Payback Engine',
-        desc: 'Synthesizes total agency fees, media spend, and conversion velocity.',
+        title: 'Blended Customer Acquisition Cost (CAC) Calculator',
+        desc: 'Calculates total marketing spend, agency fees, and customer acquisition payback time.',
         link: '#category-marketing'
       };
     }
@@ -199,16 +198,16 @@ export default function BusinessClient() {
       id: 'category-planning',
       num: '1',
       title: 'Business Planning & Strategy',
-      desc: 'Foundational market sizing, operational frameworks, and strategic planning.',
+      desc: 'Market sizing, business plans, and strategic planning tools.',
       icon: 'architecture',
       color: 'primary',
       count: '5 Tools',
       tools: [
-        { name: 'Lean Canvas Planner', desc: 'Deconstruct business assumptions into a single 9-box deterministic model.', action: 'Model Hypothesis' },
-        { name: 'TAM / SAM / SOM Market Sizer', desc: 'Calculate top-down and bottom-up Total Addressable Market volume.', action: 'Sizing Framework' },
-        { name: 'PESTLE Matrix Evaluator', desc: 'Macro-environmental risk scoring across political, economic, and tech factors.', action: 'Risk Matrix' },
-        { name: 'SWOT Strategic Scorer', desc: 'Prioritize internal capabilities against market threats using weighted logic.', action: 'SWOT Model' },
-        { name: 'Scenario & Sensitivity Analyzer', desc: 'Simulate Bear, Base, and Bull financial outcomes across critical variables.', action: 'Sensitivity Table' }
+        { name: 'Lean Canvas Planner', desc: 'Map your business idea, key assumptions, and revenue model on a 1-page canvas.', action: 'Plan Canvas' },
+        { name: 'TAM / SAM / SOM Market Sizer', desc: 'Calculate top-down and bottom-up Total Addressable Market size.', action: 'Size Market' },
+        { name: 'PESTLE Risk Evaluator', desc: 'Evaluate macro risk factors across political, economic, and tech conditions.', action: 'Assess Risk' },
+        { name: 'SWOT Strategic Scorer', desc: 'Evaluate company strengths, weaknesses, opportunities, and threats.', action: 'SWOT Analysis' },
+        { name: 'Scenario & Sensitivity Analyzer', desc: 'Simulate Best-case, Base-case, and Worst-case financial scenarios.', action: 'Run Scenarios' }
       ]
     },
     {
@@ -220,28 +219,28 @@ export default function BusinessClient() {
       color: 'secondary',
       count: '6 Tools',
       tools: [
-        { name: 'Startup Runway & Burn Rate', desc: 'Exact calendar date of cash depletion with hiring and revenue sliders.', action: 'Project Runway' },
-        { name: 'Cap Table & Dilution Calculator', desc: 'Model Pre-Seed through Series B equity rounds, ESOP pools, and ownership.', action: 'Dilution Matrix' },
-        { name: 'SAFE & Convertible Note Calculator', desc: 'Post-money valuation caps, conversion discounts, and MFN clause impacts.', action: 'Model SAFE' },
-        { name: 'Founder Equity Split Calculator', desc: 'Equitable co-founder equity splits weighted by IP, cash, and time inputs.', action: 'Split Equity' },
-        { name: 'Series A Readiness Audit', desc: 'Evaluate ARR velocity, net burn multiple, and benchmark against top VCs.', action: 'Audit Readiness' },
-        { name: 'Berkus & Scorecard Valuation', desc: 'Pre-revenue startup valuation methodologies for angel syndicate checks.', action: 'Valuate Pre-Revenue' }
+        { name: 'Startup Runway & Burn Rate', desc: 'Calculate exact runway months and cash burn rate with revenue and cost inputs.', action: 'Calculate Runway' },
+        { name: 'Cap Table & Dilution Calculator', desc: 'Model Pre-Seed through Series B equity rounds, employee option pools, and ownership.', action: 'Model Dilution' },
+        { name: 'SAFE & Convertible Note Calculator', desc: 'Calculate post-money valuation caps, conversion discounts, and investor equity.', action: 'Model SAFE' },
+        { name: 'Founder Equity Split Calculator', desc: 'Equitable co-founder equity splits based on role, cash invested, and time committed.', action: 'Split Equity' },
+        { name: 'Series A Readiness Audit', desc: 'Evaluate revenue growth rate, burn multiple, and benchmark against top venture metrics.', action: 'Check Readiness' },
+        { name: 'Berkus & Scorecard Valuation', desc: 'Early-stage startup valuation methods for angel investor rounds.', action: 'Estimate Value' }
       ]
     },
     {
       id: 'category-profit',
       num: '3',
       title: 'Profit & Pricing',
-      desc: 'Unit economics, pricing power, break-even unit counts, and elasticities.',
+      desc: 'Profit margins, markups, break-even unit volumes, and pricing strategy.',
       icon: 'price_change',
       color: 'tertiary',
       count: '5 Tools',
       tools: [
-        { name: 'Gross Margin vs Markup Converter', desc: 'Eliminate pricing errors by computing exact inverse ratios and profit margins.', action: 'Convert Ratios' },
-        { name: 'Break-Even Calculator (Units & $)', desc: 'Compute exact unit volumes required to neutralize fixed and variable costs.', action: 'Break-Even Model' },
-        { name: 'Contribution Margin Calculator', desc: 'Determine revenue per unit available to satisfy corporate overhead liabilities.', action: 'Margin Contribution' },
-        { name: 'Price Elasticity of Demand (PED)', desc: 'Model customer churn or revenue optimization given percentage price revisions.', action: 'Test Elasticity' },
-        { name: 'Target Profit Pricing Calculator', desc: 'Back-calculate SKU selling price based on strict EBITDA target requirements.', action: 'Target Pricing' }
+        { name: 'Gross Margin vs Markup Converter', desc: 'Avoid pricing mistakes by calculating exact gross margins, markups, and profits.', action: 'Calculate Margins' },
+        { name: 'Break-Even Calculator (Units & $)', desc: 'Calculate exact sales units and revenue needed to cover fixed and variable costs.', action: 'Find Break-Even' },
+        { name: 'Contribution Margin Calculator', desc: 'Determine revenue per unit available to cover overhead expenses and profit.', action: 'Calculate Contribution' },
+        { name: 'Price Elasticity of Demand (PED)', desc: 'Analyze how changing your price will impact sales volume and total revenue.', action: 'Test Elasticity' },
+        { name: 'Target Profit Pricing Calculator', desc: 'Find the required selling price based on your target profit goals.', action: 'Set Target Price' }
       ]
     },
     {
@@ -280,110 +279,110 @@ export default function BusinessClient() {
       id: 'category-sales',
       num: '6',
       title: 'Sales & Revenue Operations',
-      desc: 'Pipeline conversion math, quota modeling, acceleration tiers, and deal size.',
+      desc: 'Sales pipeline targets, commission calculations, conversion funnels, and contract values.',
       icon: 'filter_alt',
       color: 'primary',
       count: '5 Tools',
       tools: [
-        { name: 'Sales Velocity Formula', desc: '(Opportunities × Win Rate × ACV) ÷ Sales Cycle Length.', action: 'Model Velocity' },
-        { name: 'Tiered Sales Commission Calculator', desc: 'Accelerators, cliff bonuses, base/variable splits, and OTE attainment.', action: 'Commission Grid' },
-        { name: 'Pipeline Stage Conversion Funnel', desc: 'Identify friction points between SQL, Discovery, Demo, and Deal Won.', action: 'Funnel Analysis' },
-        { name: 'Sales Capacity & Headcount Planner', desc: 'Calculate how many AE/SDR heads are required to deliver next year ARR target.', action: 'Headcount Model' },
-        { name: 'Contract Value Calculator (ACV vs TCV)', desc: 'Normalize multi-year enterprise contracts into accurate annualized revenue.', action: 'ACV Normalizer' }
+        { name: 'Sales Velocity Formula', desc: 'Calculate sales revenue velocity per month based on win rate and deal size.', action: 'Calculate Velocity' },
+        { name: 'Tiered Sales Commission Calculator', desc: 'Calculate tiered commissions, accelerators, base salary splits, and quota attainment.', action: 'Calculate Commission' },
+        { name: 'Pipeline Stage Conversion Funnel', desc: 'Identify conversion rates between leads, discovery calls, demos, and closed deals.', action: 'Analyze Funnel' },
+        { name: 'Sales Capacity & Headcount Planner', desc: 'Calculate how many sales reps you need to hit your annual revenue target.', action: 'Plan Headcount' },
+        { name: 'Contract Value Calculator (ACV vs TCV)', desc: 'Calculate Annual Contract Value (ACV) and Total Contract Value (TCV).', action: 'Calculate ACV' }
       ]
     },
     {
       id: 'category-marketing',
       num: '7',
       title: 'Marketing & Performance Advertising',
-      desc: 'Paid acquisition efficiency, blended CAC, ROAS targets, and attribution return.',
+      desc: 'Ad spend efficiency, customer acquisition costs (CAC), ROAS, and customer lifetime value.',
       icon: 'ads_click',
       color: 'tertiary',
       count: '5 Tools',
       tools: [
-        { name: 'Blended Customer Acquisition Cost (CAC)', desc: 'Paid ad spend + creative agency fees + marketing payroll ÷ New customers.', action: 'True CAC Model' },
-        { name: 'Break-Even ROAS Target Modeler', desc: 'Find the exact minimum Return On Ad Spend required to avoid cash burn.', action: 'Target ROAS' },
-        { name: 'Media Mix Model (MMM) Simulator', desc: 'Simulate diminishing returns across Google, Meta, TikTok, and Programmatic.', action: 'Simulate Channels' },
-        { name: 'Customer Lifetime Value (LTV) Modeler', desc: 'Predictive cohort LTV incorporating purchase frequency and gross margin %.', action: 'Predict LTV' },
-        { name: 'Influencer ROI & Sponsorship Value', desc: 'Benchmark flat sponsorship rates against predicted conversion CPA.', action: 'Price Creator Deal' }
+        { name: 'Blended Customer Acquisition Cost (CAC)', desc: 'Calculate true customer acquisition cost across ad spend, tools, and marketing payroll.', action: 'Calculate CAC' },
+        { name: 'Break-Even ROAS Target Calculator', desc: 'Find the minimum Return On Ad Spend needed to make a profit on ads.', action: 'Find Target ROAS' },
+        { name: 'Media Mix Simulator', desc: 'Compare and forecast returns across Google Ads, Meta, TikTok, and other channels.', action: 'Compare Channels' },
+        { name: 'Customer Lifetime Value (LTV) Calculator', desc: 'Calculate customer lifetime value based on purchase frequency, margin, and retention.', action: 'Calculate LTV' },
+        { name: 'Influencer & Sponsorship ROI Calculator', desc: 'Evaluate sponsorship costs against expected sales and customer acquisition cost.', action: 'Calculate ROI' }
       ]
     },
     {
       id: 'category-ecommerce',
       num: '8',
       title: 'Ecommerce & Marketplaces',
-      desc: 'Channel take rates, FBA logistics weight fees, Shopify rates, and return erosion.',
+      desc: 'Amazon FBA fees, Shopify store profits, return costs, and marketplace margins.',
       icon: 'storefront',
       color: 'primary',
       count: '5 Tools',
       tools: [
-        { name: 'Amazon FBA Fee & Profit Engine', desc: 'Dimensional weight storage tiers, referral fees, and net return margins.', action: 'FBA Breakdown' },
-        { name: 'Shopify Net Profit & App Fee Model', desc: 'Include payment gateway interchange, monthly SaaS stack, and refunds.', action: 'Shopify Profit' },
-        { name: 'Product Return Rate Damage Modeler', desc: 'Quantify true bottom-line damage of 15%-30% return rates on clothing/goods.', action: 'Return Impact' },
-        { name: 'Dropshipping Margin Feasibility', desc: 'Evaluate supplier MOQ, air freight surcharge, and dynamic ad cost elasticity.', action: 'Check Viability' },
-        { name: 'Etsy / eBay Fee & Profit Calculator', desc: 'Calculate hidden listing fees, offsite ad cuts, and payout transaction margins.', action: 'Unpack Fees' }
+        { name: 'Amazon FBA Fee & Profit Calculator', desc: 'Calculate Amazon referral fees, fulfillment costs, storage, and net profit per unit.', action: 'Calculate FBA Profit' },
+        { name: 'Shopify Net Profit & Fee Calculator', desc: 'Calculate net profit after payment gateway fees, app subscriptions, and refunds.', action: 'Calculate Profit' },
+        { name: 'Product Return & Profit Loss Calculator', desc: 'Measure the true financial impact of customer returns on your bottom line.', action: 'Calculate Return Cost' },
+        { name: 'Dropshipping Profit Margin Calculator', desc: 'Calculate net profit margins factoring in supplier costs, shipping, and ad spend.', action: 'Check Margins' },
+        { name: 'Etsy & eBay Fee & Profit Calculator', desc: 'Calculate listing fees, transaction fees, advertising fees, and final profit.', action: 'Calculate Fees' }
       ]
     },
     {
       id: 'category-saas',
       num: '9',
       title: 'SaaS Metrics & Subscriptions',
-      desc: 'Bessemer cloud benchmarks, retention cohorts, churn velocity, and magic number.',
+      desc: 'Monthly recurring revenue, customer churn, retention, and subscription health.',
       icon: 'cloud_sync',
       color: 'secondary',
       count: '6 Tools',
       tools: [
-        { name: 'MRR / ARR Waterfall Modeler', desc: 'Map New MRR + Expansion MRR - Contraction MRR - Churn MRR.', action: 'Waterfall Chart' },
-        { name: 'Net Revenue Retention (NRR)', desc: 'Benchmark cohort expansion health against the golden 120%+ enterprise standard.', action: 'NRR Cohorts' },
-        { name: 'SaaS Magic Number & CAC Payback', desc: 'Determine sales team efficiency: (Quarter ARR Growth × 4) ÷ Sales & Marketing Spend.', action: 'Magic Number' },
-        { name: 'Logo vs Revenue Churn Rate', desc: 'Decouple account cancellation counts from actual dollar value retention impact.', action: 'Churn Analysis' },
-        { name: 'Rule of 40 Benchmark Grader', desc: 'Compare public SaaS market valuations to your ARR growth + EBITDA margin sum.', action: 'Benchmark Grader' },
-        { name: 'Seat-Based vs Usage-Based Model', desc: 'Simulate revenue curves transitioning from per-user tiers to token/compute billing.', action: 'Model Pricing' }
+        { name: 'MRR / ARR Revenue Waterfall', desc: 'Track New MRR, Expansion MRR, Downgrades, and Churned Revenue.', action: 'Track Revenue' },
+        { name: 'Net Revenue Retention (NRR)', desc: 'Measure customer revenue expansion and churn to benchmark business health.', action: 'Calculate NRR' },
+        { name: 'SaaS Magic Number & CAC Payback', desc: 'Determine sales efficiency and how many months it takes to recover acquisition costs.', action: 'Calculate Payback' },
+        { name: 'Customer vs Revenue Churn Rate', desc: 'Compare the number of lost customers versus the actual revenue lost to cancellations.', action: 'Analyze Churn' },
+        { name: 'Rule of 40 Benchmark Grader', desc: 'Evaluate your software business health by combining revenue growth and profit margin.', action: 'Score Rule of 40' },
+        { name: 'Per-User vs Usage-Based Pricing Model', desc: 'Compare revenue projections between per-seat plans and usage-based pricing tiers.', action: 'Compare Pricing' }
       ]
     },
     {
       id: 'category-hr',
       num: '10',
       title: 'Human Resources & Payroll',
-      desc: 'True employment burden rate, recruiting costs, retention, and overtime limits.',
+      desc: 'Total employee costs, hiring expenses, employee turnover, and overtime rates.',
       icon: 'badge',
       color: 'primary',
       count: '4 Tools',
       tools: [
-        { name: 'True Cost of an Employee (Burden Rate)', desc: 'Add FICA, healthcare, 401k match, workers comp, equipment & software.', action: 'Burden Factor' },
-        { name: 'Cost Per Hire & Time-to-Fill', desc: 'Agency recruitment fees + recruiter salary allocations ÷ Hires made.', action: 'Cost Per Hire' },
-        { name: 'Employee Turnover Cost Calculator', desc: 'Quantify lost institutional velocity and rehiring friction per departed team member.', action: 'Turnover Cost' },
-        { name: 'Overtime vs Additional Headcount', desc: 'Compare 1.5x hourly overtime payouts against the fixed burden of new full-time hires.', action: 'Compare Hiring' }
+        { name: 'True Cost of an Employee (Burden Rate)', desc: 'Calculate total employer cost including payroll taxes, health insurance, 401k, and perks.', action: 'Calculate Total Cost' },
+        { name: 'Cost Per Hire & Time-to-Fill', desc: 'Calculate recruitment expenses, job board fees, and hiring costs per new employee.', action: 'Calculate Cost Per Hire' },
+        { name: 'Employee Turnover Cost Calculator', desc: 'Calculate the true financial cost of employee departures, onboarding, and rehiring.', action: 'Calculate Turnover' },
+        { name: 'Overtime vs New Hire Cost Comparison', desc: 'Compare 1.5x overtime wages against the cost of hiring a new full-time team member.', action: 'Compare Options' }
       ]
     },
     {
       id: 'category-operations',
       num: '11',
       title: 'Operations & Productivity',
-      desc: 'Capacity utilization, OEE metrics, equipment downtime damage, and meeting cost.',
+      desc: 'Productivity metrics, equipment efficiency, meeting costs, and downtime impact.',
       icon: 'speed',
       color: 'tertiary',
       count: '4 Tools',
       tools: [
-        { name: 'Real-Time Meeting Cost Ticker', desc: 'Live running dollar cost of internal meetings based on participant salaries.', action: 'Run Meeting Clock' },
-        { name: 'Overall Equipment Effectiveness (OEE)', desc: 'Availability × Performance × Quality manufacturing index.', action: 'Calculate OEE' },
-        { name: 'Capacity Utilization Rate', desc: 'Actual plant output ÷ Maximum potential output percentage.', action: 'Plant Capacity' },
-        { name: 'Unplanned Downtime Cost Modeler', desc: 'Compute idle labor, delayed shipments, and customer SLA penalties per hour.', action: 'Downtime Cost' }
+        { name: 'Real-Time Meeting Cost Ticker', desc: 'Calculate the total cost of any team meeting in real time based on attendee salaries.', action: 'Start Meeting Clock' },
+        { name: 'Overall Equipment Effectiveness (OEE)', desc: 'Measure manufacturing efficiency based on equipment availability, performance, and quality.', action: 'Calculate OEE' },
+        { name: 'Capacity Utilization Rate', desc: 'Calculate what percentage of your potential production capacity is currently in use.', action: 'Check Capacity' },
+        { name: 'Unplanned Downtime Cost Calculator', desc: 'Calculate lost productivity, delayed orders, and financial losses from system outages.', action: 'Calculate Loss' }
       ]
     },
     {
       id: 'category-inventory',
       num: '12',
       title: 'Inventory & Supply Chain',
-      desc: 'EOQ mathematical ordering, safety buffers, stockouts, and lead-time safety.',
+      desc: 'Order quantities, reorder points, safety stock levels, and inventory turnover.',
       icon: 'warehouse',
       color: 'primary',
       count: '4 Tools',
       tools: [
-        { name: 'Economic Order Quantity (EOQ)', desc: 'Determine optimal order batch sizes to minimize setup and holding costs.', action: 'EOQ Formula' },
-        { name: 'Reorder Point (ROP) & Safety Stock', desc: '(Lead Time × Daily Demand) + Z-score statistical safety stock buffer.', action: 'Reorder Buffer' },
-        { name: 'Inventory Turnover Ratio & DSI', desc: 'Days Sales of Inventory (DSI) to identify dead capital sitting on shelves.', action: 'Turns & DSI' },
-        { name: 'Stockout Cost & Loss Modeler', desc: 'Quantify gross revenue lost to out-of-stock items and uncaptured intent.', action: 'Stockout Model' }
+        { name: 'Economic Order Quantity (EOQ)', desc: 'Find the optimal order quantity to minimize total purchasing and holding costs.', action: 'Calculate EOQ' },
+        { name: 'Reorder Point (ROP) & Safety Stock', desc: 'Calculate when to reorder stock and how much buffer inventory to keep on hand.', action: 'Calculate Reorder Point' },
+        { name: 'Inventory Turnover Ratio & DSI', desc: 'Calculate Days Sales of Inventory (DSI) to identify slow-moving products.', action: 'Check Turnover' },
+        { name: 'Stockout Cost & Loss Calculator', desc: 'Calculate estimated lost revenue from out-of-stock products.', action: 'Calculate Lost Sales' }
       ]
     }
   ];
@@ -407,41 +406,22 @@ export default function BusinessClient() {
 
   return (
     <div className="min-h-screen bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container flex flex-col">
-      <Header />
+      
 
-      <main className="w-full pt-20 bg-background flex-1">
-        {/* ================= SUB-NAVIGATION BAR ================= */}
-        <div className="w-full bg-surface-container-lowest shadow-sm sticky top-20 z-40 border-b border-outline-variant/30">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="flex items-center gap-space-xs py-space-xs overflow-x-auto no-scrollbar">
-              {[
-                { id: 'all', label: 'All Business Tools', href: '#all' },
-                { id: 'planning', label: 'Planning & Strategy', href: '#category-planning' },
-                { id: 'startup', label: 'Startup & VC', href: '#category-startup' },
-                { id: 'profit', label: 'Profit & Pricing', href: '#category-profit' },
-                { id: 'accounting', label: 'Accounting & Tax', href: '#category-accounting' },
-                { id: 'sales', label: 'Sales & Marketing', href: '#category-sales' },
-                { id: 'saas', label: 'Ecommerce & SaaS', href: '#category-saas' },
-                { id: 'hr', label: 'HR & Operations', href: '#category-hr' },
-                { id: 'ai', label: 'AI Tools', href: '#category-ai' },
-                { id: 'realestate', label: 'Real Estate', href: '#category-realestate' }
-              ].map(tab => (
-                <a
-                  key={tab.id}
-                  href={tab.href}
-                  onClick={() => setActiveSubTab(tab.id)}
-                  className={`px-space-sm py-space-2xs rounded-lg font-body-sm text-body-sm whitespace-nowrap transition-all ${
-                    activeSubTab === tab.id
-                      ? 'bg-primary-container text-on-primary font-semibold shadow-sm'
-                      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
-                  }`}
-                >
-                  {tab.label}
-                </a>
-              ))}
-            </div>
+      <main className="w-full pt-16 bg-background flex-1">
+        {/* Breadcrumb Navigation Bar */}
+        <section className="w-full bg-surface-container-low/70 py-space-xs border-b border-outline-variant/20">
+          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center justify-between gap-space-xs text-body-sm font-body-sm">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-space-xs text-on-surface-variant flex-wrap">
+              <Link className="hover:text-primary transition-colors flex items-center gap-1" href="/">
+                <span className="material-symbols-outlined text-[16px]">home</span>
+                Home
+              </Link>
+              <span className="text-outline-variant">/</span>
+              <span className="text-on-surface font-medium">Business Calculators</span>
+            </nav>
           </div>
-        </div>
+        </section>
 
         {/* ================= SECTION 1: HERO & TELEMETRY ================= */}
         <section className="w-full pt-space-3xl pb-space-2xl bg-gradient-to-b from-surface-container-low via-background to-background relative overflow-hidden">
@@ -454,13 +434,13 @@ export default function BusinessClient() {
               <div className="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs rounded-full bg-surface-container-high text-primary font-label-caps text-label-caps uppercase tracking-wider shadow-sm font-semibold">
                 <span className="material-symbols-outlined text-[16px]">analytics</span> Business Tools &amp; Growth Platform
               </div>
-              {/* Headline */}
+              {/* Headline H1 */}
               <h1 className="font-display-hero text-display-hero text-on-surface font-extrabold tracking-tight">
-                Business Tools &amp; Calculators
+                Business Tools &amp; Calculators for Smarter Business Decisions
               </h1>
               {/* Subtitle */}
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
-                Free business calculators, startup financial tools, pricing planners, SaaS metrics, ecommerce profit calculators, and growth resources. Easy to use, accurate, and 100% private.
+                Calculate profits, pricing, payroll, revenue, ROI, inventory, business expenses, and growth projections with accurate and easy-to-use business calculators.
               </p>
 
               {/* Omnisearch Engine */}
@@ -473,7 +453,7 @@ export default function BusinessClient() {
                     onChange={e => setSearchQuery(e.target.value)}
                     className="w-full py-space-md px-space-sm bg-transparent outline-none font-body-md text-body-md text-on-surface placeholder:text-outline font-medium"
                     id="tool-search-input"
-                    placeholder="Search 350+ deterministic business models, formulas, or metrics..."
+                    placeholder="Search Business Calculators: profit margin, ROI, payroll, break-even, pricing, inventory, cash flow, revenue..."
                     type="text"
                   />
                   <kbd className="hidden sm:inline-flex items-center justify-center mr-space-md bg-surface-container-high px-space-xs py-1 rounded font-data-mono text-data-mono text-xs text-on-surface-variant font-bold shadow-inner">
@@ -485,13 +465,15 @@ export default function BusinessClient() {
                   <span className="text-outline uppercase tracking-wider mr-space-2xs">Quick Jump:</span>
                   {[
                     'Profit Margin',
+                    'ROI Calculator',
                     'Break-Even',
-                    'ROI',
-                    'GST / VAT',
+                    'Payroll',
+                    'Pricing & Markup',
+                    'Inventory',
+                    'Cash Flow',
                     'Startup Cost',
-                    'MRR & ARR',
-                    'Burn Rate',
-                    'Valuation'
+                    'Business Loan',
+                    'Sales Tax'
                   ].map(tag => (
                     <button
                       key={tag}
@@ -508,7 +490,7 @@ export default function BusinessClient() {
               <div className="w-full pt-space-lg">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-space-sm bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-outline-variant/30">
                   <div className="flex flex-col items-center justify-center p-space-xs">
-                    <span className="font-numerical-display text-numerical-display text-primary font-bold">350+</span>
+                    <span className="font-numerical-display text-numerical-display text-primary font-bold">250+</span>
                     <span className="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant mt-space-2xs">
                       Business Tools
                     </span>
@@ -520,7 +502,7 @@ export default function BusinessClient() {
                     </span>
                   </div>
                   <div className="flex flex-col items-center justify-center p-space-xs">
-                    <span className="font-numerical-display text-numerical-display text-on-surface font-bold">14.8M</span>
+                    <span className="font-numerical-display text-numerical-display text-on-surface font-bold">100K+</span>
                     <span className="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant mt-space-2xs">
                       Calculations Solved
                     </span>
@@ -545,24 +527,24 @@ export default function BusinessClient() {
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-space-sm">
               <div>
                 <span className="font-label-caps text-label-caps uppercase text-primary tracking-widest font-semibold">
-                  Objective Matrix
+                  FIND BY GOAL
                 </span>
                 <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold mt-space-2xs">
-                  What is your primary business objective?
+                  What is your primary business goal?
                 </h2>
                 <p className="font-body-md text-body-md text-on-surface-variant mt-space-2xs">
-                  Select an operational milestone to jump directly into calibrated analytical suites.
+                  Choose what you want to calculate to jump straight to the right tools.
                 </p>
               </div>
               <span className="font-data-mono text-data-mono text-xs text-on-surface-variant bg-surface-container-high px-space-sm py-space-2xs rounded-md">
-                10 Strategic Workstreams Active
+                10 Core Business Categories
               </span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-space-md">
               {[
                 {
                   title: 'Start a Business',
-                  desc: 'Ideation viability, Lean Canvas, legal structure & capitalization.',
+                  desc: 'Business plans, startup costs, legal structures & funding.',
                   count: '16 Tools',
                   icon: 'rocket_launch',
                   color: 'primary',
@@ -570,7 +552,7 @@ export default function BusinessClient() {
                 },
                 {
                   title: 'Increase Profit',
-                  desc: 'Gross margins, price elasticity, markdown impact & contribution.',
+                  desc: 'Gross margins, pricing markups, and break-even calculations.',
                   count: '14 Tools',
                   icon: 'payments',
                   color: 'secondary',
@@ -578,7 +560,7 @@ export default function BusinessClient() {
                 },
                 {
                   title: 'Grow Revenue',
-                  desc: 'Sales pipeline velocity, win rate modeling & expansion curves.',
+                  desc: 'Sales pipeline targets, conversion rates & sales team models.',
                   count: '12 Tools',
                   icon: 'trending_up',
                   color: 'tertiary',
@@ -586,7 +568,7 @@ export default function BusinessClient() {
                 },
                 {
                   title: 'Launch Ecommerce',
-                  desc: 'Amazon FBA, Shopify net profit, dropshipping margins & returns.',
+                  desc: 'Amazon FBA fees, Shopify store profit & shipping calculations.',
                   count: '15 Tools',
                   icon: 'shopping_cart',
                   color: 'primary',
@@ -594,7 +576,7 @@ export default function BusinessClient() {
                 },
                 {
                   title: 'Hire Employees',
-                  desc: 'True burden rate, cost per hire, overtime & commission scales.',
+                  desc: 'Total employee costs, payroll taxes, overtime & hiring budgets.',
                   count: '11 Tools',
                   icon: 'group_add',
                   color: 'secondary',
@@ -602,7 +584,7 @@ export default function BusinessClient() {
                 },
                 {
                   title: 'Manage Inventory',
-                  desc: 'EOQ equations, safety stocks, stockout liability & ROP.',
+                  desc: 'Reorder points, safety stock buffer & inventory turnover.',
                   count: '9 Tools',
                   icon: 'inventory_2',
                   color: 'on-surface',
@@ -610,7 +592,7 @@ export default function BusinessClient() {
                 },
                 {
                   title: 'Improve Marketing',
-                  desc: 'ROAS, blended CAC, LTV:CAC, CPA thresholds & conversion lifts.',
+                  desc: 'Ad spend ROI, customer acquisition costs & conversion rates.',
                   count: '13 Tools',
                   icon: 'campaign',
                   color: 'primary',
@@ -618,7 +600,7 @@ export default function BusinessClient() {
                 },
                 {
                   title: 'Improve Cash Flow',
-                  desc: 'Working capital velocity, DPO, DSO & cash burn buffers.',
+                  desc: 'Working capital, cash runway & operational expense buffers.',
                   count: '12 Tools',
                   icon: 'account_balance',
                   color: 'secondary',
@@ -626,7 +608,7 @@ export default function BusinessClient() {
                 },
                 {
                   title: 'Scale Operations',
-                  desc: 'Capacity planning, machine OEE, downtime & meeting bloat.',
+                  desc: 'Production capacity, equipment uptime & meeting cost tracking.',
                   count: '10 Tools',
                   icon: 'precision_manufacturing',
                   color: 'on-surface',
@@ -634,7 +616,7 @@ export default function BusinessClient() {
                 },
                 {
                   title: 'Build SaaS',
-                  desc: 'Rule of 40, cohort NRR, churn velocity & Bessemer magic number.',
+                  desc: 'Rule of 40, recurring revenue, customer retention & churn rate.',
                   count: '15 Tools',
                   icon: 'hub',
                   color: 'primary',
@@ -706,26 +688,26 @@ export default function BusinessClient() {
                   <div className="flex items-center gap-space-xs">
                     <span className="w-2.5 h-2.5 rounded-full bg-secondary-container animate-pulse"></span>
                     <span className="font-label-caps text-label-caps uppercase text-secondary font-bold tracking-wider">
-                      Live System Metrology
+                      Business Health Benchmarks
                     </span>
                   </div>
                   <h2 className="font-headline-lg text-headline-lg font-bold text-on-surface mt-space-2xs">
-                    Business Health Telemetry Benchmarks
+                    Key Business Metrics &amp; Benchmarks
                   </h2>
                   <p className="font-body-sm text-body-sm text-on-surface-variant">
-                    Client-side computed synthetic benchmarks representing top-quartile B2B/B2C enterprises.
+                    Standard industry benchmarks and financial targets for healthy, growing companies.
                   </p>
                 </div>
                 <div className="flex items-center gap-space-sm">
                   <span className="font-data-mono text-data-mono text-xs text-on-surface-variant">
-                    Status: Core Calibration Active
+                    Interactive Example
                   </span>
                   <button
                     onClick={refreshDashboard}
                     className="px-space-sm py-space-2xs bg-surface-container hover:bg-surface-container-high rounded text-on-surface font-body-sm text-body-sm flex items-center gap-space-2xs transition-colors cursor-pointer border border-outline-variant/20"
                   >
                     <span className="material-symbols-outlined text-[16px]">sync</span>
-                    Simulate Variance
+                    Simulate Example Numbers
                   </button>
                 </div>
               </div>
@@ -736,7 +718,7 @@ export default function BusinessClient() {
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider">
-                        Revenue Trajectory
+                        Monthly Revenue
                       </span>
                       <span className="material-symbols-outlined text-primary text-[20px]">show_chart</span>
                     </div>
@@ -745,7 +727,7 @@ export default function BusinessClient() {
                         ${telemetry.mrr.toLocaleString()}
                       </span>
                       <span className="font-body-sm text-body-sm text-on-surface-variant block mt-space-2xs">
-                        MRR Velocity (+{telemetry.mrrGrowth}% MoM)
+                        Monthly Recurring Revenue (+{telemetry.mrrGrowth}% MoM)
                       </span>
                     </div>
                   </div>
@@ -764,7 +746,7 @@ export default function BusinessClient() {
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider">
-                        Margin Structure
+                        Profit Margins
                       </span>
                       <span className="material-symbols-outlined text-secondary text-[20px]">pie_chart</span>
                     </div>
@@ -773,13 +755,13 @@ export default function BusinessClient() {
                         {telemetry.grossMargin}%
                       </span>
                       <span className="font-body-sm text-body-sm text-on-surface-variant block mt-space-2xs">
-                        Gross Margin | {telemetry.netMargin}% Net
+                        Gross Margin | {telemetry.netMargin}% Net Margin
                       </span>
                     </div>
                   </div>
                   <div className="mt-space-md pt-space-sm flex items-center justify-between">
                     <span className="px-space-xs py-0.5 rounded bg-secondary/10 text-secondary font-label-caps text-label-caps font-bold">
-                      Optimal Yield
+                      Healthy Margins
                     </span>
                     <svg className="w-20 h-6 text-secondary" fill="none" viewBox="0 0 100 30">
                       <path d="M0 20 L25 18 L50 12 L75 14 L100 6" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2.5"></path>
@@ -792,22 +774,22 @@ export default function BusinessClient() {
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider">
-                        Runway &amp; Burn Buffer
+                        Cash Runway
                       </span>
                       <span className="material-symbols-outlined text-tertiary text-[20px]">hourglass_top</span>
                     </div>
                     <div className="mt-space-sm">
                       <span className="font-numerical-display text-numerical-display text-on-surface font-bold tracking-tight">
-                        {telemetry.runway} Mo
+                        {telemetry.runway} Months
                       </span>
                       <span className="font-body-sm text-body-sm text-on-surface-variant block mt-space-2xs">
-                        ${(telemetry.cash / 1000).toFixed(0)}k Cash / ${(telemetry.netBurn / 1000).toFixed(0)}k Net Burn
+                        ${(telemetry.cash / 1000).toFixed(0)}k Cash / ${(telemetry.netBurn / 1000).toFixed(0)}k Net Monthly Burn
                       </span>
                     </div>
                   </div>
                   <div className="mt-space-md pt-space-sm flex items-center justify-between">
                     <span className="px-space-xs py-0.5 rounded bg-tertiary-fixed-dim/30 text-tertiary font-label-caps text-label-caps font-bold">
-                      High Safety
+                      Safe Runway
                     </span>
                     <div className="w-20 h-2 bg-surface-container-highest rounded-full overflow-hidden">
                       <div className="w-4/5 h-full bg-tertiary rounded-full"></div>
@@ -820,7 +802,7 @@ export default function BusinessClient() {
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="font-label-caps text-label-caps uppercase text-on-surface-variant tracking-wider">
-                        Unit Economics (LTV:CAC)
+                        Customer Economics (LTV:CAC)
                       </span>
                       <span className="material-symbols-outlined text-primary text-[20px]">balance</span>
                     </div>
@@ -829,15 +811,15 @@ export default function BusinessClient() {
                         {telemetry.ratio}x
                       </span>
                       <span className="font-body-sm text-body-sm text-on-surface-variant block mt-space-2xs">
-                        ${telemetry.ltv.toLocaleString()} LTV vs ${telemetry.cac} Blended CAC
+                        ${telemetry.ltv.toLocaleString()} LTV vs ${telemetry.cac} CAC
                       </span>
                     </div>
                   </div>
                   <div className="mt-space-md pt-space-sm flex items-center justify-between">
                     <span className="px-space-xs py-0.5 rounded bg-primary/10 text-primary font-label-caps text-label-caps font-bold">
-                      World Class
+                      Target Met
                     </span>
-                    <span className="font-data-mono text-data-mono text-xs text-primary font-bold">Benchmark: &gt;3.0x</span>
+                    <span className="font-data-mono text-data-mono text-xs text-primary font-bold">Target: &gt;3.0x</span>
                   </div>
                 </div>
               </div>
@@ -874,12 +856,12 @@ export default function BusinessClient() {
                           Profit Margin &amp; Markup Calculator
                         </h3>
                         <span className="font-label-caps text-label-caps text-on-surface-variant">
-                          Core Retail &amp; Wholesale Metrology
+                          Instant Margin &amp; Markup Formula
                         </span>
                       </div>
                     </div>
                     <span className="font-data-mono text-data-mono text-xs bg-surface-container-high px-space-xs py-0.5 rounded text-on-surface-variant font-semibold">
-                      Live Deterministic
+                      Live Calculator
                     </span>
                   </div>
 
@@ -960,12 +942,12 @@ export default function BusinessClient() {
                           SaaS Rule of 40 Calculator
                         </h3>
                         <span className="font-label-caps text-label-caps text-on-surface-variant">
-                          Bessemer Growth vs Profitability Tradeoff
+                          Growth vs Profitability Benchmark
                         </span>
                       </div>
                     </div>
                     <span className="font-data-mono text-data-mono text-xs bg-surface-container-high px-space-xs py-0.5 rounded text-on-surface-variant font-semibold">
-                      Live Deterministic
+                      Live Calculator
                     </span>
                   </div>
 
@@ -1008,7 +990,7 @@ export default function BusinessClient() {
                   <div className="mt-space-lg bg-surface-container-low p-space-md rounded-xl flex items-center justify-between border border-outline-variant/20">
                     <div>
                       <span className="font-label-caps text-label-caps uppercase text-on-surface-variant block">
-                        Rule of 40 Composite Score
+                        Rule of 40 Score
                       </span>
                       <span className="font-numerical-display text-numerical-display text-secondary font-bold block mt-1">
                         {ruleOf40Result.score}
@@ -1046,12 +1028,12 @@ export default function BusinessClient() {
                           Cash Runway &amp; Burn Rate Calculator
                         </h3>
                         <span className="font-label-caps text-label-caps text-on-surface-variant">
-                          Deterministic Liquidity Projection
+                          Cash Flow &amp; Runway Estimation
                         </span>
                       </div>
                     </div>
                     <span className="font-data-mono text-data-mono text-xs bg-surface-container-high px-space-xs py-0.5 rounded text-on-surface-variant font-semibold">
-                      Live Deterministic
+                      Live Calculator
                     </span>
                   </div>
 
@@ -1142,12 +1124,12 @@ export default function BusinessClient() {
                           Ecommerce Profit &amp; Fee Calculator
                         </h3>
                         <span className="font-label-caps text-label-caps text-on-surface-variant">
-                          Multichannel Amazon &amp; Shopify Unit Economics
+                          Amazon &amp; Shopify Net Profit
                         </span>
                       </div>
                     </div>
                     <span className="font-data-mono text-data-mono text-xs bg-surface-container-high px-space-xs py-0.5 rounded text-on-surface-variant font-semibold">
-                      Live Deterministic
+                      Live Calculator
                     </span>
                   </div>
 
@@ -1247,21 +1229,75 @@ export default function BusinessClient() {
         {/* ================= SECTION 5: EXHAUSTIVE 17-CATEGORY DIRECTORY ================= */}
         <section className="w-full py-space-3xl bg-background" id="all">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-2xl gap-space-md">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-space-md">
               <div>
                 <span className="font-label-caps text-label-caps uppercase text-primary tracking-widest font-semibold">
-                  CALCULATOR DIRECTORY
+                  BUSINESS CALCULATOR DIRECTORY
                 </span>
                 <h2 className="font-headline-lg text-headline-lg font-bold text-on-surface mt-space-2xs">
                   Explore All Business Calculators
                 </h2>
-                <p className="font-body-md text-body-md text-on-surface-variant mt-space-2xs">
-                  Browse 17 business categories with over 350+ calculators and planning tools for startups, founders, and growing companies.
+                <p className="font-body-md text-body-md text-on-surface-variant max-w-3xl mt-space-2xs leading-relaxed">
+                  Find free Business Tools &amp; Calculators for profit margins, ROI, payroll, pricing, inventory management, budgeting, revenue forecasting, and business planning. Fast, accurate, and easy-to-use calculators for entrepreneurs, startups, freelancers, and businesses worldwide.
                 </p>
               </div>
-              <div className="flex items-center gap-space-xs font-data-mono text-data-mono text-xs">
+              <div className="flex items-center gap-space-xs font-data-mono text-data-mono text-xs shrink-0">
                 <span className="w-2 h-2 rounded-full bg-primary"></span>
-                <span>Instant Calculations • 100% Free &amp; Private</span>
+                <span>250+ Business Calculators • 100% Free &amp; Private</span>
+              </div>
+            </div>
+
+            {/* Popular Calculator Categories Grid */}
+            <div className="mb-space-2xl">
+              <div className="flex items-center justify-between mb-space-sm">
+                <h3 className="font-headline-md text-headline-md text-on-surface font-bold flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary text-[20px]">stars</span>
+                  Popular Calculator Categories
+                </h3>
+                <span className="font-label-caps text-[11px] text-on-surface-variant uppercase">Core Business Hub</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-space-sm">
+                {[
+                  { name: 'Profit Margin Calculators', icon: 'payments', count: '18 Tools', query: 'Profit Margin' },
+                  { name: 'ROI Calculators', icon: 'trending_up', count: '14 Tools', query: 'ROI' },
+                  { name: 'Break-Even Calculators', icon: 'balance', count: '12 Tools', query: 'Break-Even' },
+                  { name: 'Payroll Calculators', icon: 'badge', count: '15 Tools', query: 'Payroll' },
+                  { name: 'Revenue Calculators', icon: 'account_balance_wallet', count: '16 Tools', query: 'Revenue' },
+                  { name: 'Pricing & Markup Calculators', icon: 'sell', count: '12 Tools', query: 'Pricing' },
+                  { name: 'Inventory Calculators', icon: 'inventory_2', count: '11 Tools', query: 'Inventory' },
+                  { name: 'Cash Flow Calculators', icon: 'currency_exchange', count: '14 Tools', query: 'Cash Flow' },
+                  { name: 'Startup Cost Calculators', icon: 'rocket_launch', count: '10 Tools', query: 'Startup' },
+                  { name: 'Business Loan Calculators', icon: 'account_balance', count: '9 Tools', query: 'Loan' },
+                  { name: 'Sales Tax Calculators', icon: 'receipt_long', count: '13 Tools', query: 'Tax' },
+                  { name: 'Business Growth Calculators', icon: 'monitoring', count: '15 Tools', query: 'Growth' },
+                  { name: 'Productivity Calculators', icon: 'schedule', count: '10 Tools', query: 'Productivity' },
+                  { name: 'Financial Planning Tools', icon: 'query_stats', count: '16 Tools', query: 'Financial' },
+                ].map(item => (
+                  <button
+                    key={item.name}
+                    onClick={() => {
+                      setSearchQuery(item.query);
+                      const el = document.getElementById('tool-search-input');
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth' });
+                        el.focus();
+                      }
+                    }}
+                    className="p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/30 hover:border-primary/50 hover:shadow-xs transition-all flex items-center justify-between group text-left"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span className="material-symbols-outlined text-primary text-[18px] group-hover:scale-110 transition-transform">
+                        {item.icon}
+                      </span>
+                      <span className="font-body-sm text-body-sm font-bold text-on-surface group-hover:text-primary transition-colors">
+                        {item.name}
+                      </span>
+                    </div>
+                    <span className="font-data-mono text-[10px] text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">
+                      {item.count}
+                    </span>
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -1306,7 +1342,7 @@ export default function BusinessClient() {
                       >
                         <div>
                           <span
-                            className={`font-headline-md text-headline-md text-on-surface font-semibold transition-colors text-base ${
+                            className={`font-headline-md text-headline-md text-on-surface font-bold transition-colors text-base ${
                               cat.color === 'primary'
                                 ? 'group-hover:text-primary'
                                 : cat.color === 'secondary'
@@ -1347,27 +1383,27 @@ export default function BusinessClient() {
                   </div>
                   <ul className="space-y-space-xs font-body-sm text-body-sm">
                     <li>
-                      <a className="text-on-surface-variant hover:text-secondary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>Billable Hourly Rate Engine</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-secondary">Billable Hourly Rate Engine</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-secondary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>Fixed-Fee Project Scope Calculator</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-secondary">Fixed-Fee Project Scope Calculator</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-secondary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>Monthly Retainer Profitability</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-secondary">Monthly Retainer Profitability</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-secondary flex justify-between py-1" href="#">
-                        <span>Agency Capacity Utilization</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-secondary">Agency Capacity Utilization</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                   </ul>
@@ -1383,27 +1419,27 @@ export default function BusinessClient() {
                   </div>
                   <ul className="space-y-space-xs font-body-sm text-body-sm">
                     <li>
-                      <a className="text-on-surface-variant hover:text-primary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>LLM Token Cost &amp; Margin Estimator</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-primary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-primary">LLM Token Cost &amp; Margin Estimator</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-primary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>AI Workflow Automation ROI</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-primary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-primary">AI Workflow Automation ROI</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-primary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>Cloud GPU Server Unit Economics</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-primary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-primary">Cloud GPU Server Unit Economics</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-primary flex justify-between py-1" href="#">
-                        <span>RAG Pipeline Cost Architect</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-primary flex justify-between py-1.5 transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-primary">RAG Pipeline Cost Architect</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                   </ul>
@@ -1419,27 +1455,27 @@ export default function BusinessClient() {
                   </div>
                   <ul className="space-y-space-xs font-body-sm text-body-sm">
                     <li>
-                      <a className="text-on-surface-variant hover:text-tertiary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>Restaurant Prime Cost &amp; Food %</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-tertiary">Restaurant Prime Cost &amp; Food %</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-tertiary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>Menu Engineering Profit Matrix</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-tertiary">Menu Engineering Profit Matrix</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-tertiary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>Salon &amp; Studio Chair Yield</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-tertiary">Salon &amp; Studio Chair Yield</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-tertiary flex justify-between py-1" href="#">
-                        <span>Gym Member ARPU &amp; Churn</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1.5 transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-tertiary">Gym Member ARPU &amp; Churn</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                   </ul>
@@ -1455,27 +1491,27 @@ export default function BusinessClient() {
                   </div>
                   <ul className="space-y-space-xs font-body-sm text-body-sm">
                     <li>
-                      <a className="text-on-surface-variant hover:text-secondary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>Commercial Cap Rate Calculator</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-secondary">Commercial Cap Rate Calculator</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-secondary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>Cash-on-Cash Return Modeler</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-secondary">Cash-on-Cash Return Modeler</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-secondary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                        <span>Net Operating Income (NOI) Workbench</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-secondary">Net Operating Income (NOI) Workbench</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface-variant hover:text-secondary flex justify-between py-1" href="#">
-                        <span>Gross Rent Multiplier (GRM)</span>
-                        <span className="font-data-mono text-xs">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 transition-colors group" href="#">
+                        <span className="font-bold text-on-surface group-hover:text-secondary">Gross Rent Multiplier (GRM)</span>
+                        <span className="font-data-mono text-xs font-bold">→</span>
                       </a>
                     </li>
                   </ul>
@@ -1492,29 +1528,29 @@ export default function BusinessClient() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
                     <ul className="space-y-space-xs font-body-sm text-body-sm">
                       <li>
-                        <a className="text-on-surface-variant hover:text-primary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                          <span>Instant Client-Side Invoice Generator</span>
-                          <span className="font-data-mono text-xs">→</span>
+                        <a className="text-on-surface hover:text-primary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                          <span className="font-bold text-on-surface group-hover:text-primary">Instant Client-Side Invoice Generator</span>
+                          <span className="font-data-mono text-xs font-bold">→</span>
                         </a>
                       </li>
                       <li>
-                        <a className="text-on-surface-variant hover:text-primary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                          <span>Standard Purchase Order (PO) Builder</span>
-                          <span className="font-data-mono text-xs">→</span>
+                        <a className="text-on-surface hover:text-primary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                          <span className="font-bold text-on-surface group-hover:text-primary">Standard Purchase Order (PO) Builder</span>
+                          <span className="font-data-mono text-xs font-bold">→</span>
                         </a>
                       </li>
                     </ul>
                     <ul className="space-y-space-xs font-body-sm text-body-sm">
                       <li>
-                        <a className="text-on-surface-variant hover:text-primary flex justify-between py-1 border-b border-surface-container-low" href="#">
-                          <span>5-Year Pro-Forma Cash Flow Template</span>
-                          <span className="font-data-mono text-xs">→</span>
+                        <a className="text-on-surface hover:text-primary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
+                          <span className="font-bold text-on-surface group-hover:text-primary">5-Year Pro-Forma Cash Flow Template</span>
+                          <span className="font-data-mono text-xs font-bold">→</span>
                         </a>
                       </li>
                       <li>
-                        <a className="text-on-surface-variant hover:text-primary flex justify-between py-1" href="#">
-                          <span>Independent Contractor NDA Generator</span>
-                          <span className="font-data-mono text-xs">→</span>
+                        <a className="text-on-surface hover:text-primary flex justify-between py-1.5 transition-colors group" href="#">
+                          <span className="font-bold text-on-surface group-hover:text-primary">Independent Contractor NDA Generator</span>
+                          <span className="font-data-mono text-xs font-bold">→</span>
                         </a>
                       </li>
                     </ul>
@@ -1600,13 +1636,13 @@ export default function BusinessClient() {
             <div className="bg-surface-container-lowest rounded-2xl p-space-xl shadow-lg border border-surface-container-high">
               <div className="text-center max-w-xl mx-auto mb-space-lg">
                 <span className="font-label-caps text-label-caps uppercase text-primary tracking-widest font-semibold">
-                  Guided Diagnostic
+                  FIND YOUR TOOL
                 </span>
                 <h2 className="font-headline-lg text-headline-lg font-bold text-on-surface mt-space-2xs">
                   Smart Calculator Finder
                 </h2>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
-                  Select your current operational bottleneck to automatically extract the ideal computational formula.
+                  Select your business model and primary goal to find the best calculator for your needs.
                 </p>
               </div>
 
@@ -1638,8 +1674,8 @@ export default function BusinessClient() {
                     onChange={e => setRecGoal(e.target.value as typeof recGoal)}
                   >
                     <option value="cash">Protect Liquidity &amp; Cash Flow</option>
-                    <option value="pricing">Optimize Pricing &amp; Unit Margin</option>
-                    <option value="growth">Accelerate Paid Customer Acquisition</option>
+                    <option value="pricing">Optimize Pricing &amp; Profit Margins</option>
+                    <option value="growth">Accelerate Customer Acquisition</option>
                     <option value="hiring">Expand Headcount Safely</option>
                   </select>
                 </div>
@@ -1648,7 +1684,7 @@ export default function BusinessClient() {
               <div className="mt-space-lg p-space-md bg-surface-container-low rounded-xl flex flex-col sm:flex-row items-center justify-between gap-space-md border border-outline-variant/20">
                 <div>
                   <span className="font-label-caps text-label-caps uppercase text-primary tracking-wider font-semibold">
-                    Recommended Suite
+                    Recommended Calculator
                   </span>
                   <h4 className="font-headline-md text-headline-md font-bold text-on-surface text-lg mt-1" id="rec-title">
                     {recommenderData.title}
@@ -1669,18 +1705,18 @@ export default function BusinessClient() {
           </div>
         </section>
 
-        {/* ================= SECTION 8: INDUSTRY-SPECIFIC COMPUTATIONAL HUBS ================= */}
+        {/* ================= SECTION 8: INDUSTRY-SPECIFIC CALCULATORS ================= */}
         <section className="w-full py-space-3xl bg-surface-container-low/40 border-y border-outline-variant/20">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
             <div className="mb-space-2xl text-center max-w-2xl mx-auto">
               <span className="font-label-caps text-label-caps uppercase text-primary tracking-widest font-semibold">
-                Domain Specificity
+                INDUSTRY SOLUTIONS
               </span>
               <h2 className="font-headline-lg text-headline-lg font-bold text-on-surface mt-space-2xs">
-                Industry Computational Suites
+                Industry-Specific Calculators
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant mt-space-2xs">
-                Pre-calibrated accounting parameters tuned to specific regulatory and industry norms.
+                Pre-configured formulas tailored for specific industries and business models.
               </p>
             </div>
 
@@ -1692,7 +1728,7 @@ export default function BusinessClient() {
                 </div>
                 <h3 className="font-headline-md text-headline-md font-bold text-on-surface">Software &amp; Micro-SaaS</h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed">
-                  Calibrated for recurring Stripe subscriptions, churn cohorts, server unit economics, and Bessemer valuation rules.
+                  Designed for recurring subscriptions, customer retention, server hosting costs, and SaaS valuation metrics.
                 </p>
                 <div className="mt-space-lg flex flex-wrap gap-space-2xs">
                   <span className="font-label-caps text-label-caps bg-surface-container px-space-xs py-1 rounded text-on-surface-variant">
@@ -1714,7 +1750,7 @@ export default function BusinessClient() {
                 </div>
                 <h3 className="font-headline-md text-headline-md font-bold text-on-surface">Direct-to-Consumer &amp; FBA</h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed">
-                  Pre-calibrated for Amazon logistics tier weights, 3PL warehousing fees, landed customs tariff duty, and refund margins.
+                  Designed for Amazon FBA fees, warehousing, shipping costs, customs duties, and return rates.
                 </p>
                 <div className="mt-space-lg flex flex-wrap gap-space-2xs">
                   <span className="font-label-caps text-label-caps bg-surface-container px-space-xs py-1 rounded text-on-surface-variant">
@@ -1736,7 +1772,7 @@ export default function BusinessClient() {
                 </div>
                 <h3 className="font-headline-md text-headline-md font-bold text-on-surface">Manufacturing &amp; Assembly</h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed">
-                  Standardized around OEE machine uptime, scrap waste percentages, safety stock holding cost, and batch EOQ thresholds.
+                  Calculations for machine uptime, scrap waste, inventory holding costs, and optimal batch sizes.
                 </p>
                 <div className="mt-space-lg flex flex-wrap gap-space-2xs">
                   <span className="font-label-caps text-label-caps bg-surface-container px-space-xs py-1 rounded text-on-surface-variant">
@@ -1754,18 +1790,18 @@ export default function BusinessClient() {
           </div>
         </section>
 
-        {/* ================= SECTION 9: CONCEPTUAL COMPARISONS & HEURISTICS ================= */}
+        {/* ================= SECTION 9: KEY FINANCIAL CONCEPTS EXPLAINED ================= */}
         <section className="w-full py-space-3xl bg-background">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
             <div className="mb-space-2xl text-center max-w-2xl mx-auto">
               <span className="font-label-caps text-label-caps uppercase text-primary tracking-widest font-semibold">
-                Heuristics &amp; Rigorous Definitions
+                ESSENTIAL CONCEPTS
               </span>
               <h2 className="font-headline-lg text-headline-lg font-bold text-on-surface mt-space-2xs">
-                Key Computational Distinctions
+                Key Financial Concepts Explained
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant mt-space-2xs">
-                Common points of financial confusion clarified with exact ISO mathematical logic.
+                Common financial terms and calculations clarified with straightforward explanations and examples.
               </p>
             </div>
 
@@ -1782,7 +1818,7 @@ export default function BusinessClient() {
                   <strong>Markup</strong> is gross profit divided by <em>Cost of Goods</em>: (Price - Cost) ÷ Cost.
                   <br />
                   <span className="text-xs text-primary font-semibold block mt-space-xs">
-                    Heuristic: A 50% Margin requires a 100% Markup. Confusing these leads directly to selling inventory at an unrecoverable deficit.
+                    Key Rule: A 50% Margin requires a 100% Markup. Confusing these two can lead to selling products at a loss.
                   </span>
                 </p>
               </div>
@@ -1794,12 +1830,12 @@ export default function BusinessClient() {
                   <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-base">ROI vs ROAS</h3>
                 </div>
                 <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-                  <strong>ROAS</strong> (Return on Ad Spend) looks purely at top-line revenue generated per ad dollar (Revenue ÷ Ad Spend).
+                  <strong>ROAS</strong> (Return on Ad Spend) looks purely at total revenue generated per ad dollar (Revenue ÷ Ad Spend).
                   <br />
-                  <strong>ROI</strong> measures true net profit after deducting COGS, overhead, and agency fees: (Net Profit ÷ Total Investment) × 100.
+                  <strong>ROI</strong> measures true net profit after deducting product costs, overhead, and agency fees: (Net Profit ÷ Total Investment) × 100.
                   <br />
                   <span className="text-xs text-secondary font-semibold block mt-space-xs">
-                    Heuristic: A 4.0x ROAS can still be deeply unprofitable if gross product margins are under 25%.
+                    Key Rule: A 4.0x ROAS can still be unprofitable if gross product margins are under 25%.
                   </span>
                 </p>
               </div>
@@ -1811,12 +1847,12 @@ export default function BusinessClient() {
                   <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-base">Gross Burn vs Net Burn</h3>
                 </div>
                 <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-                  <strong>Gross Burn</strong> is the absolute total of operational expenditures departing the company monthly, irrespective of incoming income.
+                  <strong>Gross Burn</strong> is the total amount of money your company spends each month, regardless of revenue.
                   <br />
-                  <strong>Net Burn</strong> is Gross Burn minus Monthly Collected Cash Revenue.
+                  <strong>Net Burn</strong> is Gross Burn minus Monthly Cash Revenue.
                   <br />
                   <span className="text-xs text-tertiary font-semibold block mt-space-xs">
-                    Heuristic: Runway must always be modeled against Net Burn, but stress-tested using Gross Burn in zero-revenue crisis scenarios.
+                    Key Rule: Runway is typically calculated using Net Burn, but it is wise to test worst-case scenarios using Gross Burn.
                   </span>
                 </p>
               </div>
@@ -1828,12 +1864,12 @@ export default function BusinessClient() {
                   <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-base">Cash vs Accrual Accounting</h3>
                 </div>
                 <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-                  <strong>Cash</strong> accounting records financial events only when money physically transfers into or out of your bank account.
+                  <strong>Cash</strong> accounting records income and expenses only when money actually enters or leaves your bank account.
                   <br />
-                  <strong>Accrual</strong> records revenue when earned (contract delivered) and expenses when incurred, matching GAAP matching principles.
+                  <strong>Accrual</strong> records revenue when earned and expenses when incurred, following standard accounting principles.
                   <br />
                   <span className="text-xs text-on-surface font-semibold block mt-space-xs">
-                    Heuristic: Accrual shows true business viability; Cash protects against sudden illiquidity bankruptcy.
+                    Key Rule: Accrual accounting gives you an accurate view of overall health, while cash accounting ensures you don&apos;t run out of money.
                   </span>
                 </p>
               </div>
@@ -1841,19 +1877,19 @@ export default function BusinessClient() {
           </div>
         </section>
 
-        {/* ================= SECTION 10: EDUCATIONAL LEARNING GUIDES & ARTICLES ================= */}
+        {/* ================= SECTION 10: BUSINESS GUIDES & ARTICLES ================= */}
         <section className="w-full py-space-3xl bg-surface-container-low/40 border-y border-outline-variant/20">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-2xl gap-space-md">
               <div>
                 <span className="font-label-caps text-label-caps uppercase text-primary tracking-widest font-semibold">
-                  Executive Documentation
+                  GUIDES &amp; ARTICLES
                 </span>
                 <h2 className="font-headline-lg text-headline-lg font-bold text-on-surface mt-space-2xs">
-                  Computational Guides &amp; Whitepapers
+                  Business Guides &amp; Financial Walkthroughs
                 </h2>
                 <p className="font-body-md text-body-md text-on-surface-variant mt-space-2xs">
-                  Deep-dive technical methodologies vetted by corporate finance executives.
+                  Practical financial guides written for founders, business owners, and managers.
                 </p>
               </div>
             </div>
@@ -1867,7 +1903,7 @@ export default function BusinessClient() {
                     How to Price for Profitability: Beyond Cost-Plus
                   </h3>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed">
-                    Why 78% of early-stage manufacturers underprice their initial SKUs by neglecting fully burdened logistics overheads and distributor discounts.
+                    Why many new businesses underprice their products by overlooking shipping overheads, merchant fees, and distributor discounts.
                   </p>
                 </div>
                 <div className="p-space-lg pt-0">
@@ -1882,15 +1918,15 @@ export default function BusinessClient() {
                 <div className="p-space-lg">
                   <span className="font-label-caps text-label-caps uppercase text-secondary font-bold">SaaS Benchmarks</span>
                   <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-lg mt-space-xs">
-                    Bessemer Cloud Index: Decile Benchmarks for 2025
+                    Key SaaS Metrics: Benchmarks &amp; Targets
                   </h3>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed">
-                    An exhaustive breakdown of NRR, Magic Number thresholds, and gross margins differentiating venture-fundable software companies from the rest.
+                    A comprehensive breakdown of retention rates, sales efficiency, and gross margins that define high-performing companies.
                   </p>
                 </div>
                 <div className="p-space-lg pt-0">
                   <a className="font-body-sm text-body-sm text-secondary font-semibold hover:underline inline-flex items-center gap-1" href="#">
-                    Read Whitepaper (12 min) →
+                    Read Guide (12 min) →
                   </a>
                 </div>
               </article>
@@ -1900,15 +1936,15 @@ export default function BusinessClient() {
                 <div className="p-space-lg">
                   <span className="font-label-caps text-label-caps uppercase text-tertiary font-bold">Cash Management</span>
                   <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-lg mt-space-xs">
-                    The 13-Week Cash Flow Forecast: Zero-Error Template
+                    The 13-Week Cash Flow Forecast: Practical Template
                   </h3>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed">
-                    The standard treasury methodology used during turnaround operations to prevent accidental payroll bounces during inventory ramp-up cycles.
+                    The standard cash planning methodology used to manage working capital and prevent unexpected cash shortages during growth periods.
                   </p>
                 </div>
                 <div className="p-space-lg pt-0">
                   <a className="font-body-sm text-body-sm text-tertiary font-semibold hover:underline inline-flex items-center gap-1" href="#">
-                    Download Formula (6 min) →
+                    Read Guide (6 min) →
                   </a>
                 </div>
               </article>
@@ -1927,7 +1963,7 @@ export default function BusinessClient() {
                 Frequently Asked Questions
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant mt-space-2xs">
-                Details regarding algorithmic precision, zero-telemetry client computation, and compliance.
+                Learn how our business calculators work, protect your privacy, and ensure accuracy.
               </p>
             </div>
 
@@ -1936,10 +1972,10 @@ export default function BusinessClient() {
               <div className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30">
                 <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-base flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary text-[20px]">help_outline</span>
-                  How does SolveIt ensure computational mathematical accuracy?
+                  How does SolveIt ensure financial calculation accuracy?
                 </h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed">
-                  Every business algorithm implemented in SolveIt runs deterministic JavaScript calibrated to ISO 80000-1 and standard GAAP / IFRS accounting standards. Formulas are unit-tested against IEEE 754 floating-point rounding hazards to ensure precision to four decimal points.
+                  Every calculator on SolveIt is built using standard GAAP and IFRS financial formulas. Calculations are verified for strict precision so you get dependable results for budgeting, planning, and reporting.
                 </p>
               </div>
 
@@ -1950,7 +1986,7 @@ export default function BusinessClient() {
                   Is my company&apos;s financial data private and secure?
                 </h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed">
-                  Yes, 100%. SolveIt executes entirely inside your browser&apos;s V8 or JavaScriptCore runtime memory. Zero figures, revenue numbers, cap tables, or cost parameters are ever transmitted to our servers or third-party analytical vendors.
+                  Yes, 100%. All calculations run entirely in your web browser. None of your financial figures, revenue numbers, cap tables, or pricing details are ever sent to our servers or any third parties.
                 </p>
               </div>
 
@@ -1961,7 +1997,7 @@ export default function BusinessClient() {
                   Can I export calculations to Excel, CSV, or share with my CPA?
                 </h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed">
-                  All flagship workbenches feature one-click clipboard copying, PDF summary generation, and localized CSV downloads without requiring user login or subscription fees.
+                  All calculators feature easy one-click copying, PDF summaries, and CSV downloads without requiring an account or subscription.
                 </p>
               </div>
 
@@ -1969,10 +2005,10 @@ export default function BusinessClient() {
               <div className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30">
                 <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-base flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary text-[20px]">verified</span>
-                  Are these formulas compliant with US SBA and venture capital pitch standards?
+                  Are these formulas compliant with standard business and investor pitch formats?
                 </h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed">
-                  Our models (including Cap Table Dilution, SAFE conversion math, and SBA Break-Even worksheets) adhere strictly to National Venture Capital Association (NVCA) model legal documents and standard Small Business Administration underwriting criteria.
+                  Our models (including Cap Table Dilution, SAFE notes, and Break-Even worksheets) adhere to standard venture capital conventions and Small Business Administration (SBA) criteria.
                 </p>
               </div>
             </div>
@@ -1998,8 +2034,8 @@ export default function BusinessClient() {
               </div>
               <div className="flex items-center gap-space-md flex-shrink-0">
                 <div className="flex flex-col text-right">
-                  <span className="font-data-mono text-data-mono text-xs font-bold text-primary">ISO 80000-1 Calibrated</span>
-                  <span className="font-label-caps text-label-caps text-on-surface-variant">Deterministic V8 Engine</span>
+                  <span className="font-data-mono text-data-mono text-xs font-bold text-primary">GAAP &amp; IFRS Formulas</span>
+                  <span className="font-label-caps text-label-caps text-on-surface-variant">100% Private in Browser</span>
                 </div>
                 <span className="material-symbols-outlined text-primary text-[28px]">lock</span>
               </div>
@@ -2007,8 +2043,6 @@ export default function BusinessClient() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }

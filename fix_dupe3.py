@@ -1,0 +1,47 @@
+with open('app/daily-wage-calculator/DailyWageClient.tsx', 'r') as f:
+    content = f.read()
+
+# I will find the FAQ container and replace it from start to end completely.
+start_str = '<div className="grid grid-cols-1 md:grid-cols-2 gap-space-sm" id="faq-accordion-container">'
+end_str = '</section>\n{/*  EEAT & EDITORIAL TRANSPARENCY SECTION  */}'
+
+start_idx = content.find(start_str)
+end_idx = content.find(end_str)
+
+if start_idx != -1 and end_idx != -1:
+    new_faq = """<div className="grid grid-cols-1 md:grid-cols-2 gap-space-sm" id="faq-accordion-container">
+  {faqData
+    .filter(item => item.q.toLowerCase().includes(faqSearch.toLowerCase()) || item.a.toLowerCase().includes(faqSearch.toLowerCase()))
+    .map((item, idx) => (
+      <div key={idx} className="faq-item bg-surface-container-lowest rounded-xl p-space-md shadow-sm transition-all">
+        <button 
+          type="button" 
+          className="faq-toggle w-full flex items-center justify-between text-left font-body-md text-body-md font-bold text-on-surface hover:text-primary transition-colors focus:outline-none"
+          onClick={() => toggleFaq(idx)}
+        >
+          <span className="flex items-center gap-2">
+            <span className="font-data-mono text-xs text-primary/70">#{idx + 1}</span>
+            {item.q}
+          </span>
+          <span className={`material-symbols-outlined text-[20px] text-on-surface-variant transform transition-transform duration-200 ${openFaqIndices.includes(idx) ? 'rotate-180' : ''}`}>
+            expand_more
+          </span>
+        </button>
+        {openFaqIndices.includes(idx) && (
+          <div className="faq-answer mt-space-xs font-body-sm text-body-sm text-on-surface-variant leading-relaxed pt-space-xs border-0">
+            {item.a}
+          </div>
+        )}
+      </div>
+    ))}
+  {faqData.filter(item => item.q.toLowerCase().includes(faqSearch.toLowerCase()) || item.a.toLowerCase().includes(faqSearch.toLowerCase())).length === 0 && (
+    <div className="col-span-1 md:col-span-2 text-center p-space-lg text-on-surface-variant italic">No FAQs matching "{faqSearch}".</div>
+  )}
+</div>
+</div>
+"""
+    new_content = content[:start_idx] + new_faq + content[end_idx:]
+    with open('app/daily-wage-calculator/DailyWageClient.tsx', 'w') as f:
+        f.write(new_content)
+else:
+    print("Could not find start or end index")

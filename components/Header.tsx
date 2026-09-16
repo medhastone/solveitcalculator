@@ -1,9 +1,12 @@
 'use client';
 
-/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getCurrentTheme, toggleTheme } from '../lib/theme';
+import Image from 'next/image';
+import SearchModal from './SearchModal';
+import SavedToolsModal from './SavedToolsModal';
+import { getSavedTools } from '../lib/bookmarks';
 
 interface CategoryItem {
   name: string;
@@ -15,16 +18,24 @@ interface CategoryItem {
 const allCategories: CategoryItem[] = [
   { name: 'Technology & Dev', href: '/technology', icon: 'terminal', tag: 'Subnet, RAID, Crypto' },
   { name: 'Science & Physics', href: '/science', icon: 'science', tag: 'Density, Molarity' },
-  { name: 'Electrical & Wire', href: '/electrical', icon: 'electric_bolt', tag: 'AWG, FLA, Solar' },
+  { name: 'Electrical & Wire', href: '/electrical-calculators-sizing-tools', icon: 'electric_bolt', tag: 'AWG, FLA, Solar' },
   { name: 'Business & Startup', href: '/business', icon: 'domain', tag: 'Runway, Margins, SaaS' },
   { name: 'Education & GPA', href: '/education', icon: 'school', tag: 'GPA, Final Exam' },
   { name: 'Finance & Loans', href: '/finance', icon: 'payments', tag: 'Mortgages, FIRE' },
+  { name: 'Banking & Cash Accounts', href: '/banking-and-cash-accounts', icon: 'account_balance_wallet', tag: 'Checking, Fees, Overdraft, APR' },
+  { name: 'Credit Cards & Revolving', href: '/credit-cards-and-revolving', icon: 'credit_card', tag: 'Payoff, 0% Transfer, APR, FICO' },
+  { name: 'Savings & Liquidity', href: '/savings-and-liquidity', icon: 'savings', tag: 'HYSA, CD Ladders, Emergency' },
+  { name: 'Loans & Amortization', href: '/loans-and-amortization', icon: 'account_balance', tag: 'Amortization, EMI, Auto, Student' },
+  { name: 'Mortgages & Real Estate Debt', href: '/mortgages-and-real-estate-debt', icon: 'real_estate_agent', tag: 'PITI, 15 vs 30, Refi, ARM' },
+  { name: 'Investing & Growth', href: '/investing-and-growth', icon: 'trending_up', tag: 'Compound, Dividends, CAGR' },
+  { name: 'Retirement & Super', href: '/retirement-and-super', icon: 'elderly', tag: '401(k), Super, FIRE, SWR' },
+  { name: 'Global Tax Calculator', href: '/global-tax-calculator', icon: 'receipt_long', tag: 'Income, VAT, 1099, Corporate' },
   { name: 'Health & Fitness', href: '/health', icon: 'favorite', tag: 'BMI, BMR, TDEE' },
   { name: 'Time & Date', href: '/time-date', icon: 'schedule', tag: 'Age, Clock, Timers' },
   { name: 'Construction', href: '/home-construction', icon: 'construction', tag: 'Concrete, Framing' },
   { name: 'Math & Stats', href: '/math', icon: 'calculate', tag: 'Algebra, Geometry' },
   { name: 'Conversions', href: '/conversions', icon: 'sync_alt', tag: 'Metric, Data, Units' },
-  { name: 'Automotive', href: '/automotive', icon: 'directions_car', tag: 'MPG, EV Range' },
+  { name: 'Automotive', href: '/automotive-calculators-estimators', icon: 'directions_car', tag: 'MPG, EV Range' },
 ];
 
 export default function Header() {
@@ -32,6 +43,49 @@ export default function Header() {
   const [mounted, setMounted] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [mobileSearch, setMobileSearch] = useState<string>('');
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
+  const [isSavedModalOpen, setIsSavedModalOpen] = useState<boolean>(false);
+  const [savedCount, setSavedCount] = useState<number>(0);
+
+  // Load and subscribe to saved tools bookmarks
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const updateSavedCount = () => {
+      const tools = getSavedTools();
+      setSavedCount(tools.length);
+    };
+
+    updateSavedCount();
+
+    const handleOpenSavedModal = () => {
+      setIsSavedModalOpen(true);
+    };
+
+    window.addEventListener('solveit-bookmarks-change', updateSavedCount);
+    window.addEventListener('storage', updateSavedCount);
+    window.addEventListener('open-saved-tools-modal', handleOpenSavedModal);
+
+    return () => {
+      window.removeEventListener('solveit-bookmarks-change', updateSavedCount);
+      window.removeEventListener('storage', updateSavedCount);
+      window.removeEventListener('open-saved-tools-modal', handleOpenSavedModal);
+    };
+  }, []);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+      if (e.key === 'Escape') {
+        setIsSearchOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -90,16 +144,17 @@ export default function Header() {
             <Link
               href="/"
               onClick={closeMobileMenu}
-              className="shrink-0 flex items-center focus:outline-none group select-none"
+              className="shrink-0 flex items-center focus:outline-none group select-none py-1 relative h-11 sm:h-12 md:h-13 aspect-[238/54]"
               aria-label="SolveIt Calculator Homepage"
             >
-              <div className="p-1 rounded-xl bg-surface-container-low border border-outline-variant/30 group-hover:border-primary/40 transition-all shadow-xs">
-                <img
-                  alt="SolveIt Calculator Brand Logo"
-                  className="h-9 sm:h-10 w-auto object-contain block"
-                  src="/logo.png"
-                />
-              </div>
+              <Image
+                alt="SolveIt Calculator Brand Logo"
+                className="object-contain block transition-transform duration-150 group-hover:scale-[1.02]"
+                src="/logo.png"
+                fill
+                sizes="(max-width: 640px) 150px, 200px"
+                priority
+              />
             </Link>
 
             {/* Desktop Navigation - Clean, curated, and uncluttered */}
@@ -156,7 +211,7 @@ export default function Header() {
                       Explore All Categories
                     </span>
                     <span className="font-data-mono text-[11px] text-primary font-medium">
-                      500+ Calculators
+                      100+ Calculators
                     </span>
                   </div>
 
@@ -198,8 +253,9 @@ export default function Header() {
           {/* Right Action Bar */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Desktop Search Bar */}
-            <Link
-              href="/conversions"
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen(true)}
               className="hidden md:flex items-center justify-between w-36 lg:w-44 xl:w-52 px-3 py-1.5 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all focus:outline-none"
             >
               <span className="flex items-center gap-1.5 text-body-sm font-body-sm truncate">
@@ -209,12 +265,12 @@ export default function Header() {
               <kbd className="hidden lg:inline-block font-data-mono text-[10px] bg-surface-container-highest text-on-surface px-1.5 py-0.5 rounded border border-outline-variant/40 shadow-xs">
                 ⌘K
               </kbd>
-            </Link>
+            </button>
 
             {/* Mobile Quick Search Button */}
             <button
               type="button"
-              onClick={() => setMobileMenuOpen(prev => !prev)}
+              onClick={() => setIsSearchOpen(true)}
               aria-label="Search tools"
               title="Search tools"
               className="md:hidden w-9 h-9 rounded-xl flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors border border-outline-variant/30 bg-surface-container-low"
@@ -222,15 +278,27 @@ export default function Header() {
               <span className="material-symbols-outlined text-[20px]">search</span>
             </button>
 
-            {/* Bookmark button */}
-            <Link
-              href="/conversions#favorites-section"
-              aria-label="Saved Favorites"
-              className="w-9 h-9 rounded-xl hidden sm:flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors border border-transparent hover:border-outline-variant/40"
-              title="Saved Favorites"
+            {/* Saved Tools Bookmark button */}
+            <button
+              type="button"
+              onClick={() => setIsSavedModalOpen(true)}
+              aria-label={`Saved Tools & Bookmarks (${savedCount})`}
+              className={`relative w-9 h-9 rounded-xl flex items-center justify-center transition-all border cursor-pointer ${
+                savedCount > 0
+                  ? 'text-primary bg-primary/10 border-primary/30 hover:bg-primary/20 shadow-xs'
+                  : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface border-outline-variant/30 bg-surface-container-low'
+              }`}
+              title="Saved Tools & Bookmarks"
             >
-              <span className="material-symbols-outlined text-[20px]">bookmark</span>
-            </Link>
+              <span className="material-symbols-outlined text-[20px]">
+                {savedCount > 0 ? 'bookmark' : 'bookmark_border'}
+              </span>
+              {savedCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[17px] h-[17px] px-1 bg-primary text-on-primary font-bold text-[10px] rounded-full flex items-center justify-center border-2 border-surface shadow-xs animate-in zoom-in-50 duration-150">
+                  {savedCount > 99 ? '99+' : savedCount}
+                </span>
+              )}
+            </button>
 
             {/* Global Theme Toggle Button */}
             <button
@@ -271,7 +339,7 @@ export default function Header() {
                   type="text"
                   value={mobileSearch}
                   onChange={(e) => setMobileSearch(e.target.value)}
-                  placeholder="Search 500+ calculators..."
+                  placeholder="Search 100+ calculators..."
                   className="w-full bg-transparent font-body-sm text-body-sm text-on-surface outline-none placeholder:text-on-surface-variant"
                 />
                 {mobileSearch && (
@@ -319,26 +387,38 @@ export default function Header() {
 
             {/* Mobile Footer Quick Actions */}
             <div className="pt-3 border-t border-outline-variant/20 flex flex-col gap-2">
-              <Link
-                href="/conversions#favorites-section"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-low text-on-surface font-body-sm hover:bg-surface-container-high transition-colors"
+              <button
+                type="button"
+                onClick={() => {
+                  closeMobileMenu();
+                  setIsSavedModalOpen(true);
+                }}
+                className="flex items-center justify-between w-full px-3 py-2.5 rounded-xl bg-surface-container-low text-on-surface font-body-sm hover:bg-surface-container-high transition-colors text-left"
               >
-                <span className="material-symbols-outlined text-[18px] text-primary">bookmark</span>
-                <span>Saved Favorites &amp; Recent Tools</span>
-              </Link>
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[18px] text-primary">bookmark</span>
+                  <span>Saved Tools &amp; Bookmarks</span>
+                </div>
+                {savedCount > 0 && (
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-on-primary font-bold">
+                    {savedCount}
+                  </span>
+                )}
+              </button>
               <Link
                 href="/"
                 onClick={closeMobileMenu}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-low text-on-surface font-body-sm hover:bg-surface-container-high transition-colors"
               >
                 <span className="material-symbols-outlined text-[18px] text-secondary">apps</span>
-                <span>All 500+ Calculators &amp; Categories</span>
+                <span>All 100+ Calculators &amp; Categories</span>
               </Link>
             </div>
           </div>
         )}
       </header>
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <SavedToolsModal isOpen={isSavedModalOpen} onClose={() => setIsSavedModalOpen(false)} />
     </div>
   );
 }
