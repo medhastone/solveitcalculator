@@ -242,7 +242,7 @@ export default function CompoundInterestClient() {
                     tickLine={false}
                   />
                   <Tooltip 
-                    formatter={(value: number) => formatCurrency(value)}
+                    formatter={(value: any) => formatCurrency(Number(value))}
                     labelFormatter={(label) => `Year ${label}`}
                     contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                   />

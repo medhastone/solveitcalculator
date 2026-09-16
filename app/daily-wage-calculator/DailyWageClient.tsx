@@ -133,12 +133,12 @@ export default function DailyWageClient() {
           btn.classList.add('active', 'bg-primary', 'text-on-primary');
           btn.classList.remove('bg-surface-container', 'text-on-surface');
 
-          currentCurrency = btn.dataset.symbol;
-          currentDivisor = parseFloat(btn.dataset.divisor);
-          currentStdHours = parseFloat(btn.dataset.hours);
+          currentCurrency = (btn as HTMLElement).dataset.symbol || "";
+          currentDivisor = parseFloat((btn as HTMLElement).dataset.divisor || "26");
+          currentStdHours = parseFloat((btn as HTMLElement).dataset.hours || "8");
 
           const badge = document.getElementById('active-currency-badge');
-          if (badge) badge.textContent = `${currentCurrency.trim()} ${btn.dataset.country}`;
+          if (badge) badge.textContent = `${currentCurrency.trim()} ${(btn as HTMLElement).dataset.country || ""}`;
 
           document.querySelectorAll('.curr-symbol-marker').forEach(span => {
             span.textContent = currentCurrency.trim();
@@ -149,19 +149,19 @@ export default function DailyWageClient() {
           const m2dSlider = document.getElementById('m2d-slider');
           const m2dDisplay = document.getElementById('m2d-days-display');
           if (m2dCustom && m2dSlider && m2dDisplay) {
-            m2dCustom.value = currentDivisor;
-            m2dSlider.value = currentDivisor;
+            (m2dCustom as HTMLInputElement).value = currentDivisor.toString();
+            (m2dSlider as HTMLInputElement).value = currentDivisor.toString();
             m2dDisplay.textContent = currentDivisor + " days";
           }
 
           // Sync shift hours
           const m2dHours = document.getElementById('m2d-hours');
-          if (m2dHours) m2dHours.value = currentStdHours;
+          if (m2dHours) (m2dHours as HTMLInputElement).value = currentStdHours.toString();
 
           // Recalculate everything
           recalcActiveTab();
           populateMasterTable();
-          showToast(`Switched region: ${btn.dataset.country} (${currentCurrency.trim()})`);
+          showToast(`Switched region: ${(btn as HTMLElement).dataset.country || ""} (${currentCurrency.trim()})`);
         });
       });
     }
@@ -178,7 +178,7 @@ export default function DailyWageClient() {
           btn.classList.add('active', 'bg-primary', 'text-on-primary');
           btn.classList.remove('text-on-surface-variant');
 
-          const targetId = btn.dataset.tab;
+          const targetId = (btn as HTMLElement).dataset.tab || "";
           activeTabId = targetId;
           document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
           const targetPanel = document.getElementById(targetId);
@@ -194,9 +194,9 @@ export default function DailyWageClient() {
 
     // --- CALCULATOR ENGINES ---
     function calcMonthlyToDaily() {
-      const salary = parseFloat(document.getElementById('m2d-salary')?.value) || 0;
-      const days = parseFloat(document.getElementById('m2d-custom-days')?.value) || 26;
-      const hours = parseFloat(document.getElementById('m2d-hours')?.value) || 8;
+      const salary = parseFloat((document.getElementById('m2d-salary') as HTMLInputElement)?.value) || 0;
+      const days = parseFloat((document.getElementById('m2d-custom-days') as HTMLInputElement)?.value) || 26;
+      const hours = parseFloat((document.getElementById('m2d-hours') as HTMLInputElement)?.value) || 8;
 
       const daily = days > 0 ? (salary / days) : 0;
       const hourly = hours > 0 ? (daily / hours) : 0;
@@ -218,8 +218,8 @@ export default function DailyWageClient() {
     }
 
     function calcDailyToMonthly() {
-      const daily = parseFloat(document.getElementById('d2m-daily')?.value) || 0;
-      const days = parseFloat(document.getElementById('d2m-days')?.value) || 26;
+      const daily = parseFloat((document.getElementById('d2m-daily') as HTMLInputElement)?.value) || 0;
+      const days = parseFloat((document.getElementById('d2m-days') as HTMLInputElement)?.value) || 26;
       const monthly = daily * days;
       const annual = monthly * 12;
       const quarterly = monthly * 3;
@@ -237,8 +237,8 @@ export default function DailyWageClient() {
     }
 
     function calcHourlyToDaily() {
-      const hourly = parseFloat(document.getElementById('h2d-hourly')?.value) || 0;
-      const hours = parseFloat(document.getElementById('h2d-hours')?.value) || 8;
+      const hourly = parseFloat((document.getElementById('h2d-hourly') as HTMLInputElement)?.value) || 0;
+      const hours = parseFloat((document.getElementById('h2d-hours') as HTMLInputElement)?.value) || 8;
       const daily = hourly * hours;
       const weekly = daily * 5;
       const monthly = daily * 21.67;
@@ -256,10 +256,10 @@ export default function DailyWageClient() {
     }
 
     function calcOvertime() {
-      const daily = parseFloat(document.getElementById('ot-daily-wage')?.value) || 0;
-      const stdHours = parseFloat(document.getElementById('ot-std-hours')?.value) || 8;
-      const extraHours = parseFloat(document.getElementById('ot-extra-hours')?.value) || 0;
-      const mult = parseFloat(document.getElementById('ot-multiplier')?.value) || 2.0;
+      const daily = parseFloat((document.getElementById('ot-daily-wage') as HTMLInputElement)?.value) || 0;
+      const stdHours = parseFloat((document.getElementById('ot-std-hours') as HTMLInputElement)?.value) || 8;
+      const extraHours = parseFloat((document.getElementById('ot-extra-hours') as HTMLInputElement)?.value) || 0;
+      const mult = parseFloat((document.getElementById('ot-multiplier') as HTMLInputElement)?.value) || 2.0;
 
       const baseHourly = stdHours > 0 ? (daily / stdHours) : 0;
       const otHourly = baseHourly * mult;
@@ -281,9 +281,9 @@ export default function DailyWageClient() {
     }
 
     function calcLeaveDeduction() {
-      const salary = parseFloat(document.getElementById('lop-salary')?.value) || 0;
-      const divisor = parseFloat(document.getElementById('lop-days-basis')?.value) || 26;
-      const absent = parseFloat(document.getElementById('lop-absent-days')?.value) || 0;
+      const salary = parseFloat((document.getElementById('lop-salary') as HTMLInputElement)?.value) || 0;
+      const divisor = parseFloat((document.getElementById('lop-days-basis') as HTMLInputElement)?.value) || 26;
+      const absent = parseFloat((document.getElementById('lop-absent-days') as HTMLInputElement)?.value) || 0;
 
       const perDay = divisor > 0 ? (salary / divisor) : 0;
       const deduction = perDay * absent;
@@ -302,10 +302,10 @@ export default function DailyWageClient() {
     }
 
     function calcAttendance() {
-      const daily = parseFloat(document.getElementById('att-daily-rate')?.value) || 0;
-      const fullDays = parseFloat(document.getElementById('att-full-days')?.value) || 0;
-      const halfDays = parseFloat(document.getElementById('att-half-days')?.value) || 0;
-      const otHours = parseFloat(document.getElementById('att-ot-hours')?.value) || 0;
+      const daily = parseFloat((document.getElementById('att-daily-rate') as HTMLInputElement)?.value) || 0;
+      const fullDays = parseFloat((document.getElementById('att-full-days') as HTMLInputElement)?.value) || 0;
+      const halfDays = parseFloat((document.getElementById('att-half-days') as HTMLInputElement)?.value) || 0;
+      const otHours = parseFloat((document.getElementById('att-ot-hours') as HTMLInputElement)?.value) || 0;
 
       const fullPay = fullDays * daily;
       const halfPay = halfDays * (daily * 0.5);
@@ -328,10 +328,10 @@ export default function DailyWageClient() {
     }
 
     function calcFreelance() {
-      const takeHome = parseFloat(document.getElementById('fl-take-home')?.value) || 0;
-      const expenses = parseFloat(document.getElementById('fl-expenses')?.value) || 0;
-      const taxPct = parseFloat(document.getElementById('fl-tax')?.value) || 0;
-      const billableDays = parseFloat(document.getElementById('fl-billable-days')?.value) || 16;
+      const takeHome = parseFloat((document.getElementById('fl-take-home') as HTMLInputElement)?.value) || 0;
+      const expenses = parseFloat((document.getElementById('fl-expenses') as HTMLInputElement)?.value) || 0;
+      const taxPct = parseFloat((document.getElementById('fl-tax') as HTMLInputElement)?.value) || 0;
+      const billableDays = parseFloat((document.getElementById('fl-billable-days') as HTMLInputElement)?.value) || 16;
 
       const netNeeded = takeHome + expenses;
       const grossNeeded = taxPct < 100 ? (netNeeded / (1 - (taxPct / 100))) : netNeeded;
@@ -349,9 +349,9 @@ export default function DailyWageClient() {
     }
 
     function calcContractor() {
-      const workers = parseFloat(document.getElementById('cnt-workers')?.value) || 0;
-      const wage = parseFloat(document.getElementById('cnt-wage')?.value) || 0;
-      const days = parseFloat(document.getElementById('cnt-days')?.value) || 0;
+      const workers = parseFloat((document.getElementById('cnt-workers') as HTMLInputElement)?.value) || 0;
+      const wage = parseFloat((document.getElementById('cnt-wage') as HTMLInputElement)?.value) || 0;
+      const days = parseFloat((document.getElementById('cnt-days') as HTMLInputElement)?.value) || 0;
 
       const burn = workers * wage;
       const total = burn * days;
@@ -370,10 +370,10 @@ export default function DailyWageClient() {
     }
 
     function calcPayrollBreakdown() {
-      const gross = parseFloat(document.getElementById('pay-gross')?.value) || 0;
-      const pfPct = parseFloat(document.getElementById('pay-pf-pct')?.value) || 0;
-      const taxPct = parseFloat(document.getElementById('pay-tax-pct')?.value) || 0;
-      const other = parseFloat(document.getElementById('pay-other-ded')?.value) || 0;
+      const gross = parseFloat((document.getElementById('pay-gross') as HTMLInputElement)?.value) || 0;
+      const pfPct = parseFloat((document.getElementById('pay-pf-pct') as HTMLInputElement)?.value) || 0;
+      const taxPct = parseFloat((document.getElementById('pay-tax-pct') as HTMLInputElement)?.value) || 0;
+      const other = parseFloat((document.getElementById('pay-other-ded') as HTMLInputElement)?.value) || 0;
 
       const pf = gross * (pfPct / 100);
       const tax = gross * (taxPct / 100);
@@ -404,8 +404,8 @@ export default function DailyWageClient() {
     }
 
     function calcDailyToHourly() {
-      const daily = parseFloat(document.getElementById('d2h-daily')?.value) || 0;
-      const hours = parseFloat(document.getElementById('d2h-hours')?.value) || 8;
+      const daily = parseFloat((document.getElementById('d2h-daily') as HTMLInputElement)?.value) || 0;
+      const hours = parseFloat((document.getElementById('d2h-hours') as HTMLInputElement)?.value) || 8;
 
       const hourly = hours > 0 ? (daily / hours) : 0;
       const minute = hourly / 60;
@@ -440,7 +440,7 @@ export default function DailyWageClient() {
 
     // Expose quick set function
     (window as any).setM2DSalary = function(amt: any) {
-      const input = document.getElementById('m2d-salary');
+      const input = document.getElementById('m2d-salary') as HTMLInputElement;
       if (input) {
         input.value = amt;
         calcMonthlyToDaily();
@@ -448,7 +448,7 @@ export default function DailyWageClient() {
       }
     };
 
-    window.loadSalaryIntoTab1 = function(sal) {
+    (window as any).loadSalaryIntoTab1 = function(sal: any) {
       // Switch to Tab 1
       const tab1Btn = document.querySelector('[data-tab="tab-monthly-to-daily"]');
       if (tab1Btn) (tab1Btn as HTMLButtonElement).click();
@@ -457,7 +457,7 @@ export default function DailyWageClient() {
         input.value = sal.toString();
         calcMonthlyToDaily();
       }
-      window.scrollTo({ top: document.getElementById('tab-navigation')?.offsetTop - 80, behavior: 'smooth' });
+      window.scrollTo({ top: (document.getElementById('tab-navigation')?.offsetTop || 0) - 80, behavior: 'smooth' });
       showToast(`Loaded ${currentCurrency}${sal.toLocaleString()} into calculator`);
     };
 
@@ -498,7 +498,7 @@ export default function DailyWageClient() {
           btn.classList.add('active', 'bg-primary', 'text-on-primary');
           btn.classList.remove('bg-surface-container', 'text-on-surface');
 
-          const val = (btn as HTMLElement).dataset.days;
+          const val = (btn as HTMLElement).dataset.days || "";
           (slider as HTMLInputElement).value = val;
           (customDays as HTMLInputElement).value = val;
           if (display) display.textContent = val + " days";
@@ -844,11 +844,11 @@ export default function DailyWageClient() {
 <input className="w-full pl-9 pr-space-md py-space-sm rounded-lg bg-surface-container-low font-data-mono text-data-mono text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-inner" id="m2d-salary" min="0" step="500" type="number" defaultValue="50000"/>
 </div>
 <div className="flex items-center gap-space-2xs mt-space-2xs">
-<button className="px-space-xs py-0.5 rounded bg-surface-container font-data-mono text-xs hover:bg-surface-container-high text-on-surface-variant" onClick={() => { setM2DSalary(25000) }} type="button">25k</button>
-<button className="px-space-xs py-0.5 rounded bg-surface-container font-data-mono text-xs hover:bg-surface-container-high text-on-surface-variant" onClick={() => { setM2DSalary(50000) }} type="button">50k</button>
-<button className="px-space-xs py-0.5 rounded bg-surface-container font-data-mono text-xs hover:bg-surface-container-high text-on-surface-variant" onClick={() => { setM2DSalary(75000) }} type="button">75k</button>
-<button className="px-space-xs py-0.5 rounded bg-surface-container font-data-mono text-xs hover:bg-surface-container-high text-on-surface-variant" onClick={() => { setM2DSalary(100000) }} type="button">100k</button>
-<button className="px-space-xs py-0.5 rounded bg-surface-container font-data-mono text-xs hover:bg-surface-container-high text-on-surface-variant" onClick={() => { setM2DSalary(150000) }} type="button">150k</button>
+<button className="px-space-xs py-0.5 rounded bg-surface-container font-data-mono text-xs hover:bg-surface-container-high text-on-surface-variant" onClick={() => { (window as any).setM2DSalary(25000) }} type="button">25k</button>
+<button className="px-space-xs py-0.5 rounded bg-surface-container font-data-mono text-xs hover:bg-surface-container-high text-on-surface-variant" onClick={() => { (window as any).setM2DSalary(50000) }} type="button">50k</button>
+<button className="px-space-xs py-0.5 rounded bg-surface-container font-data-mono text-xs hover:bg-surface-container-high text-on-surface-variant" onClick={() => { (window as any).setM2DSalary(75000) }} type="button">75k</button>
+<button className="px-space-xs py-0.5 rounded bg-surface-container font-data-mono text-xs hover:bg-surface-container-high text-on-surface-variant" onClick={() => { (window as any).setM2DSalary(100000) }} type="button">100k</button>
+<button className="px-space-xs py-0.5 rounded bg-surface-container font-data-mono text-xs hover:bg-surface-container-high text-on-surface-variant" onClick={() => { (window as any).setM2DSalary(150000) }} type="button">150k</button>
 </div>
 </div>
 <div>

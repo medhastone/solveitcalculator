@@ -165,7 +165,7 @@ export default function SavedToolsModal({
     } else {
       saveTool({
         id: currentToolInfo.id,
-        title: currentToolInfo.title || currentToolInfo.name || "Calculator",
+        title: currentToolInfo.title || (currentToolInfo as any).name || "Calculator",
         link: pathname,
         category: (currentToolInfo as any).category || "general",
         label: (currentToolInfo as any).label || "Saved",
@@ -298,7 +298,7 @@ export default function SavedToolsModal({
                   Current Page
                 </span>
                 <p className="text-body-sm font-medium text-on-surface truncate">
-                  {currentToolInfo.title || currentToolInfo.name}
+                  {currentToolInfo.title || (currentToolInfo as any).name}
                 </p>
               </div>
             </div>
