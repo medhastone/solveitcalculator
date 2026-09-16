@@ -75,14 +75,14 @@ export default function DailyWageClient() {
     let currentDivisor = 26;
     let currentStdHours = 8;
     let activeTabId = "tab-monthly-to-daily";
-    let calculationHistory = [];
+    let calculationHistory: any[] = [];
 
     // Format Numbers
-    function formatMoney(num) {
+    function formatMoney(num: any) {
       return currentCurrency + Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-    function showToast(msg) {
+    function showToast(msg: string) {
       const toast = document.getElementById('toast-notify');
       const text = document.getElementById('toast-message');
       if (!toast || !text) return;
@@ -95,7 +95,7 @@ export default function DailyWageClient() {
       }, 2200);
     }
 
-    function recordHistory(calcName, summary) {
+    function recordHistory(calcName: string, summary: string) {
       const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       calculationHistory.unshift({ calcName, summary, timestamp });
       if (calculationHistory.length > 50) calculationHistory.pop();
@@ -439,7 +439,7 @@ export default function DailyWageClient() {
     }
 
     // Expose quick set function
-    window.setM2DSalary = function(amt) {
+    (window as any).setM2DSalary = function(amt: any) {
       const input = document.getElementById('m2d-salary');
       if (input) {
         input.value = amt;
