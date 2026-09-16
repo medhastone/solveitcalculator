@@ -6,6 +6,7 @@ import Script from 'next/script';
 import ScrollNavigation from '@/components/ScrollNavigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import FontLoader from '@/components/FontLoader';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const jetBrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
@@ -42,24 +43,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link 
-          rel="preload" 
-          as="style" 
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" 
-        />
-        <link 
-          rel="stylesheet" 
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" 
-          media="print"
-          onLoad={(e) => {
-            (e.currentTarget as any).media = 'all';
-          }}
-        />
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
+        <FontLoader />
         <noscript>
-          <link 
-            rel="stylesheet" 
-            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" 
-          />
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
         </noscript>
       </head>
       <body className="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen transition-colors duration-150" suppressHydrationWarning>
