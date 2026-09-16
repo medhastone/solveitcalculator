@@ -611,7 +611,7 @@ export default function ConversionCenterPage() {
         const uMatches = u.name.toLowerCase().includes(q) ||
           u.symbol.toLowerCase() === q ||
           u.id.toLowerCase() === q ||
-          u.aliases?.some((a) => a.toLowerCase().includes(q));
+          (u as any).aliases?.some((a: string) => a.toLowerCase().includes(q));
 
         if (uMatches) {
           const targetUnit = cat.baseUnitId !== u.id ? cat.baseUnitId : cat.units.find((x) => x.id !== u.id)?.id || u.id;
