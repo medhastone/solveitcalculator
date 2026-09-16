@@ -864,10 +864,19 @@ export default function HomePage() {
     ).slice(0, 3);
     
     // Gather all tools from multiple arrays and deduplicate by link
-    const allUniqueTools = Array.from(new Map([
-      ...dirCardsData.map(c => [c.link, { ...c, title: c.name || c.title }]),
-      ...trendingData.map(c => [c.link, { ...c, name: c.title, label: "Trending" }]),
-    ].values()));
+    const combinedTools = [
+      ...dirCardsData.map(c => ({ ...c, title: c.name || c.title })),
+      ...trendingData.map(c => ({ ...c, name: c.title, label: "Trending" })),
+    ];
+    
+    const uniqueToolsMap = new Map();
+    combinedTools.forEach(c => {
+      if (!uniqueToolsMap.has(c.link)) {
+        uniqueToolsMap.set(c.link, c);
+      }
+    });
+    
+    const allUniqueTools = Array.from(uniqueToolsMap.values());
 
     const matchedTools = allUniqueTools.filter(c =>
       (c.name && c.name.toLowerCase().includes(query)) ||
