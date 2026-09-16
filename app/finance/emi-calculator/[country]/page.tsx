@@ -7,6 +7,12 @@ type Props = {
   params: Promise<{ country: string }>
 };
 
+
+export function generateStaticParams() {
+  return Object.keys(localizedSeoContent).map((country) => ({
+    country,
+  }));
+}
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
   const countrySlug = resolvedParams.country.toLowerCase();

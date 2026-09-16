@@ -1,9 +1,15 @@
 import React from 'react';
 import { Metadata } from 'next';
 import MathToolClient from './MathToolClient';
-import { getToolData } from './data';
+import { getToolData, mathToolsData } from './data';
 import Link from 'next/link';
 
+
+export function generateStaticParams() {
+  return Object.keys(mathToolsData).map((slug) => ({
+    slug,
+  }));
+}
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
   const data = getToolData(resolvedParams.slug);
