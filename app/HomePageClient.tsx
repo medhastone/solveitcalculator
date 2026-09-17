@@ -4,7 +4,8 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import Header from "../components/Header";
 
-import HomePageSeoSections from './HomePageSeoSections';
+import dynamic from 'next/dynamic';
+const HomePageSeoSections = dynamic(() => import('./HomePageSeoSections'));
 
 // --- Static Data ---
 const categoriesData = [

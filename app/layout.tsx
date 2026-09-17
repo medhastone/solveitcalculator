@@ -42,6 +42,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
         <noscript>
@@ -49,14 +50,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         </noscript>
       </head>
             <body className="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen transition-colors duration-150" suppressHydrationWarning>
-        <Script id="material-symbols-loader" strategy="beforeInteractive">
-          {`
-            var l = document.createElement('link');
-            l.rel = 'stylesheet';
-            l.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap';
-            document.head.appendChild(l);
-          `}
-        </Script>
+
 
         <Script id="error-boundary-shield" strategy="beforeInteractive">
           {`
