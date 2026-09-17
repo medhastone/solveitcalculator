@@ -1,0 +1,12 @@
+{
+  "name": "solveitcalculator",
+  "compatibility_date": "2024-09-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": ".open-next/cloudflare-pages",
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "solveitcalculator"
+    }
+  ]
+}
