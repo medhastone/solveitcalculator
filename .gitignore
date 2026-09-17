@@ -7,4 +7,3 @@ coverage/
 !.env.example
 bun.lock
 bun.lockb
-package-lock.json
