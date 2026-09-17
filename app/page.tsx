@@ -61,7 +61,7 @@ export default function Home() {
         "@type": "Organization",
         "name": "SolveItCalculator",
         "url": "https://solveitcalculator.com",
-        "logo": "https://solveitcalculator.com/logo.png",
+        "logo": "https://solveitcalculator.com/logo.png?v=2",
         "sameAs": [
           "https://twitter.com/solveitcalc",
           "https://facebook.com/solveitcalc"

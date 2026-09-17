@@ -1021,7 +1021,7 @@ export default function FinanceHubClient() {
                     '@id': 'https://solveitcalculator.com/#organization',
                     name: 'SolveIt Financial Technologies Inc.',
                     url: 'https://solveitcalculator.com',
-                    logo: 'https://solveitcalculator.com/assets/logo.png',
+                    logo: 'https://solveitcalculator.com/assets/logo.png?v=2',
                     sameAs: [
                       'https://twitter.com/SolveItCalc',
                       'https://linkedin.com/company/solveit-calculator',

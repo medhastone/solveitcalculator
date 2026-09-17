@@ -27,7 +27,7 @@ export default function ArticleEMI() {
           "name": "SolveIt Calculator",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://solveitcalculator.com/logo.png"
+            "url": "https://solveitcalculator.com/logo.png?v=2"
           }
         },
         "datePublished": "2024-02-10",

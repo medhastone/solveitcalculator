@@ -426,7 +426,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                 <Image
                   alt="SolveIt Calculator Brand Logo"
                   className="object-contain"
-                  src="/logo.png"
+                  src="/logo.png?v=2"
                   fill
                   sizes="200px"
                   priority

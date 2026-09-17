@@ -49,7 +49,7 @@ export default function Footer() {
                 aria-label="SolveIt Calculator Homepage"
               >
                 <Image
-                  src="/logo.png"
+                  src="/logo.png?v=2"
                   alt="SolveIt Calculator Brand Logo"
                   className="object-contain block transition-transform duration-150 group-hover:scale-[1.02]"
                   fill

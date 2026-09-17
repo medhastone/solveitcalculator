@@ -1552,7 +1552,7 @@ export default function VolumeConverterClient() {
                   <Image
                     alt="SolveIt Calculator Brand Logo"
                     className="object-contain block transition-transform duration-150 group-hover:scale-[1.02]"
-                    src="/logo.png"
+                    src="/logo.png?v=2"
                     fill
                     sizes="(max-width: 640px) 150px, 200px"
                   />

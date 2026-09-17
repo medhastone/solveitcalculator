@@ -88,7 +88,7 @@ export default function CompoundInterestCalculatorPage() {
           "name": "SolveItCalculator",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://solveitcalculator.com/logo.png"
+            "url": "https://solveitcalculator.com/logo.png?v=2"
           }
         },
         "datePublished": "2024-01-01T08:00:00+08:00",

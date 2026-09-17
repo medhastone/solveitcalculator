@@ -67,7 +67,7 @@ export default function Zone2CardioTrainingPage() {
           "url": "https://solveitcalculator.com",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://solveitcalculator.com/logo.png"
+            "url": "https://solveitcalculator.com/logo.png?v=2"
           }
         },
         "datePublished": "2024-11-20T08:00:00Z",
