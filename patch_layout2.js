@@ -2,24 +2,20 @@ const fs = require('fs');
 const file = 'app/layout.tsx';
 let content = fs.readFileSync(file, 'utf8');
 
-if (!content.includes('import FontLoader')) {
-  content = content.replace(
-    "import Footer from '@/components/Footer';",
-    "import Footer from '@/components/Footer';\nimport FontLoader from '@/components/FontLoader';"
-  );
-}
+const scriptBlock = `        <Script id="material-symbols-loader" strategy="beforeInteractive">
+          {\`
+            var l = document.createElement('link');
+            l.rel = 'stylesheet';
+            l.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap';
+            document.head.appendChild(l);
+          \`}
+        </Script>
+`;
 
-// Check what is currently there for the fonts
-const scriptRegex = /<script dangerouslySetInnerHTML={{ __html: \`[\s\S]*?\` }} \/>/;
-if (content.match(scriptRegex)) {
-  content = content.replace(scriptRegex, '<FontLoader />');
-} else {
-  // Maybe it's missing entirely or has the original link
-  // Let's just put it inside head
-  const headEnd = "</head>";
-  if (!content.includes('<FontLoader />')) {
-      content = content.replace(headEnd, "  <FontLoader />\n      </head>");
-  }
-}
+content = content.replace(scriptBlock, "");
+content = content.replace(
+  'suppressHydrationWarning>\n',
+  'suppressHydrationWarning>\n' + scriptBlock
+);
 
 fs.writeFileSync(file, content);

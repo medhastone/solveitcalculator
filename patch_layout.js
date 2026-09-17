@@ -2,14 +2,20 @@ const fs = require('fs');
 const file = 'app/layout.tsx';
 let content = fs.readFileSync(file, 'utf8');
 
-// Replace the script inject block with the new FontLoader
-const targetRegex = /<script dangerouslySetInnerHTML={{ __html: `[\s\S]*?` }} \/>/g;
+const scriptBlock = `        <Script id="material-symbols-loader" strategy="beforeInteractive">
+          {\`
+            var l = document.createElement('link');
+            l.rel = 'stylesheet';
+            l.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap';
+            document.head.appendChild(l);
+          \`}
+        </Script>
+`;
 
-// Add import
-if (!content.includes('import FontLoader')) {
-  content = content.replace("import Footer from '@/components/Footer';", "import Footer from '@/components/Footer';\nimport FontLoader from '@/components/FontLoader';");
-}
+// Remove from head
+content = content.replace(scriptBlock, "");
 
-content = content.replace(targetRegex, "<FontLoader />");
+// Add to body
+content = content.replace("<body ", scriptBlock + "      <body ");
 
 fs.writeFileSync(file, content);

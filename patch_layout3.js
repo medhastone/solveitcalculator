@@ -12,10 +12,13 @@ const scriptBlock = `        <Script id="material-symbols-loader" strategy="befo
         </Script>
 `;
 
-// Remove the incorrect placement
 content = content.replace(scriptBlock, "");
+content = content.replace("<Script id=\"material-symbols-loader\"", "");
 
-// Add it correctly into <head>
-content = content.replace("<head>\n", "<head>\n" + scriptBlock);
+// Inject exactly after <body ...>
+content = content.replace(
+  'duration-150" suppressHydrationWarning>', 
+  'duration-150" suppressHydrationWarning>\n' + scriptBlock
+);
 
 fs.writeFileSync(file, content);
