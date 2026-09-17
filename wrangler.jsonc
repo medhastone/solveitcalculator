@@ -1,12 +1,13 @@
 {
   "name": "solveitcalculator",
+  "main": ".open-next/worker.js",
   "compatibility_date": "2024-09-23",
   "compatibility_flags": ["nodejs_compat"],
-  "pages_build_output_dir": ".open-next/cloudflare-pages",
-  "services": [
-    {
-      "binding": "WORKER_SELF_REFERENCE",
-      "service": "solveitcalculator"
-    }
-  ]
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  }
 }
