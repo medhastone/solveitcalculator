@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import AppShell from '@/components/AppShell';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://solveitcalculator.com'),
@@ -71,6 +72,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased bg-surface text-on-surface min-h-screen transition-colors duration-200">
         <AppShell>{children}</AppShell>
+        <SpeedInsights />
       </body>
     </html>
   );
