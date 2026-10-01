@@ -18,6 +18,7 @@ export interface UnitDetail {
   name: string;
   symbol: string;
   system: string;
+  plainEnglishSummary: string;
   whatIs: string;
   history: string;
   usage: string;
@@ -44,6 +45,7 @@ export interface StepByStepCalculation {
 }
 
 export interface ConverterKnowledge {
+  executiveSummary: string;
   fromUnitDetail: UnitDetail;
   toUnitDetail: UnitDetail;
   factorText: string;
@@ -63,6 +65,7 @@ export interface ConverterKnowledge {
     description: string;
   }[];
 }
+
 
 export function getStepByStepCalculation(
   val: number,
@@ -342,7 +345,10 @@ export function getConverterKnowledge(
   // 5. Standards Citations
   const citations = getCitations(category);
 
+  const executiveSummary = `To convert ${fromUnit.name.toLowerCase()} (${fromUnit.symbol}) to ${toUnit.name.toLowerCase()} (${toUnit.symbol}), use the conversion ratio where 1 ${fromUnit.symbol} = ${exactFactor} ${toUnit.symbol}. Formula: ${formula}.`;
+
   return {
+    executiveSummary,
     fromUnitDetail,
     toUnitDetail,
     factorText,
@@ -358,6 +364,14 @@ export function getConverterKnowledge(
 }
 
 function getUnitDetail(unit: UnitDefinition, category: CategoryDefinition): UnitDetail {
+  const raw = getUnitDetailRaw(unit, category);
+  return {
+    ...raw,
+    plainEnglishSummary: raw.plainEnglishSummary || `${raw.name} (${raw.symbol}) is a unit of ${category.name.toLowerCase()} measured within ${raw.system}. ${raw.usage}`
+  };
+}
+
+function getUnitDetailRaw(unit: UnitDefinition, category: CategoryDefinition): Omit<UnitDetail, 'plainEnglishSummary'> & { plainEnglishSummary?: string } {
   const id = unit.id;
 
   if (id === 'kcal') {
