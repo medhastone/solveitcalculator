@@ -1216,8 +1216,8 @@ export function computeHealthTelemetry(
         secondaryBiometrics: [
           { label: 'Primary Output', val: `${primaryVal} ${primaryUnit}`, desc: 'Standard formula output' },
           { label: 'Confidence Interval', val: '±5%', desc: 'Statistical validation band' },
-          { label: 'Privacy Sandbox', val: '100% Client-Side', desc: 'Zero cloud telemetry transmission' },
-          { label: 'Metrology Precision', val: 'IEEE-754 64-bit', desc: 'Deterministic floating point' },
+          { label: 'Data Privacy', val: 'In-Browser Local', desc: 'Runs directly in your browser' },
+          { label: 'Calculation Model', val: 'Double-Precision', desc: 'Standard mathematical logic' },
         ],
         clinicalRisk: {
           tier: 'Normative Clinical Status',

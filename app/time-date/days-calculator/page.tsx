@@ -3,9 +3,9 @@ import type { Metadata } from 'next';
 import DaysCalculatorClient from './DaysCalculatorClient';
 
 export const metadata: Metadata = {
-  title: 'Days Calculator | Add or Subtract Days from Date & Business Days | SolveIt',
+  title: 'Days Calculator | Add or Subtract Days & Months | SolveItCalculator',
   description:
-    'Calculate the exact future or past date by adding or subtracting days, weeks, months, or business days (excluding weekends & federal holidays). Includes Julian day conversion.',
+    'Add or subtract days, weeks, months, or years from a date. Choose calendar or business-day modes and see the resulting date and calculation breakdown.',
   keywords: [
     'days calculator',
     'add days to date',
@@ -15,24 +15,23 @@ export const metadata: Metadata = {
     'calculate future date',
     'working days from today',
     'days from today calculator',
-    'julian day calculator',
-    'add 90 days to date'
+    'julian day calculator'
   ],
   alternates: {
-    canonical: 'https://solveitcalculator.com/time-date/days-calculator/',
+    canonical: 'https://solveitcalculator.com/time-date/days-calculator',
   },
   openGraph: {
-    title: 'Days Calculator | Add or Subtract Days from Date & Business Days | SolveIt',
+    title: 'Days Calculator | Add or Subtract Days & Months | SolveItCalculator',
     description:
-      'Calculate the exact future or past date by adding or subtracting days, weeks, months, or business days (excluding weekends & federal holidays). Includes Julian day conversion.',
-    url: 'https://solveitcalculator.com/time-date/days-calculator/',
+      'Add or subtract days, weeks, months, or years from a date. Choose calendar or business-day modes and see the resulting date and calculation breakdown.',
+    url: 'https://solveitcalculator.com/time-date/days-calculator',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Days Calculator | Add or Subtract Days from Date & Business Days | SolveIt',
+    title: 'Days Calculator | Add or Subtract Days & Months | SolveItCalculator',
     description:
-      'Calculate the exact future or past date by adding or subtracting days, weeks, months, or business days (excluding weekends & federal holidays). Includes Julian day conversion.',
+      'Add or subtract days, weeks, months, or years from a date. Choose calendar or business-day modes and see the resulting date and calculation breakdown.',
   },
 };
 
@@ -42,8 +41,8 @@ const jsonLd = {
     {
       '@type': 'WebApplication',
       '@id': 'https://solveitcalculator.com/time-date/days-calculator/#app',
-      name: 'Days Calculator - Add or Subtract Days from Date',
-      url: 'https://solveitcalculator.com/time-date/days-calculator/',
+      name: 'Days Calculator',
+      url: 'https://solveitcalculator.com/time-date/days-calculator',
       applicationCategory: 'UtilityApplication',
       operatingSystem: 'All',
       description:

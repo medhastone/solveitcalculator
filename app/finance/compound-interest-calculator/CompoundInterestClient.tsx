@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, AreaChart, Area } from 'recharts';
 import { Info, Calculator, Download, TrendingUp, AlertTriangle, Lightbulb, CheckCircle2 } from 'lucide-react';
 
 // Interfaces
@@ -22,6 +21,7 @@ export default function CompoundInterestClient() {
   const [compoundFreq, setCompoundFreq] = useState<number>(12); // 12 = monthly, 1 = annually, 365 = daily
   
   const [isMounted, setIsMounted] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -223,35 +223,189 @@ export default function CompoundInterestClient() {
             </div>
 
             {/* Chart */}
-            <div className="bg-surface p-6 rounded-2xl shadow-sm border border-outline-variant/30 h-[450px]">
-              <h3 className="font-headline-md mb-6">Wealth Accumulation Over {years} Years</h3>
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                  <XAxis 
-                    dataKey="year" 
-                    tickFormatter={(val) => `Year ${val}`} 
-                    tick={{ fill: '#6b7280', fontSize: 12 }} 
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <YAxis 
-                    tickFormatter={(val) => `$${(val / 1000).toFixed(0)}k`}
-                    tick={{ fill: '#6b7280', fontSize: 12 }}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <Tooltip 
-                    formatter={(value: any) => formatCurrency(Number(value))}
-                    labelFormatter={(label) => `Year ${label}`}
-                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                  />
-                  <Legend verticalAlign="top" height={36}/>
-                  <Area type="monotone" dataKey="principal" name="Initial Principal" stackId="1" stroke="#94a3b8" fill="#cbd5e1" />
-                  <Area type="monotone" dataKey="contributions" name="Total Contributions" stackId="1" stroke="#3b82f6" fill="#93c5fd" />
-                  <Area type="monotone" dataKey="interest" name="Compound Interest" stackId="1" stroke="#10b981" fill="#6ee7b7" />
-                </AreaChart>
-              </ResponsiveContainer>
+            <div className="bg-surface p-6 rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                <h3 className="font-headline-md">Wealth Accumulation Over {years} Years</h3>
+                <div className="flex items-center gap-4 text-xs font-label-md">
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-emerald-500 inline-block"></span>Interest</span>
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-blue-500 inline-block"></span>Contributions</span>
+                  <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-slate-400 inline-block"></span>Principal</span>
+                </div>
+              </div>
+
+              {/* Responsive SVG Chart */}
+              {(() => {
+                const maxVal = Math.max(...chartData.map(d => d.balance), 1);
+                const w = 700;
+                const h = 300;
+                const padL = 65;
+                const padR = 20;
+                const padT = 20;
+                const padB = 40;
+                const plotW = w - padL - padR;
+                const plotH = h - padT - padB;
+
+                const getX = (idx: number) => padL + (idx / Math.max(chartData.length - 1, 1)) * plotW;
+                const getY = (val: number) => padT + plotH - (val / maxVal) * plotH;
+
+                // Build Area Polygons
+                const principalPoints = chartData.map((d, i) => `${getX(i)},${getY(d.principal)}`).join(' ');
+                const principalArea = `${padL},${padT + plotH} ${principalPoints} ${getX(chartData.length - 1)},${padT + plotH}`;
+
+                const depPoints = chartData.map((d, i) => `${getX(i)},${getY(d.principal + d.contributions)}`).join(' ');
+                const revPrincipalPoints = [...chartData].reverse().map((d, i) => `${getX(chartData.length - 1 - i)},${getY(d.principal)}`).join(' ');
+                const contribArea = `${depPoints} ${revPrincipalPoints}`;
+
+                const totalPoints = chartData.map((d, i) => `${getX(i)},${getY(d.balance)}`).join(' ');
+                const revDepPoints = [...chartData].reverse().map((d, i) => `${getX(chartData.length - 1 - i)},${getY(d.principal + d.contributions)}`).join(' ');
+                const interestArea = `${totalPoints} ${revDepPoints}`;
+
+                const activeData = hoveredIndex !== null && chartData[hoveredIndex] ? chartData[hoveredIndex] : chartData[chartData.length - 1];
+
+                const yTicks = [0, 0.25, 0.5, 0.75, 1].map(pct => {
+                  const val = maxVal * pct;
+                  const formatted = val >= 1000000 ? `$${(val / 1000000).toFixed(1)}M` : `$${Math.round(val / 1000)}k`;
+                  return { val, y: getY(val), label: formatted };
+                });
+
+                const xStep = Math.max(1, Math.floor(years / 5));
+                const xTicks = chartData.filter((d, i) => d.year % xStep === 0 || i === chartData.length - 1);
+
+                return (
+                  <div className="relative w-full">
+                    {/* Hover Info Card */}
+                    {activeData && (
+                      <div className="mb-3 p-3 bg-surface-container-low rounded-xl border border-outline-variant/40 flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <span className="font-bold text-on-surface font-headline-sm">Year {activeData.year}</span>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <span className="text-slate-600 dark:text-slate-300">Principal: <strong className="font-data-mono">{formatCurrency(activeData.principal)}</strong></span>
+                          <span className="text-blue-600 dark:text-blue-400">Deposits: <strong className="font-data-mono">{formatCurrency(activeData.contributions)}</strong></span>
+                          <span className="text-emerald-600 dark:text-emerald-400">Interest: <strong className="font-data-mono">{formatCurrency(activeData.interest)}</strong></span>
+                          <span className="text-primary font-bold">Total: <strong className="font-data-mono">{formatCurrency(activeData.balance)}</strong></span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="w-full overflow-x-auto">
+                      <svg
+                        viewBox={`0 0 ${w} ${h}`}
+                        className="w-full h-auto min-w-[500px] select-none"
+                        onMouseLeave={() => setHoveredIndex(null)}
+                      >
+                        <defs>
+                          <linearGradient id="interestGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#10b981" stopOpacity="0.85" />
+                            <stop offset="100%" stopColor="#10b981" stopOpacity="0.4" />
+                          </linearGradient>
+                          <linearGradient id="contribGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.85" />
+                            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.4" />
+                          </linearGradient>
+                          <linearGradient id="principalGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#94a3b8" stopOpacity="0.85" />
+                            <stop offset="100%" stopColor="#94a3b8" stopOpacity="0.4" />
+                          </linearGradient>
+                        </defs>
+
+                        {/* Grid Lines */}
+                        {yTicks.map((tick, idx) => (
+                          <g key={idx}>
+                            <line
+                              x1={padL}
+                              y1={tick.y}
+                              x2={w - padR}
+                              y2={tick.y}
+                              stroke="currentColor"
+                              className="text-outline-variant/30"
+                              strokeDasharray="4 4"
+                            />
+                            <text
+                              x={padL - 8}
+                              y={tick.y + 4}
+                              textAnchor="end"
+                              className="fill-on-surface-variant text-[11px] font-data-mono"
+                            >
+                              {tick.label}
+                            </text>
+                          </g>
+                        ))}
+
+                        {/* Area Paths */}
+                        <polygon points={interestArea} fill="url(#interestGrad)" />
+                        <polygon points={contribArea} fill="url(#contribGrad)" />
+                        <polygon points={principalArea} fill="url(#principalGrad)" />
+
+                        {/* Lines */}
+                        <polyline points={totalPoints} fill="none" stroke="#059669" strokeWidth="2.5" />
+                        <polyline points={depPoints} fill="none" stroke="#2563eb" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                        {/* X Axis Labels */}
+                        {xTicks.map((d) => (
+                          <g key={d.year}>
+                            <line
+                              x1={getX(d.year)}
+                              y1={padT + plotH}
+                              x2={getX(d.year)}
+                              y2={padT + plotH + 5}
+                              stroke="currentColor"
+                              className="text-outline-variant"
+                            />
+                            <text
+                              x={getX(d.year)}
+                              y={padT + plotH + 18}
+                              textAnchor="middle"
+                              className="fill-on-surface-variant text-[11px] font-data-mono"
+                            >
+                              Yr {d.year}
+                            </text>
+                          </g>
+                        ))}
+
+                        {/* Interactive Columns for Touch/Hover */}
+                        {chartData.map((d, i) => {
+                          const colW = plotW / Math.max(chartData.length, 1);
+                          return (
+                            <rect
+                              key={i}
+                              x={getX(i) - colW / 2}
+                              y={padT}
+                              width={colW}
+                              height={plotH}
+                              fill="transparent"
+                              className="cursor-pointer"
+                              onMouseEnter={() => setHoveredIndex(i)}
+                              onTouchStart={() => setHoveredIndex(i)}
+                            />
+                          );
+                        })}
+
+                        {/* Active Year Vertical Guideline */}
+                        {hoveredIndex !== null && chartData[hoveredIndex] && (
+                          <g pointerEvents="none">
+                            <line
+                              x1={getX(hoveredIndex)}
+                              y1={padT}
+                              x2={getX(hoveredIndex)}
+                              y2={padT + plotH}
+                              stroke="#2563eb"
+                              strokeWidth="2"
+                              strokeDasharray="2 2"
+                            />
+                            <circle
+                              cx={getX(hoveredIndex)}
+                              cy={getY(chartData[hoveredIndex].balance)}
+                              r="5"
+                              fill="#10b981"
+                              stroke="#ffffff"
+                              strokeWidth="2"
+                            />
+                          </g>
+                        )}
+                      </svg>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
             
           </div>
@@ -371,9 +525,9 @@ export default function CompoundInterestClient() {
             <CheckCircle2 className="w-8 h-8" />
           </div>
           <div>
-            <h3 className="font-headline-sm text-on-surface mb-2">Expert Reviewed & Verified</h3>
+            <h3 className="font-headline-sm text-on-surface mb-2">Mathematical Model &amp; Accuracy</h3>
             <p className="font-body-sm text-on-surface-variant mb-4">
-              The calculations provided by the SolveItCalculator engine utilize IEEE-754 double-precision floating-point arithmetic to guarantee zero compounding drift over a 50-year horizon. Formulas are strictly cross-verified against standard actuarial tables and SEC investor guidelines. 
+              The calculations provided by the SolveItCalculator engine utilize standard geometric progression compounding formulas to ensure accurate projections over short and long investment horizons.
             </p>
             <div className="text-xs text-on-surface-variant/70">
               <strong>Last Updated:</strong> September 2026 &nbsp;|&nbsp; <strong>Methodology:</strong> Standard Geometric Progression Model

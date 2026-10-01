@@ -3,37 +3,35 @@ import type { Metadata } from 'next';
 import AgeCalculatorClient from './AgeCalculatorClient';
 
 export const metadata: Metadata = {
-  title: 'Exact Age Calculator | Chronological Age by Date of Birth & Pet Age | SolveIt',
+  title: 'Age Calculator | Years, Months & Days | SolveItCalculator',
   description:
-    'Calculate your exact chronological age in years, months, weeks, days, hours, minutes, and seconds. Includes next birthday countdown, half-birthdays, dog & cat biological age, and milestone timelines.',
+    'Calculate chronological age in years, months, and days, with optional time units and milestone dates. Get a clear, date-based age result online.',
   keywords: [
     'age calculator',
-    'chronological age calculator',
     'exact age calculator',
     'how old am i',
     'calculate age from date of birth',
     'birthday day of week calculator',
     'next birthday countdown',
-    'half birthday finder',
-    'dog age calculator human years',
-    'cat age calculator',
-    'gestational age calculator'
+    'half birthday calculator',
+    'calculate age in days',
+    'birthday zodiac sign'
   ],
   alternates: {
-    canonical: 'https://solveitcalculator.com/time-date/age-calculator/',
+    canonical: 'https://solveitcalculator.com/time-date/age-calculator',
   },
   openGraph: {
-    title: 'Exact Age Calculator | Chronological Age by Date of Birth | SolveIt',
+    title: 'Age Calculator | Years, Months & Days | SolveItCalculator',
     description:
-      'Calculate your exact chronological age in years, months, days, hours, and seconds. Discover half-birthdays, age milestones, and time elapsed since your date of birth.',
-    url: 'https://solveitcalculator.com/time-date/age-calculator/',
+      'Calculate chronological age in years, months, and days, with optional time units and milestone dates. Get a clear, date-based age result online.',
+    url: 'https://solveitcalculator.com/time-date/age-calculator',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Exact Age Calculator | Chronological Age by Date of Birth | SolveIt',
+    title: 'Age Calculator | Years, Months & Days | SolveItCalculator',
     description:
-      'Calculate your exact chronological age in years, months, days, hours, and seconds. Discover half-birthdays, age milestones, and time elapsed since your date of birth.',
+      'Calculate chronological age in years, months, and days, with optional time units and milestone dates. Get a clear, date-based age result online.',
   },
 };
 
@@ -43,12 +41,12 @@ const jsonLd = {
     {
       '@type': 'WebApplication',
       '@id': 'https://solveitcalculator.com/time-date/age-calculator/#app',
-      name: 'Exact Chronological Age Calculator',
-      url: 'https://solveitcalculator.com/time-date/age-calculator/',
+      name: 'Age Calculator',
+      url: 'https://solveitcalculator.com/time-date/age-calculator',
       applicationCategory: 'UtilityApplication',
       operatingSystem: 'All',
       description:
-        'A high-precision chronological age calculator to determine exact age from date of birth in years, months, weeks, days, hours, and seconds with biological pet age curves and milestone forecasting.',
+        'Calculate chronological age in years, months, and days, with optional time units and milestone dates. Get a clear, date-based age result online.',
       offers: {
         '@type': 'Offer',
         price: '0.00',
@@ -73,7 +71,7 @@ const jsonLd = {
         {
           '@type': 'ListItem',
           position: 3,
-          name: 'Exact Age Calculator',
+          name: 'Age Calculator',
           item: 'https://solveitcalculator.com/time-date/age-calculator/',
         },
       ],
@@ -83,34 +81,34 @@ const jsonLd = {
       mainEntity: [
         {
           '@type': 'Question',
-          name: 'How does the exact chronological age calculation algorithm work?',
+          name: 'How does this age calculator work?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'The exact chronological age algorithm aligns the calendar day of birth with the target evaluation date across Gregorian calendar boundaries. It calculates discrete differences for years, months, and days. If the target day is smaller than the birth day, it borrows the exact number of days in the preceding month (accounting for 28, 29, 30, or 31 days) to prevent rounding inaccuracies.',
+            text: 'The calculator compares your birth date with today (or any date you select). It subtracts the years, months, and days accurately, borrowing days from the preceding month whenever needed so leap years and differing month lengths are handled correctly.',
           },
         },
         {
           '@type': 'Question',
-          name: 'How do leap years affect chronological age calculations?',
+          name: 'How do leap years affect my age?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'If you were born on a leap day (February 29), common years do not contain that calendar date. In non-leap years, legal milestones and calendar anniversaries are observed either on February 28 or March 1 depending on jurisdiction. Our engine evaluates leap days dynamically according to the astronomical 400-year Gregorian cycle.',
+            text: 'If you were born on February 29 (a leap day), our calculator counts your exact days lived. In non-leap years, your birthday is celebrated on March 1.',
           },
         },
         {
           '@type': 'Question',
-          name: 'How is pet biological age calculated for dogs and cats?',
+          name: 'What is a half-birthday?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Rather than the outdated "multiply by 7" rule, modern veterinary science uses non-linear epigenetic aging curves. For dogs, Year 1 equals roughly 15 human years, Year 2 adds 9 years, and subsequent years add between 4 to 8 years depending on canine weight class (small, medium, large, giant). For cats, Year 1 equals 15 years, Year 2 equals 9 years, and each subsequent feline year equals 4 human years.',
+            text: 'A half-birthday falls exactly six months after your birth date. For example, if your birthday is July 15, your half-birthday is on January 15.',
           },
         },
         {
           '@type': 'Question',
-          name: 'What is a half-birthday and how is it determined?',
+          name: 'Is my birth date kept private?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'A half-birthday occurs exactly 6 calendar months (approximately 182.62 days) after your date of birth. For instance, if you were born on July 15, your half-birthday falls on January 15.',
+            text: 'Yes, 100%. All calculations happen instantly right in your browser. No birth dates are saved or sent across the internet.',
           },
         },
       ],

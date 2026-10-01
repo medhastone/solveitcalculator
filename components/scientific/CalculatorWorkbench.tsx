@@ -191,13 +191,15 @@ export default function CalculatorWorkbench({
       const sanitizedRes = `"${item.result.replace(/"/g, '""')}"`;
       csvContent += `${index + 1},${sanitizedExpr},${sanitizedRes},${item.tag}\n`;
     });
-    const encodedUri = encodeURI(csvContent);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blobUrl = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
+    link.setAttribute('href', blobUrl);
     link.setAttribute('download', 'solveit_scientific_tape.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(blobUrl);
   };
 
   return (

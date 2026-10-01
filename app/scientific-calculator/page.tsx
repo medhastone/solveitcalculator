@@ -5,7 +5,7 @@ import ScientificCalculatorClient from './ScientificCalculatorClient';
 export const metadata: Metadata = {
   title: 'Scientific Calculator & Equation Solver | SolveIt Calculator Mathematical Workbench',
   description:
-    'High-precision client-side scientific calculator with arbitrary-precision trigonometric routines, logarithms, factorials, permutations, unit circle visualizer, and live LaTeX typesetting. IEEE 754 precision.',
+    'High-precision client-side scientific calculator with arbitrary-precision trigonometric routines, logarithms, factorials, permutations, unit circle visualizer, and live LaTeX typesetting.',
   openGraph: {
     title: 'Scientific Calculator & Equation Solver | SolveIt Calculator Mathematical Workbench',
     description:

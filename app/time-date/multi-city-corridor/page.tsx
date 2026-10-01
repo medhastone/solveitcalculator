@@ -3,14 +3,18 @@ import type { Metadata } from 'next';
 import MulticitycorridorClient from './MulticitycorridorClient';
 
 export const metadata: Metadata = {
-  title: 'Follow The Sun Model & Multi-City Corridors | SolveIt',
-  description: 'Design 24-hour continuous development cycles. Visualize multi-city handoff corridors for global software engineering teams.',
+  title: 'Multi-City Corridor Planner | Multi-City Schedules | SolveItCalculator',
+  description:
+    'Coordinate schedules across multiple global hubs. Align business hours, flight windows, and team availability across major international corridors.',
+  alternates: {
+    canonical: 'https://solveitcalculator.com/time-date/multi-city-corridor',
+  },
 };
 
 export default function MulticitycorridorPage() {
   return (
     <div className="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col">
-      <main className="w-full pt-16 bg-background flex-grow">
+      <main className="w-full pt-0 bg-background flex-grow">
         <MulticitycorridorClient />
       </main>
     </div>

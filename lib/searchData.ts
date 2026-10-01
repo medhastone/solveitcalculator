@@ -1,5 +1,75 @@
 export const allUniqueTools = [
   {
+    "id": "retirement-countdown-in-workdays",
+    "title": "Retirement Countdown in Workdays",
+    "name": "Retirement Countdown Calculator (Workdays, Shifts & Hours)",
+    "link": "/retirement-countdown-in-workdays",
+    "category": "time-date",
+    "label": "Time & Date",
+    "badgeClass": "bg-primary-fixed text-primary",
+    "desc": "Calculate your exact retirement countdown in workdays, shifts, hours, and modeled final working day with PTO balance and holiday deductions.",
+    "keywords": [
+      "retirement",
+      "retirement countdown",
+      "retirement countdown in workdays",
+      "workdays until retirement",
+      "shifts until retirement",
+      "retirement date countdown",
+      "terminal pto",
+      "modeled final working day",
+      "pto deduction",
+      "countdown in workdays",
+      "retirement hours"
+    ]
+  },
+  {
+    "id": "leap-year-calculator",
+    "title": "Leap Year Calculator & Validator",
+    "name": "Leap Year Validator & Counter (400-Year Cycle)",
+    "link": "/leap-year-calculator",
+    "category": "time-date",
+    "label": "Time & Date",
+    "badgeClass": "bg-primary-fixed text-primary",
+    "desc": "Check if any year is a leap year, explore the 400-year cycle, and count leap years between dates.",
+    "keywords": [
+      "leap",
+      "leap year",
+      "leap year calculator",
+      "leap year validator",
+      "leap year counter",
+      "is it a leap year",
+      "next leap year",
+      "february 29",
+      "400 year cycle",
+      "gregorian leap year"
+    ]
+  },
+  {
+    "id": "julian-day-calculator",
+    "title": "Julian Day Calculator",
+    "name": "Julian Day Number (JDN) & Modified Julian Date (MJD) Calculator",
+    "link": "/julian-day-calculator",
+    "category": "time-date",
+    "label": "Time & Date",
+    "badgeClass": "bg-primary-fixed text-primary",
+    "desc": "Calculate Julian Day Numbers (JDN), Modified Julian Dates (MJD), and day of year with astronomical precision.",
+    "keywords": [
+      "julian day",
+      "julian day calculator",
+      "julian day number calculator",
+      "julian date",
+      "julian date calculator",
+      "jdn",
+      "mjd",
+      "modified julian date",
+      "astronomy",
+      "day of year",
+      "doy",
+      "sidereal time",
+      "scaliger"
+    ]
+  },
+  {
     "id": "mortgage-calc",
     "title": "Mortgage Payment Calculator",
     "name": "Mortgage Payment Calculator",
@@ -389,6 +459,31 @@ export const allUniqueTools = [
     ]
   },
   {
+    "id": "add-subtract-time-calc",
+    "title": "Add & Subtract Time Calculator",
+    "name": "Add or Subtract Days, Hours, Minutes, and Seconds from Date",
+    "link": "/time-date/add-subtract-time",
+    "category": "time-date",
+    "label": "Time & Date",
+    "badgeClass": "bg-primary-fixed text-primary",
+    "desc": "Add or subtract years, months, weeks, days, hours, minutes, and seconds from any start date with business days, presets, and time zones.",
+    "keywords": [
+      "add time",
+      "subtract time",
+      "add subtract time",
+      "add days to date",
+      "subtract days from date",
+      "date plus days",
+      "add hours to date",
+      "future date calculator",
+      "past date calculator",
+      "add subtract date",
+      "time addition",
+      "time subtraction",
+      "business days adder"
+    ]
+  },
+  {
     "id": "age-calc",
     "title": "Age Calculator & Chronological Exact Age",
     "name": "Exact Chronological Age in Years, Months, Days, Hours",
@@ -408,10 +503,30 @@ export const allUniqueTools = [
     ]
   },
   {
+    "id": "days-between-dates",
+    "title": "Days Between Dates Calculator",
+    "name": "Days Between Dates & Business Days Calculator",
+    "link": "/time-date/days-between-dates",
+    "category": "time-date",
+    "label": "Time & Date",
+    "badgeClass": "bg-primary-fixed text-primary",
+    "desc": "Quickly calculate the exact number of days, business days, weekends, weeks, and work hours between any two dates.",
+    "keywords": [
+      "days between dates",
+      "days between",
+      "days calculator",
+      "date difference",
+      "calculate days",
+      "business days between dates",
+      "working days",
+      "calendar days counter"
+    ]
+  },
+  {
     "id": "date-difference",
     "title": "Date Difference & Duration Calculator",
     "name": "Days Between Two Dates & Working Business Days",
-    "link": "/time-date/date-difference",
+    "link": "/time-date/days-between-dates",
     "category": "time-date",
     "label": "Time & Date",
     "badgeClass": "bg-primary-fixed text-primary",
@@ -484,6 +599,54 @@ export const allUniqueTools = [
       "stopwatch",
       "dst",
       "dst transition"
+    ]
+  },
+  {
+    "id": "event-countdown",
+    "title": "Event Countdown Calculator",
+    "name": "Live Event Countdown Timer & Days Until Calculator",
+    "link": "/time-date/event-countdown",
+    "category": "time-date",
+    "label": "Time & Date",
+    "badgeClass": "bg-primary-fixed text-primary",
+    "desc": "Track days, hours, minutes, and seconds until any event, wedding, vacation, exam, or product launch.",
+    "keywords": [
+      "event countdown",
+      "event countdowns",
+      "countdown timer",
+      "days until",
+      "countdown",
+      "wedding countdown",
+      "vacation countdown",
+      "birthday countdown",
+      "retirement countdown",
+      "timer",
+      "clock"
+    ]
+  },
+  {
+    "id": "focus-break-timer",
+    "title": "Focus & Break Timers",
+    "name": "Focus & Break Timers – Pomodoro & Deep Work Rhythm",
+    "link": "/focus-and-break-timer",
+    "category": "time-date",
+    "label": "Time & Date",
+    "badgeClass": "bg-primary-fixed text-primary",
+    "desc": "Boost concentration and avoid burnout with Pomodoro (25/5), 52/17 desk rhythm, and 90-min deep work intervals.",
+    "keywords": [
+      "focus & break timers",
+      "focus & break timer",
+      "focus and break timers",
+      "focus and break timer",
+      "focus timer",
+      "break timer",
+      "pomodoro timer",
+      "pomodoro",
+      "study timer",
+      "52 17 timer",
+      "deep work timer",
+      "distraction counter",
+      "productivity timer"
     ]
   },
   {
@@ -837,6 +1000,76 @@ export const allUniqueTools = [
       "aspect ratio",
       "ip address",
       "network"
+    ]
+  },
+  {
+    "id": "military-time-converter",
+    "title": "Military Time (24-Hour) Converter",
+    "name": "Military Time (24-Hour) Converter & Tactical DTG",
+    "link": "/military-time-converter",
+    "category": "time-date",
+    "label": "Time & Date",
+    "badgeClass": "bg-primary-fixed text-primary",
+    "desc": "Convert smoothly between 12-hour civilian clocks, 24-hour military notation, NATO Zulu time, and STANAG 2211 DTG.",
+    "keywords": [
+      "military time",
+      "24-hour time",
+      "24 hour clock",
+      "zulu time",
+      "dtg",
+      "date time group",
+      "stanag 2211",
+      "nato time",
+      "army time",
+      "aviation time"
+    ]
+  },
+  {
+    "id": "unix-timestamp-converter",
+    "title": "Unix Timestamp Converter",
+    "name": "Unix Timestamp Converter (Epoch to Human Date)",
+    "link": "/unix-timestamp-converter",
+    "category": "time-date",
+    "label": "Time & Date",
+    "badgeClass": "bg-primary-fixed text-primary",
+    "desc": "High-precision epoch time conversion across seconds, milliseconds, microseconds, nanoseconds, ISO-8601, and hexadecimal notation.",
+    "keywords": [
+      "unix timestamp",
+      "epoch converter",
+      "unix time",
+      "epoch to date",
+      "timestamp to date",
+      "current timestamp",
+      "epoch time",
+      "posix time",
+      "iso 8601",
+      "hex timestamp",
+      "jwt timestamp",
+      "year 2038"
+    ]
+  },
+  {
+    "id": "retirement-countdown-in-workdays",
+    "title": "Retirement Countdown in Workdays",
+    "name": "Retirement Countdown in Workdays, Shifts & Hours Calculator",
+    "link": "/retirement-countdown-in-workdays",
+    "category": "time-date",
+    "label": "Time & Date",
+    "badgeClass": "bg-primary-fixed text-primary",
+    "desc": "Calculate exact remaining workdays, shifts, and hours until retirement with PTO, holiday deductions, and custom schedules.",
+    "keywords": [
+      "retirement countdown in workdays",
+      "retirement countdown",
+      "workdays until retirement",
+      "shifts until retirement",
+      "retirement calculator",
+      "working days left",
+      "terminal pto",
+      "retirement hours",
+      "final working day",
+      "shift countdown",
+      "retirement timer",
+      "time to retire"
     ]
   }
 ];

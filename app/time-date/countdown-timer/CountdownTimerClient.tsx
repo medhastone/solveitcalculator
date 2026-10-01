@@ -84,9 +84,9 @@ export default function CountdownTimerClient() {
   };
 
   const [eventName, setEventName] = useState("New Year's Day");
-  const [targetDateStr, setTargetDateStr] = useState('2026-01-01');
+  const [targetDateStr, setTargetDateStr] = useState('2027-01-01');
   const [targetTimeStr, setTargetTimeStr] = useState('00:00');
-  const [nowTime, setNowTime] = useState<number>(0);
+  const [nowTime, setNowTime] = useState<number>(() => new Date('2026-03-20T12:00:00Z').getTime());
 
   // FAQ Accordion state
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -102,22 +102,19 @@ export default function CountdownTimerClient() {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setMounted(true);
-      const nextNY = new Date(new Date().getFullYear() + 1, 0, 1);
-      const y = nextNY.getFullYear();
-      const m = String(nextNY.getMonth() + 1).padStart(2, '0');
-      const d = String(nextNY.getDate()).padStart(2, '0');
-      setTargetDateStr(`${y}-${m}-${d}`);
-      setNowTime(Date.now());
-    }, 0);
+    setMounted(true);
+    const nextNY = new Date(new Date().getFullYear() + 1, 0, 1);
+    const y = nextNY.getFullYear();
+    const m = String(nextNY.getMonth() + 1).padStart(2, '0');
+    const d = String(nextNY.getDate()).padStart(2, '0');
+    setTargetDateStr(`${y}-${m}-${d}`);
+    setNowTime(Date.now());
 
     const interval = setInterval(() => {
       setNowTime(Date.now());
     }, 1000);
 
     return () => {
-      clearTimeout(timer);
       clearInterval(interval);
     };
   }, []);
@@ -228,16 +225,6 @@ Total Seconds: ${countdown.totalSeconds.toLocaleString()}s`;
     },
   ];
 
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-surface flex items-center justify-center font-body-md text-on-surface">
-        <div className="animate-pulse font-label-caps text-label-caps text-outline">
-          Synchronizing Atomic Countdown Chronometer...
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-surface text-on-surface flex flex-col font-body-md selection:bg-primary/20">
       
@@ -253,17 +240,16 @@ Total Seconds: ${countdown.totalSeconds.toLocaleString()}s`;
       {/* Header Banner */}
       <section className="w-full bg-surface-container-lowest border-b border-outline-variant/30 pt-space-xl pb-space-lg">
         <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-          <div className="flex items-center gap-2 mb-2">
-            <Link
-              href="/time-date"
-              className="font-label-caps text-label-caps text-outline hover:text-primary transition-colors flex items-center gap-1"
-            >
-              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-              Time & Date Suite
+          <nav aria-label="Breadcrumb" className="flex items-center gap-space-2xs font-body-sm text-body-sm text-on-surface-variant mb-4 flex-wrap">
+            <Link className="hover:text-primary transition-colors flex items-center gap-1" href="/">
+              <span className="material-symbols-outlined text-[16px]">home</span>
+              <span>Home</span>
             </Link>
-            <span className="text-outline-variant text-[12px]">•</span>
-            <span className="font-label-caps text-label-caps text-primary font-semibold">Event Chronometer</span>
-          </div>
+            <span className="text-outline-variant">/</span>
+            <Link className="hover:text-primary transition-colors" href="/time-date">Time &amp; Date</Link>
+            <span className="text-outline-variant">/</span>
+            <span className="text-on-surface font-medium">Countdown Timer</span>
+          </nav>
 
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
@@ -275,18 +261,14 @@ Total Seconds: ${countdown.totalSeconds.toLocaleString()}s`;
               </p>
             </div>
 
-            {/* Presets */}
-            <div className="flex flex-wrap items-center gap-2">
-              {PRESETS.map((preset) => (
-                <button
-                  key={preset.name}
-                  onClick={() => applyPreset(preset)}
-                  className="px-3 py-1.5 rounded-lg bg-surface-container font-label-caps text-[12px] font-semibold text-on-surface hover:bg-surface-container-high transition-colors border border-outline-variant/30 flex items-center gap-1.5"
-                >
-                  <span>{preset.emoji}</span>
-                  <span>{preset.name}</span>
-                </button>
-              ))}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+              <Link
+                href="/time-date/event-countdown"
+                className="px-4 py-2 bg-primary text-on-primary rounded-xl font-body-sm font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-sm"
+              >
+                <span className="material-symbols-outlined text-[18px]">event</span>
+                <span>Full Event Countdown Page</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -314,7 +296,7 @@ Total Seconds: ${countdown.totalSeconds.toLocaleString()}s`;
             {/* Big 4-Tile Countdown Matrix */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-space-md max-w-4xl mx-auto">
               <div className="bg-surface-container-low p-space-lg rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center">
-                <div className="font-numerical-display text-[52px] sm:text-[72px] font-bold text-primary leading-none">
+                <div suppressHydrationWarning className="font-numerical-display text-[52px] sm:text-[72px] font-bold text-primary leading-none">
                   {countdown.days}
                 </div>
                 <span className="font-label-caps text-[12px] sm:text-[14px] text-outline uppercase font-bold tracking-wider mt-2">
@@ -323,7 +305,7 @@ Total Seconds: ${countdown.totalSeconds.toLocaleString()}s`;
               </div>
 
               <div className="bg-surface-container-low p-space-lg rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center">
-                <div className="font-numerical-display text-[52px] sm:text-[72px] font-bold text-on-surface leading-none">
+                <div suppressHydrationWarning className="font-numerical-display text-[52px] sm:text-[72px] font-bold text-on-surface leading-none">
                   {String(countdown.hours).padStart(2, '0')}
                 </div>
                 <span className="font-label-caps text-[12px] sm:text-[14px] text-outline uppercase font-bold tracking-wider mt-2">
@@ -332,7 +314,7 @@ Total Seconds: ${countdown.totalSeconds.toLocaleString()}s`;
               </div>
 
               <div className="bg-surface-container-low p-space-lg rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center">
-                <div className="font-numerical-display text-[52px] sm:text-[72px] font-bold text-secondary leading-none">
+                <div suppressHydrationWarning className="font-numerical-display text-[52px] sm:text-[72px] font-bold text-secondary leading-none">
                   {String(countdown.minutes).padStart(2, '0')}
                 </div>
                 <span className="font-label-caps text-[12px] sm:text-[14px] text-outline uppercase font-bold tracking-wider mt-2">
@@ -341,7 +323,7 @@ Total Seconds: ${countdown.totalSeconds.toLocaleString()}s`;
               </div>
 
               <div className="bg-surface-container-low p-space-lg rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center">
-                <div className="font-numerical-display text-[52px] sm:text-[72px] font-bold text-tertiary leading-none">
+                <div suppressHydrationWarning className="font-numerical-display text-[52px] sm:text-[72px] font-bold text-tertiary leading-none">
                   {String(countdown.seconds).padStart(2, '0')}
                 </div>
                 <span className="font-label-caps text-[12px] sm:text-[14px] text-outline uppercase font-bold tracking-wider mt-2">

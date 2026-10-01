@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function WorldclockgridClient() {
   const [mounted, setMounted] = useState(false);
-  const [utcTime, setUtcTime] = useState<Date | null>(null);
+  const [utcTime, setUtcTime] = useState<Date>(() => new Date('2026-03-20T12:00:00Z'));
 
   const formatUtcTime = (date: Date) => {
     const h = String(date.getUTCHours()).padStart(2, '0');
@@ -37,9 +37,7 @@ export default function WorldclockgridClient() {
     { id: 'sin', name: 'Singapore', abbreviation: 'SGT', flag: '🇸🇬', utcOffset: 8 },
   ];
   
-  const currentUtcHour = utcTime ? utcTime.getUTCHours() : 0;
-
-  if (!mounted) return null;
+  const currentUtcHour = utcTime ? utcTime.getUTCHours() : 12;
 
   return (
     <div className="flex flex-col w-full min-h-[calc(100vh-380px)]">
@@ -54,8 +52,6 @@ export default function WorldclockgridClient() {
             <span className="text-outline-variant">/</span>
             <Link className="hover:text-primary transition-colors" href="/time-date">Time &amp; Date</Link>
             <span className="text-outline-variant">/</span>
-            <Link className="hover:text-primary transition-colors" href="/time-date/time-zone-overlap">Time Zone Overlap Planner</Link>
-            <span className="text-outline-variant">/</span>
             <span className="text-on-surface font-medium flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px] text-primary">public</span>
               World Clock Grid
@@ -65,8 +61,8 @@ export default function WorldclockgridClient() {
           
           <div className="hidden sm:flex items-center gap-space-xs text-on-surface-variant font-data-mono text-body-sm">
             <span className="text-primary font-bold">UTC:</span>
-            <span className="bg-surface-container-high px-2 py-0.5 rounded text-on-surface">
-              {utcTime ? formatUtcTime(utcTime) : '00:00:00Z'}
+            <span suppressHydrationWarning className="bg-surface-container-high px-2 py-0.5 rounded text-on-surface">
+              {utcTime ? formatUtcTime(utcTime) : '12:00:00Z'}
             </span>
           </div>
 
@@ -178,7 +174,7 @@ export default function WorldclockgridClient() {
                       </span>
                     </div>
                     <div className="my-space-md">
-                      <div className="font-data-mono text-numerical-display text-on-surface font-bold tracking-tight">
+                      <div suppressHydrationWarning className="font-data-mono text-numerical-display text-on-surface font-bold tracking-tight">
                         {String(displayH).padStart(2,'0')}:{m}<span className="text-headline-md text-on-surface-variant">:{s}{ampm}</span>
                       </div>
                     </div>

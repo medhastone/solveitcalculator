@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Header from '../../components/Header';
 import AutomotiveSeoSection from './AutomotiveSeoSection';
 import SaveButton from '../../components/SaveButton';
 
@@ -51,7 +50,7 @@ const trendingCards = [
 ];
 
 const recentCards = [
-  { id: 1, title: 'NACS vs CCS1 Port Speed Estimator', version: 'v2.4', date: 'Feb 2025', desc: 'Compare charging speeds and adapter limits.' },
+  { id: 1, title: 'NACS vs CCS1 Port Speed Estimator', version: 'v2.4', date: '2025', desc: 'Compare charging speeds and adapter limits.' },
   { id: 2, title: 'Hybrid Battery Replacement ROI', version: 'v2.4', date: 'Jan 2025', desc: 'Analyze battery replacement cost vs fuel savings.' },
   { id: 3, title: 'Cargo Payload & Axle Distribution', version: 'v2.3', date: 'Jan 2025', desc: 'Check payload balance and axle weight limits.' },
   { id: 4, title: 'E85 Octane Rating Blender', version: 'v2.2', date: 'Dec 2024', desc: 'Calculate E85 and gas blend ratios for target octane.' },
@@ -121,8 +120,7 @@ export default function AutomotiveClient() {
 
   return (
     <>
-      <Header />
-      <main className="w-full pt-16 bg-surface min-h-[calc(100vh-64px)]">
+      <main className="w-full bg-surface min-h-[calc(100vh-64px)]">
         <div className="flex flex-col w-full">
           {/* SECTION 1: CATEGORY HERO & SEARCH BENCH */}
           <section className="relative overflow-hidden bg-gradient-to-b from-surface-container-low/60 via-surface to-surface pb-space-2xl pt-space-lg">

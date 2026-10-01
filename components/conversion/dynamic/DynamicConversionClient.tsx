@@ -21,7 +21,7 @@ export default function DynamicConversionClient({ unit }: DynamicConversionClien
 
   return (
     <div className="bg-surface font-body-md text-on-surface antialiased min-h-screen flex flex-col selection:bg-primary/20">
-      <main className="w-full pt-16 bg-surface flex-1">
+      <main className="w-full pt-0 bg-surface flex-1">
         <div className="flex flex-col w-full">
           
           {/* Telemetry Bar & Breadcrumb Matrix */}

@@ -1,58 +1,101 @@
-import { UNITS, getUnitById } from '@/lib/unit-data';
-import DynamicConverterClient from '@/components/conversion/DynamicConverterClient';
+import React from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { resolveSlug, CANONICAL_POPULAR_PAIRS } from '@/lib/converterSlugs';
+import { CONVERSION_CATEGORIES } from '@/lib/conversions';
+import UnitConverterView from '@/components/UnitConverterView';
+import CategoryConverterView from '@/components/CategoryConverterView';
+import VolumeConverterClient from '@/app/volume-converter/VolumeConverterClient';
 
-type Props = {
+interface PageProps {
   params: Promise<{ slug: string }>;
-};
-
-export async function generateStaticParams() {
-  const params: { slug: string }[] = [];
-  
-  for (const fromUnit of UNITS) {
-    for (const toUnit of UNITS) {
-      if (fromUnit.id !== toUnit.id && fromUnit.category === toUnit.category) {
-        params.push({ slug: `${fromUnit.id}-to-${toUnit.id}` });
-      }
-    }
-  }
-  
-  return params;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const resolvedParams = await params;
-  const parts = resolvedParams.slug.split('-to-');
-  if (parts.length !== 2) return { title: 'Conversion Not Found' };
-  
-  const fromUnit = getUnitById(parts[0]);
-  const toUnit = getUnitById(parts[1]);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const resolved = resolveSlug(slug);
 
-  if (!fromUnit || !toUnit) {
-    return { title: 'Conversion Not Found | SolveIt Calculator' };
+  if (!resolved) {
+    return {
+      title: 'Unit Converter | SolveIt Calculator',
+      description: 'Convert between hundreds of physical units with precision.'
+    };
   }
 
+  const canonicalUrl = `https://solveitcalculator.com/conversion/${resolved.slug}`;
+
   return {
-    title: `${fromUnit.nameSingular} to ${toUnit.nameSingular} Converter (${fromUnit.symbol} to ${toUnit.symbol})`,
-    description: `Convert ${fromUnit.namePlural.toLowerCase()} to ${toUnit.namePlural.toLowerCase()} instantly. Free ${fromUnit.symbol} to ${toUnit.symbol} calculator, formula, examples, conversion chart, FAQs, and tables.`,
+    title: resolved.title,
+    description: resolved.description,
     alternates: {
-      canonical: `https://solveitcalculator.com/conversion/${resolvedParams.slug}`
+      canonical: canonicalUrl
+    },
+    openGraph: {
+      title: resolved.title,
+      description: resolved.description,
+      url: canonicalUrl,
+      type: 'website'
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: resolved.title,
+      description: resolved.description
     }
   };
 }
 
-export default async function DynamicConversionPage({ params }: Props) {
-  const resolvedParams = await params;
-  const parts = resolvedParams.slug.split('-to-');
-  if (parts.length !== 2) notFound();
+export const dynamicParams = true;
 
-  const fromUnit = getUnitById(parts[0]);
-  const toUnit = getUnitById(parts[1]);
+export async function generateStaticParams() {
+  const params: { slug: string }[] = [];
 
-  if (!fromUnit || !toUnit) {
+  // 1. All category slugs
+  for (const cat of CONVERSION_CATEGORIES) {
+    params.push({ slug: cat.id });
+    if (cat.id.includes('_')) {
+      params.push({ slug: cat.id.replace(/_/g, '-') });
+    }
+  }
+
+  // Volume & Capacity specific category aliases
+  params.push(
+    { slug: 'volume-converter' },
+    { slug: 'volume-and-capacity' },
+    { slug: 'volume-and-capacity-converter' },
+    { slug: 'capacity' },
+    { slug: 'capacity-converter' },
+    { slug: 'volume-capacity' }
+  );
+
+  // 2. Canonical popular pairs
+  for (const pair of CANONICAL_POPULAR_PAIRS) {
+    params.push({ slug: pair.slug });
+  }
+
+  return params;
+}
+
+export default async function ConversionSlugPage({ params }: PageProps) {
+  const { slug } = await params;
+  const resolved = resolveSlug(slug);
+
+  if (!resolved) {
     notFound();
   }
 
-  return <DynamicConverterClient initialFrom={fromUnit} initialTo={toUnit} slug={resolvedParams.slug} />;
+  if (resolved.type === 'category') {
+    if (resolved.category.id === 'volume') {
+      return <VolumeConverterClient />;
+    }
+    return <CategoryConverterView categoryId={resolved.category.id} />;
+  }
+
+  return (
+    <UnitConverterView
+      categoryId={resolved.category.id}
+      fromUnitId={resolved.fromUnit.id}
+      toUnitId={resolved.toUnit.id}
+      slug={resolved.slug}
+    />
+  );
 }

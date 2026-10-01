@@ -744,7 +744,7 @@ export default function TechnologyClient() {
         { name: 'Network Mbps to MB/s', meta: 'Divide by 8' },
         { name: 'Color HEX <-> RGB <-> HSL <-> OKLCH', meta: 'Gamut' },
         { name: 'Frequency Hz to kHz, MHz, GHz', meta: 'SI Standard' },
-        { name: 'Epoch Unix Timestamp to ISO 8601', meta: 'UTC/TZ' },
+        { name: 'Epoch Unix Timestamp to ISO 8601', meta: 'UTC/TZ', link: '/unix-timestamp-converter' },
         { name: 'dBm to Milliwatts RF Power', meta: 'Logarithmic' },
         { name: 'Screen Aspect Ratio by Resolution', meta: 'GCD' },
         { name: 'Base 10 Decimal to Radix 2, 8, 16', meta: 'Positional' }
@@ -832,7 +832,11 @@ export default function TechnologyClient() {
   // Select tool from live search
   const handleSelectTool = (tool: { name: string; link: string; categoryId: string }) => {
     setShowResultsDropdown(false);
-    if (tool.link.startsWith('#')) {
+    if (tool.link && !tool.link.startsWith('#')) {
+      window.location.href = tool.link;
+      return;
+    }
+    if (tool.link && tool.link.startsWith('#')) {
       const el = document.querySelector(tool.link) as HTMLElement | null;
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -908,7 +912,7 @@ export default function TechnologyClient() {
     <div className="bg-surface font-body-md text-body-md text-on-surface min-h-screen flex flex-col justify-between">
       
 
-      <main className="w-full pt-16 bg-surface min-h-[calc(100vh-64px)] flex-1">
+      <main className="w-full pt-0 bg-surface min-h-[calc(100vh-64px)] flex-1">
         {/* BREADCRUMB NAVIGATION BAR */}
         <section aria-label="Breadcrumb Navigation" className="w-full bg-surface-container-low/70 py-space-xs border-b border-outline-variant/20">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center justify-between gap-space-xs text-body-sm font-body-sm">
@@ -1966,23 +1970,24 @@ export default function TechnologyClient() {
                       {cat.count}
                     </span>
                   </div>
-                  <ul className="space-y-2.5 font-body-sm text-body-sm">
+                  <div className="space-y-1.5 font-body-sm text-body-sm">
                     {cat.tools.map(tool => (
-                      <li key={tool.name}>
-                        <a
-                          className="group flex items-center justify-between font-bold text-on-surface hover:text-primary py-1 px-1.5 -mx-1.5 rounded-md hover:bg-surface-container/60 transition-all"
-                          href={tool.link || '#workbenches'}
-                        >
-                          <span className="font-bold leading-snug">
-                            {tool.name}
-                          </span>
-                          <span className="text-primary font-bold text-[14px] transition-transform duration-200 group-hover:translate-x-1 shrink-0 select-none ml-2">
-                            →
-                          </span>
-                        </a>
-                      </li>
+                      <a
+                        key={tool.name}
+                        title={tool.name}
+                        className="group flex items-center justify-between font-semibold text-xs text-on-surface hover:text-primary px-3 py-2 rounded-xl bg-surface-container-low/60 hover:bg-primary/10 border border-outline-variant/20 hover:border-primary/40 transition-all shadow-2xs hover:shadow-xs hover:translate-x-0.5"
+                        href={tool.link || '#workbenches'}
+                      >
+                        <span className="font-semibold truncate flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary shrink-0 transition-colors" />
+                          <span className="truncate">{tool.name}</span>
+                        </span>
+                        <span className="text-primary font-bold text-[14px] transition-transform duration-200 group-hover:translate-x-0.5 shrink-0 select-none ml-2">
+                          →
+                        </span>
+                      </a>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               ))}
             </div>

@@ -16,6 +16,8 @@ const POPULAR_SHORTCUTS = [
   { label: "SIP & Growth", query: "investing" },
   { label: "Percentage", query: "percentage" },
   { label: "Exact Age", query: "age" },
+  { label: "Add & Subtract Time", query: "add subtract time" },
+  { label: "Unix Timestamp", query: "unix timestamp" },
   { label: "Salary & Pay", query: "salary" },
   { label: "FIRE Retirement", query: "fire" },
   { label: "Scientific Solver", query: "scientific" },

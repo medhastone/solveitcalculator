@@ -326,7 +326,7 @@ Computed via SolveIt Multi-Jurisdictional Precision Engine.`;
     <div className="min-h-screen bg-background text-on-surface flex flex-col selection:bg-primary selection:text-on-primary">
       
 
-      <main className="w-full pt-16 bg-background flex-1">
+      <main className="w-full pt-0 bg-background flex-1">
         <div className="flex flex-col w-full">
           {/* Breadcrumbs */}
           <section className="w-full bg-surface pt-space-md pb-space-xs">

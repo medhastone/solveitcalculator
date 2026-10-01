@@ -74,7 +74,7 @@ export default function DynamicConverterClient({ initialFrom, initialTo, slug }:
 
   return (
     <div className="bg-surface font-body-md text-on-surface antialiased min-h-screen flex flex-col">
-      <main className="w-full pt-16 bg-surface flex-1">
+      <main className="w-full pt-0 bg-surface flex-1">
         <div className="flex flex-col w-full">
           <div className="w-full bg-surface-container-low border-b border-outline-variant/10 py-space-xs sticky top-16 z-40">
             <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center gap-space-xs font-data-mono text-body-sm text-on-surface-variant">

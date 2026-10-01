@@ -30,7 +30,7 @@ export default function TimeZoneOverlapClient() {
   const [meetingLengthMin, setMeetingLengthMin] = useState(60);
 
   // Live UTC Clock
-  const [utcTime, setUtcTime] = useState<Date | null>(null);
+  const [utcTime, setUtcTime] = useState<Date>(() => new Date('2026-03-20T12:00:00Z'));
 
   useEffect(() => {
     setMounted(true);
@@ -120,8 +120,6 @@ export default function TimeZoneOverlapClient() {
   // Silver: 23:00 UTC
   // Bronze: 08:00 UTC
 
-  if (!mounted) return null;
-
   return (
     <div className="flex flex-col w-full min-h-[calc(100vh-380px)]">
       {/* Telemetry Bar & Contextual Path */}
@@ -149,14 +147,6 @@ export default function TimeZoneOverlapClient() {
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant text-label-caps font-label-caps shadow-sm whitespace-nowrap">
               <span className="material-symbols-outlined text-[13px] text-primary">timer</span>
               UTC Millisecond Exact
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant text-label-caps font-label-caps shadow-sm whitespace-nowrap">
-              <span className="material-symbols-outlined text-[13px] text-primary">terminal</span>
-              100% Client-Side Sandbox
-            </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed text-label-caps font-label-caps shadow-sm whitespace-nowrap">
-              <span className="material-symbols-outlined text-[13px]">lock</span>
-              Zero Cloud Telemetry
             </span>
           </div>
         </div>
@@ -193,8 +183,8 @@ export default function TimeZoneOverlapClient() {
           </div>
           <div className="hidden sm:flex items-center gap-space-xs text-on-surface-variant font-data-mono text-body-sm">
             <span className="text-primary font-bold">UTC:</span>
-            <span className="bg-surface-container-high px-2 py-0.5 rounded text-on-surface">
-              {utcTime ? formatUtcTime(utcTime) : '00:00:00Z'}
+            <span suppressHydrationWarning className="bg-surface-container-high px-2 py-0.5 rounded text-on-surface">
+              {utcTime ? formatUtcTime(utcTime) : '12:00:00Z'}
             </span>
           </div>
         </div>

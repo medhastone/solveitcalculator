@@ -694,7 +694,7 @@ export default function DailyWageClient() {
   return (
     <>
 
-<main className="w-full pt-16 min-h-[calc(100vh-14rem)] bg-background"><div className="flex flex-col w-full">
+<main className="w-full pt-0 min-h-[calc(100vh-14rem)] bg-background"><div className="flex flex-col w-full">
 {/*  Structured JSON-LD Schema (WebPage, WebApp, Calculator, HowTo, Breadcrumbs, 50 FAQ items)  */}
 
 {/*  Notification Toast Container  */}

@@ -656,7 +656,7 @@ export default function LoansAndAmortizationClient() {
     <div className="bg-surface font-body-md text-body-md text-on-surface min-h-screen flex flex-col">
       
 
-      <main className="w-full pt-16 bg-surface flex-1">
+      <main className="w-full pt-0 bg-surface flex-1">
         {/* SECTION 1: HERO & FILTERS */}
         <section className="w-full bg-surface-bright py-space-xl border-b border-surface-container-high/60">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
@@ -695,21 +695,6 @@ export default function LoansAndAmortizationClient() {
                   debt payoff timelines with instant, accurate results.
                 </p>
               </div>
-
-              {/* Verification Badge */}
-              <div className="flex items-center gap-space-sm bg-surface-container-lowest p-space-sm rounded-xl shadow-sm shrink-0 border border-surface-container-high">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                  <span className="material-symbols-outlined text-[24px]">verified_user</span>
-                </div>
-                <div>
-                  <div className="font-label-caps text-xs text-primary font-semibold uppercase">
-                    Consumer Protection
-                  </div>
-                  <div className="font-data-mono text-xs text-on-surface font-medium">
-                    Truth in Lending Act Verified
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Search & Filter Bar */}
@@ -719,7 +704,7 @@ export default function LoansAndAmortizationClient() {
                   search
                 </span>
                 <input
-                  className="w-full pl-12 pr-space-md py-3 rounded-xl bg-surface-container-low text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all text-sm"
+                  className="w-full pl-12 pr-space-md py-3 rounded-xl bg-surface-container-low text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/40 border border-surface-container-high transition-all text-sm font-medium"
                   placeholder="Search loan calculators, monthly payment tools, extra payment plans..."
                   type="text"
                   value={searchQuery}
@@ -819,7 +804,7 @@ export default function LoansAndAmortizationClient() {
                       $
                     </span>
                     <input
-                      className="w-full pl-8 pr-3 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-data-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                      className="w-full pl-8 pr-3 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-data-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 border border-surface-container-high"
                       id="inputAmount"
                       min={500}
                       step={500}
@@ -853,7 +838,7 @@ export default function LoansAndAmortizationClient() {
                     />
                     <div className="relative w-24 shrink-0">
                       <input
-                        className="w-full pl-2 pr-6 py-1.5 rounded-lg bg-surface-container-low text-on-surface font-data-mono text-xs text-right focus:outline-none focus:ring-2 focus:ring-primary/30"
+                        className="w-full pl-2 pr-6 py-1.5 rounded-lg bg-surface-container-low text-on-surface font-data-mono text-xs text-right focus:outline-none focus:ring-2 focus:ring-primary/30 border border-surface-container-high"
                         id="inputRate"
                         max={35.0}
                         min={0.1}
@@ -882,10 +867,10 @@ export default function LoansAndAmortizationClient() {
                       <button
                         key={yrs}
                         onClick={() => setCurrentTermYears(yrs)}
-                        className={`term-btn py-1.5 rounded-lg font-data-mono text-xs transition-colors ${
+                        className={`term-btn py-1.5 rounded-lg font-data-mono text-xs transition-colors border ${
                           currentTermYears === yrs
-                            ? 'bg-primary text-on-primary font-semibold'
-                            : 'bg-surface-container-high text-on-surface hover:bg-surface-variant'
+                            ? 'bg-primary text-on-primary font-semibold border-primary'
+                            : 'bg-surface-container-high text-on-surface hover:bg-surface-variant border-surface-container-highest/40'
                         }`}
                       >
                         {yrs} Yr
@@ -903,7 +888,7 @@ export default function LoansAndAmortizationClient() {
                     Payment Schedule
                   </label>
                   <select
-                    className="w-full px-3 py-2.5 rounded-lg bg-surface-container-low text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full px-3 py-2.5 rounded-lg bg-surface-container-low text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 border border-surface-container-high cursor-pointer"
                     id="inputFrequency"
                     value={inputFrequency}
                     onChange={(e) => setInputFrequency(e.target.value)}
@@ -915,7 +900,7 @@ export default function LoansAndAmortizationClient() {
                 </div>
 
                 {/* Extra Principal */}
-                <div className="flex flex-col gap-1.5 bg-surface-container-low p-space-sm rounded-xl">
+                <div className="flex flex-col gap-1.5 bg-surface-container-low p-space-sm rounded-xl border border-surface-container-high">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-1.5">
                       <span className="material-symbols-outlined text-[18px] text-tertiary">
@@ -937,7 +922,7 @@ export default function LoansAndAmortizationClient() {
                       $
                     </span>
                     <input
-                      className="w-full pl-8 pr-3 py-2 rounded-lg bg-surface-container-lowest text-on-surface font-data-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                      className="w-full pl-8 pr-3 py-2 rounded-lg bg-surface-container-lowest text-on-surface font-data-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 border border-surface-container-high"
                       id="inputExtra"
                       min={0}
                       step={25}
@@ -1445,31 +1430,33 @@ export default function LoansAndAmortizationClient() {
                       <h3 className="text-base font-bold text-on-surface">{cluster.title}</h3>
                     </div>
                     <p className="text-xs text-on-surface-variant mb-4">{cluster.desc}</p>
-                    <ul className="space-y-1.5 text-xs">
+                    <div className="space-y-1.5 text-xs">
                       {cluster.tools.map((t) => (
-                        <li key={t.name}>
-                          <button
-                            onClick={() =>
-                              applyPreset({
-                                amount: t.amount,
-                                rate: t.rate,
-                                years: t.years,
-                                extra: 0,
-                                freq: '12',
-                              })
-                            }
-                            className="w-full text-left text-on-surface hover:text-primary transition-colors flex items-center justify-between py-1 group"
-                          >
-                            <span className="group-hover:translate-x-0.5 transition-transform">
-                              {t.name}
-                            </span>
-                            <span className="material-symbols-outlined text-xs text-outline group-hover:text-primary">
-                              chevron_right
-                            </span>
-                          </button>
-                        </li>
+                        <button
+                          key={t.name}
+                          type="button"
+                          title={t.name}
+                          onClick={() =>
+                            applyPreset({
+                              amount: t.amount,
+                              rate: t.rate,
+                              years: t.years,
+                              extra: 0,
+                              freq: '12',
+                            })
+                          }
+                          className="w-full text-left px-3 py-2 rounded-xl bg-surface-container-low/60 hover:bg-primary/10 hover:border-primary/40 border border-outline-variant/20 transition-all flex items-center justify-between gap-2 group cursor-pointer shadow-2xs hover:shadow-xs hover:translate-x-0.5"
+                        >
+                          <span className="font-semibold text-xs text-on-surface group-hover:text-primary transition-colors flex items-center gap-2 truncate">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary shrink-0 transition-colors" />
+                            <span className="truncate">{t.name}</span>
+                          </span>
+                          <span className="material-symbols-outlined text-[14px] text-outline-variant group-hover:text-primary group-hover:translate-x-0.5 transition-transform shrink-0">
+                            chevron_right
+                          </span>
+                        </button>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -1762,45 +1749,21 @@ export default function LoansAndAmortizationClient() {
           </div>
         </section>
 
-        {/* SECTION 9: TRUST & FOOTER */}
-        <section className="w-full bg-surface-container-low py-space-2xl border-t border-surface-container-high/60">
+        {/* SECTION 9: CALCULATION NOTICE */}
+        <section className="w-full bg-surface-container-low py-space-xl border-t border-surface-container-high/60">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="p-space-lg rounded-2xl bg-surface-container-lowest shadow-sm border border-surface-container-high flex flex-col lg:flex-row gap-space-lg items-start lg:items-center justify-between">
-              <div className="max-w-3xl">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-primary text-[20px]">
-                    fact_check
-                  </span>
-                  <span className="font-label-caps text-xs text-primary font-semibold uppercase">
-                    Verified Lending Accuracy
-                  </span>
-                </div>
-                <p className="text-xs text-on-surface-variant leading-relaxed">
-                  Calculations on SolveIt Calculator follow Truth in Lending Act (TILA) guidelines
-                  and Consumer Financial Protection Bureau standards. Reviewed by Certified
-                  Financial Planners and Consumer Credit Specialists.
-                </p>
-                <div className="flex flex-wrap gap-4 mt-3 font-data-mono text-xs text-outline">
-                  <span>
-                    100% Free &amp; Private · Calculations run directly on your browser with zero data
-                    tracking
-                  </span>
-                </div>
+            <div className="p-space-lg rounded-2xl bg-surface-container-lowest shadow-sm border border-surface-container-high">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="material-symbols-outlined text-primary text-[20px]">
+                  info
+                </span>
+                <span className="font-label-caps text-xs text-primary font-semibold uppercase">
+                  Financial Calculation Notice
+                </span>
               </div>
-              <div className="flex items-center gap-space-md shrink-0">
-                <div className="flex -space-x-2 overflow-hidden">
-                  <div className="inline-block h-10 w-10 rounded-full ring-2 ring-surface bg-primary-fixed flex items-center justify-center font-bold text-xs text-on-primary-fixed">
-                    DS
-                  </div>
-                  <div className="inline-block h-10 w-10 rounded-full ring-2 ring-surface bg-secondary-fixed flex items-center justify-center font-bold text-xs text-on-secondary-fixed">
-                    SJ
-                  </div>
-                </div>
-                <div className="text-xs">
-                  <div className="font-semibold text-on-surface">Verified Advisory Board</div>
-                  <div className="text-outline">Updated March 2025</div>
-                </div>
-              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Calculations provided on SolveIt Calculator utilize standard mathematical amortization and compound interest formulas for educational and planning purposes. Actual loan terms, fees, taxes, and interest rates may vary by lender and jurisdiction.
+              </p>
             </div>
           </div>
         </section>

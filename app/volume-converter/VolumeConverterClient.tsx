@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { toggleTheme } from '@/lib/theme';
 
 // Conversion factors to SI base (Liters)
 const toLiters: Record<string, number> = {
@@ -334,16 +335,7 @@ export default function VolumeConverterClient() {
 
   // Theme toggle helper
   const handleToggleTheme = useCallback(() => {
-    if (typeof document !== 'undefined') {
-      const isCurrentlyDark = document.documentElement.classList.contains('dark');
-      if (isCurrentlyDark) {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('solveit_theme', 'light');
-      } else {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('solveit_theme', 'dark');
-      }
-    }
+    toggleTheme();
   }, []);
 
   return (
@@ -358,7 +350,7 @@ export default function VolumeConverterClient() {
 
       {/* FIXED TOP HEADER */}
       {/* MAIN BODY CONTENT */}
-      <main className="w-full pt-16 bg-background min-h-[calc(100vh-380px)]">
+      <main className="w-full pt-0 bg-background min-h-[calc(100vh-380px)]">
         <div className="flex flex-col w-full text-on-surface">
           {/* ================================================================= */}
           {/* SECTION 1: HERO & TELEMETRY                                      */}
@@ -481,7 +473,7 @@ export default function VolumeConverterClient() {
               <div className="flex items-center gap-3">
                 <span className="p-2 rounded-lg bg-surface-container-high text-secondary material-symbols-outlined text-[20px]">lock</span>
                 <div>
-                  <div className="font-data-mono font-bold text-on-surface text-[14px]">100% Private</div>
+                  <div className="font-data-mono font-bold text-on-surface text-[14px]">Private &amp; Local</div>
                   <div className="font-body-sm text-body-sm text-on-surface-variant text-[11px]">Client-Side In-Browser</div>
                 </div>
               </div>
@@ -1164,7 +1156,7 @@ export default function VolumeConverterClient() {
                     <span className="font-headline-md text-headline-md text-[16px] font-bold">SI Standard Pivot (m³)</span>
                   </div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mb-3">
-                    Every input quantity is first mapped into SI cubic meters (m³) to guarantee IEEE-754 64-bit zero-drift transitivity:
+                    Every input quantity is first mapped into SI cubic meters (m³) as a standardized base reference unit:
                   </p>
                   <div className="p-3 bg-surface-container-lowest rounded-xl font-data-mono text-[13px] text-primary">
                     V_m³ = V_in × K_SI_factor
@@ -1512,123 +1504,8 @@ export default function VolumeConverterClient() {
           </section>
 
           {/* ================================================================= */}
-          {/* SECTION 14: TRUST & CERTIFICATION STRIP                           */}
-          {/* ================================================================= */}
-          <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop py-8">
-            <div className="p-6 rounded-3xl bg-surface-container-high flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-primary text-on-primary flex items-center justify-center shrink-0">
-                  <span className="material-symbols-outlined text-[28px]">verified_user</span>
-                </div>
-                <div>
-                  <div className="font-headline-md text-headline-md text-[18px] font-bold text-on-surface">Audited Precision Standards</div>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant">Calibrated against NIST Special Publication 811 and ISO 80000-3 guidelines for physical quantities.</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 shrink-0">
-                <div className="px-3.5 py-2 rounded-xl bg-surface-container-lowest font-label-caps text-label-caps text-on-surface shadow-sm">
-                  ✓ Weekly Precision Audits
-                </div>
-                <div className="px-3.5 py-2 rounded-xl bg-surface-container-lowest font-label-caps text-label-caps text-primary shadow-sm">
-                  ✓ Zero Data Ingestion
-                </div>
-              </div>
-            </div>
-          </section>
         </div>
       </main>
-
-      {/* FOOTER */}
-      <footer className="w-full bg-surface-container-lowest border-t border-outline-variant/30 mt-space-3xl">
-        <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop pt-space-2xl pb-space-xl">
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-space-xl pb-space-2xl border-b border-outline-variant/30">
-            <div className="col-span-2 lg:col-span-1">
-              <div className="mb-space-sm">
-                <Link
-                  href="/"
-                  className="inline-flex items-center focus:outline-none group select-none py-1 relative h-14 sm:h-16 md:h-20 aspect-[238/54]"
-                  aria-label="SolveIt Calculator Homepage"
-                >
-                  <Image
-                    alt="SolveIt Calculator Brand Logo"
-                    className="object-contain block transition-transform duration-150 group-hover:scale-[1.02]"
-                    src="/logo.png?v=2"
-                    fill
-                    sizes="(max-width: 640px) 150px, 200px"
-                  />
-                </Link>
-              </div>
-              <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                Precision-engineered computational suites designed with architectural minimalism and algorithmic authority.
-              </p>
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-surface-container-low border border-outline-variant/40 text-on-surface-variant font-label-caps text-label-caps">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                Engine v4.2.0 • 2025 Verified
-              </div>
-            </div>
-            <div>
-              <p className="font-label-caps text-label-caps text-on-surface uppercase tracking-wider mb-space-md">Financial Engines</p>
-              <ul className="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant">
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Mortgage &amp; Amortization</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Investment Compounder</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Roth IRA vs 401(k)</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Federal Tax Bracket 2025</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">SaaS Burn &amp; Runway</li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-label-caps text-label-caps text-on-surface uppercase tracking-wider mb-space-md">Math &amp; Engineering</p>
-              <ul className="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant">
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Scientific Matrix Solver</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Integral &amp; Differential</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Statistics &amp; Variance</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Fourier Fast Transform</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Hex / Binary Converter</li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-label-caps text-label-caps text-on-surface uppercase tracking-wider mb-space-md">Health &amp; Everyday</p>
-              <ul className="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant">
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Macro &amp; TDEE Calibrator</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Body Fat Hydrostatic</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Global Time Zone Offset</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Metric &amp; Imperial Flow</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Fuel Economy &amp; EV Range</li>
-              </ul>
-            </div>
-            <div>
-              <p className="font-label-caps text-label-caps text-on-surface uppercase tracking-wider mb-space-md">Platform &amp; Legal</p>
-              <ul className="space-y-space-xs font-body-sm text-body-sm text-on-surface-variant">
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Developer APIs</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Methodology &amp; Sources</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Editorial Standards</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Privacy Policy</li>
-                <li className="hover:text-on-surface cursor-pointer transition-colors">Terms of Use</li>
-              </ul>
-            </div>
-          </div>
-          <div className="pt-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-on-surface-variant">
-            <div className="flex items-center gap-space-lg">
-              <div className="flex items-center gap-space-xs">
-                <span className="material-symbols-outlined text-[18px] text-primary">verified_user</span>
-                <span>256-Bit Encrypted Local Processing</span>
-              </div>
-              <div className="flex items-center gap-space-xs hidden sm:flex">
-                <span className="material-symbols-outlined text-[18px] text-primary">speed</span>
-                <span>Zero Latency Compute</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-space-md">
-              <span className="text-on-surface font-medium">© 2025 SolveIt Calculator. All rights reserved.</span>
-              <div className="flex items-center gap-space-xs">
-                <span className="material-symbols-outlined text-[18px] hover:text-on-surface cursor-pointer">public</span>
-                <span className="material-symbols-outlined text-[18px] hover:text-on-surface cursor-pointer">terminal</span>
-                <span className="material-symbols-outlined text-[18px] hover:text-on-surface cursor-pointer">rss_feed</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

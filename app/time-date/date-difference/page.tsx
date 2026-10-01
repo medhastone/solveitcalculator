@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import DateDifferenceClient from './DateDifferenceClient';
+import DaysBetweenDatesClient from '../days-between-dates/DaysBetweenDatesClient';
 
 export const metadata: Metadata = {
   title: 'Date Difference Calculator | SolveIt',
@@ -115,7 +115,7 @@ export default function DateDifferencePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <DateDifferenceClient />
+      <DaysBetweenDatesClient />
     </>
   );
 }

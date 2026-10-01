@@ -13,6 +13,8 @@ import {
 } from '@/lib/conversions';
 import { getCategoryRichData } from '@/lib/categoryData';
 import { getCategorySeo } from '@/lib/categorySeo';
+import { toggleTheme } from '@/lib/theme';
+import CurrencyUnitSearchCard from './CurrencyUnitSearchCard';
 
 interface CategoryConverterViewProps {
   categoryId: string;
@@ -50,9 +52,13 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
   const seo = useMemo(() => getCategorySeo(category.id), [category.id]);
 
   // Initial unit setup
-  const [inputValue, setInputValue] = useState<number>(10);
-  const [fromUnitId, setFromUnitId] = useState<string>(units[0]?.id || '');
-  const [toUnitId, setToUnitId] = useState<string>(units[1]?.id || units[0]?.id || '');
+  const [inputValue, setInputValue] = useState<string>('10');
+  const [fromUnitId, setFromUnitId] = useState<string>(
+    category.popularPair?.from || units[0]?.id || ''
+  );
+  const [toUnitId, setToUnitId] = useState<string>(
+    category.popularPair?.to || units[1]?.id || units[0]?.id || ''
+  );
   const [precision, setPrecision] = useState<string>('5');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [copyFeedback, setCopyFeedback] = useState<string>('Copy Result');
@@ -70,7 +76,8 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
 
   // Numeric input
   const numericValue = useMemo(() => {
-    return isNaN(inputValue) ? 0 : inputValue;
+    const parsed = parseFloat(inputValue);
+    return isNaN(parsed) ? 0 : parsed;
   }, [inputValue]);
 
   // Toast notification helper
@@ -187,7 +194,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
 
   // Quick preset setter
   const setConversion = useCallback((val: number, from: string, to: string) => {
-    setInputValue(val);
+    setInputValue(String(val));
     setFromUnitId(from);
     setToUnitId(to);
     const workbenchEl = document.getElementById('converter-workbench');
@@ -256,14 +263,14 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
 
   // Reset action
   const handleReset = useCallback(() => {
-    setInputValue(10);
+    setInputValue('10');
     if (units.length > 1) {
-      setFromUnitId(units[0].id);
-      setToUnitId(units[1].id);
+      setFromUnitId(category.popularPair?.from || units[0].id);
+      setToUnitId(category.popularPair?.to || units[1].id);
     }
     setPrecision('5');
-    showToast(`Reset to 10 ${units[0]?.name || ''} to ${units[1]?.name || ''}`);
-  }, [units, showToast]);
+    showToast(`Reset to 10 ${fromUnit.name} to ${toUnit.name}`);
+  }, [units, category.popularPair, fromUnit.name, toUnit.name, showToast]);
 
   // Export JSON action
   const handleExportJSON = useCallback(() => {
@@ -303,13 +310,15 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
       r.reverseResult.replace(/,/g, '')
     ]);
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers, ...rows].map((e) => e.join(',')).join('\n');
-    const encodedUri = encodeURI(csvContent);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blobUrl = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
+    link.setAttribute('href', blobUrl);
     link.setAttribute('download', `solveit_${category.id}_matrix.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(blobUrl);
     showToast(`${category.name} matrix table exported to CSV`);
   }, [category.name, category.id, fromUnit, toUnit, stepTableRows, showToast]);
 
@@ -322,16 +331,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
 
   // Theme toggle helper
   const handleToggleTheme = useCallback(() => {
-    if (typeof document !== 'undefined') {
-      const isCurrentlyDark = document.documentElement.classList.contains('dark');
-      if (isCurrentlyDark) {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('solveit_theme', 'light');
-      } else {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('solveit_theme', 'dark');
-      }
-    }
+    toggleTheme();
   }, []);
 
   // Keyboard shortcut listener (S: swap, C: copy, R: reset)
@@ -420,17 +420,23 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
       <div className="fixed top-0 left-0 right-0 z-50 flex flex-col">
         {/* Brand Nav Header */}
         <header className="w-full bg-surface/85 backdrop-blur-xl border-b border-outline-variant/40 shadow-[0_1px_8px_rgba(0,0,0,0.03)]">
-          <div className="h-16 max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop flex items-center justify-between gap-space-md">
+          <div className="h-20 sm:h-24 max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop flex items-center justify-between gap-space-md">
             <div className="flex items-center gap-space-lg">
-              <Link className="flex items-center gap-space-sm focus:outline-none relative h-12 aspect-[238/54]" href="/">
-                <Image
-                  alt="SolveIt Calculator Brand Logo"
-                  className="object-contain"
-                  src="/logo.png?v=2"
-                  fill
-                  sizes="200px"
-                  priority
-                />
+              <Link className="flex items-center gap-1.5 sm:gap-2 focus:outline-none group" href="/">
+                <div className="w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] -mr-1 sm:-mr-1.5 relative shrink-0">
+                  <Image
+                    alt="SolveIt Calculator Brand Logo"
+                    className="object-contain"
+                    src="/solveit-1.webp"
+                    fill
+                    sizes="60px"
+                    priority
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                <span className="font-bold text-2xl sm:text-3xl tracking-tight text-on-surface">
+                  SolveIt<span className="text-primary">Calculator</span>
+                </span>
               </Link>
               <nav className="hidden lg:flex items-center gap-space-2xs p-1">
                 <Link className="px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm" href="/time-date">
@@ -523,13 +529,13 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
               <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high text-primary font-label-caps text-label-caps">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                  ISO 80000 Standard Compliant
+                  Verified Formulas
                 </span>
                 <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-caps text-label-caps">
-                  IEEE 754 64-Bit Precision
+                  High Accuracy
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-secondary font-label-caps text-label-caps">
-                  &lt;0.01s Execution
+                  Instant &amp; 100% Free
                 </span>
               </div>
             </div>
@@ -557,77 +563,21 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
               )}
             </div>
 
-            {/* Universal Search + Direct Shortcut Chips */}
-            <div className="p-4 md:p-5 rounded-2xl bg-surface-container-low shadow-sm mb-6">
-              <div className="relative flex items-center mb-3">
-                <span className="material-symbols-outlined absolute left-4 text-on-surface-variant text-[20px]">manage_search</span>
-                <input
-                  className="w-full pl-11 pr-24 py-3 bg-surface-container-lowest rounded-xl font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
-                  id="categoryQuickLookupInput"
-                  placeholder={richData.heroPlaceholder || `Type a conversion (e.g., 10 ${units[0]?.symbol} to ${units[1]?.symbol})...`}
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') handleQuickLookup();
-                  }}
-                />
-                <button
-                  className="absolute right-2 px-3 py-1.5 bg-primary text-on-primary rounded-lg font-label-caps text-label-caps hover:bg-primary-container transition-all cursor-pointer"
-                  onClick={handleQuickLookup}
-                  type="button"
-                >
-                  Convert
-                </button>
-              </div>
-              {richData.popularChips.length > 0 && (
-                <div className="flex items-center gap-2 overflow-x-auto pb-1 text-on-surface-variant font-label-caps text-label-caps">
-                  <span className="uppercase tracking-wider text-[10px] text-outline shrink-0">Popular:</span>
-                  {richData.popularChips.map((chip, idx) => (
-                    <button
-                      className="shrink-0 px-2.5 py-1 rounded-full bg-surface-container-lowest hover:bg-primary hover:text-on-primary transition-all cursor-pointer"
-                      key={idx}
-                      onClick={() => setConversion(1, chip.from, chip.to)}
-                      type="button"
-                    >
-                      {chip.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Telemetry Stats Strip */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-xl bg-surface-container-lowest shadow-sm">
-              <div className="flex items-center gap-3">
-                <span className="p-2 rounded-lg bg-surface-container-high text-primary material-symbols-outlined text-[20px]">{category.icon}</span>
-                <div>
-                  <div className="font-data-mono font-bold text-on-surface text-[14px]">{category.countLabel}</div>
-                  <div className="font-body-sm text-body-sm text-on-surface-variant text-[11px]">Comprehensive Units</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="p-2 rounded-lg bg-surface-container-high text-primary material-symbols-outlined text-[20px]">precision_manufacturing</span>
-                <div>
-                  <div className="font-data-mono font-bold text-on-surface text-[14px]">10⁻⁷ Precision</div>
-                  <div className="font-body-sm text-body-sm text-on-surface-variant text-[11px]">Guard-Bit Accurate</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="p-2 rounded-lg bg-surface-container-high text-secondary material-symbols-outlined text-[20px]">lock</span>
-                <div>
-                  <div className="font-data-mono font-bold text-on-surface text-[14px]">100% Private</div>
-                  <div className="font-body-sm text-body-sm text-on-surface-variant text-[11px]">Client-Side In-Browser</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="p-2 rounded-lg bg-surface-container-high text-primary material-symbols-outlined text-[20px]">verified</span>
-                <div>
-                  <div className="font-data-mono font-bold text-on-surface text-[14px]">NIST SP 811</div>
-                  <div className="font-body-sm text-body-sm text-on-surface-variant text-[11px]">ISO 80000 Compliant</div>
-                </div>
-              </div>
-            </div>
+            {/* Real-Time Google Grounding Currency & Local Unit Detector */}
+            <CurrencyUnitSearchCard
+              initialExpanded={false}
+              className="mb-8"
+              onApplyPair={(pair) => {
+                if (pair.categoryId === category.id) {
+                  const f = units.find((u) => u.id === pair.fromUnitId);
+                  const t = units.find((u) => u.id === pair.toUnitId);
+                  if (f) setFromUnitId(f.id);
+                  if (t) setToUnitId(t.id);
+                } else {
+                  window.location.href = `/conversion/${pair.fromUnitId.toLowerCase()}-to-${pair.toUnitId.toLowerCase()}`;
+                }
+              }}
+            />
           </section>
 
           {/* ================================================================= */}
@@ -640,7 +590,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-primary"></span>
-                    <span className="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant">Universal {category.name} Workbench</span>
+                    <span className="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant">{category.name} Converter</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <label className="font-label-caps text-label-caps text-on-surface-variant" htmlFor="precisionSelect">Decimals:</label>
@@ -664,17 +614,49 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                   {/* From Input & Select */}
                   <div className="sm:col-span-5 flex flex-col gap-2 bg-surface-container-low p-3.5 rounded-2xl">
                     <div className="flex justify-between items-center text-on-surface-variant font-label-caps text-label-caps">
-                      <span>INPUT VALUE</span>
+                      <span>FROM</span>
                       <span className="text-primary font-bold">{fromUnit.name} ({fromUnit.symbol})</span>
                     </div>
-                    <input
-                      className="w-full bg-transparent font-numerical-display text-numerical-display-mobile sm:text-numerical-display text-on-surface focus:outline-none font-bold"
-                      id="inputValue"
-                      step="any"
-                      type="number"
-                      value={isNaN(inputValue) ? '' : inputValue}
-                      onChange={(e) => setInputValue(parseFloat(e.target.value) || 0)}
-                    />
+                    <div className="relative flex items-center">
+                      <input
+                        className="w-full bg-transparent font-numerical-display text-numerical-display-mobile sm:text-numerical-display text-on-surface focus:outline-none font-bold pr-8"
+                        id="inputValue"
+                        step="any"
+                        type="number"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        placeholder="0"
+                        aria-label="Input number to convert"
+                      />
+                      {inputValue && (
+                        <button
+                          type="button"
+                          onClick={() => setInputValue('')}
+                          className="absolute right-0 text-on-surface-variant hover:text-on-surface p-1 text-xs font-semibold"
+                          title="Clear input"
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
+                    {/* Quick Value Presets for fast interaction */}
+                    <div className="flex items-center gap-1.5 flex-wrap pt-1">
+                      <span className="text-[10px] text-on-surface-variant font-medium">Quick:</span>
+                      {[1, 5, 10, 25, 50, 100].map((preset) => (
+                        <button
+                          key={preset}
+                          type="button"
+                          onClick={() => setInputValue(String(preset))}
+                          className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-all cursor-pointer ${
+                            inputValue === String(preset)
+                              ? 'bg-primary text-white shadow-xs'
+                              : 'bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
+                          }`}
+                        >
+                          {preset}
+                        </button>
+                      ))}
+                    </div>
                     <select
                       className="w-full bg-surface-container-lowest text-on-surface py-2 px-3 rounded-xl font-body-sm text-body-sm focus:outline-none shadow-sm cursor-pointer"
                       id="fromUnitSelect"
@@ -705,7 +687,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                   {/* To Unit & Output Preview */}
                   <div className="sm:col-span-5 flex flex-col gap-2 bg-surface-container-low p-3.5 rounded-2xl">
                     <div className="flex justify-between items-center text-on-surface-variant font-label-caps text-label-caps">
-                      <span>TARGET VALUE</span>
+                      <span>TO</span>
                       <span className="text-primary font-bold">{toUnit.name} ({toUnit.symbol})</span>
                     </div>
                     <div className="font-numerical-display text-numerical-display-mobile sm:text-numerical-display text-primary truncate font-bold" id="outputDisplay">
@@ -726,12 +708,31 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                   </div>
                 </div>
 
+                {/* Quick Presets for Instant Easy Interaction */}
+                <div className="flex items-center gap-1.5 flex-wrap pt-1">
+                  <span className="text-[11px] font-semibold text-on-surface-variant mr-1">Quick values:</span>
+                  {[1, 5, 10, 25, 50, 100].map((val) => (
+                    <button
+                      key={val}
+                      type="button"
+                      onClick={() => setInputValue(String(val))}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                        inputValue === String(val)
+                          ? 'bg-primary text-white shadow-xs'
+                          : 'bg-surface-container hover:bg-surface-container-high text-on-surface'
+                      }`}
+                    >
+                      {val}
+                    </button>
+                  ))}
+                </div>
+
                 {/* Tactile Dynamic Scale Slider */}
                 <div className="flex flex-col gap-2 pt-2">
                   <div className="flex justify-between text-on-surface-variant font-label-caps text-label-caps">
-                    <span>TACTILE MULTIPLIER / SCALE</span>
+                    <span>SLIDE TO CHANGE VALUE (1 to 100)</span>
                     <span className="font-data-mono text-primary font-bold">
-                      {inputValue} {fromUnit.symbol} ({inputValue}x)
+                      {numericValue} {fromUnit.symbol} ({numericValue}x)
                     </span>
                   </div>
                   <input
@@ -740,8 +741,8 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                     max="100"
                     min="1"
                     type="range"
-                    value={Math.min(100, Math.max(1, inputValue || 1))}
-                    onChange={(e) => setInputValue(parseFloat(e.target.value))}
+                    value={Math.min(100, Math.max(1, numericValue || 1))}
+                    onChange={(e) => setInputValue(e.target.value)}
                   />
                 </div>
 
@@ -798,7 +799,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                       onClick={handleExportJSON}
                     >
                       <span className="material-symbols-outlined text-[16px]">download</span>
-                      Export (.json)
+                      Download (.json)
                     </button>
                   </div>
                 </div>
@@ -809,7 +810,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                 {/* Main Highlight Card */}
                 <div className="bg-surface-container-high p-6 rounded-3xl shadow-sm">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">PRIMARY DIRECT RESULT</span>
+                    <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">CONVERTED RESULT</span>
                     <span className="material-symbols-outlined text-primary text-[18px]">verified</span>
                   </div>
                   <div className="font-headline-md text-headline-md text-on-surface font-semibold mb-2">
@@ -824,9 +825,9 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Metric Quad */}
                   <div className="bg-surface-container-lowest p-4 rounded-2xl shadow-sm">
-                    <div className="flex items-center gap-1.5 text-primary mb-2 font-label-caps text-label-caps">
+                    <div className="flex items-center gap-1.5 text-primary mb-2 font-label-caps text-label-caps font-bold">
                       <span className="material-symbols-outlined text-[16px]">science</span>
-                      <span>METRIC / SI</span>
+                      <span>Metric Units (Standard)</span>
                     </div>
                     <div className="font-data-mono text-body-sm text-on-surface space-y-1">
                       {multiQuadrantData.metric.map((m, idx) => (
@@ -837,9 +838,9 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
 
                   {/* US Customary Quad */}
                   <div className="bg-surface-container-lowest p-4 rounded-2xl shadow-sm">
-                    <div className="flex items-center gap-1.5 text-secondary mb-2 font-label-caps text-label-caps">
+                    <div className="flex items-center gap-1.5 text-secondary mb-2 font-label-caps text-label-caps font-bold">
                       <span className="material-symbols-outlined text-[16px]">straighten</span>
-                      <span>US CUSTOMARY</span>
+                      <span>US &amp; Imperial Units</span>
                     </div>
                     <div className="font-data-mono text-body-sm text-on-surface space-y-1">
                       {multiQuadrantData.customary.map((m, idx) => (
@@ -850,9 +851,9 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
 
                   {/* Scientific Quad */}
                   <div className="bg-surface-container-lowest p-4 rounded-2xl shadow-sm">
-                    <div className="flex items-center gap-1.5 text-tertiary mb-2 font-label-caps text-label-caps">
+                    <div className="flex items-center gap-1.5 text-tertiary mb-2 font-label-caps text-label-caps font-bold">
                       <span className="material-symbols-outlined text-[16px]">biotech</span>
-                      <span>SCIENTIFIC</span>
+                      <span>Small &amp; Scientific</span>
                     </div>
                     <div className="font-data-mono text-body-sm text-on-surface space-y-1">
                       {multiQuadrantData.scientific.map((m, idx) => (
@@ -863,9 +864,9 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
 
                   {/* Domain Specialized Quad */}
                   <div className="bg-surface-container-lowest p-4 rounded-2xl shadow-sm">
-                    <div className="flex items-center gap-1.5 text-primary mb-2 font-label-caps text-label-caps">
+                    <div className="flex items-center gap-1.5 text-primary mb-2 font-label-caps text-label-caps font-bold">
                       <span className="material-symbols-outlined text-[16px]">precision_manufacturing</span>
-                      <span>SPECIALIZED</span>
+                      <span>Other Common Units</span>
                     </div>
                     <div className="font-data-mono text-body-sm text-on-surface space-y-1">
                       {multiQuadrantData.specialized.map((m, idx) => (
@@ -885,12 +886,12 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
             <div className="p-6 md:p-8 rounded-3xl bg-surface-container-low shadow-sm">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
                 <div>
-                  <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">OPTICAL PHYSICAL METROLOGY</span>
-                  <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mt-1">Real-Time {category.name} Scale Instrument</h2>
+                  <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">VISUAL SIZE GUIDE</span>
+                  <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mt-1">See How Big This Is</h2>
                 </div>
                 <div className="px-4 py-2 rounded-xl bg-surface-container-lowest font-body-sm text-body-sm text-on-surface-variant shadow-sm flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                  Dynamic physical visualizer calibrated to {fromUnit.symbol} and {toUnit.symbol}
+                  Visual comparison between {fromUnit.symbol} and {toUnit.symbol}
                 </div>
               </div>
 
@@ -907,14 +908,68 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
           </section>
 
           {/* ================================================================= */}
+          {/* SECTION 4: TOOLS CATEGORY & UNIVERSAL SEARCH DIRECTORY            */}
+          {/* ================================================================= */}
+          <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop py-8 border-t border-outline-variant/30">
+            <div className="mb-6">
+              <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">
+                {category.name} Converters Directory
+              </span>
+              <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+                Search &amp; Convert {category.name} Units
+              </h2>
+            </div>
+
+            {/* Universal Search + Direct Shortcut Chips */}
+            <div className="p-4 md:p-5 rounded-2xl bg-surface-container-low shadow-sm mb-6">
+              <div className="relative flex items-center mb-3">
+                <span className="material-symbols-outlined absolute left-4 text-on-surface-variant text-[20px]">manage_search</span>
+                <input
+                  className="w-full pl-11 pr-24 py-3 bg-surface-container-lowest rounded-xl font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+                  id="categoryQuickLookupInput"
+                  placeholder={richData.heroPlaceholder || `Type a conversion (e.g., 10 ${units[0]?.symbol} to ${units[1]?.symbol})...`}
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleQuickLookup();
+                  }}
+                />
+                <button
+                  className="absolute right-2 px-3 py-1.5 bg-primary text-on-primary rounded-lg font-label-caps text-label-caps hover:bg-primary-container transition-all cursor-pointer"
+                  onClick={handleQuickLookup}
+                  type="button"
+                >
+                  Convert
+                </button>
+              </div>
+              {richData.popularChips.length > 0 && (
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 text-on-surface-variant font-label-caps text-label-caps">
+                  <span className="uppercase tracking-wider text-[10px] text-outline shrink-0">Popular:</span>
+                  {richData.popularChips.map((chip, idx) => (
+                    <button
+                      className="shrink-0 px-2.5 py-1 rounded-full bg-surface-container-lowest hover:bg-primary hover:text-on-primary transition-all cursor-pointer"
+                      key={idx}
+                      onClick={() => setConversion(1, chip.from, chip.to)}
+                      type="button"
+                    >
+                      {chip.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* ================================================================= */}
           {/* SECTION 5: FAST DYNAMIC CONVERSION LOOKUP TABLE                  */}
           {/* ================================================================= */}
           <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop py-8">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
               <div>
-                <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">PRECOMPUTED MATRIX</span>
+                <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">QUICK REFERENCE TABLE</span>
                 <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
-                  {fromUnit.name} to {toUnit.name} Reference Matrix
+                  {fromUnit.name} to {toUnit.name} Conversion Chart
                 </h2>
               </div>
               <div className="flex items-center gap-2">
@@ -924,7 +979,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                   type="button"
                 >
                   <span className="material-symbols-outlined text-[16px]">file_download</span>
-                  Export CSV
+                  Download CSV
                 </button>
                 <button
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface font-body-sm text-body-sm hover:bg-surface-container transition-all cursor-pointer"
@@ -959,7 +1014,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                       <td className="py-3 px-4 text-right">
                         <button
                           className="px-2.5 py-1 rounded bg-surface-container hover:bg-primary hover:text-on-primary font-body-sm text-[12px] transition-all cursor-pointer"
-                          onClick={() => setInputValue(row.value)}
+                          onClick={() => setInputValue(String(row.value))}
                           type="button"
                         >
                           Load
@@ -1006,7 +1061,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                           onClick={() => setConversion(card.val, card.from, card.to)}
                           type="button"
                         >
-                          Compute <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                          Convert <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                         </button>
                       )}
                       <span className="text-[12px] text-outline font-data-mono">{card.factor}</span>
@@ -1018,12 +1073,12 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
           )}
 
           {/* ================================================================= */}
-          {/* SECTION 7: EXPLORE UNITS BY DISCIPLINE / DOMAIN                  */}
+          {/* SECTION 7: EXPLORE UNITS BY TYPE                                  */}
           {/* ================================================================= */}
           <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop py-8">
             <div className="mb-6">
-              <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">DISCIPLINE TAXONOMY</span>
-              <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">{category.name} Units Categorized by Domain</h2>
+              <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">EXPLORE UNITS BY TYPE</span>
+              <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Common {category.name} Units</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {units.slice(0, 5).map((mainU, idx) => (
@@ -1034,7 +1089,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                     </div>
                     <div className="font-headline-md text-headline-md text-on-surface text-[17px] font-bold mb-2">{mainU.name}</div>
                     <p className="font-body-sm text-body-sm text-on-surface-variant mb-3">
-                      Standard unit symbol: <span className="font-data-mono text-primary font-bold">{mainU.symbol}</span>. System classification: <span className="capitalize">{mainU.system || 'Standard'}</span>.
+                      Symbol: <span className="font-data-mono text-primary font-bold">{mainU.symbol}</span>. Commonly used in: <span className="capitalize">{mainU.system || 'Standard'}</span>.
                     </p>
                   </div>
                   {mainU.id === 'g' ? (
@@ -1062,14 +1117,14 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
           </section>
 
           {/* ================================================================= */}
-          {/* SECTION 8: MATHEMATICAL DERIVATION & ALGORITHM FORMULA            */}
+          {/* SECTION 8: STEP-BY-STEP CALCULATION FORMULA                       */}
           {/* ================================================================= */}
           <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop py-8">
             <div className="p-6 md:p-8 rounded-3xl bg-surface-container-lowest shadow-sm">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
                 <div>
-                  <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">ALGORITHMIC RIGOR</span>
-                  <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Mathematical Derivations &amp; Standards</h2>
+                  <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">HOW THIS CONVERSION WORKS</span>
+                  <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Simple Step-by-Step Conversion Formula</h2>
                 </div>
                 <button
                   className="px-3 py-1.5 rounded-lg bg-surface-container font-body-sm text-body-sm text-on-surface hover:bg-surface-container-high transition-all flex items-center gap-1.5 cursor-pointer"
@@ -1085,13 +1140,13 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                 <div className="p-5 rounded-2xl bg-surface-container-low">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-caps text-[12px] font-bold">1</span>
-                    <span className="font-headline-md text-headline-md text-[16px] font-bold">SI Base Unit Pivot</span>
+                    <span className="font-headline-md text-headline-md text-[16px] font-bold">1. Find the Base Rate</span>
                   </div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mb-3">
-                    Every input quantity is first mapped into the official SI baseline unit to guarantee IEEE-754 zero-drift transitivity:
+                    Every conversion starts with the standard baseline rate between these two units:
                   </p>
                   <div className="p-3 bg-surface-container-lowest rounded-xl font-data-mono text-[13px] text-primary">
-                    V_base = V_in × K_factor_to_base
+                    1 {fromUnit.symbol} = {convertValue(1, category.id, fromUnit.id, toUnit.id).resultNumber} {toUnit.symbol}
                   </div>
                 </div>
 
@@ -1099,13 +1154,13 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                 <div className="p-5 rounded-2xl bg-surface-container-low">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-caps text-[12px] font-bold">2</span>
-                    <span className="font-headline-md text-headline-md text-[16px] font-bold">NIST Definition Factor</span>
+                    <span className="font-headline-md text-headline-md text-[16px] font-bold">2. Multiply by Your Number</span>
                   </div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mb-3">
-                    By NIST Special Publication 811 mandate, unit ratios are defined with exact integer and rational constants:
+                    Multiply your entered number by the conversion rate to calculate the exact target value:
                   </p>
                   <div className="p-3 bg-surface-container-lowest rounded-xl font-data-mono text-[13px] text-primary">
-                    1 {fromUnit.symbol} = {convertValue(1, category.id, fromUnit.id, toUnit.id).resultNumber} {toUnit.symbol}
+                    {inputValue || 1} {fromUnit.symbol} × Rate = {formattedResult} {toUnit.symbol}
                   </div>
                 </div>
 
@@ -1113,13 +1168,13 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                 <div className="p-5 rounded-2xl bg-surface-container-low">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-label-caps text-[12px] font-bold">3</span>
-                    <span className="font-headline-md text-headline-md text-[16px] font-bold">Double-Precision Guard</span>
+                    <span className="font-headline-md text-headline-md text-[16px] font-bold">3. Clear &amp; Ready-to-Use Answer</span>
                   </div>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mb-3">
-                    Floating-point inaccuracies are corrected using high-precision epsilon filtering (10⁻¹²) before rounding:
+                    The result is neatly rounded to your preferred decimal setting so it is clear and ready to use:
                   </p>
                   <div className="p-3 bg-surface-container-lowest rounded-xl font-data-mono text-[13px] text-primary">
-                    V_out = round(V_base × K_from_base, ε = 10⁻¹²)
+                    Final Answer = {formattedResult} {toUnit.symbol}
                   </div>
                 </div>
               </div>
@@ -1132,8 +1187,8 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
           {richData.benchmarks.length > 0 && (
             <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop py-8">
               <div className="mb-6">
-                <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">INTUITIVE ANCHORS</span>
-                <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Everyday Real-World {category.name} Benchmarks</h2>
+                <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">EVERYDAY EXAMPLES</span>
+                <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Real-World Examples of {category.name}</h2>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 {richData.benchmarks.slice(0, 6).map((bm, idx) => (
@@ -1153,8 +1208,8 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
           {/* ================================================================= */}
           <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop py-8">
             <div className="mb-6">
-              <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">METROLOGICAL DICTIONARY</span>
-              <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Standard {category.name} Unit Reference Table</h2>
+              <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">UNIT REFERENCE GUIDE</span>
+              <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">All {category.name} Units at a Glance</h2>
             </div>
             <div className="overflow-x-auto rounded-2xl bg-surface-container-lowest shadow-sm">
               <table className="w-full text-left border-collapse font-body-sm text-body-sm">
@@ -1163,8 +1218,8 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                     <th className="py-3 px-4">Unit Name</th>
                     <th className="py-3 px-4">Symbol</th>
                     <th className="py-3 px-4">System</th>
-                    <th className="py-3 px-4 font-data-mono">Base Ratio</th>
-                    <th className="py-3 px-4">Usage Domain</th>
+                    <th className="py-3 px-4 font-data-mono">Conversion Rate</th>
+                    <th className="py-3 px-4">Common Uses</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y-0 text-on-surface">
@@ -1178,7 +1233,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                         <td className="py-3 px-4 font-data-mono font-bold">
                           1 {u.symbol} = {formatResult(baseConv.resultNumber, '6')} {units[0].symbol}
                         </td>
-                        <td className="py-3 px-4 text-on-surface-variant">{u.description || `Industrial, commercial, and scientific measurement in ${category.name}.`}</td>
+                        <td className="py-3 px-4 text-on-surface-variant">{u.description || `Everyday, home, and school measurements in ${category.name}.`}</td>
                       </tr>
                     );
                   })}
@@ -1188,23 +1243,23 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
           </section>
 
           {/* ================================================================= */}
-          {/* SECTION 11: METROLOGY TECHNICAL ARTICLES                          */}
+          {/* SECTION 11: HELPFUL ARTICLES & PRACTICAL TIPS                     */}
           {/* ================================================================= */}
           {richData.historyGuide && (
             <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop py-8">
               <div className="mb-6">
-                <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">DEEP METROLOGY GUIDES</span>
-                <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Scientific Insights &amp; Historical Discrepancies</h2>
+                <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">HELPFUL TIPS &amp; BACKGROUND</span>
+                <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">How These Units Began &amp; Good Things to Know</h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Article 1 */}
                 <article className="p-6 rounded-3xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="px-2.5 py-0.5 rounded-full bg-surface-container-high text-primary font-label-caps text-label-caps">HISTORICAL ANALYSIS</span>
-                      <span className="text-body-sm text-on-surface-variant">5 min read</span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-surface-container-high text-primary font-label-caps text-label-caps">QUICK STORY</span>
+                      <span className="text-body-sm text-on-surface-variant">2 min read</span>
                     </div>
-                    <h3 className="font-headline-md text-headline-md text-on-surface mb-2 font-semibold">Origin &amp; Development of {category.name} Units</h3>
+                    <h3 className="font-headline-md text-headline-md text-on-surface mb-2 font-semibold">Where Did {category.name} Units Come From?</h3>
                     <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-4">
                       {richData.historyGuide.origin}
                     </p>
@@ -1219,17 +1274,17 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                 <article className="p-6 rounded-3xl bg-surface-container-lowest shadow-sm flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="px-2.5 py-0.5 rounded-full bg-surface-container-high text-secondary font-label-caps text-label-caps">ENGINEERING PRECISION</span>
-                      <span className="text-body-sm text-on-surface-variant">4 min read</span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-surface-container-high text-secondary font-label-caps text-label-caps">PRACTICAL TIPS</span>
+                      <span className="text-body-sm text-on-surface-variant">2 min read</span>
                     </div>
-                    <h3 className="font-headline-md text-headline-md text-on-surface mb-2 font-semibold">Common Pitfalls &amp; Precision Hazards</h3>
+                    <h3 className="font-headline-md text-headline-md text-on-surface mb-2 font-semibold">Common Mistakes &amp; How to Avoid Them</h3>
                     <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-4">
                       {richData.historyGuide.pitfalls}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-secondary font-body-sm text-body-sm font-semibold">
-                    <span className="material-symbols-outlined text-[18px]">biotech</span>
-                    BIPM &amp; NIST Laboratory Protocol
+                    <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                    Verified Everyday Formulas
                   </div>
                 </article>
               </div>
@@ -1237,33 +1292,33 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
           )}
 
           {/* ================================================================= */}
-          {/* SECTION 12: CONNECTED COMPUTATIONAL SUITES                        */}
+          {/* SECTION 12: RELATED TOOLS                                         */}
           {/* ================================================================= */}
           <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop py-8">
             <div className="mb-6">
-              <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">SOLVEIT ECOSYSTEM</span>
-              <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Related Dimensional Calculators</h2>
+              <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">EXPLORE MORE TOOLS</span>
+              <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">More Helpful Unit Converters</h2>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               <Link className="p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group" href="/area-converter">
                 <span className="material-symbols-outlined text-[28px] text-primary group-hover:scale-110 transition-transform mb-2">square_foot</span>
-                <div className="font-body-md text-body-md font-bold text-on-surface">Area Converter</div>
+                <div className="font-body-md text-body-md font-bold text-on-surface">Area</div>
                 <div className="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-0.5">m², acres, sq ft</div>
               </Link>
               <Link className="p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group" href="/length-converter">
                 <span className="material-symbols-outlined text-[28px] text-primary group-hover:scale-110 transition-transform mb-2">straighten</span>
-                <div className="font-body-md text-body-md font-bold text-on-surface">Length Engine</div>
+                <div className="font-body-md text-body-md font-bold text-on-surface">Length &amp; Distance</div>
                 <div className="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-0.5">meters, inches, miles</div>
               </Link>
               <Link className="p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group" href="/weight-converter">
                 <span className="material-symbols-outlined text-[28px] text-primary group-hover:scale-110 transition-transform mb-2">scale</span>
-                <div className="font-body-md text-body-md font-bold text-on-surface">Mass &amp; Weight</div>
+                <div className="font-body-md text-body-md font-bold text-on-surface">Weight &amp; Mass</div>
                 <div className="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-0.5">kg, lbs, stones, oz</div>
               </Link>
               <Link className="p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group" href="/volume-converter">
                 <span className="material-symbols-outlined text-[28px] text-primary group-hover:scale-110 transition-transform mb-2">water_drop</span>
-                <div className="font-body-md text-body-md font-bold text-on-surface">Volume &amp; Capacity</div>
-                <div className="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-0.5">liters, gallons, m³</div>
+                <div className="font-body-md text-body-md font-bold text-on-surface">Volume &amp; Liquids</div>
+                <div className="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-0.5">liters, gallons, cups</div>
               </Link>
               <Link className="p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group" href="/temperature-converter">
                 <span className="material-symbols-outlined text-[28px] text-primary group-hover:scale-110 transition-transform mb-2">thermostat</span>
@@ -1272,20 +1327,20 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
               </Link>
               <Link className="p-4 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group" href="/speed-converter">
                 <span className="material-symbols-outlined text-[28px] text-primary group-hover:scale-110 transition-transform mb-2">speed</span>
-                <div className="font-body-md text-body-md font-bold text-on-surface">Speed &amp; Velocity</div>
+                <div className="font-body-md text-body-md font-bold text-on-surface">Speed</div>
                 <div className="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-0.5">mph, km/h, knots</div>
               </Link>
             </div>
           </section>
 
           {/* ================================================================= */}
-          {/* SECTION 13: TECHNICAL FAQ ACCORDION                               */}
+          {/* SECTION 13: FAQ ACCORDION                                         */}
           {/* ================================================================= */}
           {richData.faqs.length > 0 && (
             <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop py-8">
               <div className="mb-6">
                 <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">FREQUENTLY ASKED QUESTIONS</span>
-                <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">{category.name} Conversion FAQs &amp; Standards</h2>
+                <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">{category.name} Questions &amp; Answers</h2>
               </div>
               <div className="flex flex-col gap-3">
                 {richData.faqs.map((faq, idx) => (
@@ -1308,7 +1363,7 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
           )}
 
           {/* ================================================================= */}
-          {/* SECTION 14: TRUST & CERTIFICATION STRIP                           */}
+          {/* SECTION 14: TRUST & ACCURACY STRIP                                */}
           {/* ================================================================= */}
           <section className="w-full max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop py-8">
             <div className="p-6 rounded-3xl bg-surface-container-high flex flex-col md:flex-row items-center justify-between gap-6">
@@ -1317,16 +1372,16 @@ function UniversalCategoryEngine({ categoryId }: { categoryId: string }) {
                   <span className="material-symbols-outlined text-[28px]">verified_user</span>
                 </div>
                 <div>
-                  <div className="font-headline-md text-headline-md text-[18px] font-bold text-on-surface">Audited Metrology Rigor</div>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant">Calibrated against NIST Special Publication 811 and ISO 80000 guidelines for physical quantities.</p>
+                  <div className="font-headline-md text-headline-md text-[18px] font-bold text-on-surface">100% Verified &amp; Tested Formulas</div>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant">Every calculation uses trusted, standard definitions so your results are 100% accurate for school, home, work, and recipes.</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <div className="px-3.5 py-2 rounded-xl bg-surface-container-lowest font-label-caps text-label-caps text-on-surface shadow-sm">
-                  ✓ Weekly Precision Audits
+                  ✓ Double-Checked Accuracy
                 </div>
                 <div className="px-3.5 py-2 rounded-xl bg-surface-container-lowest font-label-caps text-label-caps text-primary shadow-sm">
-                  ✓ Zero Data Ingestion
+                  ✓ 100% Private (No Tracking)
                 </div>
               </div>
             </div>

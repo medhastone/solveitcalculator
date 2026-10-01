@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-import Header from '@/components/Header';
 import {
   PERCENTAGE_CURRENCIES,
   PercentageCurrency,
@@ -571,7 +570,7 @@ https://solveitcalculator.com/percentage-calculator/`;
     <div className="bg-background font-body-md text-on-surface min-h-screen flex flex-col selection:bg-primary selection:text-on-primary">
       
 
-      <main className="w-full pt-16 bg-background flex-1">
+      <main className="w-full pt-0 bg-background flex-1">
         <div className="flex flex-col w-full">
           {/* Telemetry Bar */}
           <section className="w-full bg-surface-container-low py-space-xs border-b border-surface-container">
@@ -589,13 +588,7 @@ https://solveitcalculator.com/percentage-calculator/`;
               </nav>
               <div className="flex items-center gap-space-sm flex-wrap">
                 <span className="inline-flex items-center gap-1 text-[11px] font-data-mono px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-semibold shadow-xs">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> &lt;0.001ms Latency (Local Core)
-                </span>
-                <span className="inline-flex items-center gap-1 text-[11px] font-data-mono px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">
-                  <span className="material-symbols-outlined text-[13px] text-secondary">verified</span> IEEE 754 64-bit
-                </span>
-                <span className="inline-flex items-center gap-1 text-[11px] font-data-mono px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant hidden sm:inline-flex">
-                  <span className="material-symbols-outlined text-[13px] text-primary">security</span> Zero-Cloud Sandbox
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Instant Calculations
                 </span>
               </div>
             </div>
@@ -613,12 +606,12 @@ https://solveitcalculator.com/percentage-calculator/`;
                   Universal Percentage Calculator
                 </h1>
                 <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
-                  Compute percentages, symmetric relative variance, compounding markups, statutory VAT/GST, and reverse discounts. Powered by pure deterministic IEEE 754 arithmetic with step-by-step deductive proofs.
+                  Compute percentages, symmetric relative variance, compounding markups, statutory VAT/GST, and reverse discounts with step-by-step mathematical proofs.
                 </p>
-                {/* Trust Badges */}
+                {/* Features */}
                 <div className="flex flex-wrap items-center gap-x-space-md gap-y-space-2xs text-body-sm font-body-sm text-on-surface-variant pt-space-xs">
                   <span className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-primary text-[18px]">check_circle</span> 100% Free Client-Side
+                    <span className="material-symbols-outlined text-primary text-[18px]">check_circle</span> Free &amp; Private
                   </span>
                   <span className="flex items-center gap-1">
                     <span className="material-symbols-outlined text-primary text-[18px]">check_circle</span> Step-by-Step Proofs
@@ -2097,6 +2090,27 @@ https://solveitcalculator.com/percentage-calculator/`;
           </section>
         </div>
       </main>
+
+      {/* Mobile Sticky Calculation Summary Bar */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/30 px-4 py-2.5 shadow-lg flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-base font-mono">
+            %
+          </div>
+          <div className="min-w-0">
+            <div className="text-[11px] text-on-surface-variant font-medium">Result</div>
+            <div className="text-sm font-bold text-primary truncate max-w-[170px]">
+              {calculation.isPercentageResult ? `${formatDecimal(calculation.result)}%` : formatDecimal(calculation.result)}
+            </div>
+          </div>
+        </div>
+        <a
+          href="#workbench"
+          className="px-3 py-1.5 rounded-lg bg-primary text-on-primary text-xs font-bold shadow-xs hover:bg-primary/90 transition-all shrink-0"
+        >
+          Steps &amp; Math
+        </a>
+      </div>
     </div>
   );
 }

@@ -142,7 +142,7 @@ export default function ScientificCalculatorClient() {
       
 
       {/* Main Container */}
-      <main className="w-full pt-16 bg-surface flex-1">
+      <main className="w-full pt-0 bg-surface flex-1">
         <div className="flex flex-col w-full">
           {/* Micro Telemetry & Precision Architecture Top Bar */}
           <div className="w-full bg-surface-container-lowest/80 backdrop-blur-md sticky top-16 z-40 shadow-[0_1px_4px_rgba(0,0,0,0.03)] border-b border-outline-variant/20">

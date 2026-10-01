@@ -101,7 +101,7 @@ export default function InvestingAndGrowthClient() {
       
 
       {/* MAIN CONTENT */}
-      <main className="w-full pt-16 bg-surface flex-1">
+      <main className="w-full pt-0 bg-surface flex-1">
         <div className="flex flex-col w-full">
           {/* Top Ambient Glow Decor (Contained) */}
           <div className="relative w-full max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop pt-space-md">
@@ -117,11 +117,6 @@ export default function InvestingAndGrowthClient() {
                 <span className="material-symbols-outlined text-[14px] text-outline-variant">chevron_right</span>
                 <span className="text-on-surface font-medium">Investing &amp; Growth</span>
               </nav>
-              {/* EEAT Verified Audit Pill */}
-              <div className="inline-flex items-center gap-1.5 px-space-xs py-1 rounded-full bg-surface-container-high text-on-surface font-data-mono text-xs">
-                <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                <span className="">CFA® / CFP® Audited • IEEE 754 Math • Oct 2025</span>
-              </div>
             </div>
 
             {/* Category Headline Hero */}
@@ -136,21 +131,6 @@ export default function InvestingAndGrowthClient() {
                 <p className="font-body-lg text-body-lg text-on-surface-variant mt-space-2xs">
                   Precision wealth projection, compound interest, CAGR, dividends, FIRE modeling, and dynamic portfolio analytics.
                 </p>
-              </div>
-              {/* Trust Badges Bar */}
-              <div className="flex flex-wrap items-center gap-space-xs font-data-mono text-xs text-on-surface-variant">
-                <div className="flex items-center gap-1 bg-surface-container-low px-space-xs py-1.5 rounded-lg shadow-sm">
-                  <span className="material-symbols-outlined text-[16px] text-primary">verified_user</span>
-                  <span className="">95+ Precision Models</span>
-                </div>
-                <div className="flex items-center gap-1 bg-surface-container-low px-space-xs py-1.5 rounded-lg shadow-sm">
-                  <span className="material-symbols-outlined text-[16px] text-secondary">memory</span>
-                  <span className="">Zero-Latency Client-Side</span>
-                </div>
-                <div className="flex items-center gap-1 bg-surface-container-low px-space-xs py-1.5 rounded-lg shadow-sm">
-                  <span className="material-symbols-outlined text-[16px] text-tertiary">lock</span>
-                  <span className="">No Data Tracking</span>
-                </div>
               </div>
             </div>
 

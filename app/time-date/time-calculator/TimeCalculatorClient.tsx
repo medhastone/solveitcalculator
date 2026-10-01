@@ -140,12 +140,10 @@ export default function TimeCalculatorClient() {
     return { hrs, mins, secs, totalSec, frames24, frames30, pay };
   }, [decimalInput, hourlyRate]);
 
-  if (!mounted) return <div className="min-h-screen bg-surface"></div>;
-
   return (
     <div className="bg-surface font-body-md text-body-md text-on-surface">
       
-      <main className="w-full pt-16 bg-surface min-h-[calc(100vh-64px)]">
+      <main className="w-full pt-0 bg-surface min-h-[calc(100vh-64px)]">
         
         {/* HERO SECTION */}
         <section className="w-full bg-surface-container-low/40 pb-space-2xl pt-space-lg border-b border-surface-container">
@@ -176,6 +174,20 @@ export default function TimeCalculatorClient() {
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">
                 Execute complex sexagesimal math (Base-60). Add or subtract time durations, compute payroll decimals, and deduce shift work hours across daylight boundaries.
               </p>
+
+              <div className="mt-4 p-3.5 bg-primary/10 border border-primary/20 rounded-xl flex items-center justify-between flex-wrap gap-3 max-w-3xl">
+                <div className="flex items-center gap-2 text-on-surface text-sm">
+                  <span className="material-symbols-outlined text-primary text-[20px]">calendar_clock</span>
+                  <span>Looking to add or subtract days, hours, and minutes to or from a specific calendar date?</span>
+                </div>
+                <Link
+                  href="/time-date/add-subtract-time"
+                  className="px-3.5 py-1.5 bg-primary text-on-primary text-xs font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-1 shadow-sm whitespace-nowrap"
+                >
+                  <span>Open Add &amp; Subtract Time</span>
+                  <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </Link>
+              </div>
             </div>
 
             {/* TAB NAVIGATION */}
@@ -454,6 +466,54 @@ export default function TimeCalculatorClient() {
               </div>
             )}
             
+            {/* COMPLEMENTARY TIME & DATE TOOLS */}
+            <div className="mt-8 pt-6 border-t border-outline-variant/30">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-title-sm text-title-sm text-on-surface font-bold">Related Chronometric Calculators</h3>
+                <Link href="/time-date" className="text-xs text-primary font-semibold hover:underline flex items-center gap-1">
+                  <span>View all Time &amp; Date tools</span>
+                  <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                <Link
+                  href="/unix-timestamp-converter"
+                  className="p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary/50 hover:shadow-sm transition-all group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-primary font-label-caps uppercase">Epoch Time</span>
+                    <span className="material-symbols-outlined text-primary text-[16px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                  </div>
+                  <div className="font-bold text-on-surface text-sm mt-1">Unix Timestamp Converter</div>
+                  <p className="text-xs text-on-surface-variant mt-1 line-clamp-2">Convert between Unix seconds, ms, µs, ns, ISO-8601, and human dates.</p>
+                </Link>
+
+                <Link
+                  href="/time-date/add-subtract-time"
+                  className="p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary/50 hover:shadow-sm transition-all group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-secondary font-label-caps uppercase">Calendar Span</span>
+                    <span className="material-symbols-outlined text-secondary text-[16px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                  </div>
+                  <div className="font-bold text-on-surface text-sm mt-1">Add &amp; Subtract Time</div>
+                  <p className="text-xs text-on-surface-variant mt-1 line-clamp-2">Add or subtract days, weeks, months, or clock times from calendar dates.</p>
+                </Link>
+
+                <Link
+                  href="/military-time-converter"
+                  className="p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary/50 hover:shadow-sm transition-all group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-tertiary font-label-caps uppercase">24-Hour Military</span>
+                    <span className="material-symbols-outlined text-tertiary text-[16px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                  </div>
+                  <div className="font-bold text-on-surface text-sm mt-1">Military Time Converter</div>
+                  <p className="text-xs text-on-surface-variant mt-1 line-clamp-2">Convert standard 12-hour AM/PM times to 24-hour military notation and phonetic zones.</p>
+                </Link>
+              </div>
+            </div>
+
           </div>
         </section>
 

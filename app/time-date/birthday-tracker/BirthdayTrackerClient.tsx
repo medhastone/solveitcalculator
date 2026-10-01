@@ -11,7 +11,7 @@ export default function BirthdayTrackerClient() {
   const [copyFeedback, setCopyFeedback] = useState('');
 
   // Live real-time clock pulse
-  const [liveNow, setLiveNow] = useState<Date | null>(null);
+  const [liveNow, setLiveNow] = useState<Date>(() => new Date('2026-03-20T12:00:00Z'));
 
   useEffect(() => {
     setMounted(true);
@@ -43,10 +43,6 @@ export default function BirthdayTrackerClient() {
 
   // Compute all chronological & astronomical metrics
   const telemetry = useMemo(() => {
-    if (!mounted) {
-      return null;
-    }
-
     const d1 = new Date(`${dob}T${tob || '00:00'}:00`);
     const currentClock = liveNow || new Date();
     
@@ -313,7 +309,7 @@ export default function BirthdayTrackerClient() {
     });
   }, [telemetry]);
 
-  if (!mounted || !telemetry) {
+  if (!telemetry) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-on-surface-variant font-data-mono">
         <span className="material-symbols-outlined text-[36px] animate-spin text-primary mb-3">progress_activity</span>
@@ -329,7 +325,7 @@ export default function BirthdayTrackerClient() {
   return (
     <div className="bg-surface font-body-md text-body-md text-on-surface min-h-screen flex flex-col">
       
-      <main className="w-full pt-16 bg-surface flex-1">
+      <main className="w-full pt-0 bg-surface flex-1">
         <div className="flex flex-col w-full">
           {/* SECTION 1: Breadcrumbs & Meta bar */}
           <div className="w-full bg-surface-container-lowest/80 backdrop-blur-md shadow-sm border-b border-outline-variant/15">
@@ -377,7 +373,7 @@ export default function BirthdayTrackerClient() {
               HELIOCENTRIC TEMPORAL METROLOGY V4.2
             </div>
             <h1 className="font-display-hero text-display-hero text-on-surface tracking-tight mb-space-sm">
-              Birthday Tracker &amp; <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Solar Orbit</span> Countdown
+              Birthday Countdown
             </h1>
             <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-space-lg">
               Track deterministic countdowns to your next birthday, calculate completed solar orbits around the Sun, and unveil biological, astronomical, and generational milestones with sub-second accuracy.
@@ -1300,10 +1296,10 @@ function computeSolarOrbit(birthDate, targetDate = new Date()) {
         <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-primary text-[28px]">lock</span>
+              <span className="material-symbols-outlined text-primary text-[28px]">shield</span>
               <div>
-                <div className="font-body-md font-semibold text-on-surface">100% Client-Side Computational Privacy</div>
-                <div className="font-body-sm text-[12px] text-on-surface-variant">Your date of birth, time, and coordinates never leave your browser. Zero telemetry transmitted.</div>
+                <div className="font-body-md font-semibold text-on-surface">Private &amp; Local Calculations</div>
+                <div className="font-body-sm text-[12px] text-on-surface-variant">Your date of birth and calculation settings remain stored only on your device.</div>
               </div>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-2">

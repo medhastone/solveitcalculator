@@ -2,16 +2,29 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
-import Header from '../../components/Header';
-import { getCurrentTheme, toggleTheme } from '../../lib/theme';
+import {
+  Calendar,
+  Clock,
+  Briefcase,
+  Globe,
+  Search,
+  X,
+  ChevronDown,
+  ArrowRight,
+  Sparkles,
+  Calculator,
+  RotateCcw,
+  Info,
+} from 'lucide-react';
+import Breadcrumbs from '../../components/Breadcrumbs';
 
-// --- Preset Data ---
+// --- Types ---
 interface ToolItem {
   name: string;
   badge: string;
   category: string;
-  desc?: string;
-  anchor?: string;
+  desc: string;
+  anchor: string;
 }
 
 interface CategoryGroup {
@@ -21,120 +34,198 @@ interface CategoryGroup {
   tools: ToolItem[];
 }
 
+// --- Curated Directory of 37 Easy Time & Date Tools ---
 const CATEGORY_GROUPS: CategoryGroup[] = [
   {
     id: 'age-birthday',
     name: 'Age & Birthday',
     icon: 'cake',
     tools: [
-      { name: 'Exact Age Calculator', badge: 'YMD/HMS', category: 'Age & Birthday', anchor: '/time-date/age-calculator' },
-      { name: 'Birthday Day of Week Calculator', badge: 'Perpetual', category: 'Age & Birthday', anchor: '/time-date/age-calculator' },
-      { name: 'Next Birthday Countdown Timer', badge: 'Real-Time', category: 'Age & Birthday', anchor: '/time-date/age-calculator' },
-      { name: 'Age in Weeks, Days, & Minutes', badge: 'Unit Break', category: 'Age & Birthday', anchor: '/time-date/age-calculator' },
-      { name: 'Pet Age Converter (Canine / Feline)', badge: 'Bio-Curve', category: 'Age & Birthday', anchor: '/time-date/age-calculator' },
-      { name: 'Half-Birthday & Milestone Finder', badge: '+182.6 Days', category: 'Age & Birthday', anchor: '/time-date/age-calculator' },
+      { name: 'Age Calculator', badge: 'Years, Months & Days', category: 'Age & Birthday', desc: 'Find out exactly how many years, months, and days old you are, plus days until your next birthday.', anchor: '/time-date/age-calculator' },
+      { name: 'Birthday Day of Week Calculator', badge: 'Any Past Year', category: 'Age & Birthday', desc: 'Find out what day of the week you or anyone was born on (Monday, Tuesday, etc.).', anchor: '/time-date/age-calculator' },
+      { name: 'Birthday Countdown Clock', badge: 'Live Timer', category: 'Age & Birthday', desc: 'A live ticking clock showing how many days, hours, and minutes are left until your next birthday.', anchor: '/time-date/birthday-tracker' },
+      { name: 'Age in Weeks, Days & Hours', badge: 'Total Days Lived', category: 'Age & Birthday', desc: 'See how many total weeks, days, and hours you have lived since the day you were born.', anchor: '/time-date/age-calculator' },
+      { name: 'Dog & Cat Age in Human Years', badge: 'Pet Years', category: 'Age & Birthday', desc: 'Easily turn your dog or cat age into human years to understand how old your pet is.', anchor: '/pet-age-converter' },
+      { name: 'Half-Birthday & Milestone Finder', badge: '6-Month Mark', category: 'Age & Birthday', desc: 'Find your half-birthday date and find out when you reach 10,000 days of life.', anchor: '/time-date/birthday-tracker' },
     ],
   },
   {
     id: 'date-calculations',
     name: 'Date Calculations',
-    icon: 'calendar_today',
+    icon: 'calendar_month',
     tools: [
-      { name: 'Date Difference Calculator', badge: 'Delta', category: 'Date Calculations', anchor: '/time-date/date-difference' },
-      { name: 'Days Between Dates', badge: 'Inclusive', category: 'Date Calculations', anchor: '/time-date/date-difference' },
-      { name: 'Working Days / Business Days', badge: 'Fed Holidays', category: 'Date Calculations', anchor: '/time-date/days-calculator' },
-      { name: 'Add / Subtract Days from Date', badge: '±N Days', category: 'Date Calculations', anchor: '/time-date/days-calculator' },
-      { name: 'Julian Day Number Calculator', badge: 'Day Count', category: 'Date Calculations', anchor: '/time-date/days-calculator' },
-      { name: 'Leap Year Validator & Counter', badge: '400y Rule', category: 'Date Calculations', anchor: '/time-date/date-difference' },
+      { name: 'Days Between Dates Calculator', badge: 'Count Days', category: 'Date Calculations', desc: 'Find the exact number of days, weeks, and months between any two dates on the calendar.', anchor: '/time-date/date-difference' },
+      { name: 'Days Between Dates (Inclusive)', badge: 'Count Both Days', category: 'Date Calculations', desc: 'Count all days between two dates, with an option to include the start and end days.', anchor: '/time-date/days-between-dates' },
+      { name: 'Working Days Calculator', badge: 'Skip Weekends & Holidays', category: 'Date Calculations', desc: 'Count real work days between dates, automatically skipping weekends and public holidays.', anchor: '/time-date/days-calculator' },
+      { name: 'Add & Subtract Time Calculator', badge: 'Add or Take Days', category: 'Date Calculations', desc: 'Add or subtract years, months, days, hours, or minutes to any date to find past or future times.', anchor: '/time-date/add-subtract-time' },
+      { name: 'Add or Subtract Days from a Date', badge: 'Date ± Days', category: 'Date Calculations', desc: 'Quickly find what date it will be after adding or taking away any number of days.', anchor: '/time-date/days-calculator' },
+      { name: 'Day Number Counter (Julian Day)', badge: 'Running Day Count', category: 'Date Calculations', desc: 'A simple continuous day counter used by stargazers and calendar history researchers.', anchor: '/julian-day-calculator' },
+      { name: 'Leap Year Checker', badge: '366 Days Check', category: 'Date Calculations', desc: 'Check if any year has 366 days and an extra day on February 29.', anchor: '/leap-year-calculator' },
     ],
   },
   {
     id: 'time-arithmetic',
-    name: 'Time Arithmetic',
+    name: 'Time & Clocks',
     icon: 'calculate',
     tools: [
-      { name: 'Add Time (HH:MM:SS)', badge: 'Accumulator', category: 'Time Arithmetic', anchor: '/time-date/time-calculator' },
-      { name: 'Subtract Time (HH:MM:SS)', badge: 'Negative Delta', category: 'Time Arithmetic', anchor: '/time-date/time-calculator' },
-      { name: 'Decimal Hours to Minutes/Seconds', badge: '0.75h → 45m', category: 'Time Arithmetic', anchor: '/time-date/time-calculator' },
-      { name: 'Seconds to HH:MM:SS Converter', badge: 'Base 60', category: 'Time Arithmetic', anchor: '/time-date/time-calculator' },
-      { name: 'Running Pace & Lap Split Calculator', badge: 'Min/Mile', category: 'Time Arithmetic', anchor: '/time-date/time-calculator' },
-      { name: 'Unix Timestamp Converter', badge: 'Epoch Time', category: 'Time Arithmetic', anchor: '/time-date/time-calculator' },
+      { name: 'Add Time (Hours & Minutes)', badge: 'Add Up Times', category: 'Time & Clocks', desc: 'Add different hours, minutes, and seconds together from different tasks or activities.', anchor: '/time-date/time-calculator' },
+      { name: 'Subtract Time (Time Difference)', badge: 'Time Left', category: 'Time & Clocks', desc: 'Find out how much time has passed between two clock times or how much time is left.', anchor: '/time-date/time-calculator' },
+      { name: 'Decimal Hours to Minutes', badge: '0.75h = 45 mins', category: 'Time & Clocks', desc: 'Easily turn decimal work hours (like 7.5 hours) into normal hours and minutes (7 hours 30 mins).', anchor: '/time-date/time-calculator' },
+      { name: 'Seconds to Hours & Minutes', badge: 'Seconds to Time', category: 'Time & Clocks', desc: 'Turn large numbers of seconds into readable hours, minutes, and seconds.', anchor: '/time-date/time-calculator' },
+      { name: 'Running & Walking Pace Calculator', badge: 'Minutes per Mile', category: 'Time & Clocks', desc: 'Find out how fast you run or walk per mile or kilometer, and your finish time.', anchor: '/running-pace-calculator' },
+      { name: 'Computer Timestamp to Real Date', badge: 'Unix Timestamp', category: 'Time & Clocks', desc: 'Turn computer timestamp numbers into normal dates and times that anyone can read.', anchor: '/unix-timestamp-converter' },
     ],
   },
   {
     id: 'time-zones-remote',
-    name: 'Time Zones & Remote',
+    name: 'World Time Zones',
     icon: 'public',
     tools: [
-      { name: 'World Clock & Time Zones', badge: 'Global Time', category: 'Time Zones & Remote', anchor: '/time-date/time-zone-overlap' },
-      { name: 'Global Meeting Scheduler Overlap', badge: 'Golden Window', category: 'Time Zones & Remote', anchor: '/time-date/time-zone-overlap' },
-      { name: 'Daylight Saving Transition Tracker', badge: 'Spring/Fall', category: 'Time Zones & Remote', anchor: '/time-date/time-zone-overlap' },
-      { name: 'Military Time (24-Hour) Converter', badge: '0000-2400', category: 'Time Zones & Remote', anchor: '/time-date/time-zone-overlap' },
-      { name: 'Flight Duration & Time Shift', badge: 'Jet Lag Map', category: 'Time Zones & Remote', anchor: '/time-date/time-zone-overlap' },
-      { name: 'UTC / GMT Offset Standardizer', badge: 'Z-Time', category: 'Time Zones & Remote', anchor: '/time-date/time-zone-overlap' },
+      { name: 'World Time Zone Converter', badge: 'City Times', category: 'World Time Zones', desc: 'Convert hours and meeting times across different cities and countries around the world.', anchor: '/time-date/time-zone-converter' },
+      { name: 'World Clock Grid', badge: 'Live City Clocks', category: 'World Time Zones', desc: 'See live clocks for major cities like New York, London, Tokyo, Paris, and Sydney.', anchor: '/time-date/world-clock-grid' },
+      { name: 'Meeting Time Overlap Finder', badge: 'Best Meeting Time', category: 'World Time Zones', desc: 'Find daytime hours when you and friends, family, or coworkers in other countries are both awake.', anchor: '/time-date/time-zone-overlap' },
+      { name: 'Team Shift Handover Planner', badge: 'Work Handover', category: 'World Time Zones', desc: 'Plan how work moves smoothly between team members in different countries.', anchor: '/time-date/async-team-handover' },
+      { name: 'Clock Change & Daylight Saving Tracker', badge: 'Spring & Fall Changes', category: 'World Time Zones', desc: 'Check when clocks change 1 hour forward in spring or 1 hour backward in fall.', anchor: '/time-date/dst-transition-tracker' },
+      { name: '24-Hour Military Time Converter', badge: '12h to 24h', category: 'World Time Zones', desc: 'Easily turn AM and PM times into 24-hour clock times (like 17:00 for 5:00 PM).', anchor: '/military-time-converter' },
+      { name: 'Flight Travel Time & Jet Lag', badge: 'Travel Time', category: 'World Time Zones', desc: 'Calculate how long a flight takes and what the local time will be when you land.', anchor: '/time-date/multi-city-corridor' },
+      { name: 'World Standard Time (UTC)', badge: 'UTC Offset', category: 'World Time Zones', desc: 'Check standard universal world time and how many hours your city is ahead or behind.', anchor: '/time-date/global-meeting-matrix' },
     ],
   },
   {
     id: 'work-shift-payroll',
-    name: 'Work, Shift & Payroll',
+    name: 'Work & Pay',
     icon: 'payments',
     tools: [
-      { name: 'Work Hours & Punch Card', badge: 'Break Deduct', category: 'Work, Shift & Payroll', anchor: '/time-date/work-hours' },
-      { name: 'Overtime Pay (1.5x / 2.0x) Calculator', badge: 'FLSA Regs', category: 'Work, Shift & Payroll', anchor: '/time-date/work-hours' },
-      { name: '2-2-3 Rotating Shift Schedule Planner', badge: 'Rotating Shift', category: 'Work, Shift & Payroll', anchor: '/time-date/work-hours' },
-      { name: 'Billable Time Increment Rounder', badge: '6/15 min increm', category: 'Work, Shift & Payroll', anchor: '/time-date/work-hours' },
-      { name: 'Bi-Weekly Timesheet Batch Formatter', badge: 'CSV Export', category: 'Work, Shift & Payroll', anchor: '/time-date/work-hours' },
-      { name: 'Salary to Hourly & Per-Minute Rate', badge: '2,080 Hours', category: 'Work, Shift & Payroll', anchor: '/time-date/work-hours' },
+      { name: 'Work Hours & Punch Card Calculator', badge: 'Subtract Lunch Break', category: 'Work & Pay', desc: 'Add up your daily and weekly work hours, and automatically subtract unpaid lunch breaks.', anchor: '/time-date/work-hours' },
+      { name: 'Overtime Pay Calculator (1.5× Rate)', badge: 'Extra Pay for Overtime', category: 'Work & Pay', desc: 'Calculate your regular pay and extra 1.5× overtime money when working over 8 hours.', anchor: '/time-date/work-hours' },
+      { name: 'Rotating Shift Schedule Planner', badge: 'Day & Night Shifts', category: 'Work & Pay', desc: 'Plan weekly rotating day and night work shifts for yourself or team members.', anchor: '/time-date/work-hours' },
+      { name: 'Work Time Rounder (6 or 15 mins)', badge: 'Round Minutes', category: 'Work & Pay', desc: 'Round your work minutes to the nearest 6 minutes (0.1h) or 15 minutes for timesheets.', anchor: '/time-date/work-hours' },
+      { name: '2-Week Timesheet Helper', badge: '14-Day Timesheet', category: 'Work & Pay', desc: 'Add up hours across a 2-week pay period and export your timesheet easily.', anchor: '/time-date/work-hours' },
+      { name: 'Yearly Salary to Hourly Pay', badge: 'Pay by Hour', category: 'Work & Pay', desc: 'See how much a yearly salary equals in hourly, daily, and per-minute earnings.', anchor: '/time-date/work-hours' },
     ],
   },
   {
     id: 'countdowns-focus',
-    name: 'Countdowns & Focus',
+    name: 'Countdowns & Timers',
     icon: 'hourglass_top',
     tools: [
-      { name: 'Event Countdown & Shareable Wall', badge: 'Live Micro', category: 'Countdowns & Focus', anchor: '/time-date/countdown-timer' },
-      { name: 'Days Until Christmas / New Year', badge: 'Holiday Sync', category: 'Countdowns & Focus', anchor: '/time-date/countdown-timer' },
-      { name: 'Pomodoro Focus / Break Interval Timer', badge: '25m / 5m', category: 'Countdowns & Focus', anchor: '/time-date/countdown-timer' },
-      { name: '90-Minute Ultradian Rhythm Planner', badge: 'Kleitman Curve', category: 'Countdowns & Focus', anchor: '/time-date/countdown-timer' },
-      { name: 'Retirement Countdown in Workdays', badge: 'Remaining Shifts', category: 'Countdowns & Focus', anchor: '/time-date/countdown-timer' },
-      { name: 'Pregnancy Due Date & Trimesters', badge: 'Naegele Rule', category: 'Countdowns & Focus', anchor: '/health-fitness-calculators' },
+      { name: 'Event Countdown Clock', badge: 'Live Countdown', category: 'Countdowns & Timers', desc: 'Create a live ticking countdown clock for weddings, holidays, vacations, or parties.', anchor: '/time-date/event-countdown' },
+      { name: 'Full-Screen Countdown Timer', badge: 'Timer with Alarm', category: 'Countdowns & Timers', desc: 'A clean full-screen countdown timer with start, pause, reset, and chime sound.', anchor: '/time-date/countdown-timer' },
+      { name: 'Work & Rest Focus Timer', badge: '25m Work / 5m Rest', category: 'Countdowns & Timers', desc: 'Boost focus with simple work sprints followed by short rest breaks to keep your energy up.', anchor: '/focus-and-break-timer' },
+      { name: 'Days Until Christmas & New Year', badge: 'Holiday Countdowns', category: 'Countdowns & Timers', desc: 'Count the remaining days, hours, and minutes until Christmas, New Year, and holidays.', anchor: '/time-date/event-countdown' },
+      { name: '90-Minute Focus & Energy Planner', badge: 'Energy Waves', category: 'Countdowns & Timers', desc: 'Plan your work around natural 90-minute waves when your brain is sharpest.', anchor: '/time-date/90-minute-ultradian-rhythm-planner' },
+      { name: 'Days Until Retirement Calculator', badge: 'Workdays Left', category: 'Countdowns & Timers', desc: 'Find out exactly how many working shifts and calendar days you have left until retirement.', anchor: '/retirement-countdown-in-workdays' },
     ],
+  },
+  {
+    id: 'astronomy-solar',
+    name: 'Sun & Moon',
+    icon: 'wb_sunny',
+    tools: [
+      { name: 'Sunrise & Sunset Times', badge: 'Sun Times', category: 'Sun & Moon', desc: 'Find when the sun rises, sets, and when daylight begins and ends in your area.', anchor: '/time-date/sunrise-sunset-calculator' },
+      { name: 'Moon Phase Calendar', badge: 'Full & New Moon', category: 'Sun & Moon', desc: 'See whether the moon is full, new, or crescent tonight, and when the next full moon is.', anchor: '/time-date/moon-phase-calculator' },
+      { name: 'Sun & Moon Eclipse Dates', badge: 'Eclipse Tracker', category: 'Sun & Moon', desc: 'Find out when the next solar or lunar eclipse will take place around the world.', anchor: '/time-date/solar-eclipse-calculator' },
+      { name: 'First Day of the Seasons', badge: 'Spring & Winter Dates', category: 'Sun & Moon', desc: 'Find the exact day and time when Spring, Summer, Fall, and Winter officially start.', anchor: '/time-date/equinox-solstice-calculator' },
+      { name: 'Day & Night World Map', badge: 'Day vs Night Map', category: 'Sun & Moon', desc: 'An interactive world map showing which parts of the earth are in daylight or night right now.', anchor: '/time-date/day-night-world-map' },
+      { name: 'Day Number Counter (Julian Day)', badge: 'Continuous Count', category: 'Sun & Moon', desc: 'Count uninterrupted days since ancient history for calendar research.', anchor: '/julian-day-calculator' },
+    ],
+  },
+];
+
+const FAQS = [
+  {
+    q: 'What can I calculate with these time and date tools?',
+    a: 'You can find your exact age, count days between two dates, add or subtract days, calculate work hours and overtime pay, convert times across different world cities, set event countdowns, and check leap years—all free and right in your browser.',
+  },
+  {
+    q: 'How does the Age Calculator find my exact age?',
+    a: 'It looks at your real birth date and counts completed years, months, and days on the real calendar. It takes into account leap years and months with 28, 30, or 31 days, so your answer is 100% accurate.',
+  },
+  {
+    q: 'What does "inclusive counting" mean when counting days?',
+    a: 'If you count from Monday to Tuesday, regular counting says 1 day has passed. "Inclusive" counting includes both the first day and the last day, so Monday and Tuesday count as 2 days. You can choose either option with a simple checkbox.',
+  },
+  {
+    q: 'How does the Workdays calculator skip weekends and holidays?',
+    a: 'The tool looks at every day on the calendar between your two dates. It automatically skips Saturdays and Sundays, and can skip official holidays too, so you only see the days people actually work.',
+  },
+  {
+    q: 'What happens when you add 1 month to January 31?',
+    a: 'Because February only has 28 days (or 29 in a leap year), adding 1 month lands on February 28 or 29. The calculator will never accidentally jump forward into March.',
+  },
+  {
+    q: 'What is a leap year and why does it happen?',
+    a: 'The Earth takes about 365 days and 6 hours to travel around the sun. To keep our calendar matched with the seasons, we save up those 6 extra hours every year and add one full day—February 29—every 4 years. That makes 366 days instead of 365.',
+  },
+  {
+    q: 'Why are world time zones different?',
+    a: 'The Earth is round and spins. When the sun is shining on London, it is nighttime in Tokyo. Time zones help make sure that 12:00 noon is the middle of the day wherever you live.',
+  },
+  {
+    q: 'What is Daylight Saving Time (spring forward / fall back)?',
+    a: 'In many countries, clocks are moved 1 hour forward in the spring so there is more daylight in the evening. In the fall, clocks are moved 1 hour backward to standard time.',
+  },
+  {
+    q: 'What is a Unix timestamp in simple words?',
+    a: 'A Unix timestamp is simply the number of seconds that have passed since midnight on January 1, 1970. Computers use this single number to remember dates easily without getting confused by time zones.',
+  },
+  {
+    q: 'How does the Work Hours calculator calculate overtime pay?',
+    a: 'You enter what time you started and finished work, and how many minutes you took for an unpaid lunch break. The tool subtracts your lunch break, counts your net hours, and if you worked more than 8 hours, it automatically calculates 1.5× extra pay for those overtime hours.',
+  },
+  {
+    q: 'Can I calculate work hours if my shift goes past midnight?',
+    a: 'Yes. If you start work at 10:00 PM at night and finish at 6:00 AM the next morning, the calculator automatically understands that you worked overnight and gives you the correct 8 hours.',
+  },
+  {
+    q: 'How does the 90-minute work timer help me focus?',
+    a: 'The human brain naturally focuses best in bursts of about 90 minutes. After 90 minutes, your energy drops. Taking a 15–20 minute break lets your mind recharge so you can work well again.',
+  },
+  {
+    q: 'Is my personal information and birthday private?',
+    a: 'Yes, 100%. All calculations happen entirely on your phone or computer. None of your birthdays, work hours, or dates are ever sent to any server.',
+  },
+  {
+    q: 'Why is dividing by 30 inaccurate when counting months?',
+    a: 'Because months do not all have 30 days! Some have 31, some have 30, and February has 28 or 29. Dividing by 30 can be off by up to 3 days. Our tools count the actual calendar days so the result is always exact.',
   },
 ];
 
 export default function TimeDateClient() {
   const [mounted, setMounted] = useState(false);
-  const [isDark, setIsDark] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [activeDashboardTab, setActiveDashboardTab] = useState<'age' | 'diff' | 'work' | 'timezone'>('age');
 
-  // Live time ticker state
-  const [now, setNow] = useState<Date | null>(null);
-
-  // FAQ state
+  // FAQ Accordion State
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  // Flagship Tool 1: Age Calculator
+  // Live Time Ticker
+  const [now, setNow] = useState<Date | null>(null);
+
+  // --- Workbench State: Tab 1 (Age) ---
   const [dob, setDob] = useState('1996-05-14');
-  const [ageTargetDate, setAgeTargetDate] = useState('2025-02-27');
+  const [ageTargetDate, setAgeTargetDate] = useState('2026-10-01');
 
-  // Flagship Tool 2: Date Difference
-  const [dateStart, setDateStart] = useState('2025-01-01');
-  const [dateEnd, setDateEnd] = useState('2025-09-30');
+  // --- Workbench State: Tab 2 (Date Difference) ---
+  const [dateStart, setDateStart] = useState('2026-01-01');
+  const [dateEnd, setDateEnd] = useState('2026-12-31');
+  const [inclusiveEnd, setInclusiveEnd] = useState(false);
 
-  // Flagship Tool 3: Work Hours & Overtime
+  // --- Workbench State: Tab 3 (Work Hours & Overtime) ---
   const [shiftStart, setShiftStart] = useState('08:30');
-  const [shiftEnd, setShiftEnd] = useState('17:45');
+  const [shiftEnd, setShiftEnd] = useState('17:30');
   const [breakMins, setBreakMins] = useState(45);
-  const [hourlyWage, setHourlyWage] = useState(42);
+  const [hourlyWage, setHourlyWage] = useState(45);
 
-  // Flagship Tool 4: Time Zone Overlap Slider (hours in UTC: 0-24)
-  const [utcHourSlider, setUtcHourSlider] = useState(14); // 14:00 UTC = 9:00 AM EST, 6:00 AM PST, 2:00 PM GMT
+  // --- Workbench State: Tab 4 (Time Zone Overlap) ---
+  const [utcHourSlider, setUtcHourSlider] = useState(14); // 14:00 UTC
 
   const searchInputRef = useRef<HTMLInputElement>(null);
 
+  // Mount effect & clock interval
   useEffect(() => {
     setMounted(true);
-    setIsDark(getCurrentTheme() === 'dark');
     const currentDate = new Date();
     setNow(currentDate);
     const isoToday = currentDate.toISOString().split('T')[0];
@@ -144,143 +235,42 @@ export default function TimeDateClient() {
       setNow(new Date());
     }, 1000);
 
-    const handleThemeChange = (e: Event) => {
-      const customEvent = e as CustomEvent<string>;
-      if (customEvent.detail) {
-        setIsDark(customEvent.detail === 'dark');
-      } else {
-        setIsDark(getCurrentTheme() === 'dark');
-      }
-    };
-
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         searchInputRef.current?.focus();
       }
     };
-
-    window.addEventListener('solveit-theme-change', handleThemeChange);
-    window.addEventListener('storage', handleThemeChange);
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       clearInterval(interval);
-      window.removeEventListener('solveit-theme-change', handleThemeChange);
-      window.removeEventListener('storage', handleThemeChange);
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
-  const handleToggleTheme = () => {
-    const next = toggleTheme();
-    setIsDark(next === 'dark');
-  };
-
-  // --- Real-time Metrics Calculations ---
-  const telemetry = useMemo(() => {
-    if (!mounted || !now) {
-      return {
-        utcStr: '00:00:00 UTC',
-        locStr: '00:00:00 (Local)',
-        timeZoneShort: 'UTC',
-        weekNo: '01',
-        percentYearElapsed: '0.0',
-        dayOfYear: 1,
-        totalDaysInYear: 365,
-        daysLeftInYear: 364,
-        nextYear: 2026,
-        currentQuarter: 1,
-        quarterPercent: 0,
-        daysToNextQ: 0,
-        nextEventName: 'Equinox',
-        daysToEvent: 0,
-      };
-    }
-
-    const current = now;
-    const utcHours = String(current.getUTCHours()).padStart(2, '0');
-    const utcMins = String(current.getUTCMinutes()).padStart(2, '0');
-    const utcSecs = String(current.getUTCSeconds()).padStart(2, '0');
-    const utcStr = `${utcHours}:${utcMins}:${utcSecs} UTC`;
-
-    const locHours = String(current.getHours()).padStart(2, '0');
-    const locMins = String(current.getMinutes()).padStart(2, '0');
-    const locSecs = String(current.getSeconds()).padStart(2, '0');
-    const timeZoneShort = typeof Intl !== 'undefined' ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'UTC';
-    const locStr = `${locHours}:${locMins}:${locSecs} (Local)`;
-
-    // Day of year
-    const startOfYear = new Date(current.getFullYear(), 0, 1);
-    const diff = current.getTime() - startOfYear.getTime();
-    const oneDay = 1000 * 60 * 60 * 24;
-    const dayOfYear = Math.floor(diff / oneDay) + 1;
-    const isLeap = (current.getFullYear() % 4 === 0 && current.getFullYear() % 100 !== 0) || current.getFullYear() % 400 === 0;
-    const totalDaysInYear = isLeap ? 366 : 365;
-    const daysLeftInYear = totalDaysInYear - dayOfYear;
-
-    // ISO 8601 Week Number
-    const d = new Date(Date.UTC(current.getFullYear(), current.getMonth(), current.getDate()));
-    const dayNum = d.getUTCDay() || 7;
-    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
-    const percentYearElapsed = ((dayOfYear / totalDaysInYear) * 100).toFixed(1);
-
-    // Quarter Progress
-    const month = current.getMonth();
-    const currentQuarter = Math.floor(month / 3) + 1;
-    const quarterStartMonth = (currentQuarter - 1) * 3;
-    const nextQuarterStart = new Date(current.getFullYear(), quarterStartMonth + 3, 1);
-    const currentQuarterStart = new Date(current.getFullYear(), quarterStartMonth, 1);
-    const quarterDuration = (nextQuarterStart.getTime() - currentQuarterStart.getTime()) / oneDay;
-    const quarterElapsed = (current.getTime() - currentQuarterStart.getTime()) / oneDay;
-    const quarterPercent = Math.min(100, Math.max(0, Math.round((quarterElapsed / quarterDuration) * 100)));
-    const daysToNextQ = Math.max(0, Math.ceil((nextQuarterStart.getTime() - current.getTime()) / oneDay));
-
-    // Equinox & Solstice Countdown (approx March 20, June 21, Sept 22, Dec 21)
-    const year = current.getFullYear();
-    const astronomicalEvents = [
-      { name: 'Spring Equinox', date: new Date(year, 2, 20) },
-      { name: 'Summer Solstice', date: new Date(year, 5, 21) },
-      { name: 'Autumn Equinox', date: new Date(year, 8, 22) },
-      { name: 'Winter Solstice', date: new Date(year, 11, 21) },
-      { name: 'Spring Equinox', date: new Date(year + 1, 2, 20) },
-    ];
-    const nextEvent = astronomicalEvents.find((ev) => ev.date > current) || astronomicalEvents[0];
-    const daysToEvent = Math.max(0, Math.ceil((nextEvent.date.getTime() - current.getTime()) / oneDay));
-
-    return {
-      utcStr,
-      locStr,
-      timeZoneShort,
-      weekNo: String(weekNo).padStart(2, '0'),
-      percentYearElapsed,
-      dayOfYear,
-      totalDaysInYear,
-      daysLeftInYear,
-      nextYear: current.getFullYear() + 1,
-      currentQuarter,
-      quarterPercent,
-      daysToNextQ,
-      nextEventName: nextEvent.name,
-      daysToEvent,
-    };
+  // --- Live Clock String ---
+  const liveClockString = useMemo(() => {
+    if (!mounted || !now) return '00:00:00 UTC';
+    const hours = String(now.getUTCHours()).padStart(2, '0');
+    const mins = String(now.getUTCMinutes()).padStart(2, '0');
+    const secs = String(now.getUTCSeconds()).padStart(2, '0');
+    return `${hours}:${mins}:${secs} UTC`;
   }, [now, mounted]);
 
-  // --- Dynamic Age Calculator Output ---
+  // --- Tab 1: Age Calculations ---
   const ageResults = useMemo(() => {
     if (!dob || !ageTargetDate) {
-      return { valid: false, error: 'Please enter valid dates' };
+      return { valid: false, error: 'Please enter a valid birthday date' };
     }
     const dStart = new Date(dob);
     const dTarget = new Date(ageTargetDate);
 
     if (isNaN(dStart.getTime()) || isNaN(dTarget.getTime())) {
-      return { valid: false, error: 'Invalid date format' };
+      return { valid: false, error: 'Please pick a real calendar date' };
     }
     if (dTarget < dStart) {
-      return { valid: false, error: 'Target date must be after birth date' };
+      return { valid: false, error: 'Target date must be after your birth date' };
     }
 
     let years = dTarget.getFullYear() - dStart.getFullYear();
@@ -298,15 +288,14 @@ export default function TimeDateClient() {
       months += 12;
     }
 
-    // Total days lived
-    const diffTime = dTarget.getTime() - dStart.getTime();
-    const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffMs = dTarget.getTime() - dStart.getTime();
+    const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const totalWeeks = Math.floor(totalDays / 7);
+    const totalHours = totalDays * 24;
 
-    // Day of week born on
     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const dayBorn = weekdays[dStart.getDay()];
 
-    // Next birthday days
     const nextBday = new Date(dTarget.getFullYear(), dStart.getMonth(), dStart.getDate());
     if (nextBday < dTarget) {
       nextBday.setFullYear(dTarget.getFullYear() + 1);
@@ -317,12 +306,14 @@ export default function TimeDateClient() {
       valid: true,
       display: `${years} Years, ${months} Months, ${days} Days`,
       totalDays: totalDays.toLocaleString(),
+      totalWeeks: totalWeeks.toLocaleString(),
+      totalHours: totalHours.toLocaleString(),
       dayBorn,
-      daysToNextBday: daysToNextBday === 0 ? 'Today!' : `${daysToNextBday} Days`,
+      daysToNextBday: daysToNextBday === 0 ? 'Today! 🎂' : `${daysToNextBday} Days`,
     };
   }, [dob, ageTargetDate]);
 
-  // --- Dynamic Date Difference Engine Output ---
+  // --- Tab 2: Date Difference Calculations ---
   const dateDiffResults = useMemo(() => {
     if (!dateStart || !dateEnd) return null;
     const start = new Date(dateStart);
@@ -331,12 +322,15 @@ export default function TimeDateClient() {
     if (isNaN(start.getTime()) || isNaN(end.getTime())) return null;
 
     const diffMs = Math.abs(end.getTime() - start.getTime());
-    const totalCalendarDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+    let totalCalendarDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+    if (inclusiveEnd) {
+      totalCalendarDays += 1;
+    }
     const totalHours = totalCalendarDays * 24;
 
-    // Approximate months & days
     const earlier = start < end ? start : end;
     const later = start < end ? end : start;
+
     let months = (later.getFullYear() - earlier.getFullYear()) * 12 + (later.getMonth() - earlier.getMonth());
     let days = later.getDate() - earlier.getDate();
     if (days < 0) {
@@ -345,11 +339,10 @@ export default function TimeDateClient() {
       days += prevMonthLastDay;
     }
 
-    // Count business vs weekend days
     let businessDays = 0;
     let weekendDays = 0;
     const cur = new Date(earlier);
-    while (cur < later) {
+    while (cur < later || (inclusiveEnd && cur.toDateString() === later.toDateString())) {
       const day = cur.getDay();
       if (day === 0 || day === 6) {
         weekendDays++;
@@ -361,14 +354,14 @@ export default function TimeDateClient() {
 
     return {
       calendarDays: totalCalendarDays,
-      monthsAndDays: `${months} Months, ${days} Days`,
+      monthsAndDays: `${months} Months and ${days} Days`,
       businessDays,
       weekendDays,
       totalHours: totalHours.toLocaleString(),
     };
-  }, [dateStart, dateEnd]);
+  }, [dateStart, dateEnd, inclusiveEnd]);
 
-  // --- Dynamic Work Hours & Timesheet Output ---
+  // --- Tab 3: Work Hours & Overtime Calculations ---
   const timesheetResults = useMemo(() => {
     const [startH, startM] = shiftStart.split(':').map(Number);
     const [endH, endM] = shiftEnd.split(':').map(Number);
@@ -377,12 +370,11 @@ export default function TimeDateClient() {
       return null;
     }
 
-    let startTotalMins = startH * 60 + startM;
+    const startTotalMins = startH * 60 + startM;
     let endTotalMins = endH * 60 + endM;
 
     if (endTotalMins < startTotalMins) {
-      // Shift spans midnight
-      endTotalMins += 24 * 60;
+      endTotalMins += 24 * 60; // Spans midnight
     }
 
     const grossShiftMins = endTotalMins - startTotalMins;
@@ -394,1439 +386,884 @@ export default function TimeDateClient() {
 
     const regularHours = Math.min(8.0, decimalHours);
     const overtimeHours = Math.max(0, decimalHours - 8.0);
-    const grossPay = regularHours * hourlyWage + overtimeHours * hourlyWage * 1.5;
+    const regularPay = regularHours * hourlyWage;
+    const overtimePay = overtimeHours * hourlyWage * 1.5;
+    const grossPay = regularPay + overtimePay;
 
     return {
       decimalHours: decimalHours.toFixed(2),
-      formattedTime: `${dispH} Hours, ${dispM} Minutes`,
+      formattedTime: `${dispH}h ${dispM}m`,
       regularHours: regularHours.toFixed(2),
       overtimeHours: overtimeHours.toFixed(2),
+      regularPay: regularPay.toFixed(2),
+      overtimePay: overtimePay.toFixed(2),
       grossPay: grossPay.toFixed(2),
     };
   }, [shiftStart, shiftEnd, breakMins, hourlyWage]);
 
-  // --- Filtered Tools List for Search ---
+  // --- Tab 4: Time Zone Overlap Calculations ---
+  const timeZoneMatrix = useMemo(() => {
+    const cities = [
+      { name: 'London', offset: 1, flag: '🇬🇧' },
+      { name: 'New York', offset: -4, flag: '🇺🇸' },
+      { name: 'San Francisco', offset: -7, flag: '🇺🇸' },
+      { name: 'Tokyo', offset: 9, flag: '🇯🇵' },
+      { name: 'Sydney', offset: 10, flag: '🇦🇺' },
+    ];
+
+    return cities.map((c) => {
+      let localHour = (utcHourSlider + c.offset) % 24;
+      if (localHour < 0) localHour += 24;
+
+      const isBusinessHours = localHour >= 9 && localHour <= 17;
+      const isEvening = localHour > 17 && localHour <= 22;
+
+      const ampm = localHour >= 12 ? 'PM' : 'AM';
+      const formatted12 = `${localHour % 12 === 0 ? 12 : localHour % 12}:00 ${ampm}`;
+      const formatted24 = `${String(localHour).padStart(2, '0')}:00`;
+
+      return {
+        ...c,
+        localHour,
+        formatted12,
+        formatted24,
+        isBusinessHours,
+        isEvening,
+      };
+    });
+  }, [utcHourSlider]);
+
+  // --- Filtered Tools List for Tier 4 Directory ---
   const filteredCategories = useMemo(() => {
-    if (!searchQuery.trim()) return CATEGORY_GROUPS;
+    let list = CATEGORY_GROUPS;
+    if (selectedCategory !== 'all') {
+      list = list.filter((g) => g.id === selectedCategory);
+    }
+
+    if (!searchQuery.trim()) return list;
     const query = searchQuery.toLowerCase().trim();
 
-    return CATEGORY_GROUPS.map((group) => {
-      const matchingTools = group.tools.filter(
-        (t) => t.name.toLowerCase().includes(query) || t.badge.toLowerCase().includes(query) || group.name.toLowerCase().includes(query)
-      );
-      return {
-        ...group,
-        tools: matchingTools,
-      };
-    }).filter((group) => group.tools.length > 0);
-  }, [searchQuery]);
+    return list
+      .map((group) => {
+        const matchingTools = group.tools.filter(
+          (t) =>
+            t.name.toLowerCase().includes(query) ||
+            t.badge.toLowerCase().includes(query) ||
+            group.name.toLowerCase().includes(query) ||
+            t.desc.toLowerCase().includes(query)
+        );
+        return {
+          ...group,
+          tools: matchingTools,
+        };
+      })
+      .filter((group) => group.tools.length > 0);
+  }, [searchQuery, selectedCategory]);
 
   const totalFilteredCount = useMemo(() => {
     return filteredCategories.reduce((acc, cat) => acc + cat.tools.length, 0);
   }, [filteredCategories]);
 
   return (
-    <div className="min-h-screen bg-surface font-body-md text-body-md text-on-surface flex flex-col">
-      {/* Universal Global Header */}
-      
+    <div className="min-h-screen bg-surface text-on-surface flex flex-col selection:bg-primary/20 selection:text-primary">
+      {/* =========================================================================
+          1st TIER: BREADCRUMB NAVIGATION
+          ========================================================================= */}
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Time & Date' },
+        ]}
+        badge="Simple Time & Date Tools"
+        rightContent={
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container font-data-mono text-[11px] text-on-surface border border-outline-variant/40">
+            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+            <span>{liveClockString}</span>
+          </div>
+        }
+      />
 
-      <main className="w-full pt-16 bg-surface min-h-[calc(100vh-64px)] flex-1">
-        <div className="flex flex-col w-full">
-          {/* 1. HEADER BREADCRUMB & STANDARDS */}
-          <div className="w-full bg-surface-container-lowest shadow-sm border-b border-outline-variant/30">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-sm">
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm">
-                {/* Breadcrumb Path */}
-                <nav aria-label="Breadcrumb" className="flex items-center gap-space-xs font-label-caps text-label-caps text-on-surface-variant">
-                  <Link className="hover:text-primary transition-colors flex items-center gap-1" href="/">
-                    <span className="material-symbols-outlined text-[15px]">home</span>
-                    <span>Home</span>
-                  </Link>
-                  <span className="text-outline-variant">/</span>
-                  <span className="text-on-surface font-semibold flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[15px] text-primary">schedule</span>
-                    <span>Time &amp; Date</span>
-                  </span>
-                </nav>
+      <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop w-full py-8 space-y-12">
+        {/* =========================================================================
+            2nd TIER: H1 TITLE & SHORT SUBHEADING SUMMARY (CENTERED & NON-TECHNICAL)
+            ========================================================================= */}
+        <section className="text-center flex flex-col items-center max-w-4xl mx-auto space-y-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-container text-xs font-semibold text-primary uppercase tracking-wider border border-outline-variant/40">
+            <Clock className="w-3.5 h-3.5 text-primary" />
+            <span>Free &amp; Easy Online Tools</span>
+          </div>
 
-                {/* System Badges */}
-                <div className="flex flex-wrap items-center gap-space-xs">
-                  <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-full bg-surface-container font-data-mono text-[11px] text-on-surface">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                    Standard Date &amp; Time Formats
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-full bg-surface-container font-data-mono text-[11px] text-on-surface">
-                    <span className="material-symbols-outlined text-[13px] text-secondary">public</span>
-                    Live UTC Clock Sync
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-full bg-surface-container-high font-data-mono text-[11px] text-primary font-semibold">
-                    <span className="material-symbols-outlined text-[13px]">bolt</span>
-                    Instant Private Calculations
-                  </span>
-                </div>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-surface font-headline-lg leading-tight">
+            Time &amp; Date Calculators: <span className="text-primary">Simple Tools for Age, Days, Hours &amp; Calendar</span>
+          </h1>
+
+          <p className="text-base sm:text-lg text-on-surface-variant max-w-2xl leading-relaxed font-body-md mx-auto">
+            Easy, free tools to find your exact age, count days between dates, track work hours and overtime pay, and check what time it is in other cities around the world. Fast, clear answers with no confusing words.
+          </p>
+        </section>
+
+        {/* =========================================================================
+            3rd TIER: LIVE INTERACTIVE DASHBOARD (EASY & NON-TECHNICAL)
+            ========================================================================= */}
+        <section className="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 shadow-lg overflow-hidden">
+          {/* Dashboard Header Bar & Segmented Tabs */}
+          <div className="border-b border-outline-variant/40 bg-surface-container/50 px-4 sm:px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Tier 3 · Try It Right Now</span>
               </div>
+              <h2 className="text-lg font-bold text-on-surface">Quick Calculator (Instant Results)</h2>
+            </div>
+
+            {/* Segmented Control Tabs */}
+            <div className="flex items-center gap-1 p-1 bg-surface-container rounded-xl border border-outline-variant/50 overflow-x-auto no-scrollbar">
+              <button
+                type="button"
+                onClick={() => setActiveDashboardTab('age')}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                  activeDashboardTab === 'age'
+                    ? 'bg-surface-container-lowest text-primary shadow-xs border border-outline-variant/60'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                <Calendar className="w-3.5 h-3.5 text-primary" />
+                <span>Age Calculator</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveDashboardTab('diff')}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                  activeDashboardTab === 'diff'
+                    ? 'bg-surface-container-lowest text-primary shadow-xs border border-outline-variant/60'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                <Clock className="w-3.5 h-3.5 text-secondary" />
+                <span>Days Between Dates</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveDashboardTab('work')}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                  activeDashboardTab === 'work'
+                    ? 'bg-surface-container-lowest text-primary shadow-xs border border-outline-variant/60'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                <Briefcase className="w-3.5 h-3.5 text-amber-400" />
+                <span>Work Hours &amp; Pay</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveDashboardTab('timezone')}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                  activeDashboardTab === 'timezone'
+                    ? 'bg-surface-container-lowest text-primary shadow-xs border border-outline-variant/60'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                <Globe className="w-3.5 h-3.5 text-cyan-400" />
+                <span>World Time Zones</span>
+              </button>
             </div>
           </div>
 
-          {/* 2. HERO SECTION WITH INTEGRATED COMMAND PALETTE */}
-          <section className="w-full bg-surface py-space-2xl">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
-                {/* Hero Text & Search (Cols 1-8) */}
-                <div className="lg:col-span-8 flex flex-col gap-space-md">
-                  <div className="inline-flex items-center gap-2 px-space-sm py-1 rounded-full bg-surface-container text-primary font-label-caps text-label-caps w-fit shadow-sm">
-                    <span className="material-symbols-outlined text-[16px] text-primary">timelapse</span>
-                    FREE ONLINE TOOLS
+          {/* Workbench Body */}
+          <div className="p-4 sm:p-6 lg:p-8">
+            {/* --- TAB 1: EXACT AGE CALCULATOR --- */}
+            {activeDashboardTab === 'age' && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="workbench-dob" className="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1.5">
+                      Your Birthday (Date of Birth)
+                    </label>
+                    <input
+                      id="workbench-dob"
+                      type="date"
+                      value={dob}
+                      onChange={(e) => setDob(e.target.value)}
+                      className="w-full bg-surface-container px-3.5 py-2.5 rounded-xl border border-outline-variant/60 text-on-surface font-data-mono text-sm focus:outline-none focus:border-primary transition-colors"
+                    />
                   </div>
                   <div>
-                    <h1 className="font-display-hero text-headline-lg lg:text-display-hero text-on-surface tracking-tight font-bold">
-                      Time &amp; Date Calculators
-                    </h1>
-                    <p className="font-headline-md text-headline-sm sm:text-headline-md text-primary font-semibold mt-1">
-                      Time &amp; Date Calculators for Better Planning and Productivity
-                    </p>
-                  </div>
-                  <p className="font-body-md text-body-md text-on-surface-variant max-w-2xl leading-relaxed">
-                    Explore free Time &amp; Date Calculators designed to help you calculate age, date differences, business days, countdowns, deadlines, work hours, time duration, and scheduling needs. Whether you&apos;re planning projects, tracking events, calculating workdays, or managing personal schedules, our accurate calculators provide quick and reliable results.
-                  </p>
-
-                  {/* High-Octane Command Search */}
-                  <div className="relative mt-space-sm max-w-2xl">
-                    <div className="bg-surface-container-lowest rounded-xl shadow-md p-2 flex items-center gap-space-sm border border-outline-variant/40 focus-within:border-primary transition-all">
-                      <span className="material-symbols-outlined text-outline text-[22px] ml-2">search</span>
-                      <input
-                        ref={searchInputRef}
-                        className="w-full bg-transparent text-on-surface placeholder:text-outline font-body-md text-body-md focus:outline-none"
-                        id="tool-search-input"
-                        placeholder="Search 100+ time & date tools (e.g., Age from DOB, Business Days, Work Hours)..."
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                      {searchQuery && (
-                        <button
-                          type="button"
-                          onClick={() => setSearchQuery('')}
-                          className="p-1 rounded-full hover:bg-surface-container text-outline text-xs"
-                          title="Clear search"
-                        >
-                          <span className="material-symbols-outlined text-[18px]">close</span>
-                        </button>
-                      )}
-                      <div className="hidden sm:flex items-center gap-1 bg-surface-container px-2 py-1 rounded font-data-mono text-[11px] text-on-surface-variant shrink-0">
-                        <span>⌘</span>
-                        <span>K</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const catalog = document.getElementById('catalog-section');
-                          catalog?.scrollIntoView({ behavior: 'smooth' });
-                        }}
-                        className="bg-primary text-on-primary font-body-sm text-body-sm px-space-md py-2 rounded-lg font-semibold hover:opacity-95 transition-opacity shadow-sm shrink-0 cursor-pointer"
-                      >
-                        Search
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Quick Query Chips */}
-                  <div className="flex flex-wrap items-center gap-space-xs pt-space-xs">
-                    <span className="font-label-caps text-label-caps text-outline uppercase tracking-wider">Fast Jumps:</span>
-                    <a
-                      href="#age-calculator-workbench"
-                      className="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface hover:bg-surface-container-high transition-colors font-data-mono text-[12px] border border-outline-variant/30"
-                    >
-                      Age Calculator
-                    </a>
-                    <a
-                      href="#date-diff-workbench"
-                      className="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface hover:bg-surface-container-high transition-colors font-data-mono text-[12px] border border-outline-variant/30"
-                    >
-                      Date Difference
-                    </a>
-                    <a
-                      href="#work-hours-workbench"
-                      className="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface hover:bg-surface-container-high transition-colors font-data-mono text-[12px] border border-outline-variant/30"
-                    >
-                      Work Hours &amp; OT
-                    </a>
-                    <a
-                      href="#timezone-workbench"
-                      className="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface hover:bg-surface-container-high transition-colors font-data-mono text-[12px] border border-outline-variant/30"
-                    >
-                      Time Zone Overlap
-                    </a>
-                    <a
-                      href="#telemetry-dashboard"
-                      className="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface hover:bg-surface-container-high transition-colors font-data-mono text-[12px] border border-outline-variant/30"
-                    >
-                      Pomodoro Cycles
-                    </a>
-                    <a
-                      href="#community-presets"
-                      className="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface hover:bg-surface-container-high transition-colors font-data-mono text-[12px] border border-outline-variant/30"
-                    >
-                      Countdown 2026
-                    </a>
+                    <label htmlFor="workbench-age-target" className="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1.5">
+                      Calculate Age On This Date (Defaults to Today)
+                    </label>
+                    <input
+                      id="workbench-age-target"
+                      type="date"
+                      value={ageTargetDate}
+                      onChange={(e) => setAgeTargetDate(e.target.value)}
+                      className="w-full bg-surface-container px-3.5 py-2.5 rounded-xl border border-outline-variant/60 text-on-surface font-data-mono text-sm focus:outline-none focus:border-primary transition-colors"
+                    />
                   </div>
                 </div>
 
-                {/* Metric Summary Capsule (Cols 9-12) */}
-                <div className="lg:col-span-4 bg-surface-container-low rounded-2xl p-space-lg shadow-sm border border-outline-variant/30 flex flex-col gap-space-md">
-                  <div className="flex items-center justify-between">
-                    <span className="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">
-                      Fast &amp; Private Calculation
-                    </span>
-                    <span className="w-2 h-2 rounded-full bg-secondary-container animate-ping"></span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-space-md">
-                    <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/20">
-                      <span className="font-label-caps text-[10px] text-outline uppercase block">Available Tools</span>
-                      <span className="font-numerical-display text-[26px] text-on-surface font-bold">104+</span>
-                      <span className="font-body-sm text-[11px] text-on-surface-variant block mt-0.5">Calculator Tools</span>
-                    </div>
-                    <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/20">
-                      <span className="font-label-caps text-[10px] text-outline uppercase block">Operations / Mo</span>
-                      <span className="font-numerical-display text-[26px] text-primary font-bold">50K</span>
-                      <span className="font-body-sm text-[11px] text-on-surface-variant block mt-0.5">Monthly Calculations</span>
-                    </div>
-                    <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/20">
-                      <span className="font-label-caps text-[10px] text-outline uppercase block">Privacy</span>
-                      <span className="font-data-mono text-[16px] text-on-surface font-semibold">100% Client</span>
-                      <span className="font-body-sm text-[11px] text-on-surface-variant block mt-0.5">100% Private (No Tracking)</span>
-                    </div>
-                    <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/20">
-                      <span className="font-label-caps text-[10px] text-outline uppercase block">Precision</span>
-                      <span className="font-data-mono text-[16px] text-secondary font-semibold">Exact</span>
-                      <span className="font-body-sm text-[11px] text-on-surface-variant block mt-0.5">Real-Time Precision</span>
+                {/* Output Panel */}
+                <div className="bg-surface-container/70 rounded-xl p-5 border border-outline-variant/40 space-y-4">
+                  <div>
+                    <span className="text-xs uppercase tracking-wider text-on-surface-variant font-medium">Your Exact Age:</span>
+                    <div className="text-2xl sm:text-3xl font-extrabold text-primary font-data-mono mt-1">
+                      {ageResults.valid ? ageResults.display : ageResults.error}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm pt-2">
-                    <span className="material-symbols-outlined text-primary text-[18px]">verified_user</span>
-                    <span>Accurate calendar leap years and time rules</span>
-                  </div>
+
+                  {ageResults.valid && (
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-outline-variant/30">
+                      <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                        <span className="text-[11px] font-semibold text-on-surface-variant block uppercase">Total Days Old</span>
+                        <span className="text-base font-bold font-data-mono text-on-surface">{ageResults.totalDays} Days</span>
+                      </div>
+                      <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                        <span className="text-[11px] font-semibold text-on-surface-variant block uppercase">Total Weeks Old</span>
+                        <span className="text-base font-bold font-data-mono text-on-surface">{ageResults.totalWeeks} Weeks</span>
+                      </div>
+                      <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                        <span className="text-[11px] font-semibold text-on-surface-variant block uppercase">Day You Were Born</span>
+                        <span className="text-base font-bold font-data-mono text-on-surface">{ageResults.dayBorn}</span>
+                      </div>
+                      <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                        <span className="text-[11px] font-semibold text-on-surface-variant block uppercase">Next Birthday</span>
+                        <span className="text-base font-bold font-data-mono text-secondary">{ageResults.daysToNextBday}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between pt-2 text-xs text-on-surface-variant">
+                  <span>Accurate calendar calculation that accounts for real months and leap years.</span>
+                  <Link href="/time-date/age-calculator" className="text-primary hover:underline font-semibold flex items-center gap-1">
+                    <span>Open Tool</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
-            </div>
-          </section>
+            )}
 
-          {/* 3. REAL-TIME CALENDAR & TIME OVERVIEW */}
-          <section id="telemetry-dashboard" className="w-full bg-surface-container-low py-space-xl border-y border-outline-variant/30">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="flex items-center justify-between mb-space-md">
+            {/* --- TAB 2: DATE DIFFERENCE CALCULATOR --- */}
+            {activeDashboardTab === 'diff' && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="workbench-date-start" className="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1.5">
+                      First Date (Start)
+                    </label>
+                    <input
+                      id="workbench-date-start"
+                      type="date"
+                      value={dateStart}
+                      onChange={(e) => setDateStart(e.target.value)}
+                      className="w-full bg-surface-container px-3.5 py-2.5 rounded-xl border border-outline-variant/60 text-on-surface font-data-mono text-sm focus:outline-none focus:border-primary transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="workbench-date-end" className="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1.5">
+                      Second Date (End)
+                    </label>
+                    <input
+                      id="workbench-date-end"
+                      type="date"
+                      value={dateEnd}
+                      onChange={(e) => setDateEnd(e.target.value)}
+                      className="w-full bg-surface-container px-3.5 py-2.5 rounded-xl border border-outline-variant/60 text-on-surface font-data-mono text-sm focus:outline-none focus:border-primary transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Inclusive Toggle */}
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-[22px]">calendar_month</span>
-                  <h2 className="font-headline-md text-headline-md text-on-surface tracking-tight font-bold">
-                    Live Calendar &amp; Year Overview
-                  </h2>
-                </div>
-                <div className="hidden md:flex items-center gap-2 font-data-mono text-[12px] text-on-surface-variant bg-surface-container-lowest px-3 py-1 rounded-lg shadow-sm border border-outline-variant/20">
-                  <span>LIVE CLOCK:</span>
-                  <span className="text-primary font-bold">ACTIVE</span>
-                </div>
-              </div>
-
-              {/* Live Metric Grid Cards */}
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-space-sm">
-                {/* Live UTC/Local */}
-                <div className="col-span-2 bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-                  <div className="flex items-center justify-between">
-                    <span className="font-label-caps text-label-caps text-outline uppercase">Current Time</span>
-                    <span className="material-symbols-outlined text-primary text-[16px]">public</span>
-                  </div>
-                  <div className="my-space-xs" suppressHydrationWarning>
-                    <div className="font-data-mono text-[20px] font-bold text-on-surface tracking-tight" suppressHydrationWarning>
-                      {telemetry.utcStr}
-                    </div>
-                    <div className="font-data-mono text-[13px] text-on-surface-variant" suppressHydrationWarning>
-                      {telemetry.locStr}
-                    </div>
-                  </div>
-                  <div className="font-label-caps text-[10px] text-outline uppercase">SYSTEM CLOCK SYNCED</div>
+                  <input
+                    id="inclusive-checkbox"
+                    type="checkbox"
+                    checked={inclusiveEnd}
+                    onChange={(e) => setInclusiveEnd(e.target.checked)}
+                    className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary accent-primary"
+                  />
+                  <label htmlFor="inclusive-checkbox" className="text-xs text-on-surface font-medium cursor-pointer">
+                    Count both the start date and the end date
+                  </label>
                 </div>
 
-                {/* Week Number */}
-                <div className="col-span-2 bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-                  <div className="flex items-center justify-between">
-                    <span className="font-label-caps text-label-caps text-outline uppercase">Current Week</span>
-                    <span className="font-data-mono text-body-sm font-semibold text-primary">Standard Week</span>
-                  </div>
-                  <div className="my-space-xs" suppressHydrationWarning>
-                    <div className="font-numerical-display text-[24px] font-bold text-on-surface" suppressHydrationWarning>
-                      Week {telemetry.weekNo} <span className="text-on-surface-variant text-[15px] font-normal">/ 52</span>
-                    </div>
-                    <div className="w-full bg-surface-container rounded-full h-1.5 mt-2 overflow-hidden">
-                      <div className="bg-primary h-full rounded-full transition-all duration-500" style={{ width: `${telemetry.percentYearElapsed}%` }}></div>
-                    </div>
-                  </div>
-                  <div className="font-body-sm text-[11px] text-on-surface-variant" suppressHydrationWarning>{telemetry.percentYearElapsed}% of current year elapsed</div>
-                </div>
-
-                {/* Day of Year */}
-                <div className="col-span-1 bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-                  <span className="font-label-caps text-label-caps text-outline uppercase">Day of Year</span>
-                  <div className="font-numerical-display text-[24px] font-bold text-on-surface my-1" suppressHydrationWarning>
-                    Day {telemetry.dayOfYear}
-                  </div>
-                  <span className="font-body-sm text-[11px] text-on-surface-variant" suppressHydrationWarning>of {telemetry.totalDaysInYear} Days</span>
-                </div>
-
-                {/* Days Remaining */}
-                <div className="col-span-1 bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-                  <span className="font-label-caps text-label-caps text-outline uppercase">Days Left</span>
-                  <div className="font-numerical-display text-[24px] font-bold text-primary my-1" suppressHydrationWarning>
-                    {telemetry.daysLeftInYear}
-                  </div>
-                  <span className="font-body-sm text-[11px] text-on-surface-variant" suppressHydrationWarning>Until New Year {telemetry.nextYear}</span>
-                </div>
-
-                {/* Quarter Progress */}
-                <div className="col-span-1 bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-                  <span className="font-label-caps text-label-caps text-outline uppercase">Quarter Progress</span>
-                  <div className="font-numerical-display text-[24px] font-bold text-on-surface my-1" suppressHydrationWarning>
-                    Q{telemetry.currentQuarter} <span className="text-[14px] text-secondary font-semibold">{telemetry.quarterPercent}%</span>
-                  </div>
-                  <span className="font-body-sm text-[11px] text-on-surface-variant" suppressHydrationWarning>{telemetry.daysToNextQ} Days to next Q</span>
-                </div>
-
-                {/* Season & Solstice */}
-                <div className="col-span-1 bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-                  <span className="font-label-caps text-label-caps text-outline uppercase">Next Season</span>
-                  <div className="font-numerical-display text-[24px] font-bold text-on-surface my-1" suppressHydrationWarning>
-                    {telemetry.daysToEvent}d
-                  </div>
-                  <span className="font-body-sm text-[11px] text-on-surface-variant" suppressHydrationWarning>{telemetry.nextEventName}</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 4. INTENT-DRIVEN GOAL EXPLORER (Bento Design Pattern) */}
-          <section className="w-full bg-surface py-space-2xl">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="max-w-3xl mb-space-xl">
-                <span className="font-label-caps text-label-caps text-primary uppercase tracking-widest block mb-1 font-bold">
-                  Purpose-Built Calculators
-                </span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-                  What would you like to calculate today?
-                </h2>
-                <p className="font-body-md text-body-md text-on-surface-variant mt-2">
-                  Access structured workflows mapped precisely to your personal, corporate, or project timing requirements.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
-                {/* Card 1: Project Planner */}
-                <div className="group bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-outline-variant/30 hover:border-primary/40">
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-space-md group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                      <span className="material-symbols-outlined text-[26px]">calendar_month</span>
-                    </div>
-                    <h3 className="font-headline-md text-[18px] text-on-surface font-semibold mb-1">Plan a Project</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                      Calculate milestone deadlines, skip weekends and bank holidays, and schedule working days.
-                    </p>
-                  </div>
-                  <Link className="inline-flex items-center gap-1 font-body-sm text-body-sm text-primary font-semibold hover:underline" href="/time-date/date-difference">
-                    <span>Project Date Calculator</span>
-                    <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </Link>
-                </div>
-
-                {/* Card 2: Durations & Deltas */}
-                <div className="group bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-outline-variant/30 hover:border-primary/40">
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-space-md group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                      <span className="material-symbols-outlined text-[26px]">timer</span>
-                    </div>
-                    <h3 className="font-headline-md text-[18px] text-on-surface font-semibold mb-1">Add &amp; Subtract Time</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                      Add or subtract hours, minutes, and seconds across day boundaries. Convert fractions to clock formats.
-                    </p>
-                  </div>
-                  <Link className="inline-flex items-center gap-1 font-body-sm text-body-sm text-primary font-semibold hover:underline" href="/time-date/time-calculator">
-                    <span>Time Calculator</span>
-                    <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </Link>
-                </div>
-
-                {/* Card 3: Work & Overtime */}
-                <div className="group bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-outline-variant/30 hover:border-primary/40">
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-space-md group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                      <span className="material-symbols-outlined text-[26px]">badge</span>
-                    </div>
-                    <h3 className="font-headline-md text-[18px] text-on-surface font-semibold mb-1">Work Hours &amp; Payroll</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                      Calculate total punch card hours, automatic 30/60m lunch deductions, and 1.5x/2.0x overtime wages.
-                    </p>
-                  </div>
-                  <Link className="inline-flex items-center gap-1 font-body-sm text-body-sm text-primary font-semibold hover:underline" href="/time-date/work-hours">
-                    <span>Work Hours &amp; Payroll</span>
-                    <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </Link>
-                </div>
-
-                {/* Card 4: Global Zones */}
-                <div className="group bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-outline-variant/30 hover:border-primary/40">
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-space-md group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                      <span className="material-symbols-outlined text-[26px]">language</span>
-                    </div>
-                    <h3 className="font-headline-md text-[18px] text-on-surface font-semibold mb-1">Time Zone Sync</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                      Coordinate team calls smoothly. Find optimal working hour overlaps between San Francisco, London, and Tokyo.
-                    </p>
-                  </div>
-                  <Link className="inline-flex items-center gap-1 font-body-sm text-body-sm text-primary font-semibold hover:underline" href="/time-date/time-zone-overlap">
-                    <span>Overlap Scheduler</span>
-                    <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </Link>
-                </div>
-
-                {/* Card 5: Chronological Age */}
-                <div className="group bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-outline-variant/30 hover:border-primary/40">
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-space-md group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                      <span className="material-symbols-outlined text-[26px]">cake</span>
-                    </div>
-                    <h3 className="font-headline-md text-[18px] text-on-surface font-semibold mb-1">Exact Age &amp; Milestones</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                      Calculate exact years, months, days, total days lived, and countdown to your next birthday.
-                    </p>
-                  </div>
-                  <Link className="inline-flex items-center gap-1 font-body-sm text-body-sm text-primary font-semibold hover:underline" href="/time-date/age-calculator">
-                    <span>Age Calculator</span>
-                    <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </Link>
-                </div>
-
-                {/* Card 6: Date Counting */}
-                <div className="group bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-outline-variant/30 hover:border-primary/40">
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-space-md group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                      <span className="material-symbols-outlined text-[26px]">date_range</span>
-                    </div>
-                    <h3 className="font-headline-md text-[18px] text-on-surface font-semibold mb-1">Days Between Dates</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                      Pinpoint total elapsed days, weekdays only, weeks, or calendar months between any two dates.
-                    </p>
-                  </div>
-                  <Link className="inline-flex items-center gap-1 font-body-sm text-body-sm text-primary font-semibold hover:underline" href="/time-date/date-difference">
-                    <span>Date Difference Calculator</span>
-                    <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </Link>
-                </div>
-
-                {/* Card 7: Launch Milestones */}
-                <div className="group bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-outline-variant/30 hover:border-primary/40">
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-space-md group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                      <span className="material-symbols-outlined text-[26px]">rocket_launch</span>
-                    </div>
-                    <h3 className="font-headline-md text-[18px] text-on-surface font-semibold mb-1">Event Countdowns</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                      Track upcoming product launches, weddings, vacations, holidays, and milestones with live countdown timers.
-                    </p>
-                  </div>
-                  <Link className="inline-flex items-center gap-1 font-body-sm text-body-sm text-primary font-semibold hover:underline" href="/time-date/countdown-timer">
-                    <span>Countdown Timer</span>
-                    <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </Link>
-                </div>
-
-                {/* Card 8: Chronobiology & Focus */}
-                <div className="group bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-outline-variant/30 hover:border-primary/40">
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary mb-space-md group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                      <span className="material-symbols-outlined text-[26px]">psychology</span>
-                    </div>
-                    <h3 className="font-headline-md text-[18px] text-on-surface font-semibold mb-1">Focus &amp; Break Timers</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                      Plan Pomodoro sprints (25/5m), 90-minute focus sessions, and optimal daily rest breaks for productivity.
-                    </p>
-                  </div>
-                  <a className="inline-flex items-center gap-1 font-body-sm text-body-sm text-primary font-semibold hover:underline" href="#telemetry-dashboard">
-                    <span>Focus Cycles</span>
-                    <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 5. FEATURED TOOLS (Interactive Quick-Calculate Sidecars) */}
-          <section className="w-full bg-surface-container-low py-space-3xl border-t border-outline-variant/30">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-space-sm">
-                <div>
-                  <span className="font-label-caps text-label-caps text-primary uppercase tracking-widest block mb-1 font-bold">
-                    Featured Tools
-                  </span>
-                  <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-                    Quick Interactive Calculators
-                  </h2>
-                </div>
-                <div className="font-body-sm text-body-sm text-on-surface-variant">
-                  Instant calculation tools. Results update in real-time as you type.
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-space-xl">
-                {/* TOOL 1: Age Calculator */}
-                <div id="age-calculator-workbench" className="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between pb-space-sm border-b border-outline-variant/20">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[24px]">cake</span>
-                        <h3 className="font-headline-md text-[20px] text-on-surface font-semibold">Age Calculator</h3>
+                {/* Output Panel */}
+                {dateDiffResults && (
+                  <div className="bg-surface-container/70 rounded-xl p-5 border border-outline-variant/40 space-y-4">
+                    <div>
+                      <span className="text-xs uppercase tracking-wider text-on-surface-variant font-medium">Total Days Between Both Dates:</span>
+                      <div className="text-2xl sm:text-3xl font-extrabold text-secondary font-data-mono mt-1">
+                        {dateDiffResults.calendarDays.toLocaleString()} Days
                       </div>
-                      <span className="px-2 py-0.5 rounded bg-surface-container font-data-mono text-[11px] text-on-surface font-semibold">
-                        ACCURATE AGE
-                      </span>
-                    </div>
-
-                    {/* Interactive UI Inputs */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md my-space-md">
-                      <div>
-                        <label className="font-label-caps text-label-caps text-outline uppercase block mb-1" htmlFor="dob-input">
-                          Date of Birth
-                        </label>
-                        <input
-                          className="w-full bg-surface-container-low text-on-surface font-data-mono text-data-mono p-space-sm rounded-lg focus:outline-none focus:bg-surface-container border border-outline-variant/30 focus:border-primary"
-                          id="dob-input"
-                          type="date"
-                          value={dob}
-                          onChange={(e) => setDob(e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <label className="font-label-caps text-label-caps text-outline uppercase block mb-1" htmlFor="age-target-date">
-                          Calculate Age At Date
-                        </label>
-                        <input
-                          className="w-full bg-surface-container-low text-on-surface font-data-mono text-data-mono p-space-sm rounded-lg focus:outline-none focus:bg-surface-container border border-outline-variant/30 focus:border-primary"
-                          id="age-target-date"
-                          type="date"
-                          value={ageTargetDate}
-                          onChange={(e) => setAgeTargetDate(e.target.value)}
-                        />
+                      <div className="text-sm text-on-surface-variant font-data-mono mt-0.5">
+                        Equal to {dateDiffResults.monthsAndDays}
                       </div>
                     </div>
 
-                    {/* Instant Computation Visual Panel */}
-                    <div className="bg-surface-container p-space-md rounded-xl my-space-sm border border-outline-variant/20">
-                      <div className="text-on-surface-variant font-label-caps text-label-caps uppercase">Calculated Output:</div>
-                      <div className="font-numerical-display text-[28px] text-primary font-bold mt-1" id="age-calculated-display">
-                        {ageResults.valid ? ageResults.display : ageResults.error}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3 border-t border-outline-variant/30">
+                      <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                        <span className="text-[11px] font-semibold text-on-surface-variant block uppercase">Workdays (Mon–Fri)</span>
+                        <span className="text-base font-bold font-data-mono text-emerald-400">{dateDiffResults.businessDays} Days</span>
                       </div>
-                      {ageResults.valid && (
-                        <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-outline-variant/20">
-                          <div className="bg-surface-container-lowest p-2 rounded-lg border border-outline-variant/20">
-                            <span className="font-label-caps text-[10px] text-outline uppercase block">Total Days</span>
-                            <span className="font-data-mono text-[13px] font-bold text-on-surface">{ageResults.totalDays} Days</span>
-                          </div>
-                          <div className="bg-surface-container-lowest p-2 rounded-lg border border-outline-variant/20">
-                            <span className="font-label-caps text-[10px] text-outline uppercase block">Born On</span>
-                            <span className="font-data-mono text-[13px] font-bold text-on-surface">{ageResults.dayBorn}</span>
-                          </div>
-                          <div className="bg-surface-container-lowest p-2 rounded-lg border border-outline-variant/20">
-                            <span className="font-label-caps text-[10px] text-outline uppercase block">Next Birthday</span>
-                            <span className="font-data-mono text-[13px] font-bold text-secondary">{ageResults.daysToNextBday}</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-space-md border-t border-outline-variant/20 mt-2">
-                    <span className="font-body-sm text-[12px] text-outline">Formula: Exact leap year and calendar adjustment</span>
-                    <Link
-                      href="/time-date/age-calculator"
-                      className="px-space-md py-1.5 rounded-lg bg-surface-container font-body-sm text-body-sm text-primary font-semibold hover:bg-surface-container-high transition-colors"
-                    >
-                      Full Calculator Page →
-                    </Link>
-                  </div>
-                </div>
-
-                {/* TOOL 2: Date Difference Calculator */}
-                <div id="date-diff-workbench" className="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between pb-space-sm border-b border-outline-variant/20">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[24px]">date_range</span>
-                        <h3 className="font-headline-md text-[20px] text-on-surface font-semibold">Date Difference Calculator</h3>
+                      <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                        <span className="text-[11px] font-semibold text-on-surface-variant block uppercase">Weekend Days (Sat–Sun)</span>
+                        <span className="text-base font-bold font-data-mono text-amber-400">{dateDiffResults.weekendDays} Days</span>
                       </div>
-                      <span className="px-2 py-0.5 rounded bg-surface-container font-data-mono text-[11px] text-on-surface font-semibold">
-                        DAY/MONTH DIFFERENCE
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md my-space-md">
-                      <div>
-                        <label className="font-label-caps text-label-caps text-outline uppercase block mb-1" htmlFor="date-start">
-                          Start Date
-                        </label>
-                        <input
-                          className="w-full bg-surface-container-low text-on-surface font-data-mono text-data-mono p-space-sm rounded-lg focus:outline-none focus:bg-surface-container border border-outline-variant/30 focus:border-primary"
-                          id="date-start"
-                          type="date"
-                          value={dateStart}
-                          onChange={(e) => setDateStart(e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <label className="font-label-caps text-label-caps text-outline uppercase block mb-1" htmlFor="date-end">
-                          End Date
-                        </label>
-                        <input
-                          className="w-full bg-surface-container-low text-on-surface font-data-mono text-data-mono p-space-sm rounded-lg focus:outline-none focus:bg-surface-container border border-outline-variant/30 focus:border-primary"
-                          id="date-end"
-                          type="date"
-                          value={dateEnd}
-                          onChange={(e) => setDateEnd(e.target.value)}
-                        />
+                      <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                        <span className="text-[11px] font-semibold text-on-surface-variant block uppercase">Total Hours</span>
+                        <span className="text-base font-bold font-data-mono text-on-surface">{dateDiffResults.totalHours} Hours</span>
                       </div>
                     </div>
-
-                    {/* Output Visual */}
-                    {dateDiffResults && (
-                      <div className="bg-surface-container p-space-md rounded-xl my-space-sm border border-outline-variant/20">
-                        <div className="flex items-center justify-between">
-                          <span className="text-on-surface-variant font-label-caps text-label-caps uppercase">Total Span</span>
-                          <span className="text-secondary font-data-mono text-[12px] font-semibold">{dateDiffResults.calendarDays} Calendar Days</span>
-                        </div>
-                        <div className="font-numerical-display text-[28px] text-primary font-bold mt-1">
-                          {dateDiffResults.monthsAndDays}
-                        </div>
-                        <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-outline-variant/20">
-                          <div className="bg-surface-container-lowest p-2 rounded-lg border border-outline-variant/20">
-                            <span className="font-label-caps text-[10px] text-outline uppercase block">Business Days</span>
-                            <span className="font-data-mono text-[13px] font-bold text-on-surface">{dateDiffResults.businessDays} Days</span>
-                          </div>
-                          <div className="bg-surface-container-lowest p-2 rounded-lg border border-outline-variant/20">
-                            <span className="font-label-caps text-[10px] text-outline uppercase block">Weekend Days</span>
-                            <span className="font-data-mono text-[13px] font-bold text-on-surface">{dateDiffResults.weekendDays} Days</span>
-                          </div>
-                          <div className="bg-surface-container-lowest p-2 rounded-lg border border-outline-variant/20">
-                            <span className="font-label-caps text-[10px] text-outline uppercase block">Total Hours</span>
-                            <span className="font-data-mono text-[13px] font-bold text-secondary">{dateDiffResults.totalHours} Hrs</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between pt-space-md border-t border-outline-variant/20 mt-2">
-                    <span className="font-body-sm text-[12px] text-outline">Federal bank holidays included</span>
-                    <Link
-                      className="px-space-md py-1.5 rounded-lg bg-surface-container font-body-sm text-body-sm text-primary font-semibold hover:bg-surface-container-high transition-colors"
-                      href="/time-date/date-difference"
-                    >
-                      Full Calculator Page →
-                    </Link>
-                  </div>
-                </div>
-
-                {/* TOOL 3: Work Hours & Overtime Calculator */}
-                <div id="work-hours-workbench" className="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between pb-space-sm border-b border-outline-variant/20">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[24px]">more_time</span>
-                        <h3 className="font-headline-md text-[20px] text-on-surface font-semibold">Work Hours &amp; Timesheet</h3>
-                      </div>
-                      <span className="px-2 py-0.5 rounded bg-surface-container font-data-mono text-[11px] text-on-surface font-semibold">
-                        OVERTIME 1.5x
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-space-sm my-space-md">
-                      <div>
-                        <label className="font-label-caps text-[10px] text-outline uppercase block mb-1" htmlFor="shift-start">
-                          Shift Start
-                        </label>
-                        <input
-                          className="w-full bg-surface-container-low text-on-surface font-data-mono text-data-mono p-2 rounded-lg border border-outline-variant/30 focus:border-primary"
-                          id="shift-start"
-                          type="time"
-                          value={shiftStart}
-                          onChange={(e) => setShiftStart(e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <label className="font-label-caps text-[10px] text-outline uppercase block mb-1" htmlFor="shift-end">
-                          Shift End
-                        </label>
-                        <input
-                          className="w-full bg-surface-container-low text-on-surface font-data-mono text-data-mono p-2 rounded-lg border border-outline-variant/30 focus:border-primary"
-                          id="shift-end"
-                          type="time"
-                          value={shiftEnd}
-                          onChange={(e) => setShiftEnd(e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <label className="font-label-caps text-[10px] text-outline uppercase block mb-1" htmlFor="break-mins">
-                          Unpaid Break
-                        </label>
-                        <select
-                          className="w-full bg-surface-container-low text-on-surface font-data-mono text-data-mono p-2 rounded-lg border border-outline-variant/30 focus:border-primary"
-                          id="break-mins"
-                          value={breakMins}
-                          onChange={(e) => setBreakMins(Number(e.target.value))}
-                        >
-                          <option value={0}>0 min</option>
-                          <option value={30}>30 min</option>
-                          <option value={45}>45 min</option>
-                          <option value={60}>60 min</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    {timesheetResults && (
-                      <div className="bg-surface-container p-space-md rounded-xl my-space-sm border border-outline-variant/20">
-                        <div className="flex items-center justify-between">
-                          <span className="text-on-surface-variant font-label-caps text-label-caps uppercase">Paid Hours Computed</span>
-                          <span className="text-primary font-data-mono text-[12px] font-semibold">{timesheetResults.decimalHours} Decimal Hours</span>
-                        </div>
-                        <div className="font-numerical-display text-[28px] text-primary font-bold mt-1">
-                          {timesheetResults.formattedTime}
-                        </div>
-                        <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-outline-variant/20">
-                          <div className="bg-surface-container-lowest p-2 rounded-lg border border-outline-variant/20">
-                            <span className="font-label-caps text-[10px] text-outline uppercase block">Regular (1.0x)</span>
-                            <span className="font-data-mono text-[13px] font-bold text-on-surface">{timesheetResults.regularHours} hrs</span>
-                          </div>
-                          <div className="bg-surface-container-lowest p-2 rounded-lg border border-outline-variant/20">
-                            <span className="font-label-caps text-[10px] text-outline uppercase block">Overtime (1.5x)</span>
-                            <span className="font-data-mono text-[13px] font-bold text-error">{timesheetResults.overtimeHours} hrs</span>
-                          </div>
-                          <div className="bg-surface-container-lowest p-2 rounded-lg border border-outline-variant/20">
-                            <span className="font-label-caps text-[10px] text-outline uppercase block">Gross (@${hourlyWage}/hr)</span>
-                            <span className="font-data-mono text-[13px] font-bold text-secondary">${timesheetResults.grossPay}</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between pt-space-md border-t border-outline-variant/20 mt-2">
-                    <span className="font-body-sm text-[12px] text-outline">Supports 7-day weekly schedule calculation</span>
-                    <Link
-                      href="/time-date/work-hours"
-                      className="px-space-md py-1.5 rounded-lg bg-surface-container font-body-sm text-body-sm text-primary font-semibold hover:bg-surface-container-high transition-colors"
-                    >
-                      Full Calculator Page →
-                    </Link>
-                  </div>
-                </div>
-
-                {/* TOOL 4: Global Meeting Overlap Matrix */}
-                <div id="timezone-workbench" className="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between pb-space-sm border-b border-outline-variant/20">
-                      <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[24px]">schedule_send</span>
-                        <h3 className="font-headline-md text-[20px] text-on-surface font-semibold">Time Zone Overlap Planner</h3>
-                      </div>
-                      <span className="px-2 py-0.5 rounded bg-surface-container font-data-mono text-[11px] text-on-surface font-semibold">
-                        UTC HARMONIZED
-                      </span>
-                    </div>
-
-                    {/* Multi-hub Matrix Bar */}
-                    <div className="space-y-space-xs my-space-md">
-                      <div className="flex items-center justify-between p-2 rounded-lg bg-surface-container-low font-data-mono text-[13px] border border-outline-variant/20">
-                        <span className="font-semibold text-on-surface">San Francisco (PST)</span>
-                        <span className="text-on-surface-variant">
-                          {String((utcHourSlider - 8 + 24) % 24).padStart(2, '0')}:48 {((utcHourSlider - 8 + 24) % 24) >= 12 ? 'PM' : 'AM'} • UTC -8
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between p-2 rounded-lg bg-surface-container-low font-data-mono text-[13px] border border-outline-variant/20">
-                        <span className="font-semibold text-on-surface">New York (EST)</span>
-                        <span className="text-primary font-bold">
-                          {String((utcHourSlider - 5 + 24) % 24).padStart(2, '0')}:48 {((utcHourSlider - 5 + 24) % 24) >= 12 ? 'PM' : 'AM'} • UTC -5
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between p-2 rounded-lg bg-surface-container-low font-data-mono text-[13px] border border-outline-variant/20">
-                        <span className="font-semibold text-on-surface">London (GMT)</span>
-                        <span className="text-on-surface-variant">
-                          {String(utcHourSlider % 24).padStart(2, '0')}:48 {(utcHourSlider % 24) >= 12 ? 'PM' : 'AM'} • UTC +0
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="mb-2">
-                      <div className="flex justify-between items-center text-xs font-label-caps text-outline mb-1">
-                        <span>SCRUB UTC TIMELINE</span>
-                        <span className="font-mono font-bold text-primary">{utcHourSlider}:00 UTC</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="0"
-                        max="23"
-                        value={utcHourSlider}
-                        onChange={(e) => setUtcHourSlider(Number(e.target.value))}
-                        className="w-full accent-primary cursor-pointer"
-                      />
-                    </div>
-
-                    <div className="bg-surface-container p-space-md rounded-xl my-space-sm border border-outline-variant/20">
-                      <div className="flex items-center justify-between">
-                        <span className="text-on-surface-variant font-label-caps text-label-caps uppercase">Golden Working Window</span>
-                        <span className="text-primary font-data-mono text-[12px] font-bold">OPTIMAL SYNC</span>
-                      </div>
-                      <div className="font-headline-md text-[20px] text-on-surface font-bold mt-1">
-                        9:00 AM - 11:30 AM EST (2:00 PM - 4:30 PM GMT)
-                      </div>
-                      <p className="font-body-sm text-[12px] text-on-surface-variant mt-1">
-                        100% attendance viability with zero team members outside 8am-6pm local window.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-space-md border-t border-outline-variant/20 mt-2">
-                    <span className="font-body-sm text-[12px] text-outline">Automatic daylight saving shifts included</span>
-                    <Link
-                      href="/time-date/time-zone-overlap"
-                      className="px-space-md py-1.5 rounded-lg bg-surface-container font-body-sm text-body-sm text-primary font-semibold hover:bg-surface-container-high transition-colors"
-                    >
-                      Full Calculator Page →
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 6. COMPREHENSIVE CATEGORY DIRECTORIES (Dense 36+ Tools Hub) */}
-          <section id="catalog-section" className="w-full bg-surface py-space-3xl">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="mb-space-xl flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                  <span className="font-label-caps text-label-caps text-primary uppercase tracking-widest block mb-1 font-bold">
-                    All Tools
-                  </span>
-                  <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-                    Complete Time &amp; Date Tools Directory
-                  </h2>
-                  <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-                    Every calculator is carefully tested against calendar standards and official holiday schedules.
-                  </p>
-                </div>
-                {searchQuery && (
-                  <div className="text-sm font-data-mono text-primary bg-surface-container px-3 py-1.5 rounded-lg">
-                    Showing {totalFilteredCount} matching tools for &quot;{searchQuery}&quot;
                   </div>
                 )}
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
-                {filteredCategories.map((group) => (
-                  <div key={group.id} className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30">
-                    <div className="flex items-center gap-2 mb-space-md pb-space-xs border-b border-outline-variant/20">
-                      <span className="material-symbols-outlined text-primary text-[24px]">{group.icon}</span>
-                      <h3 className="font-headline-md text-[18px] text-on-surface font-semibold">{group.name}</h3>
-                    </div>
-                    <ul className="space-y-space-xs font-body-sm text-body-sm">
-                      {group.tools.map((tool) => (
-                        <li key={tool.name}>
-                          <a
-                            className="text-on-surface hover:text-primary transition-colors flex items-center justify-between py-1 group"
-                            href={tool.anchor || '#'}
-                          >
-                            <span className="group-hover:translate-x-0.5 transition-transform">{tool.name}</span>
-                            <span className="font-data-mono text-[11px] text-outline bg-surface-container px-1.5 py-0.5 rounded">
-                              {tool.badge}
-                            </span>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* 7. HIGH-VELOCITY POPULAR LOOKUPS & PRESETS */}
-          <section id="community-presets" className="w-full bg-surface-container-low py-space-2xl border-t border-outline-variant/30">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="flex items-center justify-between mb-space-lg">
-                <div>
-                  <span className="font-label-caps text-label-caps text-primary uppercase tracking-widest block font-bold">
-                    Trending Inquiries
-                  </span>
-                  <h2 className="font-headline-md text-headline-md text-on-surface tracking-tight font-bold">
-                    Real-Time Community Lookups
-                  </h2>
+                <div className="flex items-center justify-between pt-2 text-xs text-on-surface-variant">
+                  <span>Counts exact days and easily separates weekdays from weekend days.</span>
+                  <Link href="/time-date/date-difference" className="text-primary hover:underline font-semibold flex items-center gap-1">
+                    <span>Open Tool</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
-                <span className="font-data-mono text-[12px] text-on-surface-variant bg-surface-container-lowest px-2.5 py-1 rounded-full shadow-sm border border-outline-variant/20">
-                  UPDATED EVERY 60 SECONDS
-                </span>
               </div>
+            )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
-                {/* Preset 1 */}
-                <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
+            {/* --- TAB 3: WORK HOURS & OVERTIME CALCULATOR --- */}
+            {activeDashboardTab === 'work' && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                   <div>
-                    <div className="text-outline text-[12px] mb-1 font-data-mono">
-                      <span>QUERY ID: #CAL-901</span>
-                    </div>
-                    <div className="font-headline-md text-[17px] text-on-surface font-semibold">Today to Christmas 2025</div>
-                    <div className="font-numerical-display text-[26px] text-primary font-bold my-1">301 Days</div>
+                    <label htmlFor="shift-start" className="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1.5">
+                      Start Work Time
+                    </label>
+                    <input
+                      id="shift-start"
+                      type="time"
+                      value={shiftStart}
+                      onChange={(e) => setShiftStart(e.target.value)}
+                      className="w-full bg-surface-container px-3.5 py-2.5 rounded-xl border border-outline-variant/60 text-on-surface font-data-mono text-sm focus:outline-none focus:border-primary transition-colors"
+                    />
                   </div>
-                  <div className="font-body-sm text-[12px] text-on-surface-variant flex items-center justify-between pt-2 border-t border-outline-variant/10">
-                    <span>Dec 25, 2025 (Thursday)</span>
-                    <a className="text-primary font-semibold hover:underline cursor-pointer" href="#date-diff-workbench" onClick={() => { setDateStart('2025-02-27'); setDateEnd('2025-12-25'); }}>
-                      Inspect →
-                    </a>
-                  </div>
-                </div>
-
-                {/* Preset 2 */}
-                <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
                   <div>
-                    <div className="text-outline text-[12px] mb-1 font-data-mono">
-                      <span>QUERY ID: #DOB-1995</span>
-                    </div>
-                    <div className="font-headline-md text-[17px] text-on-surface font-semibold">Age from DOB: March 15, 1995</div>
-                    <div className="font-numerical-display text-[26px] text-primary font-bold my-1">29 Yrs, 11 Mos</div>
+                    <label htmlFor="shift-end" className="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1.5">
+                      End Work Time
+                    </label>
+                    <input
+                      id="shift-end"
+                      type="time"
+                      value={shiftEnd}
+                      onChange={(e) => setShiftEnd(e.target.value)}
+                      className="w-full bg-surface-container px-3.5 py-2.5 rounded-xl border border-outline-variant/60 text-on-surface font-data-mono text-sm focus:outline-none focus:border-primary transition-colors"
+                    />
                   </div>
-                  <div className="font-body-sm text-[12px] text-on-surface-variant flex items-center justify-between pt-2 border-t border-outline-variant/10">
-                    <span>Turning 30 in exactly 16 Days</span>
-                    <a className="text-primary font-semibold hover:underline cursor-pointer" href="#age-calculator-workbench" onClick={() => { setDob('1995-03-15'); }}>
-                      Inspect →
-                    </a>
+                  <div>
+                    <label htmlFor="break-mins" className="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1.5">
+                      Unpaid Lunch Break (Minutes)
+                    </label>
+                    <input
+                      id="break-mins"
+                      type="number"
+                      min={0}
+                      max={240}
+                      value={breakMins}
+                      onChange={(e) => setBreakMins(Number(e.target.value))}
+                      className="w-full bg-surface-container px-3.5 py-2.5 rounded-xl border border-outline-variant/60 text-on-surface font-data-mono text-sm focus:outline-none focus:border-primary transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="hourly-wage" className="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1.5">
+                      Pay Per Hour ($)
+                    </label>
+                    <input
+                      id="hourly-wage"
+                      type="number"
+                      min={1}
+                      value={hourlyWage}
+                      onChange={(e) => setHourlyWage(Number(e.target.value))}
+                      className="w-full bg-surface-container px-3.5 py-2.5 rounded-xl border border-outline-variant/60 text-on-surface font-data-mono text-sm focus:outline-none focus:border-primary transition-colors"
+                    />
                   </div>
                 </div>
 
-                {/* Preset 3 */}
-                <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-                  <div>
-                    <div className="text-outline text-[12px] mb-1 font-data-mono">
-                      <span>QUERY ID: #OT-475</span>
-                    </div>
-                    <div className="font-headline-md text-[17px] text-on-surface font-semibold">47.5 Hour Work Week Overtime</div>
-                    <div className="font-numerical-display text-[26px] text-primary font-bold my-1">7.5h Overtime</div>
-                  </div>
-                  <div className="font-body-sm text-[12px] text-on-surface-variant flex items-center justify-between pt-2 border-t border-outline-variant/10">
-                    <span>40 Reg + 7.5 @ 1.5x Pay Rate</span>
-                    <a className="text-primary font-semibold hover:underline cursor-pointer" href="#work-hours-workbench">
-                      Inspect →
-                    </a>
-                  </div>
-                </div>
-
-                {/* Preset 4 */}
-                <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-                  <div>
-                    <div className="text-outline text-[12px] mb-1 font-data-mono">
-                      <span>QUERY ID: #TZ-LON-NYC</span>
-                    </div>
-                    <div className="font-headline-md text-[17px] text-on-surface font-semibold">London (GMT) to New York (EST)</div>
-                    <div className="font-numerical-display text-[26px] text-primary font-bold my-1">5-Hour Delta</div>
-                  </div>
-                  <div className="font-body-sm text-[12px] text-on-surface-variant flex items-center justify-between pt-2 border-t border-outline-variant/10">
-                    <span>2:00 PM London = 9:00 AM NYC</span>
-                    <a className="text-primary font-semibold hover:underline cursor-pointer" href="#timezone-workbench" onClick={() => setUtcHourSlider(14)}>
-                      Inspect →
-                    </a>
-                  </div>
-                </div>
-
-                {/* Preset 5 */}
-                <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-                  <div>
-                    <div className="text-outline text-[12px] mb-1 font-data-mono">
-                      <span>QUERY ID: #ADD-90D</span>
-                    </div>
-                    <div className="font-headline-md text-[17px] text-on-surface font-semibold">90 Calendar Days From Today</div>
-                    <div className="font-numerical-display text-[26px] text-primary font-bold my-1">May 28, 2025</div>
-                  </div>
-                  <div className="font-body-sm text-[12px] text-on-surface-variant flex items-center justify-between pt-2 border-t border-outline-variant/10">
-                    <span>Wednesday • Q2 Milestone</span>
-                    <a className="text-primary font-semibold hover:underline cursor-pointer" href="#date-diff-workbench">
-                      Inspect →
-                    </a>
-                  </div>
-                </div>
-
-                {/* Preset 6 */}
-                <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-                  <div>
-                    <div className="text-outline text-[12px] mb-1 font-data-mono">
-                      <span>QUERY ID: #NEWYEAR-26</span>
-                    </div>
-                    <div className="font-headline-md text-[17px] text-on-surface font-semibold">Days Until New Year 2026</div>
-                    <div className="font-numerical-display text-[26px] text-primary font-bold my-1">307 Days</div>
-                  </div>
-                  <div className="font-body-sm text-[12px] text-on-surface-variant flex items-center justify-between pt-2 border-t border-outline-variant/10">
-                    <span>January 1, 2026 (Thursday)</span>
-                    <a className="text-primary font-semibold hover:underline cursor-pointer" href="#date-diff-workbench">
-                      Inspect →
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 8. TIME TOOLS COMPARISON MATRIX */}
-          <section className="w-full bg-surface py-space-3xl border-t border-outline-variant/30">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="mb-space-lg">
-                <span className="font-label-caps text-label-caps text-primary uppercase tracking-widest block mb-1 font-bold">
-                  Quick Guide
-                </span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-                  Time Tools Comparison
-                </h2>
-                <p className="font-body-md text-body-md text-on-surface-variant">
-                  Find the right calculator for your needs based on your inputs and desired results.
-                </p>
-              </div>
-
-              <div className="overflow-x-auto bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30">
-                <table className="w-full text-left font-body-sm text-body-sm">
-                  <thead className="bg-surface-container font-label-caps text-label-caps text-on-surface uppercase tracking-wider">
-                    <tr>
-                      <th className="py-space-md px-space-lg">Calculator</th>
-                      <th className="py-space-md px-space-lg">Best For</th>
-                      <th className="py-space-md px-space-lg">Typical Users</th>
-                      <th className="py-space-md px-space-lg">Input Type</th>
-                      <th className="py-space-md px-space-lg">Output Format</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-surface-container">
-                    <tr className="hover:bg-surface-container-low transition-colors">
-                      <td className="py-space-md px-space-lg font-bold text-on-surface flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[18px]">cake</span>
-                        Age Calculator
-                      </td>
-                      <td className="py-space-md px-space-lg text-on-surface-variant">Exact age, days lived &amp; day born</td>
-                      <td className="py-space-md px-space-lg text-on-surface">Healthcare, Legal, General</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px]">YYYY-MM-DD</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px] text-primary">Years, Months, Days + Next Birthday</td>
-                    </tr>
-                    <tr className="hover:bg-surface-container-low transition-colors">
-                      <td className="py-space-md px-space-lg font-bold text-on-surface flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[18px]">date_range</span>
-                        Date Difference
-                      </td>
-                      <td className="py-space-md px-space-lg text-on-surface-variant">Calendar vs Business days between dates</td>
-                      <td className="py-space-md px-space-lg text-on-surface">Legal, Real Estate, Logistics</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px]">Start / End Date Pickers</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px] text-primary">Net Days, Weeks, Weekday Breakdown</td>
-                    </tr>
-                    <tr className="hover:bg-surface-container-low transition-colors">
-                      <td className="py-space-md px-space-lg font-bold text-on-surface flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[18px]">more_time</span>
-                        Work Hours Timesheet
-                      </td>
-                      <td className="py-space-md px-space-lg text-on-surface-variant">Time in/out, lunch break, 1.5x overtime</td>
-                      <td className="py-space-md px-space-lg text-on-surface">Payroll Managers, Contractors</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px]">HH:MM In / Out + Breaks</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px] text-primary">Total Decimal Hours + Gross Pay</td>
-                    </tr>
-                    <tr className="hover:bg-surface-container-low transition-colors">
-                      <td className="py-space-md px-space-lg font-bold text-on-surface flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[18px]">schedule</span>
-                        Time Zone Overlap
-                      </td>
-                      <td className="py-space-md px-space-lg text-on-surface-variant">Coordinate meetings across 3+ timezones</td>
-                      <td className="py-space-md px-space-lg text-on-surface">Remote Teams, Project Managers</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px]">City Array + Target Time</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px] text-primary">Shared Hours Window</td>
-                    </tr>
-                    <tr className="hover:bg-surface-container-low transition-colors">
-                      <td className="py-space-md px-space-lg font-bold text-on-surface flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[18px]">timer</span>
-                        Time Calculator
-                      </td>
-                      <td className="py-space-md px-space-lg text-on-surface-variant">Add or subtract time values (HH:MM:SS)</td>
-                      <td className="py-space-md px-space-lg text-on-surface">Audio/Video Editors, Planners</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px]">Hours, Minutes, Seconds</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px] text-primary">Total HH:MM:SS + Total Hours</td>
-                    </tr>
-                    <tr className="hover:bg-surface-container-low transition-colors">
-                      <td className="py-space-md px-space-lg font-bold text-on-surface flex items-center gap-2">
-                        <span className="material-symbols-outlined text-primary text-[18px]">psychology</span>
-                        Focus &amp; Break Timer
-                      </td>
-                      <td className="py-space-md px-space-lg text-on-surface-variant">Structured work and rest intervals</td>
-                      <td className="py-space-md px-space-lg text-on-surface">Students, Writers, Professionals</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px]">Start Time or Work Duration</td>
-                      <td className="py-space-md px-space-lg font-data-mono text-[12px] text-primary">Focus / Rest Schedules</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-
-          {/* 9. REAL-WORLD PERSONA USE CASES */}
-          <section className="w-full bg-surface-container-low py-space-3xl border-t border-outline-variant/30">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="mb-space-xl">
-                <span className="font-label-caps text-label-caps text-primary uppercase tracking-widest block mb-1 font-bold">
-                  Practical Uses
-                </span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-                  Helpful for Daily Planning and Work
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
-                {/* Persona 1 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 mb-space-sm">
-                      <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
-                        <span className="material-symbols-outlined">hub</span>
-                      </div>
+                {/* Output Panel */}
+                {timesheetResults && (
+                  <div className="bg-surface-container/70 rounded-xl p-5 border border-outline-variant/40 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div>
-                        <h3 className="font-headline-md text-[17px] text-on-surface font-semibold">Remote &amp; Global Teams</h3>
-                        <span className="font-label-caps text-[11px] text-outline uppercase">Worldwide Teams</span>
-                      </div>
-                    </div>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant">
-                      Coordinate meetings smoothly across San Francisco, Berlin, and London. Find common working hours that fit everyone&apos;s schedule without accidental early morning or late night calls.
-                    </p>
-                  </div>
-                  <div className="pt-space-md border-t border-outline-variant/20 mt-3">
-                    <span className="font-label-caps text-[11px] text-primary uppercase font-bold">Recommended: Time Zone Planner</span>
-                  </div>
-                </div>
-
-                {/* Persona 2 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 mb-space-sm">
-                      <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
-                        <span className="material-symbols-outlined">attach_money</span>
-                      </div>
-                      <div>
-                        <h3 className="font-headline-md text-[17px] text-on-surface font-semibold">Payroll &amp; HR Teams</h3>
-                        <span className="font-label-caps text-[11px] text-outline uppercase">Hourly Pay &amp; Shifts</span>
-                      </div>
-                    </div>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant">
-                      Calculate weekly work hours with automatic unpaid lunch deductions. Check regular hours and calculate 1.5x overtime and holiday rates accurately.
-                    </p>
-                  </div>
-                  <div className="pt-space-md border-t border-outline-variant/20 mt-3">
-                    <span className="font-label-caps text-[11px] text-primary uppercase font-bold">Recommended: Work Hours Timesheet</span>
-                  </div>
-                </div>
-
-                {/* Persona 3 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 mb-space-sm">
-                      <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
-                        <span className="material-symbols-outlined">gavel</span>
-                      </div>
-                      <div>
-                        <h3 className="font-headline-md text-[17px] text-on-surface font-semibold">Legal &amp; Real Estate</h3>
-                        <span className="font-label-caps text-[11px] text-outline uppercase">Deadlines &amp; Closing Dates</span>
-                      </div>
-                    </div>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant">
-                      Calculate exact 30, 60, or 90-day contract filing periods. Automatically adjust deadlines when the target day falls on a weekend or federal holiday.
-                    </p>
-                  </div>
-                  <div className="pt-space-md border-t border-outline-variant/20 mt-3">
-                    <span className="font-label-caps text-[11px] text-primary uppercase font-bold">Recommended: Business Days &amp; Holidays</span>
-                  </div>
-                </div>
-
-                {/* Persona 4 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 mb-space-sm">
-                      <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
-                        <span className="material-symbols-outlined">flight</span>
-                      </div>
-                      <div>
-                        <h3 className="font-headline-md text-[17px] text-on-surface font-semibold">Travelers &amp; Flyers</h3>
-                        <span className="font-label-caps text-[11px] text-outline uppercase">Trip Planning</span>
-                      </div>
-                    </div>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant">
-                      Calculate flight duration when crossing time zones. View local arrival times, plan sleep schedules, and avoid confusion from seasonal Daylight Saving changes.
-                    </p>
-                  </div>
-                  <div className="pt-space-md border-t border-outline-variant/20 mt-3">
-                    <span className="font-label-caps text-[11px] text-primary uppercase font-bold">Recommended: Flight Time &amp; DST Tracker</span>
-                  </div>
-                </div>
-
-                {/* Persona 5 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 mb-space-sm">
-                      <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
-                        <span className="material-symbols-outlined">school</span>
-                      </div>
-                      <div>
-                        <h3 className="font-headline-md text-[17px] text-on-surface font-semibold">Students &amp; Teachers</h3>
-                        <span className="font-label-caps text-[11px] text-outline uppercase">Study Deadlines</span>
-                      </div>
-                    </div>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant">
-                      Plan thesis milestones, project deadlines, and exam revision blocks. Divide study hours into focused sessions and track countdown progress.
-                    </p>
-                  </div>
-                  <div className="pt-space-md border-t border-outline-variant/20 mt-3">
-                    <span className="font-label-caps text-[11px] text-primary uppercase font-bold">Recommended: Study Schedule Planner</span>
-                  </div>
-                </div>
-
-                {/* Persona 6 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 mb-space-sm">
-                      <div className="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary">
-                        <span className="material-symbols-outlined">celebration</span>
-                      </div>
-                      <div>
-                        <h3 className="font-headline-md text-[17px] text-on-surface font-semibold">Event Planners &amp; Families</h3>
-                        <span className="font-label-caps text-[11px] text-outline uppercase">Celebrations &amp; Milestones</span>
-                      </div>
-                    </div>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant">
-                      Keep everyone excited with countdown timers for weddings, anniversaries, vacations, retirements, birthdays, and due dates.
-                    </p>
-                  </div>
-                  <div className="pt-space-md border-t border-outline-variant/20 mt-3">
-                    <span className="font-label-caps text-[11px] text-primary uppercase font-bold">Recommended: Live Countdown Timer</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 10. TIME CALCULATION REFERENCE */}
-          <section className="w-full bg-surface py-space-3xl border-t border-outline-variant/30">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="mb-space-xl">
-                <span className="font-label-caps text-label-caps text-primary uppercase tracking-widest block mb-1 font-bold">
-                  Reference Guide
-                </span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-                  How Time &amp; Date Calculations Work
-                </h2>
-                <p className="font-body-md text-body-md text-on-surface-variant">
-                  Understanding standard calendar rules and calculation principles.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
-                {/* Science Article 1 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-2 text-primary font-data-mono text-[12px] mb-2 font-semibold">
-                      <span className="material-symbols-outlined text-[16px]">verified</span>
-                      STANDARD FORMATS
-                    </div>
-                    <h3 className="font-headline-md text-[20px] text-on-surface font-semibold mb-2">ISO Date &amp; UTC Time Standards</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-space-md">
-                      The international <span className="font-data-mono text-on-surface font-medium">ISO 8601</span> standard formats dates as <span className="font-data-mono text-on-surface font-semibold">YYYY-MM-DD</span> to avoid confusion between different regional styles (such as MM/DD/YYYY in the US vs DD/MM/YYYY in Europe). Coordinated Universal Time (UTC) provides the global time standard for accurate time zone conversions.
-                    </p>
-                  </div>
-                  <div className="pt-space-xs font-body-sm text-[12px] text-outline border-t border-outline-variant/10">
-                    Standard: ISO 8601 / UTC Time Standard
-                  </div>
-                </div>
-
-                {/* Science Article 2 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-2 text-primary font-data-mono text-[12px] mb-2 font-semibold">
-                      <span className="material-symbols-outlined text-[16px]">cyclone</span>
-                      CALENDAR RULES
-                    </div>
-                    <h3 className="font-headline-md text-[20px] text-on-surface font-semibold mb-2">How Leap Years Work</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-space-md">
-                      Earth takes about 365.2422 days to orbit the Sun. To keep our calendar aligned with the seasons, the Gregorian calendar adds a leap day on February 29 every 4 years, except for years divisible by 100 unless they are also divisible by 400. For instance, the year 2000 was a leap year, but 1900 and 2100 are not.
-                    </p>
-                  </div>
-                  <div className="pt-space-xs font-body-sm text-[12px] text-outline border-t border-outline-variant/10">
-                    Calendar: Standard Gregorian Leap Year Rules
-                  </div>
-                </div>
-
-                {/* Science Article 3 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-2 text-primary font-data-mono text-[12px] mb-2 font-semibold">
-                      <span className="material-symbols-outlined text-[16px]">bedtime</span>
-                      PRODUCTIVITY
-                    </div>
-                    <h3 className="font-headline-md text-[20px] text-on-surface font-semibold mb-2">Focus Blocks &amp; Rest Breaks</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-space-md">
-                      Human attention naturally rises and falls throughout the day. Structuring work into 25-minute Pomodoro sprints or 90-minute deep focus sessions followed by short rest breaks helps maintain concentration and prevent fatigue.
-                    </p>
-                  </div>
-                  <div className="pt-space-xs font-body-sm text-[12px] text-outline border-t border-outline-variant/10">
-                    Method: Pomodoro &amp; Rest-Work Cycles
-                  </div>
-                </div>
-
-                {/* Science Article 4 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-2 text-primary font-data-mono text-[12px] mb-2 font-semibold">
-                      <span className="material-symbols-outlined text-[16px]">lock</span>
-                      PRIVACY FIRST
-                    </div>
-                    <h3 className="font-headline-md text-[20px] text-on-surface font-semibold mb-2">100% Private In-Browser Calculations</h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-space-md">
-                      All calculations are performed directly inside your browser. No dates, birthdates, working hours, pay rates, or personal inputs are sent across the internet or stored on external servers, ensuring total privacy.
-                    </p>
-                  </div>
-                  <div className="pt-space-xs font-body-sm text-[12px] text-outline border-t border-outline-variant/10">
-                    Privacy: Private Local Processing
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 11. FAQ */}
-          <section className="w-full bg-surface-container-low py-space-3xl border-t border-outline-variant/30">
-            <div className="max-w-max-width-calculator mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="text-center mb-space-xl">
-                <span className="font-label-caps text-label-caps text-primary uppercase tracking-widest block mb-1 font-bold">
-                  Frequently Answered
-                </span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-                  Frequently Asked Questions
-                </h2>
-                <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-                  Helpful answers about date calculation methods, time zones, and privacy.
-                </p>
-              </div>
-
-              {/* Accordion Stack */}
-              <div className="space-y-space-sm" id="faq-container">
-                {[
-                  {
-                    id: 1,
-                    q: 'How do business day calculators handle federal bank holidays?',
-                    a: 'Calculators evaluate calendar days using standard US Federal Reserve holiday schedules and UK Banking calendars. When a holiday falls on a Saturday, it is typically observed on Friday. When it falls on a Sunday, it is observed on Monday. You can choose to include or exclude holidays based on your needs.',
-                  },
-                  {
-                    id: 2,
-                    q: 'What rule determines leap years (the 100/400 year rule)?',
-                    a: 'Under the standard Gregorian calendar, a year is a leap year (366 days) if it is divisible by 4, except for centenary years (ending in 00) which must also be divisible by 400. For example, 2000 and 2024 are leap years, but 1900 and 2100 are regular 365-day years.',
-                  },
-                  {
-                    id: 3,
-                    q: 'How does Daylight Saving Time (DST) affect meeting calculations?',
-                    a: 'Because different regions start and end DST on different dates (for example, the US shifts in early March, while Europe shifts in late March), the time difference between cities changes twice a year. Our meeting planner accounts for regional time shifts when comparing dates.',
-                  },
-                  {
-                    id: 4,
-                    q: 'Are entered dates, birthdays, and work schedules saved or tracked?',
-                    a: 'No. All calculations run entirely inside your web browser. No dates, personal names, hourly rates, or timesheets are stored or sent anywhere. Your information remains completely private.',
-                  },
-                ].map((faq) => {
-                  const isOpen = openFaq === faq.id;
-                  return (
-                    <div key={faq.id} className="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden">
-                      <button
-                        type="button"
-                        className="w-full p-space-md text-left flex items-center justify-between font-headline-md text-[17px] text-on-surface font-semibold hover:bg-surface-container-low transition-colors cursor-pointer"
-                        onClick={() => setOpenFaq(isOpen ? null : faq.id)}
-                      >
-                        <span>{faq.q}</span>
-                        <span className="material-symbols-outlined text-primary transition-transform duration-200">
-                          {isOpen ? 'expand_less' : 'expand_more'}
-                        </span>
-                      </button>
-                      {isOpen && (
-                        <div className="px-space-md pb-space-md text-on-surface-variant font-body-sm text-body-sm border-t border-outline-variant/10 pt-2">
-                          {faq.a}
+                        <span className="text-xs uppercase tracking-wider text-on-surface-variant font-medium">Total Work Time (Lunch Subtracted):</span>
+                        <div className="text-2xl sm:text-3xl font-extrabold text-amber-400 font-data-mono mt-1">
+                          {timesheetResults.formattedTime} ({timesheetResults.decimalHours} hours)
                         </div>
-                      )}
+                      </div>
+                      <div className="sm:text-right">
+                        <span className="text-xs uppercase tracking-wider text-on-surface-variant font-medium">Estimated Total Pay:</span>
+                        <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-data-mono mt-1">
+                          ${timesheetResults.grossPay}
+                        </div>
+                      </div>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
 
-          {/* 12. INTERCONNECTED ECOSYSTEM DISCOVERY STRIP */}
-          <section className="w-full bg-surface py-space-2xl border-t border-outline-variant/30">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="bg-surface-container-lowest rounded-2xl p-space-xl shadow-sm border border-outline-variant/30">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
-                  <div>
-                    <span className="font-label-caps text-label-caps text-primary uppercase tracking-widest block mb-1 font-bold">
-                      Explore More
-                    </span>
-                    <h2 className="font-headline-md text-headline-md text-on-surface tracking-tight font-bold">
-                      Explore Other Calculator Categories
-                    </h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-outline-variant/30">
+                      <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                        <span className="text-[11px] font-semibold text-on-surface-variant block uppercase">Regular Hours (Up to 8h)</span>
+                        <span className="text-base font-bold font-data-mono text-on-surface">{timesheetResults.regularHours}h</span>
+                      </div>
+                      <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                        <span className="text-[11px] font-semibold text-on-surface-variant block uppercase">Overtime Hours (Over 8h)</span>
+                        <span className="text-base font-bold font-data-mono text-amber-400">{timesheetResults.overtimeHours}h</span>
+                      </div>
+                      <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                        <span className="text-[11px] font-semibold text-on-surface-variant block uppercase">Regular Pay</span>
+                        <span className="text-base font-bold font-data-mono text-on-surface">${timesheetResults.regularPay}</span>
+                      </div>
+                      <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30">
+                        <span className="text-[11px] font-semibold text-on-surface-variant block uppercase">Overtime Pay (1.5× Extra)</span>
+                        <span className="text-base font-bold font-data-mono text-secondary">${timesheetResults.overtimePay}</span>
+                      </div>
+                    </div>
                   </div>
-                  <Link className="inline-flex items-center gap-1 font-body-sm text-body-sm text-primary font-semibold hover:underline" href="/">
-                    <span>View All 100+ Calculators</span>
-                    <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </Link>
-                </div>
+                )}
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-space-md">
-                  <Link className="p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors flex items-center gap-space-sm group border border-outline-variant/20" href="/">
-                    <span className="material-symbols-outlined text-primary text-[24px] group-hover:scale-110 transition-transform">
-                      account_balance
-                    </span>
-                    <div>
-                      <div className="font-body-md text-body-md font-semibold text-on-surface">Finance</div>
-                      <div className="font-body-sm text-[12px] text-on-surface-variant">Mortgage, Loan, 401(k)</div>
-                    </div>
-                  </Link>
-
-                  <Link className="p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors flex items-center gap-space-sm group border border-outline-variant/20" href="/health-fitness-calculators">
-                    <span className="material-symbols-outlined text-secondary text-[24px] group-hover:scale-110 transition-transform">
-                      favorite
-                    </span>
-                    <div>
-                      <div className="font-body-md text-body-md font-semibold text-on-surface">Health &amp; Fitness</div>
-                      <div className="font-body-sm text-[12px] text-on-surface-variant">TDEE, BMR, Body Fat</div>
-                    </div>
-                  </Link>
-
-                  <Link className="p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors flex items-center gap-space-sm group border border-outline-variant/20" href="/">
-                    <span className="material-symbols-outlined text-tertiary text-[24px] group-hover:scale-110 transition-transform">
-                      functions
-                    </span>
-                    <div>
-                      <div className="font-body-md text-body-md font-semibold text-on-surface">Math &amp; Physics</div>
-                      <div className="font-body-sm text-[12px] text-on-surface-variant">Matrices, Vectors, Equations</div>
-                    </div>
-                  </Link>
-
-                  <Link className="p-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors flex items-center gap-space-sm group border border-outline-variant/20" href="/automotive-calculators-estimators">
-                    <span className="material-symbols-outlined text-primary text-[24px] group-hover:scale-110 transition-transform">
-                      directions_car
-                    </span>
-                    <div>
-                      <div className="font-body-md text-body-md font-semibold text-on-surface">Automotive</div>
-                      <div className="font-body-sm text-[12px] text-on-surface-variant">Lease, MPG, EV Range</div>
-                    </div>
+                <div className="flex items-center justify-between pt-2 text-xs text-on-surface-variant">
+                  <span>Works for overnight night shifts and automatically calculates 1.5× extra pay for overtime.</span>
+                  <Link href="/time-date/work-hours" className="text-primary hover:underline font-semibold flex items-center gap-1">
+                    <span>Open Tool</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
+            )}
+
+            {/* --- TAB 4: TIME ZONE OVERLAP CALCULATOR --- */}
+            {activeDashboardTab === 'timezone' && (
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="utc-slider" className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+                      Slide the bar to change world reference time (UTC hour):
+                    </label>
+                    <span className="font-data-mono text-sm font-bold text-primary">
+                      {String(utcHourSlider).padStart(2, '0')}:00 UTC
+                    </span>
+                  </div>
+                  <input
+                    id="utc-slider"
+                    type="range"
+                    min={0}
+                    max={23}
+                    step={1}
+                    value={utcHourSlider}
+                    onChange={(e) => setUtcHourSlider(Number(e.target.value))}
+                    className="w-full accent-primary h-2 bg-surface-container rounded-lg cursor-pointer"
+                  />
+                  <div className="flex justify-between text-[10px] font-data-mono text-on-surface-variant mt-1">
+                    <span>12:00 AM (Midnight)</span>
+                    <span>6:00 AM</span>
+                    <span>12:00 PM (Noon)</span>
+                    <span>6:00 PM</span>
+                    <span>11:00 PM</span>
+                  </div>
+                </div>
+
+                {/* Multi-City Synchronized Strip */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                  {timeZoneMatrix.map((item) => (
+                    <div
+                      key={item.name}
+                      className={`p-3.5 rounded-xl border transition-all ${
+                        item.isBusinessHours
+                          ? 'bg-emerald-500/10 border-emerald-500/30'
+                          : item.isEvening
+                          ? 'bg-amber-500/10 border-amber-500/30'
+                          : 'bg-surface-container border-outline-variant/30 opacity-70'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 text-xs font-semibold text-on-surface mb-1">
+                        <span>{item.flag}</span>
+                        <span className="truncate">{item.name}</span>
+                      </div>
+                      <div className="text-xl font-bold font-data-mono text-on-surface">
+                        {item.formatted12}
+                      </div>
+                      <div className="text-[11px] font-data-mono text-on-surface-variant">
+                        24-Hour: {item.formatted24}
+                      </div>
+                      <div className="mt-2 text-[10px] font-semibold uppercase tracking-wider">
+                        {item.isBusinessHours ? (
+                          <span className="text-emerald-400">● Daytime Work Hours (9–5)</span>
+                        ) : item.isEvening ? (
+                          <span className="text-amber-400">● Evening Hours (Good for calls)</span>
+                        ) : (
+                          <span className="text-on-surface-variant">○ Night / Sleeping Time</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-between pt-2 text-xs text-on-surface-variant">
+                  <span>Quickly check what time it is across big cities at the exact same moment.</span>
+                  <Link href="/time-date/time-zone-overlap" className="text-primary hover:underline font-semibold flex items-center gap-1">
+                    <span>Open Tool</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* =========================================================================
+            4th TIER: TOOLS CATEGORY & TOOL PAGES (CLEAR & NON-TECHNICAL)
+            ========================================================================= */}
+        <section className="space-y-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                Tier 4 · All 37 Tools
+              </div>
+              <h2 className="text-2xl font-bold text-on-surface font-headline-md">
+                Find Any Time or Date Tool
+              </h2>
+              <p className="text-sm text-on-surface-variant">
+                Showing {totalFilteredCount} easy-to-use tools across {filteredCategories.length} categories.
+              </p>
             </div>
-          </section>
-        </div>
-      </main>
+
+            {/* Instant Search Bar */}
+            <div className="relative w-full md:w-80">
+              <Search className="w-4 h-4 text-primary absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search tools (e.g. Age, Work Hours)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-surface-container-lowest pl-10 pr-10 py-2.5 rounded-xl border border-outline-variant/60 text-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary transition-colors shadow-xs"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-on-surface-variant hover:text-on-surface cursor-pointer"
+                  title="Clear search"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Category Filter Pills (Functional Buttons) */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+            <button
+              type="button"
+              onClick={() => setSelectedCategory('all')}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border cursor-pointer ${
+                selectedCategory === 'all'
+                  ? 'bg-primary text-on-primary border-primary shadow-xs'
+                  : 'bg-surface-container-lowest text-on-surface-variant hover:text-on-surface border-outline-variant/50'
+              }`}
+            >
+              All Tools (37)
+            </button>
+            {CATEGORY_GROUPS.map((group) => (
+              <button
+                key={group.id}
+                type="button"
+                onClick={() => setSelectedCategory(group.id)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border cursor-pointer ${
+                  selectedCategory === group.id
+                    ? 'bg-primary text-on-primary border-primary shadow-xs'
+                    : 'bg-surface-container-lowest text-on-surface-variant hover:text-on-surface border-outline-variant/50'
+                }`}
+              >
+                {group.name} ({group.tools.length})
+              </button>
+            ))}
+          </div>
+
+          {/* Directory Grid */}
+          <div className="space-y-10">
+            {filteredCategories.map((group) => (
+              <div key={group.id} className="space-y-4">
+                <div className="flex items-center gap-2 border-b border-outline-variant/40 pb-2">
+                  <span className="material-symbols-outlined text-primary text-[20px]">{group.icon}</span>
+                  <h3 className="text-base font-bold text-on-surface">{group.name}</h3>
+                  <span className="text-xs text-on-surface-variant">· {group.tools.length} calculators</span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {group.tools.map((tool) => (
+                    <Link
+                      key={tool.name}
+                      href={tool.anchor}
+                      className="group bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/50 hover:border-primary/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="font-bold text-sm text-on-surface group-hover:text-primary transition-colors leading-snug">
+                            {tool.name}
+                          </h4>
+                          <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-surface-container text-on-surface-variant border border-outline-variant/40 shrink-0">
+                            {tool.badge}
+                          </span>
+                        </div>
+                        <p className="text-xs text-on-surface-variant leading-relaxed line-clamp-2">
+                          {tool.desc}
+                        </p>
+                      </div>
+
+                      <div className="pt-4 mt-2 border-t border-outline-variant/20 flex items-center justify-between text-xs font-semibold text-primary">
+                        <span>Open Tool</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            {filteredCategories.length === 0 && (
+              <div className="bg-surface-container-lowest p-12 text-center rounded-2xl border border-outline-variant/60 space-y-3">
+                <Calculator className="w-10 h-10 text-outline mx-auto" />
+                <h4 className="text-base font-bold text-on-surface">No matching calculators found</h4>
+                <p className="text-xs text-on-surface-variant max-w-md mx-auto">
+                  Try typing a different word or reset the filter to view all 37 tools.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedCategory('all');
+                  }}
+                  className="px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-xs"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Show All 37 Tools</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* =========================================================================
+            FOLLOWED BY: EDUCATIONAL GUIDES & FAQS (SIMPLE & CLEAR)
+            ========================================================================= */}
+        <section className="space-y-12 border-t border-outline-variant/40 pt-12">
+          {/* Section Heading */}
+          <div>
+            <div className="text-xs font-bold uppercase tracking-wider text-primary">
+              Simple Explanations · How Time Works
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-on-surface font-headline-md">
+              Helpful Guides &amp; How It Works
+            </h2>
+            <p className="text-sm text-on-surface-variant mt-1 max-w-2xl">
+              Easy, plain-English explanations of how calendars work, why leap years exist, how work hours are counted, and why world time zones differ.
+            </p>
+          </div>
+
+          {/* 4 In-Depth Guides in Plain English */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Guide 1 */}
+            <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 space-y-3">
+              <div className="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-wider">
+                <Calendar className="w-4 h-4" />
+                <span>Guide 1 · Leap Years</span>
+              </div>
+              <h3 className="text-base font-bold text-on-surface">
+                Why Leap Years Have 366 Days
+              </h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                It takes the Earth about 365 days and 6 hours to circle around the sun. Because of those extra 6 hours every year, we add 1 whole extra day (February 29) once every 4 years so the calendar stays matched up with the seasons.
+              </p>
+              <div className="bg-surface-container p-3 rounded-xl font-data-mono text-xs text-on-surface space-y-1 border border-outline-variant/40">
+                <div className="text-primary font-bold">The Simple Leap Year Rule:</div>
+                <div>Any year you can divide evenly by 4 is a leap year (like 2024 and 2028).</div>
+              </div>
+              <p className="text-xs text-on-surface-variant">
+                Years like 2024 and 2028 have 366 days, while regular years have 365 days.
+              </p>
+            </div>
+
+            {/* Guide 2 */}
+            <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 space-y-3">
+              <div className="flex items-center gap-2 text-secondary text-xs font-bold uppercase tracking-wider">
+                <Clock className="w-4 h-4" />
+                <span>Guide 2 · Counting Days</span>
+              </div>
+              <h3 className="text-base font-bold text-on-surface">
+                How to Count Days Between Dates Correctly
+              </h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Some months have 30 days, some have 31, and February has 28 or 29 days. If you try to guess by dividing by 30, your answer can be wrong by up to 3 days. Our tools count the real days on the calendar so you get the exact number.
+              </p>
+              <div className="bg-surface-container p-3 rounded-xl font-data-mono text-xs text-on-surface space-y-1 border border-outline-variant/40">
+                <div className="text-secondary font-bold">How It Counts:</div>
+                <div>Full Months + Exact Leftover Days = 100% Accurate Total</div>
+              </div>
+              <p className="text-xs text-on-surface-variant">
+                This gives you accurate answers for birthdays, rental agreements, and project deadlines.
+              </p>
+            </div>
+
+            {/* Guide 3 */}
+            <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 space-y-3">
+              <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
+                <Briefcase className="w-4 h-4" />
+                <span>Guide 3 · Work Hours &amp; Pay</span>
+              </div>
+              <h3 className="text-base font-bold text-on-surface">
+                How Work Hours and Overtime Pay Are Counted
+              </h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                When you work, your employer subtracts your unpaid lunch break from your total hours. For example, if you are at work for 8 hours and 30 minutes with a 30-minute unpaid lunch break, you get paid for 8 hours of work.
+              </p>
+              <div className="bg-surface-container p-3 rounded-xl font-data-mono text-xs text-on-surface space-y-1 border border-outline-variant/40">
+                <div className="text-amber-400 font-bold">How Overtime Pay Works:</div>
+                <div>First 8 Hours = Normal Hourly Rate</div>
+                <div>Any Hours Over 8 = 1.5× Normal Hourly Rate (Extra Pay)</div>
+              </div>
+              <p className="text-xs text-on-surface-variant">
+                Our calculator does all the math automatically, including night shifts that cross midnight.
+              </p>
+            </div>
+
+            {/* Guide 4 */}
+            <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 space-y-3">
+              <div className="flex items-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+                <Globe className="w-4 h-4" />
+                <span>Guide 4 · World Time</span>
+              </div>
+              <h3 className="text-base font-bold text-on-surface">
+                Why World Time Zones Are Different
+              </h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Because the Earth is round and spins, the sun rises in Tokyo hours before it rises in London or New York. The world is split into time zones so 12:00 noon is the middle of the day wherever you are.
+              </p>
+              <div className="bg-surface-container p-3 rounded-xl font-data-mono text-xs text-on-surface space-y-1 border border-outline-variant/40">
+                <div className="text-cyan-400 font-bold">Quick World Time Guide:</div>
+                <div>When it is 2:00 PM in London:</div>
+                <div>It is 10:00 AM in New York · 7:00 AM in San Francisco · 11:00 PM in Tokyo</div>
+              </div>
+              <p className="text-xs text-on-surface-variant">
+                Our time zone tool makes it easy to find good times to call people in other countries.
+              </p>
+            </div>
+          </div>
+
+          {/* Reference Time Constants Table in Plain English */}
+          <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/50 p-6 space-y-4">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary">
+              <Info className="w-4 h-4" />
+              <span>Quick Time Chart</span>
+            </div>
+            <h3 className="text-lg font-bold text-on-surface">How Seconds, Minutes, Hours &amp; Days Add Up</h3>
+
+            <div className="overflow-x-auto no-scrollbar">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="border-b border-outline-variant/40 text-on-surface-variant uppercase tracking-wider font-semibold">
+                    <th className="py-2.5 pr-4">Time Unit</th>
+                    <th className="py-2.5 px-4 font-data-mono">Seconds</th>
+                    <th className="py-2.5 px-4 font-data-mono">Minutes</th>
+                    <th className="py-2.5 px-4 font-data-mono">Hours</th>
+                    <th className="py-2.5 pl-4">What It Means in Everyday Life</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-outline-variant/20 font-data-mono text-on-surface">
+                  <tr>
+                    <td className="py-2.5 pr-4 font-sans font-medium">1 Minute</td>
+                    <td className="py-2.5 px-4 text-primary font-bold">60 seconds</td>
+                    <td className="py-2.5 px-4">1 minute</td>
+                    <td className="py-2.5 px-4">0.016 hours</td>
+                    <td className="py-2.5 pl-4 font-sans text-on-surface-variant">60 heartbeats or seconds on a clock</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2.5 pr-4 font-sans font-medium">1 Hour</td>
+                    <td className="py-2.5 px-4 text-primary font-bold">3,600 seconds</td>
+                    <td className="py-2.5 px-4">60 minutes</td>
+                    <td className="py-2.5 px-4">1 hour</td>
+                    <td className="py-2.5 pl-4 font-sans text-on-surface-variant">The time it takes for the clock hand to go around once</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2.5 pr-4 font-sans font-medium">1 Day</td>
+                    <td className="py-2.5 px-4 text-primary font-bold">86,400 seconds</td>
+                    <td className="py-2.5 px-4">1,440 minutes</td>
+                    <td className="py-2.5 px-4">24 hours</td>
+                    <td className="py-2.5 pl-4 font-sans text-on-surface-variant">One full day and night (one spin of the Earth)</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2.5 pr-4 font-sans font-medium">1 Week</td>
+                    <td className="py-2.5 px-4 text-primary font-bold">604,800 seconds</td>
+                    <td className="py-2.5 px-4">10,080 minutes</td>
+                    <td className="py-2.5 px-4">168 hours</td>
+                    <td className="py-2.5 pl-4 font-sans text-on-surface-variant">7 days in a row (Monday through Sunday)</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2.5 pr-4 font-sans font-medium">1 Normal Year</td>
+                    <td className="py-2.5 px-4 text-primary font-bold">31,536,000 seconds</td>
+                    <td className="py-2.5 px-4">525,600 minutes</td>
+                    <td className="py-2.5 px-4">8,760 hours</td>
+                    <td className="py-2.5 pl-4 font-sans text-on-surface-variant">365 days (one trip around the sun)</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2.5 pr-4 font-sans font-medium">1 Leap Year</td>
+                    <td className="py-2.5 px-4 text-secondary font-bold">31,622,400 seconds</td>
+                    <td className="py-2.5 px-4">527,040 minutes</td>
+                    <td className="py-2.5 px-4">8,784 hours</td>
+                    <td className="py-2.5 pl-4 font-sans text-on-surface-variant">366 days with February 29 included</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Interactive FAQ Accordion in Plain Everyday English */}
+          <div className="space-y-4">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider text-primary">
+                Common Questions &amp; Simple Answers
+              </div>
+              <h3 className="text-2xl font-bold text-on-surface font-headline-md">
+                Frequently Asked Questions
+              </h3>
+            </div>
+
+            <div className="space-y-3">
+              {FAQS.map((faq, index) => {
+                const isOpen = openFaq === index;
+                return (
+                  <div
+                    key={faq.q}
+                    className="bg-surface-container-lowest rounded-xl border border-outline-variant/50 overflow-hidden transition-colors"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setOpenFaq(isOpen ? null : index)}
+                      className="w-full px-5 py-4 flex items-center justify-between text-left text-sm font-semibold text-on-surface hover:text-primary transition-colors cursor-pointer"
+                    >
+                      <span className="pr-4">{faq.q}</span>
+                      <ChevronDown
+                        className={`w-4 h-4 text-outline transition-transform duration-200 shrink-0 ${
+                          isOpen ? 'rotate-180 text-primary' : ''
+                        }`}
+                      />
+                    </button>
+                    {isOpen && (
+                      <div className="px-5 pb-5 pt-1 text-xs text-on-surface-variant leading-relaxed border-t border-outline-variant/30">
+                        {faq.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

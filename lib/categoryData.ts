@@ -39,7 +39,7 @@ export interface CategoryMetaRecord {
 
 export const CATEGORY_RICH_DATA: Record<string, CategoryMetaRecord> = {
   length: {
-    tagline: 'Convert metric, imperial, nautical, and astronomical distances with certified nanometer precision.',
+    tagline: 'Quickly convert between inches, feet, meters, centimeters, and miles with exact formulas.',
     heroPlaceholder: 'Search length conversions (e.g., cm to inches, meters to feet)...',
     popularChips: [
       { label: 'Centimeters to Inches', from: 'cm', to: 'in' },
@@ -59,106 +59,106 @@ export const CATEGORY_RICH_DATA: Record<string, CategoryMetaRecord> = {
         fromUnitId: 'mm',
         toUnitId: 'in',
         icon: 'credit_card',
-        summary: '85.6 mm = 3.370 Inches',
-        detail: 'Standard ISO/IEC 7810 ID-1 card dimensions used for payment cards and driver licenses worldwide.'
+        summary: '85.6 mm = 3.37 Inches',
+        detail: 'The standard width of credit cards, bank cards, and driver licenses in your wallet.'
       },
       {
         title: 'Average Adult Height',
-        category: 'Human Biology',
+        category: 'People & Health',
         fromValue: 175,
         fromUnitId: 'cm',
         toUnitId: 'ft',
         icon: 'person',
-        summary: '175 cm = 5.74 Feet (5 ft 8.9 in)',
-        detail: 'Global median height for adult males; approximately 68.9 inches.'
+        summary: '175 cm = 5.74 Feet (5 ft 9 in)',
+        detail: 'Typical height for an adult man (around 69 inches).'
       },
       {
         title: 'Olympic Swimming Pool Length',
-        category: 'Sports & Athletics',
+        category: 'Sports & Outdoors',
         fromValue: 50,
         fromUnitId: 'm',
         toUnitId: 'ft',
         icon: 'pool',
         summary: '50 Meters = 164.04 Feet',
-        detail: 'World Aquatics competition standard length for Olympic racing courses.'
+        detail: 'Official standard competition length of an Olympic racing pool.'
       },
       {
         title: 'Marathon Race Distance',
-        category: 'Athletics & Racing',
+        category: 'Sports & Running',
         fromValue: 42.195,
         fromUnitId: 'km',
         toUnitId: 'mi',
         icon: 'directions_run',
-        summary: '42.195 km = 26.219 Miles',
-        detail: 'The official distance established at the 1908 Olympic Games in London from Windsor Castle to White City.'
+        summary: '42.195 km = 26.22 Miles',
+        detail: 'The official distance of a full marathon road race.'
       },
       {
         title: 'Mount Everest Peak Elevation',
-        category: 'Geology & Geography',
+        category: 'Nature & Mountains',
         fromValue: 8848.86,
         fromUnitId: 'm',
         toUnitId: 'ft',
         icon: 'terrain',
         summary: '8,848.86 m = 29,031.7 Feet',
-        detail: 'Highest point on Earth above sea level, jointly surveyed by Nepal and China in 2020.'
+        detail: 'The highest mountain peak on Earth above sea level.'
       },
       {
         title: 'Nautical Mile Definition',
-        category: 'Aviation & Marine',
+        category: 'Travel & Navigation',
         fromValue: 1,
         fromUnitId: 'nmi',
         toUnitId: 'km',
         icon: 'sailing',
         summary: '1 Nautical Mile = 1.852 Kilometers',
-        detail: 'Historically defined as exactly one minute (1/60th degree) of latitude along any meridian.'
+        detail: 'Used worldwide by ships and airplanes for navigation across oceans.'
       }
     ],
     scenarios: [
       {
-        title: 'Architecture & Residential Construction',
-        tag: 'Blueprints',
-        description: 'Converting structural spans from imperial feet and fractional inches to metric meters and millimeters for international building code compliance.',
+        title: 'Home Improvement & Room Sizes',
+        tag: 'Everyday Home',
+        description: 'Converting wall lengths, furniture measurements, and room sizes between feet, inches, and meters.',
         icon: 'architecture',
         tip: '1 Foot is exactly 0.3048 meters; 1 Inch is legally defined as exactly 25.4 millimeters.'
       },
       {
-        title: 'Aviation & Air Traffic Navigation',
-        tag: 'Avionics',
-        description: 'Flight levels and runway lengths are universally measured in feet, while maritime flight and meteorological radar track ranges in nautical miles.',
+        title: 'Air Travel & Ocean Navigation',
+        tag: 'Travel',
+        description: 'Airplane flight altitude is measured in feet, while maritime travel and flight distances use nautical miles.',
         icon: 'flight',
-        tip: '1 Nautical Mile (1,852 m) differs significantly from 1 Statute Land Mile (1,609.344 m).'
+        tip: '1 Nautical Mile (1,852 m) is about 15% longer than a regular road mile (1,609 m).'
       },
       {
-        title: 'Textiles, Tailoring & Apparel',
-        tag: 'Manufacturing',
-        description: 'Fabric bolts are traded in yards or meters, while garment patterns, inseams, and collar dimensions rely on inches and centimeters.',
+        title: 'Clothing & Fabric Patterns',
+        tag: 'Shopping',
+        description: 'Fabric bolts are sold in yards or meters, while body sizes and inseams use inches or centimeters.',
         icon: 'strikethrough_s',
-        tip: '1 Yard equals exactly 36 inches or 0.9144 meters.'
+        tip: '1 Yard is exactly 3 feet, or 36 inches (0.9144 meters).'
       }
     ],
     historyGuide: {
-      origin: 'Historically, units of length were anchored to human anatomy—the cubit (forearm), foot, and fathom (armspan). In 1799, the French Academy of Sciences established the Meter as one ten-millionth of the distance from the North Pole to the Equator along the Paris meridian.',
-      standards: 'Today, the SI Meter is universally anchored to fundamental quantum physics: the distance traveled by light in a vacuum in exactly 1/299,792,458 of a second. The 1959 International Yard and Pound Agreement tied 1 inch to exactly 25.4 mm.',
-      pitfalls: 'Beware of confusing Statute Miles (5,280 ft = 1,609.344 m) with Nautical Miles (6,076.12 ft = 1,852 m), and always confirm whether architectural drawings use Survey Feet vs International Feet.'
+      origin: 'Early length units were based on human body parts—such as a foot, a forearm (cubit), or an armspan (fathom). In 1799, the meter was created in France so that everyone around the world could use the same clear decimal standard.',
+      standards: 'In 1959, countries officially agreed that 1 inch equals exactly 25.4 millimeters, giving everyone the exact same numbers worldwide.',
+      pitfalls: 'Remember that sea miles (nautical miles: 1,852 m) are longer than regular road miles (statute miles: 1,609 m).'
     },
     faqs: [
       {
         question: 'Why is an inch defined as exactly 25.4 millimeters?',
-        answer: 'Before 1959, the United States, Britain, and Commonwealth nations had microscopic discrepancies in their imperial standards. The 1959 International Yard and Pound Agreement harmonized 1 yard as exactly 0.9144 meters, which algebraically fixed 1 inch at exactly 25.4 mm.'
+        answer: 'In 1959, the United States, Britain, and other countries signed the International Yard and Pound Agreement. They set 1 yard to exactly 0.9144 meters, which makes 1 inch exactly 25.4 millimeters.'
       },
       {
-        question: 'How do I convert centimeters to inches in my head?',
-        answer: 'Divide the centimeter value by 2.5, or multiply by 4 and drop the last digit. For example: 50 cm / 2.5 = 20 inches (exact: 19.685 in).'
+        question: 'How can I quickly convert centimeters to inches in my head?',
+        answer: 'Divide the centimeter number by 2.5 (or divide by 10 and multiply by 4). For example: 50 cm ÷ 2.5 = 20 inches (exact answer is 19.69 inches).'
       },
       {
         question: 'What is the difference between a kilometer and a mile?',
-        answer: '1 Kilometer is 1,000 meters (0.621371 miles). 1 Mile is 5,280 feet (1.609344 kilometers). To roughly convert km to miles, multiply by 0.62 or use the Fibonacci sequence (3 km ≈ 2 mi, 5 km ≈ 3 mi, 8 km ≈ 5 mi, 13 km ≈ 8 mi).'
+        answer: '1 Kilometer is 1,000 meters (about 0.62 miles). 1 Mile is 5,280 feet (about 1.61 kilometers). A quick rule of thumb: 5 km is about 3.1 miles, and 10 km is about 6.2 miles.'
       }
     ]
   },
 
   weight: {
-    tagline: 'Accurately convert metric grams/tonnes and imperial pounds, ounces, and stones.',
+    tagline: 'Easily switch between pounds, kilograms, ounces, grams, and stones for health, gym weights, shipping, or luggage.',
     heroPlaceholder: 'Search weight & mass conversions (e.g., kg to lbs, grams to ounces)...',
     popularChips: [
       { label: 'Kilograms to Pounds', from: 'kg', to: 'lb' },
@@ -173,43 +173,43 @@ export const CATEGORY_RICH_DATA: Record<string, CategoryMetaRecord> = {
     benchmarks: [
       {
         title: 'Standard US Paperclip',
-        category: 'Office & Everyday',
+        category: 'Office & Desk',
         fromValue: 1,
         fromUnitId: 'g',
         toUnitId: 'oz',
         icon: 'attach_file',
-        summary: '1 Gram = 0.03527 Ounces',
-        detail: 'The benchmark physical reference for one gram in school science education.'
+        summary: '1 Gram = 0.035 Ounces',
+        detail: 'A standard small paperclip weighs almost exactly 1 gram.'
       },
       {
-        title: 'Smart Phone Handset',
-        category: 'Consumer Tech',
+        title: 'Smartphone in Hand',
+        category: 'Everyday Tech',
         fromValue: 200,
         fromUnitId: 'g',
         toUnitId: 'oz',
         icon: 'smartphone',
         summary: '200 Grams = 7.05 Ounces',
-        detail: 'Typical weight of modern glass-and-aluminum flagship smartphones (0.44 lbs).'
+        detail: 'Average weight of a modern smartphone (about 0.44 pounds).'
       },
       {
-        title: 'Standard Bag of Flour / Sugar',
-        category: 'Culinary & Grocery',
+        title: 'Bag of Flour or Sugar',
+        category: 'Kitchen & Baking',
         fromValue: 5,
         fromUnitId: 'lb',
         toUnitId: 'kg',
         icon: 'shopping_bag',
-        summary: '5 Pounds = 2.268 Kilograms',
-        detail: 'Classic consumer baking pantry size in North American retail markets.'
+        summary: '5 Pounds = 2.27 Kilograms',
+        detail: 'Standard pantry bag of flour or sugar in grocery stores.'
       },
       {
-        title: 'Adult Human Average Weight',
-        category: 'Medical & Physiology',
+        title: 'Average Adult Weight',
+        category: 'Health & Fitness',
         fromValue: 70,
         fromUnitId: 'kg',
         toUnitId: 'lb',
         icon: 'fitness_center',
         summary: '70 Kilograms = 154.32 Pounds',
-        detail: 'The global standard reference weight used by pharmacologists for drug dosage models (11 stone).'
+        detail: 'Common benchmark average human adult body weight (11 stone).'
       },
       {
         title: 'Compact Passenger Car',
@@ -218,66 +218,66 @@ export const CATEGORY_RICH_DATA: Record<string, CategoryMetaRecord> = {
         fromUnitId: 'kg',
         toUnitId: 'lb',
         icon: 'directions_car',
-        summary: '1,500 kg = 3,306.9 Pounds',
-        detail: 'Average curb weight of a compact hatchback or crossover utility vehicle (1.65 US tons).'
+        summary: '1,500 kg = 3,307 Pounds',
+        detail: 'Typical curb weight of a compact hatchback or crossover vehicle (about 1.65 US tons).'
       },
       {
         title: 'Adult Blue Whale',
-        category: 'Marine Zoology',
+        category: 'Nature & Wildlife',
         fromValue: 150,
         fromUnitId: 't',
         toUnitId: 'us_ton',
         icon: 'waves',
-        summary: '150 Metric Tonnes = 165.35 US Tons',
-        detail: 'The heaviest animal known to have ever existed, weighing up to 330,000 lbs.'
+        summary: '150 Metric Tons = 165.35 US Tons',
+        detail: 'The largest animal on Earth, weighing up to 330,000 pounds.'
       }
     ],
     scenarios: [
       {
-        title: 'Clinical Pharmaceutical Dosing',
-        tag: 'Medicine',
-        description: 'Drug administration is strictly computed in milligrams per kilogram of patient body weight (mg/kg), requiring error-free conversion from imperial pounds.',
+        title: 'Health & Medication Dosing',
+        tag: 'Health',
+        description: 'Doctor prescriptions and vitamin doses are calculated per kilogram of body weight (mg/kg).',
         icon: 'medication',
-        tip: 'Divide weight in pounds by 2.20462 to obtain exact mass in kilograms.'
+        tip: 'Divide weight in pounds by 2.2 to find your approximate weight in kilograms.'
       },
       {
-        title: 'Freight Logistics & Air Cargo',
-        tag: 'Shipping',
-        description: 'Container vessels, air cargo palletes, and commercial trucks calculate axle load limits and tare weight across metric tonnes, long tons, and short tons.',
+        title: 'Airline Luggage & Shipping',
+        tag: 'Travel',
+        description: 'Airline baggage allowances are usually 50 lbs (23 kg) or 70 lbs (32 kg).',
         icon: 'local_shipping',
-        tip: 'A Metric Tonne (1,000 kg = 2,204.6 lb) is heavier than a US Short Ton (2,000 lb = 907.2 kg).'
+        tip: 'A standard checked bag limit of 23 kg is equal to 50.7 pounds.'
       },
       {
-        title: 'Fitness & Athletic Bodyweight',
-        tag: 'Athletics',
-        description: 'Powerlifting, Olympic weightlifting, and combat sport divisions are categorized in kilograms, while North American gyms use pound plates.',
+        title: 'Gym Weights & Barbell Plates',
+        tag: 'Fitness',
+        description: 'Gym weight plates use kilograms (20 kg, 25 kg) or pounds (45 lbs), depending on your gym.',
         icon: 'sports',
-        tip: 'A standard Olympic barbell with two 20kg plates equals 60 kg or 132.3 lbs.'
+        tip: 'A standard 20 kg barbell plate is very close to 44 pounds (44.09 lbs).'
       }
     ],
     historyGuide: {
-      origin: 'Mass was originally measured against seeds (the grain, carob seed for carats) and water weight. The kilogram was established in 1795 as the mass of one cubic decimeter (liter) of pure water at its freezing point.',
-      standards: 'Until 2019, the kilogram was the last SI unit defined by a physical artifact: the International Prototype of the Kilogram (Le Grand K) in Sèvres, France. In May 2019, the General Conference on Weights and Measures redefined the kilogram via the Planck constant (h = 6.62607015 × 10⁻³⁴ kg·m²·s⁻¹).',
-      pitfalls: 'Weight (a gravitational force in Newtons) and Mass (an intrinsic quantity of matter in kg) are colloquially interchangeable on Earth, but Short Tons (2,000 lbs), Long Tons (2,240 lbs), and Metric Tonnes (2,204.62 lbs) are critically different.'
+      origin: 'Ancient merchants weighed goods against seeds (such as carob seeds for carats) and water. In 1795, the kilogram was created in France as the weight of 1 liter of pure water.',
+      standards: 'Today, all international trade uses official standard definitions agreed upon worldwide so 1 kilogram always equals exactly 2.20462 pounds.',
+      pitfalls: 'Note the difference between a US Short Ton (2,000 lbs) and a Metric Ton (2,204.62 lbs or 1,000 kg).'
     },
     faqs: [
       {
         question: 'How do you convert kilograms to pounds in your head?',
-        answer: 'Multiply the kg by 2, then add 10% of that number. For example: 80 kg × 2 = 160; 10% of 160 = 16; 160 + 16 = 176 lbs (exact: 176.37 lbs).'
+        answer: 'Double the kg number, then add 10% of that result. For example: 80 kg × 2 = 160; 10% of 160 is 16; 160 + 16 = 176 lbs (exact: 176.37 lbs).'
       },
       {
-        question: 'What is the exact difference between a US ton and a metric tonne?',
-        answer: 'A US Short Ton is exactly 2,000 lbs (907.185 kg). A Metric Tonne is 1,000 kg (2,204.62 lbs). A UK Long Ton is 2,240 lbs (1,016.05 kg).'
+        question: 'What is the difference between a US ton and a metric ton?',
+        answer: 'A US Short Ton is 2,000 lbs (907.2 kg). A Metric Ton (also spelled tonne) is 1,000 kg (2,204.6 lbs). A metric ton is about 10% heavier than a US ton.'
       },
       {
         question: 'How many pounds are in a stone?',
-        answer: 'There are exactly 14 pounds in 1 stone (approximately 6.35029 kg). The stone remains widely used in the United Kingdom and Ireland for human body weight.'
+        answer: 'There are exactly 14 pounds in 1 stone (about 6.35 kg). Stones are commonly used in the UK and Ireland for personal body weight.'
       }
     ]
   },
 
   temperature: {
-    tagline: 'Instant thermal conversions across Celsius, Fahrenheit, Kelvin, and Rankine scales.',
+    tagline: 'Convert temperatures instantly between Celsius, Fahrenheit, and Kelvin for weather, recipes, baking, or science.',
     heroPlaceholder: 'Search temperature conversions (e.g., Celsius to Fahrenheit, Kelvin)...',
     popularChips: [
       { label: 'Celsius to Fahrenheit', from: 'c', to: 'f' },
@@ -290,105 +290,105 @@ export const CATEGORY_RICH_DATA: Record<string, CategoryMetaRecord> = {
     benchmarks: [
       {
         title: 'Absolute Zero',
-        category: 'Quantum Physics',
+        category: 'Science',
         fromValue: -273.15,
         fromUnitId: 'c',
         toUnitId: 'f',
         icon: 'ac_unit',
         summary: '-273.15 °C = -459.67 °F (0 K)',
-        detail: 'The theoretical point at which all classical thermodynamic molecular motion ceases entirely.'
+        detail: 'The coldest possible temperature in the universe, where all thermal heat stops.'
       },
       {
         title: 'Water Freezing Point',
-        category: 'Physical Chemistry',
+        category: 'Everyday Weather',
         fromValue: 0,
         fromUnitId: 'c',
         toUnitId: 'f',
         icon: 'severe_cold',
         summary: '0 °C = 32.00 °F (273.15 K)',
-        detail: 'The equilibrium transition point between liquid water and ice at standard 1 atm pressure.'
+        detail: 'The temperature where liquid water freezes into solid ice under normal conditions.'
       },
       {
         title: 'Comfortable Room Temperature',
-        category: 'Climate & Living',
+        category: 'Home & Office',
         fromValue: 21,
         fromUnitId: 'c',
         toUnitId: 'f',
         icon: 'thermostat',
         summary: '21 °C = 69.80 °F',
-        detail: 'Recommended residential and laboratory ambient temperature for human comfort.'
+        detail: 'A comfortable, normal indoor temperature for homes, schools, and offices.'
       },
       {
         title: 'Normal Human Body Temperature',
-        category: 'Medicine',
+        category: 'Health & Fever',
         fromValue: 37,
         fromUnitId: 'c',
         toUnitId: 'f',
         icon: 'favorite',
         summary: '37.0 °C = 98.60 °F',
-        detail: 'The clinical baseline normothermic internal temperature established by Carl Wunderlich.'
+        detail: 'Normal healthy human body temperature.'
       },
       {
         title: 'Water Boiling Point',
-        category: 'Physical Chemistry',
+        category: 'Kitchen & Cooking',
         fromValue: 100,
         fromUnitId: 'c',
         toUnitId: 'f',
         icon: 'local_fire_department',
         summary: '100.0 °C = 212.00 °F',
-        detail: 'Vaporization transition point of pure water at sea-level atmospheric pressure.'
+        detail: 'The temperature where water boils into steam in your kitchen kettle.'
       },
       {
         title: 'Surface of the Sun',
-        category: 'Astrophysics',
+        category: 'Nature & Space',
         fromValue: 5500,
         fromUnitId: 'c',
         toUnitId: 'f',
         icon: 'wb_sunny',
         summary: '5,500 °C = 9,932 °F',
-        detail: 'Effective blackbody photospheric temperature of our solar system G-type star.'
+        detail: 'The scorching temperature on the visible outer surface of the Sun.'
       }
     ],
     scenarios: [
       {
-        title: 'Culinary Baking & Roasting Ovens',
-        tag: 'Gastronomy',
-        description: 'European recipes specify oven settings in Celsius (e.g. 180°C or 200°C), while North American appliances operate in Fahrenheit.',
+        title: 'Baking & Kitchen Oven Settings',
+        tag: 'Cooking',
+        description: 'International recipes often give oven temperatures in Celsius (like 180°C or 200°C), while American ovens use Fahrenheit.',
         icon: 'bakery_dining',
-        tip: '350°F is approximately 177°C; 400°F is approximately 204°C.'
+        tip: '350°F is about 175°C to 180°C; 400°F is about 200°C.'
       },
       {
-        title: 'Cryogenics & Scientific Research',
-        tag: 'Cryogenics',
-        description: 'Superconducting magnets in MRI machines and quantum computers must be cooled to liquid Helium temperatures near absolute zero, measured in Kelvin.',
-        icon: 'science',
-        tip: 'Liquid nitrogen boils at 77 K (-196°C / -321°F); liquid helium boils at 4.2 K.'
-      },
-      {
-        title: 'Meteorology & International Travel',
-        tag: 'Weather',
-        description: 'Global aviation weather broadcasts (METAR) report surface temperature and dewpoint in Celsius worldwide, even within the United States.',
+        title: 'Weather Forecasts & International Travel',
+        tag: 'Travel',
+        description: 'Most countries report daily weather in Celsius, while the US uses Fahrenheit.',
         icon: 'cloud',
-        tip: '-40° is the unique intersection point where -40°C equals exactly -40°F.'
+        tip: 'A quick rule: 20°C is 68°F (pleasant), 30°C is 86°F (hot), and 0°C is 32°F (freezing).'
+      },
+      {
+        title: 'Science Labs & Cold Storage',
+        tag: 'Science',
+        description: 'Scientific experiments and ultra-cold medical freezers use Kelvin or negative Celsius.',
+        icon: 'science',
+        tip: '-40° is the unique magic point where -40°C is exactly equal to -40°F.'
       }
     ],
     historyGuide: {
-      origin: 'Daniel Gabriel Fahrenheit invented the mercury thermometer in 1714, establishing 0°F as the freezing point of an ice-water-ammonium chloride brine. In 1742, Swedish astronomer Anders Celsius created a 100-degree scale between boiling and freezing points of water.',
-      standards: 'In the SI system, Kelvin (K) is the base unit of thermodynamic temperature, defined by fixing the Boltzmann constant k = 1.380649 × 10⁻²³ J/K. Celsius is an SI derived unit with an exact 273.15 offset.',
-      pitfalls: 'Unlike length or weight, temperature conversion is an affine transformation with an offset: °F = (°C × 9/5) + 32. You cannot simply multiply by a ratio without adding or subtracting 32.'
+      origin: 'Daniel Gabriel Fahrenheit built the first modern mercury thermometer in 1714. In 1742, Swedish astronomer Anders Celsius created the 100-degree scale between freezing (0°) and boiling (100°).',
+      standards: 'Kelvin is used by scientists because 0 K represents true absolute zero, with no negative numbers needed.',
+      pitfalls: 'Unlike feet or pounds, temperature has different starting zero points: 0°C is 32°F. That is why you must add or subtract 32 in the formula.'
     },
     faqs: [
       {
         question: 'What is the formula to convert Celsius to Fahrenheit?',
-        answer: 'Multiply the Celsius temperature by 9, divide by 5 (or multiply by 1.8), and add 32: °F = (°C × 1.8) + 32. For example, 20°C × 1.8 = 36; 36 + 32 = 68°F.'
+        answer: 'Multiply Celsius by 1.8 (or 9/5), then add 32: °F = (°C × 1.8) + 32. For example, 20°C × 1.8 = 36; 36 + 32 = 68°F.'
       },
       {
         question: 'At what temperature are Celsius and Fahrenheit equal?',
-        answer: 'Celsius and Fahrenheit are identical at -40°: -40°C = -40°F. This can be verified with: -40 × 1.8 = -72; -72 + 32 = -40.'
+        answer: 'Celsius and Fahrenheit meet at -40°: -40°C is exactly -40°F.'
       },
       {
-        question: 'Why does Kelvin not use a degree symbol (°)?',
-        answer: 'Kelvin is an absolute thermodynamic scale, not an arbitrary interval scale like Celsius or Fahrenheit. We write 300 K, not 300 °K.'
+        question: 'Why does Kelvin not have a degree symbol (°)?',
+        answer: 'Kelvin is an absolute scale starting at absolute zero, not an arbitrary interval scale. We write 300 K, without the degree sign.'
       }
     ]
   },

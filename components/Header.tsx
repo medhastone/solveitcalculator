@@ -1,98 +1,141 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { getCurrentTheme, toggleTheme } from '../lib/theme';
-import Image from 'next/image';
-import SearchModal from './SearchModal';
-import SavedToolsModal from './SavedToolsModal';
+import { usePathname } from 'next/navigation';
+import {
+  Calculator,
+  Search,
+  History,
+  Bookmark,
+  ChevronDown,
+  Menu,
+  X,
+  Layers,
+  ArrowRight,
+  TrendingUp,
+  HeartPulse,
+  Clock,
+  Repeat,
+  Wrench,
+  GraduationCap,
+  Sparkles,
+  Sun,
+  Moon,
+} from 'lucide-react';
 import { getSavedTools } from '../lib/bookmarks';
+import { getCurrentTheme, toggleTheme as switchTheme } from '../lib/theme';
+import CurrencyUnitSearchCard from './CurrencyUnitSearchCard';
+import SolveItLogo from './SolveItLogo';
 
-interface CategoryItem {
-  name: string;
-  href: string;
-  icon: string;
-  tag: string;
+interface HeaderProps {
+  onOpenSearch?: () => void;
+  onOpenHistory?: () => void;
+  onOpenSaved?: () => void;
 }
 
-const allCategories: CategoryItem[] = [
-  { name: 'Technology & Dev', href: '/technology', icon: 'terminal', tag: 'Subnet, RAID, Crypto' },
-  { name: 'Science & Physics', href: '/science', icon: 'science', tag: 'Density, Molarity' },
-  { name: 'Electrical & Wire', href: '/electrical-calculators-sizing-tools', icon: 'electric_bolt', tag: 'AWG, FLA, Solar' },
-  { name: 'Business & Startup', href: '/business', icon: 'domain', tag: 'Runway, Margins, SaaS' },
-  { name: 'Education & GPA', href: '/education', icon: 'school', tag: 'GPA, Final Exam' },
-  { name: 'Finance & Loans', href: '/finance', icon: 'payments', tag: 'Mortgages, FIRE' },
-  { name: 'Banking & Cash Accounts', href: '/banking-and-cash-accounts', icon: 'account_balance_wallet', tag: 'Checking, Fees, Overdraft, APR' },
-  { name: 'Credit Cards & Revolving', href: '/credit-cards-and-revolving', icon: 'credit_card', tag: 'Payoff, 0% Transfer, APR, FICO' },
-  { name: 'Savings & Liquidity', href: '/savings-and-liquidity', icon: 'savings', tag: 'HYSA, CD Ladders, Emergency' },
-  { name: 'Loans & Amortization', href: '/loans-and-amortization', icon: 'account_balance', tag: 'Amortization, EMI, Auto, Student' },
-  { name: 'Mortgages & Real Estate Debt', href: '/mortgages-and-real-estate-debt', icon: 'real_estate_agent', tag: 'PITI, 15 vs 30, Refi, ARM' },
-  { name: 'Investing & Growth', href: '/investing-and-growth', icon: 'trending_up', tag: 'Compound, Dividends, CAGR' },
-  { name: 'Retirement & Super', href: '/retirement-and-super', icon: 'elderly', tag: '401(k), Super, FIRE, SWR' },
-  { name: 'Global Tax Calculator', href: '/global-tax-calculator', icon: 'receipt_long', tag: 'Income, VAT, 1099, Corporate' },
-  { name: 'Health & Fitness', href: '/health', icon: 'favorite', tag: 'BMI, BMR, TDEE' },
-  { name: 'Time & Date', href: '/time-date', icon: 'schedule', tag: 'Age, Clock, Timers' },
-  { name: 'Construction', href: '/home-construction', icon: 'construction', tag: 'Concrete, Framing' },
-  { name: 'Math & Stats', href: '/math', icon: 'calculate', tag: 'Algebra, Geometry' },
-  { name: 'Conversions', href: '/conversions', icon: 'sync_alt', tag: 'Metric, Data, Units' },
-  { name: 'Automotive', href: '/automotive-calculators-estimators', icon: 'directions_car', tag: 'MPG, EV Range' },
+const CATEGORY_GROUPS = [
+  {
+    name: 'Finance & Banking',
+    icon: TrendingUp,
+    color: 'text-emerald-400',
+    bgColor: 'bg-emerald-500/10 border-emerald-500/20',
+    href: '/finance',
+    tools: [
+      { name: 'Mortgage Calculator', href: '/finance/mortgage-calculator' },
+      { name: 'EMI Loan Repayment', href: '/loans-and-amortization' },
+      { name: 'SIP & Compounding', href: '/investing-and-growth' },
+      { name: 'Income Tax Estimator', href: '/tax-engines-global' },
+      { name: 'Salary & Payroll', href: '/salary-and-payroll' },
+    ],
+  },
+  {
+    name: 'Health & Physiology',
+    icon: HeartPulse,
+    color: 'text-rose-400',
+    bgColor: 'bg-rose-500/10 border-rose-500/20',
+    href: '/health-fitness-calculators',
+    tools: [
+      { name: 'BMI & Body Fat Matrix', href: '/health-fitness-calculators/bmi' },
+      { name: 'Running Pace & Splits', href: '/running-pace-calculator' },
+      { name: '90-Min Ultradian Cycles', href: '/time-date/90-minute-ultradian-rhythm-planner' },
+    ],
+  },
+  {
+    name: 'Date, Time & Work',
+    icon: Clock,
+    color: 'text-sky-400',
+    bgColor: 'bg-sky-500/10 border-sky-500/20',
+    href: '/time-date',
+    tools: [
+      { name: 'Date Difference Counter', href: '/date-difference-calculator' },
+      { name: 'Add/Subtract Time Tool', href: '/time-date/time-calculator' },
+      { name: 'Business Workdays', href: '/business-days-calculator' },
+      { name: 'Age Calculator', href: '/time-date/age-calculator' },
+    ],
+  },
+  {
+    name: 'Universal Conversions',
+    icon: Repeat,
+    color: 'text-amber-400',
+    bgColor: 'bg-amber-500/10 border-amber-500/20',
+    href: '/conversions',
+    tools: [
+      { name: 'Length & Distance', href: '/conversions' },
+      { name: 'Weight & Mass', href: '/conversions' },
+      { name: 'Temperature & Heat', href: '/conversions' },
+    ],
+  },
+  {
+    name: 'Engineering & Science',
+    icon: Wrench,
+    color: 'text-purple-400',
+    bgColor: 'bg-purple-500/10 border-purple-500/20',
+    href: '/science',
+    tools: [
+      { name: 'Full Scientific Solver', href: '/scientific-calculator' },
+      { name: 'Electrical Sizing', href: '/electrical' },
+    ],
+  },
+  {
+    name: 'Business & Academic',
+    icon: GraduationCap,
+    color: 'text-blue-400',
+    bgColor: 'bg-blue-500/10 border-blue-500/20',
+    href: '/business',
+    tools: [
+      { name: 'Percentage Variations', href: '/percentage-calculator' },
+      { name: 'Freelance Billable Rate', href: '/freelance-hourly-rate-calculator' },
+      { name: 'Daily Wage Calculator', href: '/salary-and-payroll' },
+    ],
+  },
 ];
 
-export default function Header() {
-  const [isDark, setIsDark] = useState<boolean>(false);
-  const [mounted, setMounted] = useState<boolean>(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  const [mobileSearch, setMobileSearch] = useState<string>('');
-  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
-  const [isSavedModalOpen, setIsSavedModalOpen] = useState<boolean>(false);
-  const [savedCount, setSavedCount] = useState<number>(0);
+export default function Header({
+  onOpenSearch,
+  onOpenHistory,
+  onOpenSaved,
+}: HeaderProps) {
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [savedCount, setSavedCount] = useState(0);
+  const [isDark, setIsDark] = useState(true);
+  const [showCurrencySearch, setShowCurrencySearch] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Load and subscribe to saved tools bookmarks
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const updateSavedCount = () => {
-      const tools = getSavedTools();
-      setSavedCount(tools.length);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
     };
-
-    updateSavedCount();
-
-    const handleOpenSavedModal = () => {
-      setIsSavedModalOpen(true);
-    };
-
-    window.addEventListener('solveit-bookmarks-change', updateSavedCount);
-    window.addEventListener('storage', updateSavedCount);
-    window.addEventListener('open-saved-tools-modal', handleOpenSavedModal);
-
-    return () => {
-      window.removeEventListener('solveit-bookmarks-change', updateSavedCount);
-      window.removeEventListener('storage', updateSavedCount);
-      window.removeEventListener('open-saved-tools-modal', handleOpenSavedModal);
-    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Keyboard shortcuts
+  // Sync theme state on mount & change
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setIsSearchOpen(true);
-      }
-      if (e.key === 'Escape') {
-        setIsSearchOpen(false);
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setMounted(true);
-      setIsDark(getCurrentTheme() === 'dark');
-    }, 0);
-
+    setIsDark(getCurrentTheme() === 'dark');
     const handleThemeChange = (e: Event) => {
       const customEvent = e as CustomEvent<string>;
       if (customEvent.detail) {
@@ -101,324 +144,339 @@ export default function Header() {
         setIsDark(getCurrentTheme() === 'dark');
       }
     };
-
     window.addEventListener('solveit-theme-change', handleThemeChange);
     window.addEventListener('storage', handleThemeChange);
-
     return () => {
-      clearTimeout(timer);
       window.removeEventListener('solveit-theme-change', handleThemeChange);
       window.removeEventListener('storage', handleThemeChange);
     };
   }, []);
 
-  // Close mobile menu on Escape
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setMobileMenuOpen(false);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  const handleToggle = () => {
-    const next = toggleTheme();
+  const handleToggleTheme = () => {
+    const next = switchTheme();
     setIsDark(next === 'dark');
   };
 
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
+  // Sync bookmarks count
+  useEffect(() => {
+    const updateCount = () => {
+      setSavedCount(getSavedTools().length);
+    };
+    updateCount();
+    window.addEventListener('solveit-bookmarks-change', updateCount);
+    window.addEventListener('storage', updateCount);
+    return () => {
+      window.removeEventListener('solveit-bookmarks-change', updateCount);
+      window.removeEventListener('storage', updateCount);
+    };
+  }, []);
+
+  // Close mega-menu dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setCategoriesOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex flex-col">
-      {/* Main Header bar */}
-      <header className="w-full bg-surface/90 backdrop-blur-xl border-b border-outline-variant/40 shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-colors duration-150">
-        <div className="h-16 max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop flex items-center justify-between gap-2 sm:gap-4">
-          
-          {/* Brand Logo & Desktop Navigation */}
-          <div className="flex items-center gap-3 xl:gap-5 min-w-0">
-            {/* Logo - Protected with shrink-0 so it is NEVER hidden or compressed */}
-            <Link
-              href="/"
-              onClick={closeMobileMenu}
-              className="shrink-0 flex items-center focus:outline-none group select-none py-1 relative h-11 sm:h-12 md:h-13 aspect-[238/54]"
-              aria-label="SolveIt Calculator Homepage"
-            >
-              <Image
-                alt="SolveIt Calculator Brand Logo"
-                className="object-contain block transition-transform duration-150 group-hover:scale-[1.02]"
-                src="/logo.png?v=2"
-                fill
-                sizes="(max-width: 640px) 150px, 200px"
-                priority
-              />
-            </Link>
+    <header
+      className={`sticky top-0 z-40 w-full transition-all duration-200 border-b ${
+        scrolled
+          ? 'bg-surface-container-lowest/95 backdrop-blur-md border-outline-variant/60 shadow-md shadow-black/10 dark:shadow-black/40'
+          : 'bg-surface/95 backdrop-blur-sm border-outline-variant/40'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20 sm:h-24">
+          {/* Logo & Brand */}
+          <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group">
+            <div className="w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] -mr-1 sm:-mr-1.5 flex items-center justify-center group-hover:scale-105 transition-transform duration-200 shrink-0">
+              <SolveItLogo className="w-[52px] h-[52px] sm:w-[60px] sm:h-[60px]" />
+            </div>
+            <div>
+              <span className="font-bold text-2xl sm:text-3xl tracking-tight text-on-surface block leading-none">
+                SolveIt<span className="text-primary">Calculator</span>
+              </span>
+            </div>
+          </Link>
 
-            {/* Desktop Navigation - Clean, curated, and uncluttered */}
-            <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 p-0.5" aria-label="Main Navigation">
-              <Link
-                href="/technology"
-                className="px-2.5 xl:px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm whitespace-nowrap"
+          {/* Center Navigation: Categories Dropdown & Primary Section Links */}
+          <nav className="hidden lg:flex items-center gap-2 text-sm font-medium">
+            <div className="relative" ref={dropdownRef}>
+              <button
+                type="button"
+                onClick={() => setCategoriesOpen(!categoriesOpen)}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg transition-colors cursor-pointer ${
+                  categoriesOpen
+                    ? 'text-primary bg-surface-container-high border border-outline-variant'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60'
+                }`}
               >
-                Technology
-              </Link>
-              <Link
-                href="/science"
-                className="px-2.5 xl:px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm whitespace-nowrap"
-              >
-                Science
-              </Link>
-              <Link
-                href="/finance"
-                className="px-2.5 xl:px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm whitespace-nowrap"
-              >
-                Finance
-              </Link>
-              <Link
-                href="/business"
-                className="px-2.5 xl:px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm whitespace-nowrap"
-              >
-                Business
-              </Link>
-              <Link
-                href="/health"
-                className="px-2.5 xl:px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm whitespace-nowrap"
-              >
-                Health
-              </Link>
+                <Layers className="w-4 h-4 text-primary" />
+                <span>Categories</span>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    categoriesOpen ? 'rotate-180 text-primary' : 'text-on-surface-variant'
+                  }`}
+                />
+              </button>
 
-              {/* All Categories Dropdown Menu */}
-              <div className="relative group">
-                <button
-                  type="button"
-                  aria-haspopup="true"
-                  className="px-2.5 xl:px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-sm text-body-sm flex items-center gap-1 cursor-pointer select-none"
-                >
-                  <span className="material-symbols-outlined text-[17px] text-primary">widgets</span>
-                  <span>Categories</span>
-                  <span className="material-symbols-outlined text-[15px] transition-transform duration-200 group-hover:rotate-180">
-                    expand_more
-                  </span>
-                </button>
-
-                {/* Mega Dropdown Panel */}
-                <div className="absolute top-full left-0 mt-1.5 w-96 bg-surface-container-lowest/95 backdrop-blur-2xl rounded-2xl shadow-xl border border-outline-variant/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 p-3 z-50">
-                  <div className="px-2 py-1.5 mb-2 border-b border-outline-variant/20 flex items-center justify-between">
-                    <span className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">
-                      Explore All Categories
-                    </span>
-                    <span className="font-data-mono text-[11px] text-primary font-medium">
-                      100+ Calculators
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-1 max-h-[380px] overflow-y-auto">
-                    {allCategories.map((cat) => (
-                      <Link
-                        key={cat.name}
-                        href={cat.href}
-                        className="flex items-center gap-2 p-2 rounded-xl hover:bg-surface-container-high text-on-surface transition-colors group/item"
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-surface-container-low group-hover/item:bg-primary group-hover/item:text-on-primary flex items-center justify-center shrink-0 transition-colors">
-                          <span className="material-symbols-outlined text-[18px]">{cat.icon}</span>
-                        </div>
-                        <div className="min-w-0">
-                          <div className="font-body-sm text-body-sm font-medium text-on-surface truncate group-hover/item:text-primary transition-colors">
-                            {cat.name}
+              {/* Mega-menu dropdown */}
+              {categoriesOpen && (
+                <div className="absolute top-full left-0 mt-2.5 w-[740px] -translate-x-12 p-6 bg-surface-container-lowest/98 backdrop-blur-xl border border-outline-variant/60 rounded-2xl shadow-2xl grid grid-cols-3 gap-6 animate-in fade-in-50 zoom-in-95 duration-150 z-50">
+                  {CATEGORY_GROUPS.map((group) => {
+                    const Icon = group.icon;
+                    return (
+                      <div key={group.name} className="space-y-2">
+                        <Link
+                          href={group.href}
+                          onClick={() => setCategoriesOpen(false)}
+                          className="flex items-center gap-2 font-semibold text-xs text-on-surface hover:text-primary transition-colors pb-1.5 border-b border-outline-variant/30"
+                        >
+                          <div className={`p-1.5 rounded-lg ${group.bgColor}`}>
+                            <Icon className={`w-3.5 h-3.5 ${group.color}`} />
                           </div>
-                          <div className="font-label-caps text-[10px] text-on-surface-variant truncate">
-                            {cat.tag}
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-
-                  <div className="mt-2 pt-2 border-t border-outline-variant/20 flex items-center justify-between px-2 text-body-sm">
+                          <span>{group.name}</span>
+                        </Link>
+                        <ul className="space-y-1">
+                          {group.tools.map((t) => (
+                            <li key={t.name}>
+                              <Link
+                                href={t.href}
+                                onClick={() => setCategoriesOpen(false)}
+                                className="text-xs text-on-surface-variant hover:text-primary hover:translate-x-0.5 transition-all block py-0.5"
+                              >
+                                {t.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })}
+                  <div className="col-span-3 pt-3 mt-1 border-t border-outline-variant/30 flex items-center justify-between text-xs text-on-surface-variant">
+                    <span className="flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-primary" />
+                      100% Free Client-Side Mathematical Engines
+                    </span>
                     <Link
                       href="/"
-                      className="font-label-caps text-label-caps text-primary hover:underline flex items-center gap-1 font-semibold"
+                      onClick={() => setCategoriesOpen(false)}
+                      className="inline-flex items-center gap-1.5 text-primary hover:underline font-medium"
                     >
-                      Browse Complete Catalog →
+                      <span>Explore all 250+ tools</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
                 </div>
-              </div>
-            </nav>
-          </div>
+              )}
+            </div>
 
-          {/* Right Action Bar */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            {/* Desktop Search Bar */}
-            <button
-              type="button"
-              onClick={() => setIsSearchOpen(true)}
-              className="hidden md:flex items-center justify-between w-36 lg:w-44 xl:w-52 px-3 py-1.5 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all focus:outline-none"
-            >
-              <span className="flex items-center gap-1.5 text-body-sm font-body-sm truncate">
-                <span className="material-symbols-outlined text-[17px] text-primary">search</span>
-                <span>Quick search...</span>
-              </span>
-              <kbd className="hidden lg:inline-block font-data-mono text-[10px] bg-surface-container-highest text-on-surface px-1.5 py-0.5 rounded border border-outline-variant/40 shadow-xs">
-                ⌘K
-              </kbd>
-            </button>
-
-            {/* Mobile Quick Search Button */}
-            <button
-              type="button"
-              onClick={() => setIsSearchOpen(true)}
-              aria-label="Search tools"
-              title="Search tools"
-              className="md:hidden w-9 h-9 rounded-xl flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors border border-outline-variant/30 bg-surface-container-low"
-            >
-              <span className="material-symbols-outlined text-[20px]">search</span>
-            </button>
-
-            {/* Saved Tools Bookmark button */}
-            <button
-              type="button"
-              onClick={() => setIsSavedModalOpen(true)}
-              aria-label={`Saved Tools & Bookmarks (${savedCount})`}
-              className={`relative w-9 h-9 rounded-xl flex items-center justify-center transition-all border cursor-pointer ${
-                savedCount > 0
-                  ? 'text-primary bg-primary/10 border-primary/30 hover:bg-primary/20 shadow-xs'
-                  : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface border-outline-variant/30 bg-surface-container-low'
+            <Link
+              href="/finance"
+              className={`px-3.5 py-2 rounded-lg transition-colors ${
+                pathname.startsWith('/finance')
+                  ? 'text-primary font-semibold bg-surface-container-high'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60'
               }`}
-              title="Saved Tools & Bookmarks"
             >
-              <span className="material-symbols-outlined text-[20px]">
-                {savedCount > 0 ? 'bookmark' : 'bookmark_border'}
-              </span>
+              Finance
+            </Link>
+            <Link
+              href="/health-fitness-calculators"
+              className={`px-3.5 py-2 rounded-lg transition-colors ${
+                pathname.startsWith('/health-fitness-calculators')
+                  ? 'text-primary font-semibold bg-surface-container-high'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60'
+              }`}
+            >
+              Health
+            </Link>
+            <Link
+              href="/conversions"
+              className={`px-3.5 py-2 rounded-lg transition-colors ${
+                pathname.startsWith('/conversions')
+                  ? 'text-primary font-semibold bg-surface-container-high'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high/60'
+              }`}
+            >
+              Conversion
+            </Link>
+          </nav>
+
+          {/* Right Action Icons & Mobile Hamburger */}
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Small Search Bar Icon Button */}
+            <button
+              type="button"
+              onClick={onOpenSearch}
+              className="p-2.5 rounded-xl bg-surface-container-high/60 hover:bg-surface-container-high text-on-surface-variant hover:text-primary border border-outline-variant/40 transition-all cursor-pointer shadow-xs flex items-center justify-center"
+              title="Search all calculators (⌘K)"
+              aria-label="Search calculators"
+            >
+              <Search className="w-4 h-4 text-primary" />
+            </button>
+
+            {/* Save Icon (Saved Tools modal trigger) */}
+            <button
+              type="button"
+              onClick={onOpenSaved}
+              className="relative p-2.5 rounded-xl bg-surface-container-high/60 hover:bg-surface-container-high text-on-surface-variant hover:text-primary border border-outline-variant/40 transition-all cursor-pointer shadow-xs flex items-center justify-center"
+              title="Saved Calculators"
+              aria-label="Saved Calculators"
+            >
+              <Bookmark className="w-4 h-4 text-blue-500" />
               {savedCount > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[17px] h-[17px] px-1 bg-primary text-on-primary font-bold text-[10px] rounded-full flex items-center justify-center border-2 border-surface shadow-xs animate-in zoom-in-50 duration-150">
-                  {savedCount > 99 ? '99+' : savedCount}
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-primary text-on-primary text-[10px] font-bold flex items-center justify-center">
+                  {savedCount}
                 </span>
               )}
             </button>
 
-            {/* Global Theme Toggle Button */}
+            {/* Live Rates (Currency & Unit Search Grounding Trigger) */}
             <button
-              aria-label={mounted && isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              title={mounted && isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               type="button"
-              onClick={handleToggle}
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors border border-outline-variant/40 cursor-pointer bg-surface-container-low hover:border-primary/40 shadow-xs"
+              onClick={() => setShowCurrencySearch(!showCurrencySearch)}
+              className={`p-2.5 sm:px-3 sm:py-2 rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 ${
+                showCurrencySearch
+                  ? 'bg-primary text-white border-primary shadow-xs'
+                  : 'bg-surface-container-high/60 hover:bg-surface-container-high text-on-surface-variant hover:text-emerald-500 border-outline-variant/40'
+              }`}
+              title="Live Rates (Real-time Google Grounding)"
+              aria-label="Live Rates"
             >
-              <span className="material-symbols-outlined text-[19px] transition-transform duration-200">
-                {mounted && isDark ? 'light_mode' : 'dark_mode'}
-              </span>
+              <span className="material-symbols-outlined text-[18px] text-emerald-500">currency_exchange</span>
+              <span className="hidden xl:inline text-xs font-semibold">Live Rates</span>
             </button>
 
-            {/* Mobile Hamburger Menu Toggle Button */}
+            {/* Light and Dark Mode Icon Toggle */}
             <button
               type="button"
-              onClick={() => setMobileMenuOpen(prev => !prev)}
-              aria-label={mobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
-              title={mobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
-              className="lg:hidden w-9 h-9 rounded-xl flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors border border-outline-variant/40 bg-surface-container-low cursor-pointer"
+              onClick={handleToggleTheme}
+              className="p-2.5 rounded-xl bg-surface-container-high/60 hover:bg-surface-container-high text-amber-500 hover:text-amber-400 border border-outline-variant/40 transition-all cursor-pointer flex items-center justify-center shadow-xs"
+              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
-              <span className="material-symbols-outlined text-[22px]">
-                {mobileMenuOpen ? 'close' : 'menu'}
-              </span>
+              {isDark ? (
+                <Sun className="w-4 h-4 text-amber-400 transition-transform duration-200 hover:rotate-45" />
+              ) : (
+                <Moon className="w-4 h-4 text-sky-500 transition-transform duration-200 -rotate-12" />
+              )}
+            </button>
+
+            {/* Mobile Hamburger Button */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2.5 rounded-xl bg-surface-container-high/60 hover:bg-surface-container-high text-on-surface border border-outline-variant/40 transition-all cursor-pointer"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden w-full bg-surface-container-lowest/98 backdrop-blur-2xl border-b border-outline-variant/30 shadow-2xl p-4 max-h-[calc(100vh-64px)] overflow-y-auto animate-in slide-in-from-top-2 duration-200">
-            {/* Mobile Search Input */}
-            <div className="mb-4">
-              <div className="flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-xl border border-outline-variant/40">
-                <span className="material-symbols-outlined text-primary text-[20px]">search</span>
-                <input
-                  type="text"
-                  value={mobileSearch}
-                  onChange={(e) => setMobileSearch(e.target.value)}
-                  placeholder="Search 100+ calculators..."
-                  className="w-full bg-transparent font-body-sm text-body-sm text-on-surface outline-none placeholder:text-on-surface-variant"
-                />
-                {mobileSearch && (
-                  <button
-                    type="button"
-                    onClick={() => setMobileSearch('')}
-                    className="text-on-surface-variant hover:text-on-surface"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">close</span>
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Mobile Categories Grid */}
-            <div className="mb-3">
-              <div className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold mb-2 px-1">
-                Calculator Categories
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {allCategories
-                  .filter(cat => !mobileSearch || cat.name.toLowerCase().includes(mobileSearch.toLowerCase()) || cat.tag.toLowerCase().includes(mobileSearch.toLowerCase()))
-                  .map((cat) => (
-                    <Link
-                      key={cat.name}
-                      href={cat.href}
-                      onClick={closeMobileMenu}
-                      className="flex items-center gap-2.5 p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container-high border border-outline-variant/20 transition-all text-on-surface"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0 text-primary">
-                        <span className="material-symbols-outlined text-[18px]">{cat.icon}</span>
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-body-sm text-body-sm font-semibold text-on-surface truncate">
-                          {cat.name.split('&')[0].trim()}
-                        </div>
-                        <div className="font-label-caps text-[10px] text-on-surface-variant truncate">
-                          {cat.tag}
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-              </div>
-            </div>
-
-            {/* Mobile Footer Quick Actions */}
-            <div className="pt-3 border-t border-outline-variant/20 flex flex-col gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  closeMobileMenu();
-                  setIsSavedModalOpen(true);
-                }}
-                className="flex items-center justify-between w-full px-3 py-2.5 rounded-xl bg-surface-container-low text-on-surface font-body-sm hover:bg-surface-container-high transition-colors text-left"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px] text-primary">bookmark</span>
-                  <span>Saved Tools &amp; Bookmarks</span>
-                </div>
-                {savedCount > 0 && (
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-on-primary font-bold">
-                    {savedCount}
-                  </span>
-                )}
-              </button>
-              <Link
-                href="/"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-low text-on-surface font-body-sm hover:bg-surface-container-high transition-colors"
-              >
-                <span className="material-symbols-outlined text-[18px] text-secondary">apps</span>
-                <span>All 100+ Calculators &amp; Categories</span>
-              </Link>
-            </div>
+      {/* Real-Time Currency & Unit Search Grounding Drawer */}
+      {showCurrencySearch && (
+        <div className="border-t border-outline-variant/40 bg-surface-container-lowest/98 backdrop-blur-xl p-4 sm:p-6 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="max-w-4xl mx-auto relative">
+            <button
+              type="button"
+              onClick={() => setShowCurrencySearch(false)}
+              className="absolute right-3 top-3 z-10 p-1.5 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              title="Close currency search"
+            >
+              <span className="material-symbols-outlined text-lg">close</span>
+            </button>
+            <CurrencyUnitSearchCard
+              initialExpanded={true}
+              onApplyPair={(pair) => {
+                setShowCurrencySearch(false);
+                window.location.href = `/conversion/${pair.fromUnitId.toLowerCase()}-to-${pair.toUnitId.toLowerCase()}`;
+              }}
+            />
           </div>
-        )}
-      </header>
-      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-      <SavedToolsModal isOpen={isSavedModalOpen} onClose={() => setIsSavedModalOpen(false)} />
-    </div>
+        </div>
+      )}
+
+      {/* Mobile Drawer Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden bg-surface-container-lowest border-b border-outline-variant/40 px-4 pt-4 pb-6 space-y-4">
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setCategoriesOpen(true);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="p-3 rounded-xl bg-surface-container text-primary font-semibold hover:bg-surface-container-high border border-outline-variant/40 flex items-center justify-between"
+            >
+              <span>Categories</span>
+              <Layers className="w-4 h-4 text-primary" />
+            </button>
+            <Link
+              href="/finance"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-xl bg-surface-container text-on-surface font-medium hover:bg-surface-container-high border border-outline-variant/40"
+            >
+              Finance
+            </Link>
+            <Link
+              href="/health-fitness-calculators"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-xl bg-surface-container text-on-surface font-medium hover:bg-surface-container-high border border-outline-variant/40"
+            >
+              Health
+            </Link>
+            <Link
+              href="/conversions"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-xl bg-surface-container text-on-surface font-medium hover:bg-surface-container-high border border-outline-variant/40"
+            >
+              Conversion
+            </Link>
+          </div>
+
+          <div className="pt-3 border-t border-outline-variant/30 flex items-center justify-between gap-2 text-xs">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenSearch?.();
+              }}
+              className="flex-1 py-2.5 text-center text-primary font-semibold bg-surface-container hover:bg-surface-container-high rounded-xl flex items-center justify-center gap-1.5"
+            >
+              <Search className="w-3.5 h-3.5" />
+              <span>Search Tools</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenSaved?.();
+              }}
+              className="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-blue-500 border border-outline-variant/40 transition-all cursor-pointer flex items-center justify-center shrink-0"
+              title="Saved Calculators"
+            >
+              <Bookmark className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={handleToggleTheme}
+              className="p-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-amber-500 border border-outline-variant/40 transition-all cursor-pointer flex items-center justify-center shrink-0"
+              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-sky-500" />}
+            </button>
+          </div>
+        </div>
+      )}
+    </header>
   );
 }

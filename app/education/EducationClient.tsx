@@ -2,17 +2,20 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
-import Header from '../../components/Header';
 
 export default function EducationClient() {
   // --- Search & Filter State ---
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Keyboard shortcut '/' focus search
+  // Keyboard shortcut '/' to focus search
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === '/' && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
+      if (
+        e.key === '/' &&
+        document.activeElement?.tagName !== 'INPUT' &&
+        document.activeElement?.tagName !== 'TEXTAREA'
+      ) {
         e.preventDefault();
         searchInputRef.current?.focus();
         searchInputRef.current?.select();
@@ -22,11 +25,25 @@ export default function EducationClient() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // --- Workbench 1: Target GPA Predictor State ---
-  const [curGpa, setCurGpa] = useState<number>(3.42);
-  const [compCredits, setCompCredits] = useState<number>(45);
-  const [targetGpa, setTargetGpa] = useState<number>(3.65);
-  const [futCredits, setFutCredits] = useState<number>(30);
+  // --- Interactive Tool 1: Target GPA Calculator ---
+  const [gpaScale, setGpaScale] = useState<'4.0' | '4.33' | '5.0' | '10.0'>('4.0');
+  const [curGpa, setCurGpa] = useState<number>(3.45);
+  const [compCredits, setCompCredits] = useState<number>(48);
+  const [targetGpa, setTargetGpa] = useState<number>(3.70);
+  const [futCredits, setFutCredits] = useState<number>(32);
+
+  const maxScaleVal = useMemo(() => {
+    switch (gpaScale) {
+      case '4.33':
+        return 4.33;
+      case '5.0':
+        return 5.0;
+      case '10.0':
+        return 10.0;
+      default:
+        return 4.0;
+    }
+  }, [gpaScale]);
 
   const gpaResult = useMemo(() => {
     const cur = Number(curGpa) || 0;
@@ -34,7 +51,9 @@ export default function EducationClient() {
     const target = Number(targetGpa) || 0;
     const fut = Number(futCredits) || 0;
 
-    if (fut <= 0) return { val: 'N/A', status: 'invalid', message: 'Enter future credits' };
+    if (fut <= 0 || comp < 0) {
+      return { val: '—', status: 'invalid', message: 'Enter future credit hours' };
+    }
 
     const totalCredits = comp + fut;
     const totalPointsNeeded = target * totalCredits;
@@ -42,34 +61,42 @@ export default function EducationClient() {
     const futurePointsNeeded = totalPointsNeeded - pointsEarned;
     const requiredGpa = futurePointsNeeded / fut;
 
-    if (requiredGpa > 4.0) {
+    if (requiredGpa > maxScaleVal) {
       return {
         val: requiredGpa.toFixed(2),
         status: 'exceeds',
-        badge: 'Exceeds 4.0 Max',
-        message: 'Requires more future credits or honors weighting',
+        badge: `Exceeds ${maxScaleVal} Scale`,
+        message: `Requires ${requiredGpa.toFixed(2)} average (above standard ${maxScaleVal} max). Consider taking more credit hours or honors/weighted options if available.`,
         color: 'bg-error-container text-on-error-container'
       };
-    } else if (requiredGpa <= 3.5) {
+    } else if (requiredGpa < 0) {
+      return {
+        val: '0.00',
+        status: 'achieved',
+        badge: 'Target Already Met',
+        message: 'Your current accumulated points already surpass this target average.',
+        color: 'bg-secondary-container text-on-secondary-container'
+      };
+    } else if (requiredGpa <= maxScaleVal * 0.85) {
       return {
         val: requiredGpa.toFixed(2),
-        status: 'safe',
-        badge: 'High Feasibility',
-        message: `Easily attainable over next ${fut} cr.`,
-        color: 'bg-secondary-fixed text-on-secondary-fixed'
+        status: 'manageable',
+        badge: 'Highly Manageable',
+        message: `Maintain an estimated ${requiredGpa.toFixed(2)} average across your next ${fut} credits.`,
+        color: 'bg-secondary-container text-on-secondary-container'
       };
     } else {
       return {
         val: requiredGpa.toFixed(2),
-        status: 'achievable',
-        badge: 'Achievable Goal',
-        message: `Demanding consistency over next ${fut} cr.`,
-        color: 'bg-surface-container-highest text-primary'
+        status: 'demanding',
+        badge: 'High Performance Required',
+        message: `Requires a strong ${requiredGpa.toFixed(2)} average over your upcoming ${fut} credit hours.`,
+        color: 'bg-primary-container text-on-primary-container'
       };
     }
-  }, [curGpa, compCredits, targetGpa, futCredits]);
+  }, [curGpa, compCredits, targetGpa, futCredits, maxScaleVal]);
 
-  // --- Workbench 2: Final Exam Grade Needed State ---
+  // --- Interactive Tool 2: Final Grade Needed Calculator ---
   const [finalCurrent, setFinalCurrent] = useState<number>(84.5);
   const [finalWeight, setFinalWeight] = useState<number>(25);
   const [finalDesired, setFinalDesired] = useState<number>(90);
@@ -79,84 +106,163 @@ export default function EducationClient() {
     const wPct = Number(finalWeight) || 0;
     const des = Number(finalDesired) || 0;
 
-    if (wPct <= 0) return { val: 'N/A', status: 'invalid', message: 'Enter exam weight' };
+    if (wPct <= 0 || wPct > 100) {
+      return { val: '—', status: 'invalid', message: 'Enter exam weight between 1% and 100%' };
+    }
 
     const w = wPct / 100;
-    const req = (des - (cur * (1 - w))) / w;
+    const req = (des - cur * (1 - w)) / w;
     const reqFormatted = req.toFixed(1) + '%';
 
-    // Calculate alternative for 85% (B) or 80%
-    const altTarget = des > 85 ? 85 : 80;
-    const altReq = (altTarget - (cur * (1 - w))) / w;
+    const bTarget = des > 85 ? 85 : 80;
+    const bReq = (bTarget - cur * (1 - w)) / w;
 
     if (req > 100) {
       return {
         val: reqFormatted,
         badge: 'Extra Credit Required',
-        badgeClass: 'bg-tertiary-fixed text-on-tertiary-fixed',
+        badgeClass: 'bg-error-container text-on-error-container',
         icon: 'warning',
-        alternative: `Or ${altReq.toFixed(1)}% for Grade B (${altTarget}%)`
+        message: `Score exceeds 100%. Alternatively, a ${bReq.toFixed(1)}% on the final earns a ${bTarget}% overall grade.`
+      };
+    } else if (req <= 0) {
+      return {
+        val: '0.0%',
+        badge: 'Grade Locked',
+        badgeClass: 'bg-secondary-container text-on-secondary-container',
+        icon: 'check_circle',
+        message: `Your existing ${cur}% coursework already secures at least ${des}% overall.`
       };
     } else if (req <= 70) {
       return {
         val: reqFormatted,
-        badge: 'Safe Cushion',
-        badgeClass: 'bg-secondary-fixed text-on-secondary-fixed',
+        badge: 'Comfortable Target',
+        badgeClass: 'bg-secondary-container text-on-secondary-container',
         icon: 'check_circle',
-        alternative: `Easily achievable score for ${des}% target`
+        message: `Score at least ${reqFormatted} on the final to secure your ${des}% target.`
       };
     } else {
       return {
         val: reqFormatted,
-        badge: 'Moderate Target',
-        badgeClass: 'bg-surface-container-highest text-primary',
-        icon: 'task_alt',
-        alternative: `Focused revision needed for ${des}% target`
+        badge: 'Dedicated Prep Required',
+        badgeClass: 'bg-primary-container text-on-primary-container',
+        icon: 'edit_note',
+        message: `Aim for ${reqFormatted} on the final exam to reach your ${des}% goal.`
       };
     }
   }, [finalCurrent, finalWeight, finalDesired]);
 
-  // --- Workbench 3: Attendance Pacing State ---
-  const [attTotal, setAttTotal] = useState<number>(42);
-  const [attAttended, setAttAttended] = useState<number>(36);
+  // --- Interactive Tool 3: Configurable Attendance Calculator ---
+  const [attTotal, setAttTotal] = useState<number>(40);
+  const [attAttended, setAttAttended] = useState<number>(34);
   const [attReq, setAttReq] = useState<number>(75);
 
   const attendanceResult = useMemo(() => {
     const tot = Number(attTotal) || 0;
-    const att = Number(attAttended) || 0;
+    const att = Math.min(Number(attAttended) || 0, tot);
     const req = Number(attReq) || 75;
 
-    if (tot <= 0) return { pct: '0%', inGoodStanding: true, message: 'Enter class counts' };
+    if (tot <= 0) {
+      return { pct: '0.0%', status: 'neutral', message: 'Enter valid class session counts' };
+    }
 
     const currentPct = (att / tot) * 100;
     const reqDecimal = req / 100;
-    const safeMiss = Math.floor((att - reqDecimal * tot) / reqDecimal);
 
     if (currentPct < req) {
+      // Classes to attend consecutively to reach threshold
       const classesNeeded = Math.ceil((reqDecimal * tot - att) / (1 - reqDecimal));
       return {
         pct: currentPct.toFixed(1) + '%',
-        inGoodStanding: false,
-        badge: 'Attendance Shortage',
+        isAbove: false,
+        badge: `Below ${req}% Threshold`,
         badgeClass: 'bg-error-container text-on-error-container',
-        icon: 'warning',
-        message: `Attend next ${classesNeeded > 0 ? classesNeeded : 1} classes non-stop`
+        icon: 'error_outline',
+        classesMissed: tot - att,
+        message: `Must attend next ${classesNeeded > 0 ? classesNeeded : 1} consecutive sessions to reach ${req}%.`
       };
     } else {
+      // Allowable absences before falling below threshold
+      const allowableMisses = Math.floor((att - reqDecimal * tot) / reqDecimal);
       return {
         pct: currentPct.toFixed(1) + '%',
-        inGoodStanding: true,
-        badge: 'In Good Standing',
-        badgeClass: 'bg-secondary-fixed text-on-secondary-fixed',
+        isAbove: true,
+        badge: `Meets ${req}% Requirement`,
+        badgeClass: 'bg-secondary-container text-on-secondary-container',
         icon: 'check_circle',
-        message: `Safe Attendance: You can miss ${safeMiss >= 0 ? safeMiss : 0} more lectures`
+        classesMissed: tot - att,
+        message: `Estimated buffer: Up to ${Math.max(0, allowableMisses)} lecture(s) can be missed before falling below ${req}%.`
       };
     }
   }, [attTotal, attAttended, attReq]);
 
-  // --- Workbench 4: Citation Quick-Formatter State ---
-  const [citeFormat, setCiteFormat] = useState<'APA7' | 'MLA9' | 'CHI'>('APA7');
-  const [citeAuthor, setCiteAuthor] = useState('Kahneman, D.');
+  // --- Interactive Tool 4: Study Time Calculator ---
+  const [enrolledCredits, setEnrolledCredits] = useState<number>(15);
+  const [studyRigor, setStudyRigor] = useState<number>(2.0); // 1.5, 2.0, 3.0 hrs per credit
+  const [studyDays, setStudyDays] = useState<number>(5);
+
+  const studyTimeResult = useMemo(() => {
+    const credits = Number(enrolledCredits) || 0;
+    const factor = Number(studyRigor) || 2.0;
+    const days = Math.max(1, Math.min(7, Number(studyDays) || 5));
+
+    const totalWeeklyStudy = credits * factor;
+    const dailyStudy = totalWeeklyStudy / days;
+    const pomodoroBlocks = Math.round((dailyStudy * 60) / 30); // 25m study + 5m break
+
+    return {
+      weeklyHours: totalWeeklyStudy.toFixed(1),
+      dailyHours: dailyStudy.toFixed(1),
+      pomodoroCount: pomodoroBlocks,
+      ratioDesc: factor === 1.5 ? 'Foundational' : factor === 2.0 ? 'Standard Academic (2:1)' : 'Intensive / STEM (3:1)'
+    };
+  }, [enrolledCredits, studyRigor, studyDays]);
+
+  // --- Interactive Tool 5: Degree / Credit Progress Calculator ---
+  const [totalDegreeCredits, setTotalDegreeCredits] = useState<number>(120);
+  const [completedCredits, setCompletedCredits] = useState<number>(68);
+  const [inProgressCredits, setInProgressCredits] = useState<number>(15);
+
+  const degreeProgressResult = useMemo(() => {
+    const total = Math.max(1, Number(totalDegreeCredits) || 120);
+    const comp = Math.max(0, Number(completedCredits) || 0);
+    const inProg = Math.max(0, Number(inProgressCredits) || 0);
+
+    const compPct = Math.min(100, (comp / total) * 100);
+    const inProgPct = Math.min(100 - compPct, (inProg / total) * 100);
+    const remaining = Math.max(0, total - comp - inProg);
+
+    return {
+      compPct: compPct.toFixed(1),
+      inProgPct: inProgPct.toFixed(1),
+      remainingCredits: remaining,
+      totalEarnedPlusCurrent: comp + inProg
+    };
+  }, [totalDegreeCredits, completedCredits, inProgressCredits]);
+
+  // --- Interactive Tool 6: Graduation Term Estimator ---
+  const [creditsRemainingGrad, setCreditsRemainingGrad] = useState<number>(52);
+  const [creditsPerTerm, setCreditsPerTerm] = useState<number>(15);
+  const [termsPerYear, setTermsPerYear] = useState<number>(2);
+
+  const graduationResult = useMemo(() => {
+    const rem = Math.max(0, Number(creditsRemainingGrad) || 0);
+    const perTerm = Math.max(1, Number(creditsPerTerm) || 15);
+    const termsYear = Math.max(1, Number(termsPerYear) || 2);
+
+    const termsNeeded = Math.ceil(rem / perTerm);
+    const yearsNeeded = (termsNeeded / termsYear).toFixed(1);
+
+    return {
+      termsNeeded,
+      yearsNeeded,
+      desc: `${termsNeeded} academic term${termsNeeded === 1 ? '' : 's'} (~${yearsNeeded} academic year${Number(yearsNeeded) === 1 ? '' : 's'})`
+    };
+  }, [creditsRemainingGrad, creditsPerTerm, termsPerYear]);
+
+  // --- Citation Quick-Formatter State ---
+  const [citeFormat, setCiteFormat] = useState<'APA7' | 'MLA9' | 'CHI17'>('APA7');
+  const [citeAuthor, setCiteAuthor] = useState('Kahneman, Daniel');
   const [citeYear, setCiteYear] = useState('2011');
   const [citeTitle, setCiteTitle] = useState('Thinking, Fast and Slow');
   const [citeSource, setCiteSource] = useState('Farrar, Straus and Giroux');
@@ -172,1370 +278,1741 @@ export default function EducationClient() {
       text = `${citeAuthor}. ${citeYear}. ${citeTitle}. ${citeSource}.`;
     }
 
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+    }
   };
 
-  // --- Recommender State ---
-  const [recGoal, setRecGoal] = useState<'gpa' | 'finals' | 'study' | 'finance'>('gpa');
-
-  const recommenderData = useMemo(() => {
-    if (recGoal === 'gpa') {
-      return {
-        title: 'Target GPA & Honors Projection Engine',
-        desc: 'Computes quality point differential between standard and AP/IB courses to plan semester grade requirements.',
-        actionHref: '#workbench-gpa'
-      };
-    }
-    if (recGoal === 'finals') {
-      return {
-        title: 'Final Exam Grade & Curve Determinant',
-        desc: 'Computes minimum score required on final tests to maintain course letter boundaries.',
-        actionHref: '#workbench-final'
-      };
-    }
-    if (recGoal === 'study') {
-      return {
-        title: 'Spaced Repetition & Pomodoro Matrix',
-        desc: 'Generates progressive review intervals preventing cognitive memory decay.',
-        actionHref: '#directory'
-      };
-    }
-    return {
-      title: 'FAFSA SAI & Tuition Net Price Calculator',
-      desc: 'Evaluates institutional cost of attendance against student aid index and scholarships.',
-      actionHref: '#directory'
-    };
-  }, [recGoal]);
-
-  // --- Directory Taxonomy Clusters ---
-  const academicCategories = [
+  // --- Categories & Tool Taxonomy ---
+  const categories = [
     {
       id: 'grades-gpa',
-      title: '1. Grades & GPA',
-      count: '18 Tools',
+      title: 'Grades & GPA',
       icon: 'school',
-      color: 'text-primary',
-      desc: 'Calculate cumulative GPA, weighted honors/AP scales, and semester averages.',
+      desc: 'Calculate semester SGPA, cumulative CGPA, weighted honors/AP scales, and grade conversions.',
       tools: [
-        'Weighted GPA Calculator (Honors/AP/IB)',
-        'Unweighted 4.0 Standard GPA Model',
-        'CGPA to Percentage Converter (10.0 Scale)',
-        'Semester SGPA to Cumulative Transition',
-        'Letter Grade Standard Deviation Normalizer'
-      ],
-      extra: '13 More Grade Tools'
+        { name: 'Target GPA Calculator', desc: 'Estimate required future semester grades for graduation targets', link: '#tool-gpa' },
+        { name: 'Weighted vs Unweighted GPA', desc: 'Compare 4.0 standard scales with 5.0 AP/IB course weightings', link: '#guide-weighted-gpa' },
+        { name: 'Grade Calculator', desc: 'Weighted assignment, exam, quiz, and homework grade calculations', link: '#tool-final' },
+        { name: 'CGPA to Percentage Converter', desc: 'Standard 10.0 scale conversions using 9.5 and university multipliers', link: '#guide-cgpa-percentage' },
+        { name: 'Semester SGPA Calculator', desc: 'Track term-by-term grade point performance across credit loads', link: '#tool-gpa' }
+      ]
     },
     {
       id: 'exams-testing',
-      title: '2. Exams & Testing',
-      count: '14 Tools',
-      icon: 'assignment',
-      color: 'text-secondary',
-      desc: 'Test score estimators, exam curves, and SAT/ACT score conversions.',
+      title: 'Exams & Testing',
+      icon: 'quiz',
+      desc: 'Estimate exam scores, calculate test curves, and reference official test concordance mappings.',
       tools: [
-        'SAT to ACT Concordance Matrix (Official)',
-        'Gaussian Normal Bell Curve Shifter',
-        'GRE Quant & Verbal Scaler (130-170)',
-        'GMAT Focus Edition Percentile Predictor',
-        'IELTS 9-Band Composite Rounder'
-      ],
-      extra: '9 More Testing Tools'
+        { name: 'Final Exam Grade Needed', desc: 'Calculate the minimum score required on your final exam', link: '#tool-final' },
+        { name: 'SAT to ACT Concordance Tool', desc: 'Reference official College Board & ACT score concordance tables', link: '#guide-sat-act' },
+        { name: 'Test Curve Calculator', desc: 'Estimate adjusted scores with flat addition or square root curves', link: '#guide-test-curves' },
+        { name: 'Exam Pacing & Time per Question', desc: 'Calculate time allocation per question for timed tests', link: '#tool-study' }
+      ]
     },
     {
-      id: 'attendance-class',
-      title: '3. Attendance & Class Time',
-      count: '11 Tools',
-      icon: 'how_to_reg',
-      color: 'text-primary',
-      desc: 'Calculate attendance percentages, safe absence limits, and missed classes.',
+      id: 'attendance',
+      title: 'Attendance',
+      icon: 'event_available',
+      desc: 'Track class attendance percentages, monitor threshold buffers, and calculate catch-up sessions.',
       tools: [
-        'Mandatory 75% Rule Attendance Audit',
-        'Medical Leave & Duty Leave Credit Offsets',
-        'Catch-up Class Requirement Estimator',
-        'Lab vs Theory Fractional Attendance Pacer',
-        'Term End Attendance Forecast Model'
-      ],
-      extra: '6 More Attendance Tools'
+        { name: 'Attendance Percentage Calculator', desc: 'Calculate current attendance percentage across held classes', link: '#tool-attendance' },
+        { name: 'Absence Buffer Estimator', desc: 'Calculate allowable absences before dropping below required thresholds', link: '#tool-attendance' },
+        { name: 'Catch-up Class Calculator', desc: 'Estimate consecutive classes needed to restore attendance threshold', link: '#tool-attendance' },
+        { name: 'Lab vs Theory Attendance Model', desc: 'Differentiate attendance across lecture and practical coursework', link: '#guide-attendance-calc' }
+      ]
     },
     {
       id: 'study-planning',
-      title: '4. Study Planning & Timers',
-      count: '16 Tools',
-      icon: 'hourglass_top',
-      color: 'text-secondary',
-      desc: 'Pomodoro study timers, spaced review schedules, and reading speed estimators.',
+      title: 'Study Planning',
+      icon: 'schedule',
+      desc: 'Plan weekly study hours, estimate reading workloads, and structure focused study sessions.',
       tools: [
-        'Spaced Repetition Decay & Review Scheduler',
-        'Pomodoro 25/5 & 50/10 Ratio Optimizer',
-        'Credit-Hour 2:1 Study Budget Formula',
-        'Reading WPM to Comprehension Hours',
-        'Final Exam Sprint Burnout Risk Model'
-      ],
-      extra: '11 More Pacing Tools'
+        { name: 'Credit-Hour Study Time Calculator', desc: 'Calculate weekly study hours using standard 2:1 and 3:1 credit ratios', link: '#tool-study' },
+        { name: 'Reading Time Estimator', desc: 'Estimate study reading time based on page counts and reading speed', link: '#tool-study' },
+        { name: 'Pomodoro Study Session Allocator', desc: 'Structure study blocks into 25/5 and 50/10 focused intervals', link: '#tool-study' },
+        { name: 'Spaced Repetition Review Planner', desc: 'Schedule progressive review intervals before midterm and final exams', link: '#guide-study-habits' }
+      ]
     },
     {
-      id: 'admissions-degree',
-      title: '5. College Admissions & Degree',
-      count: '12 Tools',
+      id: 'college-graduation',
+      title: 'College & Graduation',
       icon: 'account_tree',
-      color: 'text-primary',
-      desc: 'College acceptance chances, transfer credits, and graduation roadmaps.',
+      desc: 'Track degree credit completion, estimate graduation terms, and evaluate transfer credits.',
       tools: [
-        'College Admissions Composite Index (AI)',
-        'High School Rigor Ratio (AP/IB Count)',
-        'Degree Progress & Remaining Elective Audit',
-        'Quarter-to-Semester Credit Transfer Metric',
-        'Anticipated Graduation Term Countdown'
-      ],
-      extra: '7 More Degree Tools'
-    },
-    {
-      id: 'research-writing',
-      title: '6. Research & Writing',
-      count: '15 Tools',
-      icon: 'menu_book',
-      color: 'text-secondary',
-      desc: 'Instant APA, MLA, and Chicago bibliography citations and essay word counts.',
-      tools: [
-        'APA 7th Edition Full Reference Generator',
-        'MLA 9th Edition Works Cited Engine',
-        'Chicago Notes & Bibliography Stylizer',
-        'Words-to-Pages Estimator (Double vs Single)',
-        'Flesch-Kincaid Grade Level Readability'
-      ],
-      extra: '10 More Writing Tools'
+        { name: 'Degree Credit Progress Calculator', desc: 'Track earned, in-progress, and remaining credits toward your degree', link: '#tool-degree' },
+        { name: 'Graduation Date & Term Estimator', desc: 'Estimate academic terms and years remaining until graduation', link: '#tool-grad' },
+        { name: 'College Admissions Profile & Planning', desc: 'Compare GPA, test scores, and course rigor against target profiles', link: '#guide-admissions-planning' },
+        { name: 'Quarter to Semester Credit Converter', desc: 'Convert credits between quarter units (0.67) and semester hours', link: '#guide-credits-gpa' }
+      ]
     },
     {
       id: 'tuition-aid',
-      title: '7. Tuition & Financial Aid',
-      count: '13 Tools',
-      icon: 'account_balance_wallet',
-      color: 'text-primary',
-      desc: 'College net price, student loans, financial aid, and college savings plans.',
+      title: 'Tuition & Financial Aid',
+      icon: 'payments',
+      desc: 'Estimate college costs, net tuition expenses, scholarship offsets, and loan repayment schedules.',
       tools: [
-        'College Tuition Net Price Calculator',
-        'FAFSA 2024–2025 SAI Index Estimator',
-        'Student Loan Debt Amortization Pacer',
-        'Major-Specific 10-Year Degree ROI Index',
-        'Off-Campus Housing vs Dorm Budget Matrix'
-      ],
-      extra: '8 More Finance Tools'
+        { name: 'College Net Price & Cost Estimator', desc: 'Calculate total cost of attendance minus grants and scholarships', link: '#directory' },
+        { name: 'Scholarship Offset Calculator', desc: 'Evaluate renewable scholarship values against multi-year tuition', link: '#directory' },
+        { name: 'Student Loan Repayment Estimator', desc: 'Calculate monthly loan payments and interest over standard 10-year plans', link: '/finance/compound-interest-calculator' },
+        { name: 'Dorm vs Off-Campus Housing Budget', desc: 'Compare living expenses across campus housing and shared rentals', link: '#directory' }
+      ]
+    },
+    {
+      id: 'research-writing',
+      title: 'Research & Writing',
+      icon: 'format_quote',
+      desc: 'Format citations, estimate essay page lengths, and check readability metrics for academic papers.',
+      tools: [
+        { name: 'APA 7th Reference Generator', desc: 'Format book, journal, and website references in standard APA 7 style', link: '#tool-citation' },
+        { name: 'MLA 9th Works Cited Formatter', desc: 'Generate MLA container-based citations for literature and humanities papers', link: '#tool-citation' },
+        { name: 'Chicago 17th Style Formatter', desc: 'Format notes and bibliography citations for history and arts research', link: '#tool-citation' },
+        { name: 'Words to Pages Estimator', desc: 'Convert word count to estimated pages in single or double spacing', link: '#tool-citation' }
+      ]
     },
     {
       id: 'deadlines-schedules',
-      title: '8. Deadlines & Schedules',
-      count: '10 Tools',
+      title: 'Deadlines & Schedules',
       icon: 'calendar_month',
-      color: 'text-secondary',
-      desc: 'Assignment timelines, weekly schedule planners, and homework time management.',
+      desc: 'Plan assignment timelines, balance weekly class schedules, and manage exam dates.',
       tools: [
-        'Assignment Velocity & Daily Quota Pacer',
-        'Weekly Time-Blocking Balance Allocator',
-        'Lecture Backlog Catch-Up Matrix',
-        'Academic Semester Week Counter',
-        'Exam Clash Interval Gap Detector'
-      ],
-      extra: '5 More Schedule Tools'
+        { name: 'Assignment Pacing Calculator', desc: 'Break large projects and essays into daily milestone targets', link: '#tool-study' },
+        { name: 'Semester Week Countdown', desc: 'Track academic weeks completed and remaining in the current term', link: '/time-date/date-difference-calculator' },
+        { name: 'Exam Schedule Gap Analyzer', desc: 'Plan study intervals between consecutive examination dates', link: '#tool-study' }
+      ]
     },
     {
-      id: 'teacher-tools',
-      title: '9. Teacher & Grading Tools',
-      count: '14 Tools',
+      id: 'teacher-grading',
+      title: 'Teacher & Grading Tools',
       icon: 'co_present',
-      color: 'text-primary',
-      desc: 'Quick grade charts, bell curve generators, and assignment rubric calculators.',
+      desc: 'Quick grade scoring charts, bell curve normalizers, and weighted rubric calculators for educators.',
       tools: [
-        'EZ Grader / Quick Scoring Chart Engine',
-        'Classroom Bell Curve & Z-Score Scaler',
-        'Rubric Matrix Weight Normalizer',
-        'Test Item Difficulty (P-Value) & Discrimination',
-        'Class Attendance Aggregator & Trendline'
-      ],
-      extra: '9 More Teacher Tools'
+        { name: 'Quick Grade Chart (EZ Grader)', desc: 'Generate grade percentages and letter scores for total question counts', link: '#tool-final' },
+        { name: 'Weighted Rubric Calculator', desc: 'Calculate composite grades from multiple criteria weights', link: '#tool-final' },
+        { name: 'Class Score Normalizer', desc: 'Analyze test score distributions, mean, and standard deviation', link: '/math/standard-deviation-calculator' }
+      ]
     }
   ];
 
+  // Search filter
   const filteredCategories = useMemo(() => {
-    if (!searchQuery.trim()) return academicCategories;
-    const q = searchQuery.toLowerCase();
-    return academicCategories.filter(
-      cat =>
-        cat.title.toLowerCase().includes(q) ||
-        cat.desc.toLowerCase().includes(q) ||
-        cat.tools.some(t => t.toLowerCase().includes(q))
-    );
-  }, [searchQuery, academicCategories]);
+    if (!searchQuery.trim()) return categories;
+    const q = searchQuery.toLowerCase().trim();
+    return categories
+      .map(cat => {
+        const matchesCategory = cat.title.toLowerCase().includes(q) || cat.desc.toLowerCase().includes(q);
+        const matchedTools = cat.tools.filter(
+          t => t.name.toLowerCase().includes(q) || t.desc.toLowerCase().includes(q)
+        );
+        if (matchesCategory || matchedTools.length > 0) {
+          return {
+            ...cat,
+            tools: matchesCategory ? cat.tools : matchedTools
+          };
+        }
+        return null;
+      })
+      .filter(Boolean) as typeof categories;
+  }, [searchQuery, categories]);
 
   return (
-    <div className="min-h-screen bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col">
-      
+    <div className="min-h-screen bg-surface text-on-surface flex flex-col selection:bg-primary/20 selection:text-primary pt-0">
 
-      <main className="w-full pt-16 bg-surface flex-1">
-        {/* Breadcrumb Navigation Bar */}
-        <section className="w-full bg-surface-container-low/70 py-space-xs border-b border-outline-variant/20">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center justify-between gap-space-xs text-body-sm font-body-sm">
-            <nav aria-label="Breadcrumb" className="flex items-center gap-space-xs text-on-surface-variant flex-wrap">
-              <Link className="hover:text-primary transition-colors flex items-center gap-1" href="/">
-                <span className="material-symbols-outlined text-[16px]">home</span>
-                Home
-              </Link>
-              <span className="text-outline-variant">/</span>
-              <span className="text-on-surface font-medium">Education Calculators</span>
-            </nav>
+      {/* DEDICATED VISIBLE BREADCRUMB BAR (ALWAYS VISIBLE BELOW FIXED HEADER) */}
+      <section aria-label="Breadcrumb Navigation" className="w-full bg-surface-container-low border-b border-outline-variant/30 py-3 px-4 sm:px-6 lg:px-8 relative z-20">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 text-xs sm:text-sm">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-on-surface-variant flex-wrap font-medium">
+            <Link
+              href="/"
+              className="hover:text-primary transition-colors flex items-center gap-1.5 font-semibold text-on-surface hover:underline"
+            >
+              <span className="material-symbols-outlined text-[18px] text-primary">home</span>
+              <span>Home</span>
+            </Link>
+            <span className="text-outline-variant select-none">/</span>
+            <span className="text-primary font-bold" aria-current="page">
+              Education Calculators
+            </span>
+          </nav>
+          <div className="hidden sm:flex items-center gap-2 text-xs text-on-surface-variant">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold text-[11px]">
+              <span className="material-symbols-outlined text-[14px]">school</span>
+              <span>Academic Planning Hub</span>
+            </span>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Section 2: Hero Header with Metric Strip & Quick Launch */}
-        <section className="w-full relative overflow-hidden pt-space-xl pb-space-2xl bg-gradient-to-b from-surface via-surface-container-low to-surface">
-          {/* Ambient backdrops */}
-          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[720px] h-[320px] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
-          <div className="absolute top-12 right-12 w-64 h-64 bg-secondary-container/10 rounded-full blur-2xl pointer-events-none"></div>
+      {/* SECTION 1: HERO SECTION */}
+      <header className="w-full pt-8 pb-12 md:pt-12 md:pb-16 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-linear-to-b from-surface-container-low/60 to-surface">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container border border-outline-variant/30 text-xs font-semibold text-primary uppercase tracking-wider mb-4">
+            <span className="material-symbols-outlined text-[16px]">menu_book</span>
+            <span>Free Student &amp; Academic Calculators</span>
+          </div>
 
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop relative z-10 flex flex-col items-center text-center">
-            {/* Overline Badge */}
-            <div className="flex items-center gap-space-xs text-on-surface-variant font-label-caps uppercase tracking-wider mb-space-xs">
-              <span className="text-primary font-bold">SOLVEITCALCULATOR • ACADEMIC SUCCESS &amp; LEARNING HUB</span>
-            </div>
-            {/* Main Headline H1 & Hero Title */}
-            <h1 className="font-headline-lg text-headline-lg md:font-display-hero md:text-display-hero text-on-surface tracking-tight font-bold max-w-4xl">
-              Education Calculators &amp; Academic Planning Tools
-            </h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-space-sm leading-relaxed">
-              Plan your studies, track grades, calculate GPA, manage attendance, estimate exam scores, and achieve your academic goals with free educational calculators.
-            </p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-on-surface max-w-4xl mx-auto leading-tight">
+            Education Calculators for GPA, Grades, Exams &amp; Study Planning
+          </h1>
 
-            {/* Metric Telemetry Strip */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-sm w-full max-w-3xl mt-space-lg mb-space-lg">
-              <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
-                <span className="font-numerical-display-mobile text-primary font-bold">100+</span>
-                <span className="font-label-caps text-on-surface-variant uppercase mt-1">Education Tools</span>
-              </div>
-              <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
-                <span className="font-numerical-display-mobile text-secondary font-bold">50+</span>
-                <span className="font-label-caps text-on-surface-variant uppercase mt-1">SUBJECTS &amp; GRADES</span>
-              </div>
-              <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
-                <span className="font-numerical-display-mobile text-on-surface font-bold">55K+</span>
-                <span className="font-label-caps text-on-surface-variant uppercase mt-1">PROBLEMS SOLVED</span>
-              </div>
-              <div className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/30 flex flex-col items-center">
-                <span className="font-numerical-display-mobile text-primary font-bold leading-tight">INSTANT</span>
-                <span className="font-label-caps text-on-surface-variant uppercase mt-1 text-center">RESULTS (No Waiting)</span>
-              </div>
-            </div>
+          <p className="text-xl sm:text-2xl font-semibold text-primary mt-4">
+            Calculate Your Grades. Plan Your Studies. Stay on Track.
+          </p>
 
-            {/* Command Quick Search & Quick Pills */}
-            <div className="w-full max-w-2xl">
-              <div className="relative flex items-center shadow-md rounded-xl bg-surface-container-lowest border border-outline-variant/30 focus-within:ring-2 focus-within:ring-primary/40">
-                <span className="material-symbols-outlined absolute left-4 text-primary text-[22px]">search</span>
-                <input
-                  ref={searchInputRef}
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-12 py-3.5 bg-transparent text-on-surface font-body-md focus:outline-none placeholder:text-outline"
-                  id="edu-search-input"
-                  placeholder="Search Education Calculators: GPA, grades, CGPA, attendance, study planner, exam score, scholarship..."
-                  type="text"
-                />
-                <kbd className="absolute right-4 px-2 py-0.5 bg-surface-container font-data-mono text-[11px] text-on-surface-variant rounded shadow-sm">
+          <p className="text-base sm:text-lg text-on-surface-variant max-w-3xl mx-auto mt-3 leading-relaxed">
+            Free calculators for GPA, grades, final exams, attendance, study time, college costs, and academic planning.
+          </p>
+
+          {/* Search Box */}
+          <div className="w-full max-w-2xl mx-auto mt-8">
+            <div className="relative flex items-center bg-surface-container-lowest rounded-2xl border border-outline-variant/40 shadow-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+              <span className="material-symbols-outlined absolute left-4 text-primary text-[22px]">search</span>
+              <input
+                ref={searchInputRef}
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-12 py-4 bg-transparent text-on-surface text-base focus:outline-none placeholder:text-outline"
+                id="edu-search-input"
+                placeholder="What do you need to calculate?"
+                type="text"
+                aria-label="Search education calculators"
+              />
+              {searchQuery ? (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-4 text-on-surface-variant hover:text-on-surface p-1 rounded-full hover:bg-surface-container transition-colors"
+                  aria-label="Clear search"
+                >
+                  <span className="material-symbols-outlined text-[18px]">close</span>
+                </button>
+              ) : (
+                <kbd className="hidden sm:inline-block absolute right-4 px-2 py-0.5 bg-surface-container font-mono text-[11px] text-on-surface-variant rounded border border-outline-variant/30">
                   /
                 </kbd>
-              </div>
-              {/* Quick Trending Pills */}
-              <div className="flex flex-wrap items-center justify-center gap-space-2xs mt-space-sm text-center">
-                <span className="font-label-caps text-outline uppercase mr-1">Trending:</span>
-                {[
-                  'GPA Calculator',
-                  'CGPA Calculator',
-                  'Grade Calculator',
-                  'Final Grade Calculator',
-                  'Attendance Calculator',
-                  'Study Planner Calculator',
-                  'Exam Score Calculator',
-                  'Scholarship Calculator',
-                  'Student Loan Calculator',
-                  'Semester GPA Calculator'
-                ].map(pill => (
-                  <button
-                    key={pill}
-                    onClick={() => setSearchQuery(pill)}
-                    className="px-space-xs py-1 rounded-full bg-surface-container text-on-surface font-body-sm hover:bg-surface-container-high transition-colors border border-outline-variant/20"
-                  >
-                    {pill}
-                  </button>
-                ))}
-              </div>
+              )}
             </div>
-          </div>
-        </section>
 
-        {/* Section 3: Student Goal Finder ("I Want To...") */}
-        <section className="w-full py-space-xl bg-surface border-y border-outline-variant/20">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-lg">
-              <div>
-                <span className="font-label-caps text-primary uppercase tracking-wider font-semibold">QUICK START GOALS</span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface mt-1 font-bold">
-                  What is your academic objective today?
-                </h2>
-              </div>
-              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md mt-2 md:mt-0">
-                Choose what you want to achieve today to open the right calculator right away.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+            {/* Smart Search Examples */}
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs">
+              <span className="text-on-surface-variant font-medium mr-1">Try searching:</span>
               {[
-                {
-                  title: 'Improve My GPA',
-                  desc: 'Calculate future semester grades, test weighted vs. unweighted scores, and raise your overall GPA.',
-                  icon: 'school',
-                  link: '#workbench-gpa',
-                  count: '14 Calculators',
-                  color: 'primary'
-                },
-                {
-                  title: 'Prepare For Exams',
-                  desc: 'Score estimators, bell curves, SAT/ACT score conversions, and passing target thresholds.',
-                  icon: 'quiz',
-                  link: '#directory',
-                  count: '12 Tools',
-                  color: 'secondary'
-                },
-                {
-                  title: 'Calculate Finals',
-                  desc: 'Find the exact grade or score you need on your final exam or paper to keep your target grade.',
-                  icon: 'calculate',
-                  link: '#workbench-final',
-                  count: '9 Calculators',
-                  color: 'primary'
-                },
-                {
-                  title: 'Plan Attendance & Time',
-                  desc: 'Check attendance percentages, safe absence limits, and manage your study hours.',
-                  icon: 'timer',
-                  link: '#workbench-attendance',
-                  count: '15 Tools',
-                  color: 'secondary'
-                },
-                {
-                  title: 'Admissions & Degree',
-                  desc: 'Estimate college acceptance chances, transfer credits, and graduation timelines.',
-                  icon: 'account_balance',
-                  link: '#directory',
-                  count: '11 Tools',
-                  color: 'primary'
-                },
-                {
-                  title: 'Format Citations',
-                  desc: 'Instant citations in APA 7, MLA 9, Chicago, and Harvard with clean bibliographies.',
-                  icon: 'format_quote',
-                  link: '#workbench-citation',
-                  count: '6 Generators',
-                  color: 'secondary'
-                },
-                {
-                  title: 'Tuition & Aid ROI',
-                  desc: 'Calculate tuition costs, student loans, financial aid eligibility, and degree value.',
-                  icon: 'payments',
-                  link: '#directory',
-                  count: '10 Tools',
-                  color: 'primary'
-                },
-                {
-                  title: 'Assignments & Pacing',
-                  desc: 'Estimate reading time, words per hour, and plan assignment completion deadlines.',
-                  icon: 'menu_book',
-                  link: '#directory',
-                  count: '8 Calculators',
-                  color: 'secondary'
-                }
-              ].map(goal => (
-                <a
-                  key={goal.title}
-                  href={goal.link}
-                  className="group p-space-md bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-outline-variant/30"
+                'Calculate my GPA',
+                'What grade do I need on my final?',
+                'How many classes can I miss?',
+                'Convert CGPA to percentage',
+                'How long should I study?'
+              ].map(example => (
+                <button
+                  key={example}
+                  onClick={() => setSearchQuery(example.replace(/[“”?]/g, ''))}
+                  className="px-3 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 text-on-surface font-medium transition-colors"
                 >
-                  <div>
-                    <div
-                      className={`w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center transition-colors ${
-                        goal.color === 'primary'
-                          ? 'text-primary group-hover:bg-primary group-hover:text-on-primary'
-                          : 'text-secondary group-hover:bg-secondary group-hover:text-on-secondary'
-                      }`}
-                    >
-                      <span className="material-symbols-outlined">{goal.icon}</span>
-                    </div>
-                    <h3
-                      className={`font-headline-md text-headline-md text-on-surface font-bold mt-space-sm transition-colors ${
-                        goal.color === 'primary' ? 'group-hover:text-primary' : 'group-hover:text-secondary'
-                      }`}
-                    >
-                      {goal.title}
-                    </h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">{goal.desc}</p>
-                  </div>
-                  <div
-                    className={`mt-space-md pt-space-xs border-t border-outline-variant/15 flex items-center justify-between font-body-sm ${
-                      goal.color === 'primary' ? 'text-primary' : 'text-secondary'
-                    }`}
-                  >
-                    <span className="font-data-mono text-[12px] bg-surface-container px-2 py-0.5 rounded-full text-on-surface-variant">
-                      {goal.count}
-                    </span>
-                    <span className="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">
-                      arrow_forward
-                    </span>
-                  </div>
-                </a>
+                  {example}
+                </button>
               ))}
             </div>
           </div>
-        </section>
+        </div>
+      </header>
 
-        {/* Section 4: Interactive Academic Success Dashboard (Live Micro-Workbenches) */}
-        <section className="w-full py-space-2xl bg-surface-container-low" id="workbenches">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-xl">
-              <div>
-                <div className="inline-flex items-center gap-1 text-primary font-label-caps uppercase tracking-wider mb-1 font-semibold">
-                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span> POPULAR STUDENT TOOLS
-                </div>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold">Interactive Academic Workbenches</h2>
-              </div>
-              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
-                Try out our most popular interactive calculators for grades, finals, attendance, and citations.
-              </p>
+      {/* SECTION 2: POPULAR CALCULATORS (NEAR TOP) */}
+      <section className="w-full py-12 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-surface">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <span className="text-xs font-bold text-primary uppercase tracking-wider">High Utility Tools</span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-on-surface mt-1">Popular Education Calculators</h2>
             </div>
+            <p className="text-sm text-on-surface-variant max-w-md">
+              Quick access to our most widely used calculators for grades, GPA targets, attendance, and study planning.
+            </p>
+          </div>
 
-            {/* Workbench Grid: 2x2 Clean layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-space-lg">
-              {/* Micro-Workbench 1: Target GPA Predictor */}
-              <div
-                className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between"
-                id="workbench-gpa"
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                name: 'GPA Calculator',
+                desc: 'Calculate cumulative semester and graduation GPA on 4.0, 4.33, or 5.0 weighted scales.',
+                icon: 'school',
+                link: '#tool-gpa',
+                badge: 'Configurable Scales'
+              },
+              {
+                name: 'Grade Calculator',
+                desc: 'Calculate composite course grades across weighted assignments, quizzes, and midterms.',
+                icon: 'assignment_turned_in',
+                link: '#tool-final',
+                badge: 'Weighted %'
+              },
+              {
+                name: 'Final Grade Calculator',
+                desc: 'Find the exact score needed on your final exam or project to earn your target course grade.',
+                icon: 'calculate',
+                link: '#tool-final',
+                badge: 'Target Estimator'
+              },
+              {
+                name: 'CGPA Calculator',
+                desc: 'Convert 10.0 scale CGPA to percentage or standard 4.0 GPA with institutional formulas.',
+                icon: 'grade',
+                link: '#guide-cgpa-percentage',
+                badge: '10.0 & 4.0 Scales'
+              },
+              {
+                name: 'Attendance Calculator',
+                desc: 'Track attendance percentage and determine allowable absences or needed catch-up classes.',
+                icon: 'event_available',
+                link: '#tool-attendance',
+                badge: 'Threshold Buffer'
+              },
+              {
+                name: 'Study Time Calculator',
+                desc: 'Plan weekly study hours based on credit hours load and course difficulty factors.',
+                icon: 'timer',
+                link: '#tool-study',
+                badge: '2:1 & 3:1 Ratios'
+              },
+              {
+                name: 'Exam Score Calculator',
+                desc: 'Calculate curved test scores, normal distributions, and time per question metrics.',
+                icon: 'quiz',
+                link: '#guide-test-curves',
+                badge: 'Score Analysis'
+              },
+              {
+                name: 'Scholarship Calculator',
+                desc: 'Estimate college net price, scholarship offsets, and annual out-of-pocket tuition costs.',
+                link: '#directory',
+                badge: 'Financial Aid'
+              }
+            ].map(item => (
+              <a
+                key={item.name}
+                href={item.link}
+                className="group p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 hover:border-primary/50 hover:shadow-md transition-all flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-space-sm">
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-primary">analytics</span>
-                      <h3 className="font-headline-md text-headline-md text-on-surface font-bold">Target GPA Predictor</h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+                      <span className="material-symbols-outlined text-[22px]">{item.icon}</span>
                     </div>
-                    <span className="text-[11px] font-data-mono bg-surface-container px-2 py-0.5 rounded text-on-surface-variant">
-                      Scale 4.00
+                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">
+                      {item.badge}
                     </span>
                   </div>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                    Calculate the exact GPA you need next semester to achieve your cumulative graduation goal.
+                  <h3 className="text-lg font-bold text-on-surface group-hover:text-primary transition-colors">
+                    {item.name}
+                  </h3>
+                  <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed">
+                    {item.desc}
                   </p>
-                  <div className="grid grid-cols-2 gap-space-sm">
-                    <div className="space-y-1">
-                      <label className="font-label-caps text-on-surface-variant uppercase text-[11px]">Current Cumulative GPA</label>
-                      <input
-                        className="w-full p-2.5 bg-surface-container-low rounded-lg font-data-mono text-on-surface text-[15px] focus:outline-none focus:bg-surface-container border border-outline-variant/20"
-                        id="gpa-current"
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        max="4.0"
-                        value={curGpa}
-                        onChange={e => setCurGpa(parseFloat(e.target.value) || 0)}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="font-label-caps text-on-surface-variant uppercase text-[11px]">Completed Credits</label>
-                      <input
-                        className="w-full p-2.5 bg-surface-container-low rounded-lg font-data-mono text-on-surface text-[15px] focus:outline-none focus:bg-surface-container border border-outline-variant/20"
-                        id="gpa-completed-credits"
-                        type="number"
-                        min="1"
-                        max="200"
-                        value={compCredits}
-                        onChange={e => setCompCredits(parseFloat(e.target.value) || 0)}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="font-label-caps text-on-surface-variant uppercase text-[11px]">Target Cumulative GPA</label>
-                      <input
-                        className="w-full p-2.5 bg-surface-container-low rounded-lg font-data-mono text-on-surface text-[15px] focus:outline-none focus:bg-surface-container border border-outline-variant/20"
-                        id="gpa-target"
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        max="4.0"
-                        value={targetGpa}
-                        onChange={e => setTargetGpa(parseFloat(e.target.value) || 0)}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="font-label-caps text-on-surface-variant uppercase text-[11px]">Future Credits Remaining</label>
-                      <input
-                        className="w-full p-2.5 bg-surface-container-low rounded-lg font-data-mono text-on-surface text-[15px] focus:outline-none focus:bg-surface-container border border-outline-variant/20"
-                        id="gpa-future-credits"
-                        type="number"
-                        min="1"
-                        max="150"
-                        value={futCredits}
-                        onChange={e => setFutCredits(parseFloat(e.target.value) || 0)}
-                      />
-                    </div>
-                  </div>
                 </div>
+                <div className="mt-4 pt-3 border-t border-outline-variant/15 flex items-center justify-between text-xs font-semibold text-primary">
+                  <span>Open Calculator</span>
+                  <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">
+                    arrow_forward
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                {/* Result Card */}
-                <div className="mt-space-md p-space-sm bg-surface-container rounded-lg flex items-center justify-between border border-outline-variant/20">
-                  <div>
-                    <span className="font-label-caps text-on-surface-variant uppercase text-[11px]">Required Future GPA</span>
-                    <div className="font-numerical-display text-primary font-bold leading-none mt-1" id="gpa-result-val">
-                      {gpaResult.val}
-                    </div>
+      {/* SECTION 3: STUDENT GOAL-BASED DISCOVERY */}
+      <section className="w-full py-12 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-surface-container-low/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-xs font-bold text-primary uppercase tracking-wider">Goal-Based Discovery</span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-on-surface mt-1">What Do You Need to Calculate?</h2>
+            <p className="text-sm text-on-surface-variant mt-2">
+              Select your specific academic objective to jump directly to the most relevant calculation tool.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                title: 'Improve My GPA',
+                desc: 'Calculate what GPA you need next term to reach your cumulative graduation goal.',
+                icon: 'trending_up',
+                link: '#tool-gpa',
+                color: 'text-primary'
+              },
+              {
+                title: 'Calculate My Final Grade',
+                desc: 'Find the exact test score required on your final exam to secure an A, B, or passing grade.',
+                icon: 'calculate',
+                link: '#tool-final',
+                color: 'text-secondary'
+              },
+              {
+                title: 'Check My Attendance',
+                desc: 'Calculate your attendance percentage and determine how many classes you can miss safely.',
+                icon: 'how_to_reg',
+                link: '#tool-attendance',
+                color: 'text-primary'
+              },
+              {
+                title: 'Prepare for Exams',
+                desc: 'Calculate test score curves, time per question, and review SAT/ACT concordance tables.',
+                icon: 'quiz',
+                link: '#guide-sat-act',
+                color: 'text-secondary'
+              },
+              {
+                title: 'Plan My Study Time',
+                desc: 'Calculate weekly study hours needed for your enrolled credits and course difficulty.',
+                icon: 'timelapse',
+                link: '#tool-study',
+                color: 'text-primary'
+              },
+              {
+                title: 'Track My Degree Progress',
+                desc: 'Calculate completed credits, in-progress units, and remaining graduation requirements.',
+                icon: 'analytics',
+                link: '#tool-degree',
+                color: 'text-secondary'
+              },
+              {
+                title: 'Estimate College Costs',
+                desc: 'Calculate net tuition, room and board, scholarships, and potential student loan payments.',
+                link: '#directory',
+                color: 'text-primary'
+              },
+              {
+                title: 'Plan Graduation',
+                desc: 'Estimate remaining academic terms and years needed based on planned course loads.',
+                icon: 'workspace_premium',
+                link: '#tool-grad',
+                color: 'text-secondary'
+              }
+            ].map(goal => (
+              <a
+                key={goal.title}
+                href={goal.link}
+                className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 hover:border-primary hover:shadow-md transition-all flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center mb-3 group-hover:bg-primary group-hover:text-on-primary transition-colors text-primary">
+                    <span className="material-symbols-outlined text-[22px]">{goal.icon}</span>
                   </div>
-                  <div className="text-right" id="gpa-badge">
-                    <span
-                      className={`inline-flex items-center gap-1 font-label-caps px-2.5 py-1 rounded-md text-[11px] font-semibold ${
-                        gpaResult.color || 'bg-secondary-fixed text-on-secondary-fixed'
-                      }`}
-                    >
-                      <span className="material-symbols-outlined text-[14px]">flag</span> {gpaResult.badge || 'Status'}
-                    </span>
-                    <p className="font-body-sm text-[12px] text-on-surface-variant mt-1">{gpaResult.message}</p>
-                  </div>
+                  <h3 className="text-base font-bold text-on-surface group-hover:text-primary transition-colors">
+                    {goal.title}
+                  </h3>
+                  <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed">{goal.desc}</p>
                 </div>
+                <div className="mt-4 pt-2 flex items-center text-xs font-semibold text-primary gap-1">
+                  <span>Start Calculation</span>
+                  <span className="material-symbols-outlined text-[14px] group-hover:translate-x-1 transition-transform">
+                    arrow_forward
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: FEATURED INTERACTIVE TOOLS (LIVE WORKBENCHES) */}
+      <section className="w-full py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-surface">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-primary uppercase tracking-wider mb-1">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                <span>Interactive Student Calculators</span>
               </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-on-surface">Live Academic Calculators</h2>
+            </div>
+            <p className="text-sm text-on-surface-variant max-w-md">
+              Fast, client-side tools to calculate GPA targets, final exam scores, attendance thresholds, and study schedules.
+            </p>
+          </div>
 
-              {/* Micro-Workbench 2: Final Exam Grade Needed */}
-              <div
-                className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between"
-                id="workbench-final"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-space-sm">
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-secondary">grade</span>
-                      <h3 className="font-headline-md text-headline-md text-on-surface font-bold">Final Exam Grade Needed</h3>
-                    </div>
-                    <span className="text-[11px] font-data-mono bg-surface-container px-2 py-0.5 rounded text-on-surface-variant">
-                      Weighted %
-                    </span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* TOOL 1: Target GPA Calculator */}
+            <div
+              id="tool-gpa"
+              className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-xs flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary text-[24px]">school</span>
+                    <h3 className="text-lg font-bold text-on-surface">Target GPA Calculator</h3>
                   </div>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                    Discover exactly what score is needed on your final exam or project to lock your desired letter grade.
-                  </p>
-                  <div className="grid grid-cols-3 gap-space-xs">
-                    <div className="space-y-1">
-                      <label className="font-label-caps text-on-surface-variant uppercase text-[10px]">Current Grade %</label>
-                      <input
-                        className="w-full p-2.5 bg-surface-container-low rounded-lg font-data-mono text-on-surface text-[15px] focus:outline-none border border-outline-variant/20"
-                        id="final-current"
-                        type="number"
-                        step="0.5"
-                        value={finalCurrent}
-                        onChange={e => setFinalCurrent(parseFloat(e.target.value) || 0)}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="font-label-caps text-on-surface-variant uppercase text-[10px]">Exam Weight %</label>
-                      <input
-                        className="w-full p-2.5 bg-surface-container-low rounded-lg font-data-mono text-on-surface text-[15px] focus:outline-none border border-outline-variant/20"
-                        id="final-weight"
-                        type="number"
-                        min="1"
-                        max="100"
-                        value={finalWeight}
-                        onChange={e => setFinalWeight(parseFloat(e.target.value) || 0)}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="font-label-caps text-on-surface-variant uppercase text-[10px]">Desired Grade %</label>
-                      <input
-                        className="w-full p-2.5 bg-surface-container-low rounded-lg font-data-mono text-on-surface text-[15px] focus:outline-none border border-outline-variant/20"
-                        id="final-desired"
-                        type="number"
-                        min="50"
-                        max="100"
-                        value={finalDesired}
-                        onChange={e => setFinalDesired(parseFloat(e.target.value) || 0)}
-                      />
-                    </div>
+                  {/* Scale selection */}
+                  <div className="flex gap-1 bg-surface-container p-0.5 rounded-lg text-xs font-semibold">
+                    {(['4.0', '4.33', '5.0', '10.0'] as const).map(scale => (
+                      <button
+                        key={scale}
+                        onClick={() => {
+                          setGpaScale(scale);
+                          if (scale === '10.0' && curGpa <= 4.0) {
+                            setCurGpa(8.2);
+                            setTargetGpa(8.8);
+                          } else if (scale !== '10.0' && curGpa > 5.0) {
+                            setCurGpa(3.45);
+                            setTargetGpa(3.70);
+                          }
+                        }}
+                        className={`px-2 py-0.5 rounded-md transition-colors ${
+                          gpaScale === scale
+                            ? 'bg-primary text-on-primary shadow-xs'
+                            : 'text-on-surface-variant hover:text-on-surface'
+                        }`}
+                      >
+                        {scale}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
-                {/* Result Card */}
-                <div className="mt-space-md p-space-sm bg-surface-container rounded-lg flex items-center justify-between border border-outline-variant/20">
-                  <div>
-                    <span className="font-label-caps text-on-surface-variant uppercase text-[11px]">Required Exam Score</span>
-                    <div className="font-numerical-display text-secondary font-bold leading-none mt-1" id="final-result-val">
-                      {finalResult.val}
-                    </div>
-                  </div>
-                  <div className="text-right" id="final-badge">
-                    <span
-                      className={`inline-flex items-center gap-1 font-label-caps px-2.5 py-1 rounded-md text-[11px] font-semibold ${
-                        finalResult.badgeClass || 'bg-tertiary-fixed text-on-tertiary-fixed'
-                      }`}
-                    >
-                      <span className="material-symbols-outlined text-[14px]">{finalResult.icon || 'warning'}</span>{' '}
-                      {finalResult.badge}
-                    </span>
-                    <p className="font-body-sm text-[12px] text-on-surface-variant mt-1" id="final-alternative">
-                      {finalResult.alternative}
-                    </p>
-                  </div>
-                </div>
-              </div>
+                <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">
+                  Calculate the average grade point average required over your remaining credits to reach your cumulative graduation goal.
+                </p>
 
-              {/* Micro-Workbench 3: Safe Attendance Deficit & Bunk Calculator */}
-              <div
-                className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between"
-                id="workbench-attendance"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-space-sm">
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-primary">event_available</span>
-                      <h3 className="font-headline-md text-headline-md text-on-surface font-bold">
-                        Attendance &amp; Safe Absence Buffer
-                      </h3>
-                    </div>
-                    <span className="text-[11px] font-data-mono bg-surface-container px-2 py-0.5 rounded text-on-surface-variant">
-                      75% / 85% Rules
-                    </span>
-                  </div>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                    Check your attendance percentage and see how many classes you can safely miss while remaining in good standing.
-                  </p>
-                  <div className="grid grid-cols-3 gap-space-xs">
-                    <div className="space-y-1">
-                      <label className="font-label-caps text-on-surface-variant uppercase text-[10px]">Total Held</label>
-                      <input
-                        className="w-full p-2.5 bg-surface-container-low rounded-lg font-data-mono text-on-surface text-[15px] focus:outline-none border border-outline-variant/20"
-                        id="att-total"
-                        type="number"
-                        value={attTotal}
-                        onChange={e => setAttTotal(parseInt(e.target.value) || 0)}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="font-label-caps text-on-surface-variant uppercase text-[10px]">Attended</label>
-                      <input
-                        className="w-full p-2.5 bg-surface-container-low rounded-lg font-data-mono text-on-surface text-[15px] focus:outline-none border border-outline-variant/20"
-                        id="att-attended"
-                        type="number"
-                        value={attAttended}
-                        onChange={e => setAttAttended(parseInt(e.target.value) || 0)}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="font-label-caps text-on-surface-variant uppercase text-[10px]">Required %</label>
-                      <input
-                        className="w-full p-2.5 bg-surface-container-low rounded-lg font-data-mono text-on-surface text-[15px] focus:outline-none border border-outline-variant/20"
-                        id="att-req"
-                        type="number"
-                        value={attReq}
-                        onChange={e => setAttReq(parseFloat(e.target.value) || 75)}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Result Card */}
-                <div className="mt-space-md p-space-sm bg-surface-container rounded-lg flex items-center justify-between border border-outline-variant/20">
-                  <div>
-                    <span className="font-label-caps text-on-surface-variant uppercase text-[11px]">Current Attendance</span>
-                    <div className="font-numerical-display text-primary font-bold leading-none mt-1" id="att-current-pct">
-                      {attendanceResult.pct}
-                    </div>
-                  </div>
-                  <div className="text-right" id="att-status">
-                    <span
-                      className={`inline-flex items-center gap-1 font-label-caps px-2.5 py-1 rounded-md text-[11px] font-semibold ${
-                        attendanceResult.badgeClass || 'bg-secondary-fixed text-on-secondary-fixed'
-                      }`}
-                    >
-                      <span className="material-symbols-outlined text-[14px]">
-                        {attendanceResult.icon || 'check_circle'}
-                      </span>{' '}
-                      {attendanceResult.badge || 'In Good Standing'}
-                    </span>
-                    <p className="font-body-sm text-[12px] text-on-surface-variant mt-1" id="att-buffer-text">
-                      {attendanceResult.message}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Micro-Workbench 4: Citation Quick-Formatter */}
-              <div
-                className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between"
-                id="workbench-citation"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-space-sm">
-                    <div className="flex items-center gap-2">
-                      <span className="material-symbols-outlined text-secondary">format_quote</span>
-                      <h3 className="font-headline-md text-headline-md text-on-surface font-bold">Citation Quick-Formatter</h3>
-                    </div>
-                    {/* Format pills */}
-                    <div className="flex gap-1">
-                      {(['APA7', 'MLA9', 'CHI'] as const).map(fmt => (
-                        <button
-                          key={fmt}
-                          onClick={() => setCiteFormat(fmt)}
-                          className={`px-2 py-0.5 rounded font-label-caps text-[10px] font-semibold transition-all ${
-                            citeFormat === fmt
-                              ? 'bg-primary text-on-primary'
-                              : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
-                          }`}
-                        >
-                          {fmt === 'APA7' ? 'APA 7' : fmt === 'MLA9' ? 'MLA 9' : 'Chicago'}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                    Create properly formatted citations for research papers according to the latest official style manuals.
-                  </p>
-                  <div className="grid grid-cols-2 gap-space-xs mb-2">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Current Cumulative GPA
+                    </label>
                     <input
-                      className="p-2 bg-surface-container-low rounded-lg font-body-sm text-on-surface text-[13px] focus:outline-none border border-outline-variant/20"
-                      id="cite-author"
-                      value={citeAuthor}
-                      onChange={e => setCiteAuthor(e.target.value)}
-                      placeholder="Author (e.g. Kahneman, D.)"
-                      type="text"
-                    />
-                    <input
-                      className="p-2 bg-surface-container-low rounded-lg font-body-sm text-on-surface text-[13px] focus:outline-none border border-outline-variant/20"
-                      id="cite-year"
-                      value={citeYear}
-                      onChange={e => setCiteYear(e.target.value)}
-                      placeholder="Year (2011)"
-                      type="text"
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      max={maxScaleVal}
+                      value={curGpa}
+                      onChange={e => setCurGpa(parseFloat(e.target.value) || 0)}
                     />
                   </div>
-                  <input
-                    className="w-full p-2 mb-2 bg-surface-container-low rounded-lg font-body-sm text-on-surface text-[13px] focus:outline-none border border-outline-variant/20"
-                    id="cite-title"
-                    value={citeTitle}
-                    onChange={e => setCiteTitle(e.target.value)}
-                    placeholder="Book / Article Title"
-                    type="text"
-                  />
-                  <input
-                    className="w-full p-2 bg-surface-container-low rounded-lg font-body-sm text-on-surface text-[13px] focus:outline-none border border-outline-variant/20"
-                    id="cite-source"
-                    value={citeSource}
-                    onChange={e => setCiteSource(e.target.value)}
-                    placeholder="Publisher / Journal"
-                    type="text"
-                  />
-                </div>
 
-                {/* Result Preview */}
-                <div className="mt-space-md p-space-sm bg-surface-container rounded-lg border border-outline-variant/20">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-label-caps text-on-surface-variant uppercase text-[10px]">Formatted Reference Preview</span>
-                    <button
-                      className="text-[11px] font-label-caps text-primary flex items-center gap-1 hover:underline cursor-pointer"
-                      id="cite-copy-btn"
-                      onClick={handleCopyCitation}
-                    >
-                      <span className="material-symbols-outlined text-[14px]">{copied ? 'check' : 'content_copy'}</span>{' '}
-                      {copied ? 'Copied!' : 'Copy'}
-                    </button>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Completed Credits
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="0"
+                      max="250"
+                      value={compCredits}
+                      onChange={e => setCompCredits(parseFloat(e.target.value) || 0)}
+                    />
                   </div>
-                  <div
-                    className="font-body-sm text-[13px] text-on-surface bg-surface-container-lowest p-2 rounded border border-outline-variant/15 select-all leading-relaxed"
-                    id="cite-output"
-                  >
-                    {citeFormat === 'APA7' && (
-                      <>
-                        {citeAuthor || 'Author'} ({citeYear || 'Year'}). <em>{citeTitle || 'Title'}</em>. {citeSource || 'Publisher'}.
-                      </>
-                    )}
-                    {citeFormat === 'MLA9' && (
-                      <>
-                        {citeAuthor || 'Author'}. <em>{citeTitle || 'Title'}</em>. {citeSource || 'Publisher'}, {citeYear || 'Year'}.
-                      </>
-                    )}
-                    {citeFormat === 'CHI' && (
-                      <>
-                        {citeAuthor || 'Author'}. {citeYear || 'Year'}. <em>{citeTitle || 'Title'}</em>. {citeSource || 'Publisher'}.
-                      </>
-                    )}
+
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Target Cumulative GPA
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      max={maxScaleVal}
+                      value={targetGpa}
+                      onChange={e => setTargetGpa(parseFloat(e.target.value) || 0)}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Future Credits Remaining
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="1"
+                      max="150"
+                      value={futCredits}
+                      onChange={e => setFutCredits(parseFloat(e.target.value) || 0)}
+                    />
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Section 5: Comprehensive 10-Category Academic Directory & Popular Categories */}
-        <section className="w-full py-space-3xl bg-surface" id="directory">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            {/* Category Description & Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-lg">
+              {/* Result Container */}
+              <div className="mt-5 p-4 bg-surface-container-low rounded-xl border border-outline-variant/20 flex items-center justify-between gap-4">
+                <div>
+                  <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                    Required Future Average
+                  </span>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-primary leading-none mt-1">
+                    {gpaResult.val}
+                  </div>
+                </div>
+                <div className="text-right max-w-[60%]">
+                  <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg ${gpaResult.color}`}>
+                    {gpaResult.badge}
+                  </span>
+                  <p className="text-[11px] text-on-surface-variant mt-1 leading-tight">{gpaResult.message}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* TOOL 2: Final Grade Needed Calculator */}
+            <div
+              id="tool-final"
+              className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-xs flex flex-col justify-between"
+            >
               <div>
-                <span className="font-label-caps text-primary uppercase tracking-wider font-semibold">EDUCATION CALCULATOR DIRECTORY</span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface mt-1 font-bold">Explore All Academic Tools</h2>
-                <p className="font-body-md text-body-md text-on-surface-variant max-w-3xl mt-2 leading-relaxed">
-                  Find free Education Calculators &amp; Academic Planning Tools for GPA, CGPA, grades, attendance, study planning, exam scores, scholarships, student loans, and academic success. Fast, accurate, and easy-to-use calculators for students and educators worldwide.
-                </p>
-              </div>
-              <div className="flex items-center gap-2 mt-3 md:mt-0 font-data-mono text-on-surface-variant text-[12px] shrink-0">
-                <span>Categorical Coverage: 10 Disciplines</span>
-                <span>•</span>
-                <span className="text-primary font-bold">100+ Calculators &amp; Tools</span>
-              </div>
-            </div>
-
-            {/* Popular Calculator Categories Grid */}
-            <div className="mb-space-2xl">
-              <div className="flex items-center justify-between mb-space-sm">
-                <h3 className="font-headline-md text-headline-md text-on-surface font-bold flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-[20px]">stars</span>
-                  Popular Calculator Categories
-                </h3>
-                <span className="font-label-caps text-[11px] text-on-surface-variant uppercase">Core Student Hub</span>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-space-sm">
-                {[
-                  { name: 'GPA Calculators', icon: 'school', count: '14 Tools', link: '#workbench-gpa' },
-                  { name: 'CGPA Calculators', icon: 'grade', count: '8 Tools', link: '#workbench-gpa' },
-                  { name: 'Grade Calculators', icon: 'assignment_turned_in', count: '12 Tools', link: '#workbench-final' },
-                  { name: 'Final Exam Calculators', icon: 'calculate', count: '9 Tools', link: '#workbench-final' },
-                  { name: 'Attendance Calculators', icon: 'event_available', count: '11 Tools', link: '#workbench-attendance' },
-                  { name: 'Percentage Calculators', icon: 'percent', count: '10 Tools', link: '/percentage-calculator' },
-                  { name: 'Study Time Calculators', icon: 'timer', count: '16 Tools', link: '#directory' },
-                  { name: 'Scholarship Calculators', icon: 'workspace_premium', count: '7 Tools', link: '#directory' },
-                  { name: 'Student Loan Calculators', icon: 'payments', count: '10 Tools', link: '#directory' },
-                  { name: 'College Cost Calculators', icon: 'account_balance', count: '8 Tools', link: '#directory' },
-                  { name: 'Academic Planning Tools', icon: 'calendar_month', count: '15 Tools', link: '#directory' },
-                  { name: 'Exam Score Calculators', icon: 'quiz', count: '14 Tools', link: '#directory' },
-                ].map(item => (
-                  <a
-                    key={item.name}
-                    href={item.link}
-                    onClick={() => {
-                      if (item.link === '#directory') {
-                        setSearchQuery(item.name.replace(' Calculators', '').replace(' Tools', ''));
-                      }
-                    }}
-                    className="p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/30 hover:border-primary/50 hover:shadow-xs transition-all flex items-center justify-between group"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <span className="material-symbols-outlined text-primary text-[18px] group-hover:scale-110 transition-transform">
-                        {item.icon}
-                      </span>
-                      <span className="font-body-sm text-body-sm font-semibold text-on-surface group-hover:text-primary transition-colors">
-                        {item.name}
-                      </span>
-                    </div>
-                    <span className="font-data-mono text-[10px] text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">
-                      {item.count}
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Directory Grid: 10 Comprehensive Categories */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
-              {filteredCategories.map(cat => (
-                <div
-                  key={cat.id}
-                  className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-outline-variant/30"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <div
-                          className={`w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center ${cat.color}`}
-                        >
-                          <span className="material-symbols-outlined text-[20px]">{cat.icon}</span>
-                        </div>
-                        <h3 className="font-headline-md text-headline-md text-on-surface font-bold">{cat.title}</h3>
-                      </div>
-                      <span className={`text-[11px] font-data-mono bg-surface-container-high px-2 py-0.5 rounded font-semibold ${cat.color}`}>
-                        {cat.count}
-                      </span>
-                    </div>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-sm leading-relaxed">{cat.desc}</p>
-                    <ul className="space-y-1 font-body-sm text-body-sm text-on-surface">
-                      {cat.tools.map((tool, idx) => (
-                        <li
-                          key={idx}
-                          onClick={() => {
-                            setSearchQuery(tool);
-                            const searchEl = document.getElementById('edu-search-input');
-                            if (searchEl) {
-                              searchEl.scrollIntoView({ behavior: 'smooth' });
-                              searchEl.focus();
-                            }
-                          }}
-                          className="group flex items-center justify-between py-1.5 border-b border-surface-container-low hover:text-primary cursor-pointer transition-colors"
-                        >
-                          <span className="font-bold text-on-surface group-hover:text-primary transition-colors">{tool}</span>
-                          <span className="material-symbols-outlined text-[16px] text-outline group-hover:text-primary group-hover:translate-x-0.5 transition-all">chevron_right</span>
-                        </li>
-                      ))}
-                    </ul>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary text-[24px]">calculate</span>
+                    <h3 className="text-lg font-bold text-on-surface">Final Grade Needed Calculator</h3>
                   </div>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">
+                    Weighted %
+                  </span>
+                </div>
+
+                <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">
+                  Discover the exact score needed on your final exam, project, or paper to achieve your desired overall class grade.
+                </p>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Current Grade %
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      step="0.5"
+                      min="0"
+                      max="150"
+                      value={finalCurrent}
+                      onChange={e => setFinalCurrent(parseFloat(e.target.value) || 0)}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Exam Weight %
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="1"
+                      max="100"
+                      value={finalWeight}
+                      onChange={e => setFinalWeight(parseFloat(e.target.value) || 0)}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Desired Grade %
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="40"
+                      max="100"
+                      value={finalDesired}
+                      onChange={e => setFinalDesired(parseFloat(e.target.value) || 0)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Result Container */}
+              <div className="mt-5 p-4 bg-surface-container-low rounded-xl border border-outline-variant/20 flex items-center justify-between gap-4">
+                <div>
+                  <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                    Score Needed on Final
+                  </span>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-primary leading-none mt-1">
+                    {finalResult.val}
+                  </div>
+                </div>
+                <div className="text-right max-w-[60%]">
+                  <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg ${finalResult.badgeClass}`}>
+                    <span className="material-symbols-outlined text-[14px]">{finalResult.icon}</span>
+                    <span>{finalResult.badge}</span>
+                  </span>
+                  <p className="text-[11px] text-on-surface-variant mt-1 leading-tight">{finalResult.message}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* TOOL 3: Configurable Attendance Calculator */}
+            <div
+              id="tool-attendance"
+              className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-xs flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary text-[24px]">event_available</span>
+                    <h3 className="text-lg font-bold text-on-surface">Attendance Calculator</h3>
+                  </div>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">
+                    Configurable %
+                  </span>
+                </div>
+
+                <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">
+                  Calculate your current attendance percentage and estimate allowable absences or catch-up classes against your institution&apos;s required threshold.
+                </p>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Classes Held
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="1"
+                      max="300"
+                      value={attTotal}
+                      onChange={e => setAttTotal(parseInt(e.target.value) || 0)}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Classes Attended
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="0"
+                      max={attTotal}
+                      value={attAttended}
+                      onChange={e => setAttAttended(parseInt(e.target.value) || 0)}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Required %
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="50"
+                      max="100"
+                      value={attReq}
+                      onChange={e => setAttReq(parseFloat(e.target.value) || 75)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Result Container */}
+              <div className="mt-5 p-4 bg-surface-container-low rounded-xl border border-outline-variant/20 flex items-center justify-between gap-4">
+                <div>
+                  <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                    Current Attendance
+                  </span>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-primary leading-none mt-1">
+                    {attendanceResult.pct}
+                  </div>
+                  <span className="text-[11px] text-on-surface-variant">
+                    {attAttended} of {attTotal} sessions ({attTotal - attAttended} missed)
+                  </span>
+                </div>
+                <div className="text-right max-w-[60%]">
+                  <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg ${attendanceResult.badgeClass}`}>
+                    <span className="material-symbols-outlined text-[14px]">{attendanceResult.icon}</span>
+                    <span>{attendanceResult.badge}</span>
+                  </span>
+                  <p className="text-[11px] text-on-surface-variant mt-1 leading-tight">{attendanceResult.message}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* TOOL 4: Study Time Calculator */}
+            <div
+              id="tool-study"
+              className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-xs flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary text-[24px]">timer</span>
+                    <h3 className="text-lg font-bold text-on-surface">Study Time Calculator</h3>
+                  </div>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">
+                    {studyTimeResult.ratioDesc}
+                  </span>
+                </div>
+
+                <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">
+                  Estimate total weekly study hours and daily revision blocks based on standard collegiate credit-to-study ratios.
+                </p>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Credit Hours
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="1"
+                      max="25"
+                      value={enrolledCredits}
+                      onChange={e => setEnrolledCredits(parseInt(e.target.value) || 0)}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Course Rigor
+                    </label>
+                    <select
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl text-xs text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      value={studyRigor}
+                      onChange={e => setStudyRigor(parseFloat(e.target.value))}
+                    >
+                      <option value={1.5}>Foundational (1.5x)</option>
+                      <option value={2.0}>Standard (2.0x)</option>
+                      <option value={3.0}>STEM / Intensive (3.0x)</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Study Days / Wk
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="1"
+                      max="7"
+                      value={studyDays}
+                      onChange={e => setStudyDays(parseInt(e.target.value) || 5)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Result Container */}
+              <div className="mt-5 p-4 bg-surface-container-low rounded-xl border border-outline-variant/20 flex items-center justify-between gap-4">
+                <div>
+                  <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                    Recommended Study
+                  </span>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-primary leading-none mt-1">
+                    {studyTimeResult.weeklyHours} hrs/wk
+                  </div>
+                  <span className="text-[11px] text-on-surface-variant">
+                    ~{studyTimeResult.dailyHours} hours across {studyDays} study days
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-surface-container text-on-surface">
+                    <span className="material-symbols-outlined text-[14px]">psychology</span>
+                    <span>~{studyTimeResult.pomodoroCount} Pomodoro Blocks/Day</span>
+                  </span>
+                  <p className="text-[11px] text-on-surface-variant mt-1">25m study + 5m recovery break</p>
+                </div>
+              </div>
+            </div>
+
+            {/* TOOL 5: Degree / Credit Progress Calculator */}
+            <div
+              id="tool-degree"
+              className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-xs flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary text-[24px]">account_tree</span>
+                    <h3 className="text-lg font-bold text-on-surface">Degree &amp; Credit Progress</h3>
+                  </div>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">
+                    {degreeProgressResult.compPct}% Completed
+                  </span>
+                </div>
+
+                <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">
+                  Track your accumulated credits against total degree requirements to visualize completion pacing.
+                </p>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Degree Total Credits
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="30"
+                      max="200"
+                      value={totalDegreeCredits}
+                      onChange={e => setTotalDegreeCredits(parseInt(e.target.value) || 120)}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Completed Credits
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="0"
+                      max={totalDegreeCredits}
+                      value={completedCredits}
+                      onChange={e => setCompletedCredits(parseInt(e.target.value) || 0)}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      In-Progress Credits
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="0"
+                      max={totalDegreeCredits}
+                      value={inProgressCredits}
+                      onChange={e => setInProgressCredits(parseInt(e.target.value) || 0)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Result Container */}
+              <div className="mt-5 p-4 bg-surface-container-low rounded-xl border border-outline-variant/20">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-on-surface">
+                    {degreeProgressResult.totalEarnedPlusCurrent} of {totalDegreeCredits} credits completed/active
+                  </span>
+                  <span className="text-xs font-bold text-primary">
+                    {degreeProgressResult.remainingCredits} credits remaining
+                  </span>
+                </div>
+                {/* Progress bar */}
+                <div className="w-full h-3 bg-surface-container rounded-full overflow-hidden flex">
                   <div
-                    className={`mt-space-md pt-space-xs border-t border-surface-container flex items-center justify-between font-label-caps ${cat.color} font-semibold`}
-                  >
-                    <span>Explore {cat.extra}</span>
-                    <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-                  </div>
+                    style={{ width: `${degreeProgressResult.compPct}%` }}
+                    className="bg-primary h-full transition-all duration-300"
+                    title={`Completed: ${degreeProgressResult.compPct}%`}
+                  ></div>
+                  <div
+                    style={{ width: `${degreeProgressResult.inProgPct}%` }}
+                    className="bg-secondary h-full transition-all duration-300"
+                    title={`In-Progress: ${degreeProgressResult.inProgPct}%`}
+                  ></div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Section 6: Academic Journey Roadmap (Middle School to Professional) */}
-        <section className="w-full py-space-2xl bg-surface-container-low border-y border-outline-variant/20">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="text-center max-w-3xl mx-auto mb-space-xl">
-              <span className="font-label-caps text-primary uppercase tracking-wider font-semibold">Longitudinal Progression</span>
-              <h2 className="font-headline-lg text-headline-lg text-on-surface mt-1 font-bold">
-                Tools for Every Stage of Your Education
-              </h2>
-              <p className="font-body-md text-body-md text-on-surface-variant mt-2">
-                From middle school homework to graduate dissertations and professional licensing exams.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-space-sm relative">
-              {[
-                {
-                  stage: 'STAGE 01',
-                  name: 'Middle School',
-                  desc: 'Foundational grade percentages, assignment checklist pacing, and healthy screen-time limits.',
-                  keyTool: 'Basic Grade % & Reading Time'
-                },
-                {
-                  stage: 'STAGE 02',
-                  name: 'High School',
-                  desc: 'AP/IB weighted GPA strategies, SAT/ACT score conversions, and college admissions odds.',
-                  keyTool: 'Weighted 5.0 GPA + SAT Prep'
-                },
-                {
-                  stage: 'STAGE 03',
-                  name: 'Undergraduate',
-                  desc: 'Credit hours balance, Major GPA, attendance threshold monitoring, and tuition net cost analysis.',
-                  keyTool: 'Degree Audit + Final Exam Target'
-                },
-                {
-                  stage: 'STAGE 04',
-                  name: 'Graduate & PhD',
-                  desc: 'Dissertation word counting, APA/MLA bibliographic integrity, and fellowship stipends.',
-                  keyTool: 'Thesis Citations + Research Tools'
-                },
-                {
-                  stage: 'STAGE 05',
-                  name: 'Certifications',
-                  desc: 'CPA, CFA, Bar, USMLE, and PMP structured spaced intervals and mock exam curves.',
-                  keyTool: 'Study Schedules + Exam Curves'
-                }
-              ].map(item => (
-                <div
-                  key={item.stage}
-                  className="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm border border-outline-variant/25 flex flex-col justify-between"
-                >
-                  <div>
-                    <span className="font-data-mono text-[11px] text-primary font-bold">{item.stage}</span>
-                    <h4 className="font-headline-md text-headline-md text-on-surface mt-1 font-bold">{item.name}</h4>
-                    <p className="font-body-sm text-[13px] text-on-surface-variant mt-2 leading-relaxed">{item.desc}</p>
-                  </div>
-                  <div className="mt-space-md pt-2 border-t border-surface-container">
-                    <span className="font-label-caps text-on-surface-variant text-[10px] block uppercase">Key Tools:</span>
-                    <span className="font-body-sm text-[12px] text-primary font-medium">{item.keyTool}</span>
-                  </div>
+                <div className="flex items-center justify-between text-[11px] text-on-surface-variant mt-2">
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-primary inline-block"></span>
+                    <span>Completed ({degreeProgressResult.compPct}%)</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
+                    <span>In-Progress ({degreeProgressResult.inProgPct}%)</span>
+                  </span>
+                  <span>Remaining ({degreeProgressResult.remainingCredits} cr.)</span>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-        </section>
 
-        {/* Section 7: Smart Academic Tool Recommender (Interactive 2-Step Decision Matrix) */}
-        <section className="w-full py-space-2xl bg-surface" id="recommender">
-          <div className="max-w-max-width-calculator mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="bg-surface-container-lowest p-space-lg md:p-space-xl rounded-xl shadow-md border border-outline-variant/30">
-              <div className="text-center max-w-xl mx-auto mb-space-lg">
-                <span className="font-label-caps text-primary uppercase tracking-wider font-semibold">Smart Tool Recommender</span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface mt-1 font-bold">
-                  Find the Exact Calculator for Your Goal
-                </h2>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                  Choose your goal to find the best calculator for your classes.
+            {/* TOOL 6: Graduation Term Estimator */}
+            <div
+              id="tool-grad"
+              className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-xs flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-primary text-[24px]">workspace_premium</span>
+                    <h3 className="text-lg font-bold text-on-surface">Graduation Term Estimator</h3>
+                  </div>
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">
+                    Pacing Model
+                  </span>
+                </div>
+
+                <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">
+                  Estimate the number of semesters or quarters required to complete your degree based on your anticipated credit load.
                 </p>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Credits Remaining
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="1"
+                      max="150"
+                      value={creditsRemainingGrad}
+                      onChange={e => setCreditsRemainingGrad(parseInt(e.target.value) || 0)}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Credits / Term
+                    </label>
+                    <input
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl font-mono text-sm text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      type="number"
+                      min="1"
+                      max="24"
+                      value={creditsPerTerm}
+                      onChange={e => setCreditsPerTerm(parseInt(e.target.value) || 15)}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                      Terms / Year
+                    </label>
+                    <select
+                      className="w-full p-2.5 bg-surface-container-low rounded-xl text-xs text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                      value={termsPerYear}
+                      onChange={e => setTermsPerYear(parseInt(e.target.value) || 2)}
+                    >
+                      <option value={2}>2 Semesters (Fall/Spring)</option>
+                      <option value={3}>3 Quarters / Trimesters</option>
+                      <option value={4}>4 Terms (Inc. Summer)</option>
+                    </select>
+                  </div>
+                </div>
               </div>
 
-              {/* Step 1: Objective Selection */}
-              <div className="space-y-space-sm mb-space-md">
-                <label className="font-label-caps text-on-surface uppercase text-[11px] block font-bold">
-                  Step 1: What is your primary focus right now?
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  {[
-                    { id: 'gpa', label: 'Grade & GPA' },
-                    { id: 'finals', label: 'Finals & Exams' },
-                    { id: 'study', label: 'Study Schedule' },
-                    { id: 'finance', label: 'Tuition & Aid' }
-                  ].map(btn => (
+              {/* Result Container */}
+              <div className="mt-5 p-4 bg-surface-container-low rounded-xl border border-outline-variant/20 flex items-center justify-between gap-4">
+                <div>
+                  <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                    Graduation Timeline
+                  </span>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-primary leading-none mt-1">
+                    {graduationResult.termsNeeded} Terms
+                  </div>
+                  <span className="text-[11px] text-on-surface-variant">
+                    Estimated ~{graduationResult.yearsNeeded} academic years at {creditsPerTerm} cr/term
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg bg-secondary-container text-on-secondary-container">
+                    <span className="material-symbols-outlined text-[14px]">calendar_today</span>
+                    <span>On Pace</span>
+                  </span>
+                  <p className="text-[11px] text-on-surface-variant mt-1">Plan your course registration early</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5: GPA & GRADING TRUST EXPLANATION */}
+      <section className="w-full py-12 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-surface-container-low/40">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-3xl mb-8">
+            <span className="text-xs font-bold text-primary uppercase tracking-wider">Grading Systems &amp; Standards</span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-on-surface mt-1">
+              Understanding Grading Scales &amp; Calculation Models
+            </h2>
+            <p className="text-sm text-on-surface-variant mt-2 leading-relaxed">
+              Many institutions use a credit-weighted GPA model, but grading policies, quality point definitions, and honor roll thresholds vary by school, college, university, country, and academic program.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-base font-bold text-on-surface">4.0 Standard Scale</h3>
+                <span className="text-xs font-mono bg-surface-container px-2 py-0.5 rounded text-primary font-bold">Unweighted</span>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed mb-3">
+                Commonly used across U.S. and Canadian undergraduate programs. Grades map directly: A = 4.0, B = 3.0, C = 2.0, D = 1.0, F = 0.0.
+              </p>
+              <div className="text-[11px] font-mono bg-surface-container-low p-2 rounded-lg text-on-surface border border-outline-variant/20">
+                A: 4.0 | B: 3.0 | C: 2.0 | D: 1.0
+              </div>
+            </div>
+
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-base font-bold text-on-surface">4.33 Scale</h3>
+                <span className="text-xs font-mono bg-surface-container px-2 py-0.5 rounded text-secondary font-bold">+/- Modifiers</span>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed mb-3">
+                Incorporates plus and minus grades: A+ = 4.33, A = 4.0, A- = 3.67, B+ = 3.33, B = 3.0, B- = 2.67, C+ = 2.33.
+              </p>
+              <div className="text-[11px] font-mono bg-surface-container-low p-2 rounded-lg text-on-surface border border-outline-variant/20">
+                A+: 4.33 | A: 4.0 | A-: 3.67 | B+: 3.33
+              </div>
+            </div>
+
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-base font-bold text-on-surface">5.0 Weighted Scale</h3>
+                <span className="text-xs font-mono bg-surface-container px-2 py-0.5 rounded text-primary font-bold">AP / IB / Honors</span>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed mb-3">
+                Adds quality point weighting for advanced secondary courses (e.g. AP, IB, or Dual Enrollment: A = 5.0, B = 4.0, C = 3.0).
+              </p>
+              <div className="text-[11px] font-mono bg-surface-container-low p-2 rounded-lg text-on-surface border border-outline-variant/20">
+                AP/IB A: 5.0 | Honors A: 4.5
+              </div>
+            </div>
+
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-base font-bold text-on-surface">10.0 CGPA Scale</h3>
+                <span className="text-xs font-mono bg-surface-container px-2 py-0.5 rounded text-secondary font-bold">India &amp; Global</span>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed mb-3">
+                Standard 10-point semester grade point average (SGPA/CGPA). Often converted to percentage using board multipliers (e.g., 9.5).
+              </p>
+              <div className="text-[11px] font-mono bg-surface-container-low p-2 rounded-lg text-on-surface border border-outline-variant/20">
+                % = CGPA × 9.5 (or University Formula)
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 6: CATEGORY STRUCTURE (SEO-FRIENDLY DIRECTORY) */}
+      <section className="w-full py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-surface" id="directory">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+              <span className="text-xs font-bold text-primary uppercase tracking-wider">All Academic Categories</span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-on-surface mt-1">Explore Education Calculators by Topic</h2>
+            </div>
+            <p className="text-sm text-on-surface-variant max-w-md">
+              Comprehensive calculators and estimators organized into clear academic disciplines with clean direct links.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCategories.map(cat => (
+              <div
+                key={cat.id}
+                className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                      <span className="material-symbols-outlined text-[22px]">{cat.icon}</span>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-on-surface">{cat.title}</h3>
+                      <span className="text-[11px] text-on-surface-variant">{cat.tools.length} Tools Available</span>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">{cat.desc}</p>
+
+                  <div className="space-y-1.5 text-xs">
+                    {cat.tools.map((tool, idx) => (
+                      <a
+                        key={idx}
+                        href={tool.link}
+                        title={tool.desc}
+                        className="group/tool px-3 py-2 rounded-xl bg-surface-container-low/60 hover:bg-primary/10 hover:border-primary/40 border border-outline-variant/20 text-xs text-on-surface transition-all flex items-center justify-between gap-2 cursor-pointer shadow-2xs hover:shadow-xs hover:translate-x-0.5"
+                      >
+                        <span className="font-semibold text-xs text-on-surface group-hover/tool:text-primary transition-colors flex items-center gap-2 truncate">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover/tool:bg-primary shrink-0 transition-colors" />
+                          <span className="truncate">{tool.name}</span>
+                        </span>
+                        <span className="material-symbols-outlined text-[14px] text-outline-variant group-hover/tool:text-primary group-hover/tool:translate-x-0.5 transition-transform shrink-0">
+                          chevron_right
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 7: GLOBAL EDUCATION STRUCTURE (BY REGION) */}
+      <section className="w-full py-12 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-surface-container-low/40">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-xs font-bold text-primary uppercase tracking-wider">International Frameworks</span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-on-surface mt-1">Education Calculators by Region</h2>
+            <p className="text-sm text-on-surface-variant mt-2">
+              Academic metrics tailored to regional evaluation frameworks, university grading scales, and credit standards.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-primary text-[20px]">public</span>
+                  <h3 className="text-base font-bold text-on-surface">Global / General</h3>
+                </div>
+                <p className="text-xs text-on-surface-variant leading-relaxed">
+                  Universal grading tools including standard 4.0 GPA, percentage grading, study hour allocation, and attendance tracking.
+                </p>
+              </div>
+              <div className="mt-4 pt-2 border-t border-outline-variant/15 text-[11px] text-primary font-semibold">
+                • 4.0 Scale &bull; Percentage Models
+              </div>
+            </div>
+
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-secondary text-[20px]">flag</span>
+                  <h3 className="text-base font-bold text-on-surface">United States</h3>
+                </div>
+                <p className="text-xs text-on-surface-variant leading-relaxed">
+                  Weighted 5.0 AP/IB scale, College Board &amp; ACT score concordance, credit hour workloads, and college net price estimates.
+                </p>
+              </div>
+              <div className="mt-4 pt-2 border-t border-outline-variant/15 text-[11px] text-primary font-semibold">
+                • AP/IB 5.0 &bull; SAT/ACT Concordance
+              </div>
+            </div>
+
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-primary text-[20px]">location_city</span>
+                  <h3 className="text-base font-bold text-on-surface">India</h3>
+                </div>
+                <p className="text-xs text-on-surface-variant leading-relaxed">
+                  10.0 CGPA to percentage conversion (CBSE 9.5 standard and university formulas), SGPA transitions, and 75% attendance rules.
+                </p>
+              </div>
+              <div className="mt-4 pt-2 border-t border-outline-variant/15 text-[11px] text-primary font-semibold">
+                • 10.0 CGPA &bull; 75% Attendance
+              </div>
+            </div>
+
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-secondary text-[20px]">account_balance</span>
+                  <h3 className="text-base font-bold text-on-surface">United Kingdom</h3>
+                </div>
+                <p className="text-xs text-on-surface-variant leading-relaxed">
+                  UK undergraduate honours classifications (First 70%+, 2:1 60-69%, 2:2 50-59%, Third 40-49%) and UCAS Tariff point estimates.
+                </p>
+              </div>
+              <div className="mt-4 pt-2 border-t border-outline-variant/15 text-[11px] text-primary font-semibold">
+                • UK Honours &bull; UCAS Tariff
+              </div>
+            </div>
+
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="material-symbols-outlined text-primary text-[20px]">map</span>
+                  <h3 className="text-base font-bold text-on-surface">Canada</h3>
+                </div>
+                <p className="text-xs text-on-surface-variant leading-relaxed">
+                  Provincial 4.0, 4.33, and 9.0 Canadian GPA scales, percentage conversions (OUAC/Alberta/BC), and credit hour equivalents.
+                </p>
+              </div>
+              <div className="mt-4 pt-2 border-t border-outline-variant/15 text-[11px] text-primary font-semibold">
+                • 4.33 &amp; 9.0 Scales &bull; OUAC
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 8: CITATION & WRITING FORMATTER */}
+      <section className="w-full py-12 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-surface" id="tool-citation">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-primary uppercase tracking-wider">Style &amp; Version Guidelines</span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant border border-outline-variant/20">
+                  Reviewed according to standard publication manuals
+                </span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-on-surface mt-1">Citation Quick-Formatter</h2>
+            </div>
+            <p className="text-sm text-on-surface-variant max-w-md">
+              Generate formatted reference list entries in APA 7th Edition, MLA 9th Edition, or Chicago 17th Edition Notes &amp; Bibliography format.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Formatter Input Card */}
+            <div className="lg:col-span-2 p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-xs">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Select Style Guide</span>
+                <div className="flex gap-1">
+                  {(['APA7', 'MLA9', 'CHI17'] as const).map(fmt => (
                     <button
-                      key={btn.id}
-                      onClick={() => setRecGoal(btn.id as typeof recGoal)}
-                      className={`p-3 text-center rounded-lg font-body-sm transition-all font-medium border ${
-                        recGoal === btn.id
-                          ? 'bg-primary text-on-primary border-primary shadow-sm font-semibold'
-                          : 'bg-surface-container text-on-surface hover:bg-surface-container-high border-outline-variant/20'
+                      key={fmt}
+                      onClick={() => setCiteFormat(fmt)}
+                      className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors ${
+                        citeFormat === fmt
+                          ? 'bg-primary text-on-primary shadow-xs'
+                          : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
                       }`}
                     >
-                      {btn.label}
+                      {fmt === 'APA7' ? 'APA 7th' : fmt === 'MLA9' ? 'MLA 9th' : 'Chicago 17th'}
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Dynamic Recommendation Result Container */}
-              <div
-                className="p-space-md bg-surface-container-low rounded-xl flex flex-col sm:flex-row items-center justify-between gap-space-md border border-outline-variant/20"
-                id="recommender-result"
-              >
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary text-[20px]">recommend</span>
-                    <h4 className="font-headline-md text-headline-md text-on-surface font-bold" id="rec-title">
-                      {recommenderData.title}
-                    </h4>
-                  </div>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed" id="rec-desc">
-                    {recommenderData.desc}
-                  </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Author(s)</label>
+                  <input
+                    className="w-full p-2.5 bg-surface-container-low rounded-xl text-xs text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                    value={citeAuthor}
+                    onChange={e => setCiteAuthor(e.target.value)}
+                    placeholder="e.g. Kahneman, Daniel"
+                    type="text"
+                  />
                 </div>
-                <a
-                  className="px-space-md py-2.5 bg-primary text-on-primary rounded-lg font-body-sm font-medium hover:bg-primary-container text-nowrap shadow-sm transition-all"
-                  href={recommenderData.actionHref}
-                  id="rec-action"
-                >
-                  Open Calculator
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Publication Year</label>
+                  <input
+                    className="w-full p-2.5 bg-surface-container-low rounded-xl text-xs text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                    value={citeYear}
+                    onChange={e => setCiteYear(e.target.value)}
+                    placeholder="e.g. 2011"
+                    type="text"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1 mb-3">
+                <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Title of Work</label>
+                <input
+                  className="w-full p-2.5 bg-surface-container-low rounded-xl text-xs text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                  value={citeTitle}
+                  onChange={e => setCiteTitle(e.target.value)}
+                  placeholder="e.g. Thinking, Fast and Slow"
+                  type="text"
+                />
+              </div>
+
+              <div className="space-y-1 mb-4">
+                <label className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Publisher / Journal Source</label>
+                <input
+                  className="w-full p-2.5 bg-surface-container-low rounded-xl text-xs text-on-surface border border-outline-variant/30 focus:outline-none focus:border-primary"
+                  value={citeSource}
+                  onChange={e => setCiteSource(e.target.value)}
+                  placeholder="e.g. Farrar, Straus and Giroux"
+                  type="text"
+                />
+              </div>
+
+              {/* Formatted Output Box */}
+              <div className="p-4 bg-surface-container-low rounded-xl border border-outline-variant/20">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
+                    Formatted Reference ({citeFormat === 'APA7' ? 'APA 7th' : citeFormat === 'MLA9' ? 'MLA 9th' : 'Chicago 17th'})
+                  </span>
+                  <button
+                    onClick={handleCopyCitation}
+                    className="text-xs font-semibold text-primary flex items-center gap-1 hover:underline cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-[15px]">{copied ? 'check' : 'content_copy'}</span>
+                    <span>{copied ? 'Copied!' : 'Copy Reference'}</span>
+                  </button>
+                </div>
+                <div className="p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/15 text-xs text-on-surface font-serif leading-relaxed select-all">
+                  {citeFormat === 'APA7' && (
+                    <span>
+                      {citeAuthor || 'Author'} ({citeYear || 'Year'}). <em>{citeTitle || 'Title of work'}</em>. {citeSource || 'Publisher'}.
+                    </span>
+                  )}
+                  {citeFormat === 'MLA9' && (
+                    <span>
+                      {citeAuthor || 'Author'}. <em>{citeTitle || 'Title of work'}</em>. {citeSource || 'Publisher'}, {citeYear || 'Year'}.
+                    </span>
+                  )}
+                  {citeFormat === 'CHI17' && (
+                    <span>
+                      {citeAuthor || 'Author'}. {citeYear || 'Year'}. <em>{citeTitle || 'Title of work'}</em>. {citeSource || 'Publisher'}.
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Style Reference Overview */}
+            <div className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-xs flex flex-col justify-between">
+              <div>
+                <h3 className="text-base font-bold text-on-surface mb-3">Style Guide Reference</h3>
+                <div className="space-y-3 text-xs text-on-surface-variant leading-relaxed">
+                  <div className="p-3 bg-surface-container-low rounded-xl border border-outline-variant/20">
+                    <strong className="text-on-surface block font-semibold mb-1">APA 7th Edition (2020)</strong>
+                    <span>Author-Date system used across social sciences, education, and psychology. Sentence case for titles.</span>
+                  </div>
+                  <div className="p-3 bg-surface-container-low rounded-xl border border-outline-variant/20">
+                    <strong className="text-on-surface block font-semibold mb-1">MLA 9th Edition (2021)</strong>
+                    <span>Author-Page system used in humanities and literature. Container principle for sources.</span>
+                  </div>
+                  <div className="p-3 bg-surface-container-low rounded-xl border border-outline-variant/20">
+                    <strong className="text-on-surface block font-semibold mb-1">Chicago 17th Edition</strong>
+                    <span>Notes and bibliography format used in history, arts, and humanities scholarship.</span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 pt-3 border-t border-outline-variant/15 text-[11px] text-on-surface-variant">
+                Verify specific departmental requirements with your course syllabus or instructor.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 9: LEARNING GUIDES & METHODOLOGY */}
+      <section className="w-full py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-surface" id="guides">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-3xl mb-10">
+            <span className="text-xs font-bold text-primary uppercase tracking-wider">Educational Knowledge Base</span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-on-surface mt-1">Academic Calculation Guides</h2>
+            <p className="text-sm text-on-surface-variant mt-2">
+              Understand the mathematical formulas, weighting rules, and institutional methodologies behind academic metrics.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Guide 1: How to Calculate GPA */}
+            <div id="guide-gpa-calc" className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="material-symbols-outlined text-primary text-[22px]">school</span>
+                <h3 className="text-lg font-bold text-on-surface">How to Calculate GPA</h3>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed mb-3">
+                Grade Point Average (GPA) is the standard measurement of academic achievement. It weights each course&apos;s earned quality points by its credit hours:
+              </p>
+              <div className="p-3 bg-surface-container-low rounded-xl font-mono text-xs text-primary mb-3 border border-outline-variant/20">
+                GPA = &Sigma;(Course Credits &times; Quality Points) / Total Attempted Credits
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                For example, a 4-credit course with an A (4.0) yields 16 quality points, while a 3-credit course with a B (3.0) yields 9 points. Total GPA = (16 + 9) / 7 = 3.57.
+              </p>
+              <div className="mt-4 pt-3 border-t border-outline-variant/15">
+                <a href="#tool-gpa" className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                  <span>Open Target GPA Calculator</span>
+                  <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Guide 2: Weighted vs Unweighted GPA */}
+            <div id="guide-weighted-gpa" className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="material-symbols-outlined text-secondary text-[22px]">balance</span>
+                <h3 className="text-lg font-bold text-on-surface">Weighted vs. Unweighted GPA</h3>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed mb-3">
+                Unweighted GPAs evaluate all courses on a standard 4.0 ceiling regardless of difficulty. Weighted GPAs add quality points for advanced rigor:
+              </p>
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono mb-3">
+                <div className="p-2.5 bg-surface-container-low rounded-lg border border-outline-variant/20">
+                  <strong className="block text-on-surface text-[11px]">Unweighted 4.0</strong>
+                  <span className="text-on-surface-variant text-[11px]">A = 4.0 | B = 3.0</span>
+                </div>
+                <div className="p-2.5 bg-surface-container-low rounded-lg border border-outline-variant/20">
+                  <strong className="block text-primary text-[11px]">AP / IB Weighted 5.0</strong>
+                  <span className="text-on-surface-variant text-[11px]">A = 5.0 (+1.0 point)</span>
+                </div>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Colleges frequently recalculate high school GPAs using their own institutional weighting formulas to ensure standard comparisons.
+              </p>
+              <div className="mt-4 pt-3 border-t border-outline-variant/15">
+                <a href="#tool-gpa" className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                  <span>Compare GPA Scales</span>
+                  <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Guide 3: How to Calculate Your Final Grade */}
+            <div id="guide-final-grade" className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="material-symbols-outlined text-primary text-[22px]">calculate</span>
+                <h3 className="text-lg font-bold text-on-surface">How to Calculate the Grade Needed on a Final</h3>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed mb-3">
+                To isolate the exam score required to achieve a desired overall course grade percentage:
+              </p>
+              <div className="p-3 bg-surface-container-low rounded-xl font-mono text-xs text-primary mb-3 border border-outline-variant/20">
+                Required Score = [Target % - (Current % &times; (1 - Weight))] / Weight
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Example: With an 85% current grade and a final exam worth 25%, to achieve a 90% overall: [90 - (85 &times; 0.75)] / 0.25 = 105.0% (requiring extra credit).
+              </p>
+              <div className="mt-4 pt-3 border-t border-outline-variant/15">
+                <a href="#tool-final" className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                  <span>Calculate Final Exam Grade</span>
+                  <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Guide 4: How Attendance Percentage Is Calculated */}
+            <div id="guide-attendance-calc" className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="material-symbols-outlined text-secondary text-[22px]">event_available</span>
+                <h3 className="text-lg font-bold text-on-surface">How Attendance Percentage Is Calculated</h3>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed mb-3">
+                Attendance percentage evaluates verified present sessions against total held lectures:
+              </p>
+              <div className="p-3 bg-surface-container-low rounded-xl font-mono text-xs text-primary mb-3 border border-outline-variant/20">
+                Attendance % = (Classes Attended / Total Classes Held) &times; 100
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                If your university requires 75% attendance across 40 lectures (30 classes attended), you are at 75.0%. Missing one more session drops attendance to 70.7% (29/41).
+              </p>
+              <div className="mt-4 pt-3 border-t border-outline-variant/15">
+                <a href="#tool-attendance" className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                  <span>Check Attendance Buffer</span>
+                  <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Guide 5: CGPA to Percentage Conversion */}
+            <div id="guide-cgpa-percentage" className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="material-symbols-outlined text-primary text-[22px]">grade</span>
+                <h3 className="text-lg font-bold text-on-surface">How to Convert CGPA to Percentage</h3>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed mb-3">
+                On the standard 10.0 scale (prominent across CBSE, AICTE, and Indian universities), percentage is commonly estimated as:
+              </p>
+              <div className="p-3 bg-surface-container-low rounded-xl font-mono text-xs text-primary mb-3 border border-outline-variant/20">
+                Percentage (%) = CGPA &times; 9.5
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                For example, an 8.4 CGPA converts to 8.4 &times; 9.5 = 79.8%. Note that specific engineering and autonomous universities may utilize custom formulas (e.g. (CGPA - 0.75) &times; 10).
+              </p>
+              <div className="mt-4 pt-3 border-t border-outline-variant/15">
+                <a href="#tool-gpa" className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                  <span>Use 10.0 Scale Tool</span>
+                  <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Guide 6: SAT & ACT Concordance */}
+            <div id="guide-sat-act" className="p-6 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="material-symbols-outlined text-secondary text-[22px]">compare_arrows</span>
+                <h3 className="text-lg font-bold text-on-surface">How SAT and ACT Concordance Works</h3>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed mb-3">
+                Based on official concordance research conducted jointly by the College Board and ACT, test metrics map across different scales:
+              </p>
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono mb-3">
+                <div className="p-2.5 bg-surface-container-low rounded-lg border border-outline-variant/20">
+                  <strong className="block text-on-surface text-[11px]">SAT (400–1600)</strong>
+                  <span className="text-on-surface-variant text-[11px]">1540–1600 &bull; 1400–1430</span>
+                </div>
+                <div className="p-2.5 bg-surface-container-low rounded-lg border border-outline-variant/20">
+                  <strong className="block text-secondary text-[11px]">ACT Composite (1–36)</strong>
+                  <span className="text-on-surface-variant text-[11px]">36 &bull; 31</span>
+                </div>
+              </div>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Concordance tables represent statistically comparable performance, not exact mathematical identity. Institutions review scores according to individual admissions guidelines.
+              </p>
+              <div className="mt-4 pt-3 border-t border-outline-variant/15">
+                <a href="#tool-final" className="text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1">
+                  <span>Explore Test Score Tools</span>
+                  <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
                 </a>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Section 8: Citation & Writing Hub (Side-by-Side Style Guidelines) */}
-        <section className="w-full py-space-2xl bg-surface-container-low border-y border-outline-variant/20" id="citations">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-lg">
-              <div>
-                <span className="font-label-caps text-secondary uppercase tracking-wider font-semibold">Style Guide Metrology</span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface mt-1 font-bold">
-                  Academic Style Citation Protocols
-                </h2>
+      {/* SECTION 10: TRUST & METHODOLOGY */}
+      <section className="w-full py-12 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-surface-container-low/40">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-3xl mb-8">
+            <span className="text-xs font-bold text-primary uppercase tracking-wider">Methodology &amp; Verification</span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-on-surface mt-1">How Our Education Calculators Work</h2>
+            <p className="text-sm text-on-surface-variant mt-2 leading-relaxed">
+              We design all tools with transparent mathematical formulas and clear, user-defined inputs.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-3">
+                <span className="material-symbols-outlined text-[20px]">input</span>
               </div>
-              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
-                Certified rule matrices matching APA 7th Edition (2020), MLA 9th Edition (2021), and Chicago Manual of Style (17th/18th).
+              <h3 className="text-sm font-bold text-on-surface mb-1">User-Provided Inputs</h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                All computations are performed directly on the numbers and weights you enter on your device.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md">
-              {/* APA 7th Card */}
-              <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-space-xs">
-                    <span className="font-data-mono text-[11px] bg-primary text-on-primary px-2 py-0.5 rounded font-semibold">
-                      APA 7th Edition
-                    </span>
-                    <span className="font-label-caps text-on-surface-variant uppercase text-[10px]">Social Sciences</span>
-                  </div>
-                  <h4 className="font-headline-md text-headline-md text-on-surface font-bold">Author-Date System</h4>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 mb-space-sm">
-                    Emphasizes publication date to indicate temporal validity of findings.
-                  </p>
-                  <div className="p-2 bg-surface-container-low rounded font-data-mono text-[12px] text-on-surface space-y-1 mb-space-sm border border-outline-variant/20">
-                    <div className="text-on-surface-variant text-[10px] uppercase font-label-caps">In-Text Citation:</div>
-                    <div>(Bandura, 1986, p. 45)</div>
-                    <div className="text-on-surface-variant text-[10px] uppercase font-label-caps mt-2">Reference List Entry:</div>
-                    <div className="italic">Author, A. A. (Year). Title of work: Subtitle. Publisher. DOI</div>
-                  </div>
-                </div>
-                <div className="font-body-sm text-[12px] text-on-surface-variant leading-relaxed">
-                  • Sentence-case titles for articles and books
-                  <br />• DOIs formatted as live HTTPS links without &quot;doi:&quot; prefix
-                </div>
-              </div>
 
-              {/* MLA 9th Card */}
-              <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-space-xs">
-                    <span className="font-data-mono text-[11px] bg-secondary text-on-secondary px-2 py-0.5 rounded font-semibold">
-                      MLA 9th Edition
-                    </span>
-                    <span className="font-label-caps text-on-surface-variant uppercase text-[10px]">Humanities &amp; Lit</span>
-                  </div>
-                  <h4 className="font-headline-md text-headline-md text-on-surface font-bold">Author-Page Standard</h4>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 mb-space-sm">
-                    Streamlined container-based model focusing on authorship and specific page location.
-                  </p>
-                  <div className="p-2 bg-surface-container-low rounded font-data-mono text-[12px] text-on-surface space-y-1 mb-space-sm border border-outline-variant/20">
-                    <div className="text-on-surface-variant text-[10px] uppercase font-label-caps">In-Text Citation:</div>
-                    <div>(Morrison 112)</div>
-                    <div className="text-on-surface-variant text-[10px] uppercase font-label-caps mt-2">Works Cited Entry:</div>
-                    <div className="italic">Author. &quot;Title of Source.&quot; Title of Container, Publisher, Year.</div>
-                  </div>
-                </div>
-                <div className="font-body-sm text-[12px] text-on-surface-variant leading-relaxed">
-                  • Title Case formatting for all published works
-                  <br />• Container principle for multi-layered digital archives
-                </div>
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="w-9 h-9 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center mb-3">
+                <span className="material-symbols-outlined text-[20px]">policy</span>
               </div>
-
-              {/* Chicago Card */}
-              <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-space-xs">
-                    <span className="font-data-mono text-[11px] bg-inverse-surface text-inverse-on-surface px-2 py-0.5 rounded font-semibold">
-                      Chicago 17th
-                    </span>
-                    <span className="font-label-caps text-on-surface-variant uppercase text-[10px]">History &amp; Arts</span>
-                  </div>
-                  <h4 className="font-headline-md text-headline-md text-on-surface font-bold">Notes &amp; Bibliography</h4>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 mb-space-sm">
-                    Granular footnote citations paired with comprehensive alphabetical end-matter.
-                  </p>
-                  <div className="p-2 bg-surface-container-low rounded font-data-mono text-[12px] text-on-surface space-y-1 mb-space-sm border border-outline-variant/20">
-                    <div className="text-on-surface-variant text-[10px] uppercase font-label-caps">Footnote (N):</div>
-                    <div>
-                      1. David McCullough, <em>John Adams</em> (New York: Simon, 2001), 74.
-                    </div>
-                    <div className="text-on-surface-variant text-[10px] uppercase font-label-caps mt-2">Bibliography (B):</div>
-                    <div className="italic">
-                      McCullough, David. <em>John Adams</em>. New York: Simon, 2001.
-                    </div>
-                  </div>
-                </div>
-                <div className="font-body-sm text-[12px] text-on-surface-variant leading-relaxed">
-                  • Exact page specifications in superscript footnotes
-                  <br />• Reverse author names in bibliography only
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 9: Conceptual Academic Comparisons (Bento Style) */}
-        <section className="w-full py-space-2xl bg-surface">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="max-w-3xl mb-space-xl">
-              <span className="font-label-caps text-primary uppercase tracking-wider font-semibold">LEARNING GUIDES</span>
-              <h2 className="font-headline-lg text-headline-lg text-on-surface mt-1 font-bold">
-                How Grades &amp; Scores Are Calculated
-              </h2>
-              <p className="font-body-md text-body-md text-on-surface-variant mt-2">
-                Understanding the mathematical mechanics behind grading systems, test curves, and cognitive pacing.
+              <h3 className="text-sm font-bold text-on-surface mb-1">Policy Variations</h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Grading systems, repeat policies, and honors weights vary by school district, university, and country.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md">
-              {/* Comparison 1 */}
-              <div className="bg-surface-container-low p-space-md rounded-xl border border-outline-variant/20">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-primary">scale</span>
-                  <h3 className="font-headline-md text-headline-md text-on-surface font-bold">
-                    Weighted GPA vs. Unweighted GPA
-                  </h3>
-                </div>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-sm leading-relaxed">
-                  Standard unweighted GPAs measure performance uniformly on a 4.0 ceiling (A = 4.0, B = 3.0, C = 2.0). Weighted GPAs
-                  incorporate course rigor:
-                </p>
-                <div className="grid grid-cols-2 gap-2 text-[12px] font-data-mono mb-space-sm">
-                  <div className="bg-surface-container-lowest p-2 rounded border border-outline-variant/15">
-                    <strong className="block text-on-surface font-medium">Standard 4.0</strong>
-                    <span className="text-on-surface-variant">A = 4.0 pts</span>
-                    <br />
-                    <span className="text-on-surface-variant">B = 3.0 pts</span>
-                  </div>
-                  <div className="bg-surface-container-lowest p-2 rounded border border-outline-variant/15">
-                    <strong className="block text-primary font-medium">AP / IB Honors 5.0</strong>
-                    <span className="text-on-surface-variant">A = 5.0 (+1.0 point)</span>
-                    <br />
-                    <span className="text-on-surface-variant">B = 4.0 (+1.0 point)</span>
-                  </div>
-                </div>
-                <p className="font-body-sm text-[13px] text-on-surface-variant">
-                  <strong>Formula:</strong> GPA = Σ(Course Credits × Quality Points) / Σ Attempted Credits.
-                </p>
-              </div>
 
-              {/* Comparison 2 */}
-              <div className="bg-surface-container-low p-space-md rounded-xl border border-outline-variant/20">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-secondary">compare_arrows</span>
-                  <h3 className="font-headline-md text-headline-md text-on-surface font-bold">SAT vs. ACT Equivalence</h3>
-                </div>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-sm leading-relaxed">
-                  Based on official College Board and ACT concordance data, test metrics map across different scales:
-                </p>
-                <div className="grid grid-cols-2 gap-2 text-[12px] font-data-mono mb-space-sm">
-                  <div className="bg-surface-container-lowest p-2 rounded border border-outline-variant/15">
-                    <strong className="block text-on-surface font-medium">SAT (400–1600)</strong>
-                    <span className="text-on-surface-variant">1540–1600 (Top 1%)</span>
-                    <br />
-                    <span className="text-on-surface-variant">1400–1430 (93rd %)</span>
-                  </div>
-                  <div className="bg-surface-container-lowest p-2 rounded border border-outline-variant/15">
-                    <strong className="block text-secondary font-medium">ACT Composite (1–36)</strong>
-                    <span className="text-on-surface-variant">36 (Top 1%)</span>
-                    <br />
-                    <span className="text-on-surface-variant">31 (93rd %)</span>
-                  </div>
-                </div>
-                <p className="font-body-sm text-[13px] text-on-surface-variant">
-                  ACT assesses science reasoning and trigonometry faster; SAT allows 33% more time per question.
-                </p>
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-3">
+                <span className="material-symbols-outlined text-[20px]">query_stats</span>
               </div>
-
-              {/* Comparison 3 */}
-              <div className="bg-surface-container-low p-space-md rounded-xl border border-outline-variant/20">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-primary">psychology</span>
-                  <h3 className="font-headline-md text-headline-md text-on-surface font-bold">
-                    Why Spacing Out Study Sessions Beats Cramming
-                  </h3>
-                </div>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-sm leading-relaxed">
-                  Studying in shorter, regular blocks helps your brain remember information far longer than pulling all-nighters before an exam:
-                </p>
-                <div className="bg-surface-container-lowest p-space-xs rounded-lg text-[13px] font-body-sm text-on-surface-variant mb-2 border border-outline-variant/15">
-                  • <strong>All-Night Cramming:</strong> Quick short-term memory, but most information is forgotten within a few days.
-                  <br />• <strong>Spaced Study Sessions (Reviewing over 1 to 2 weeks):</strong> Builds long-lasting memory and cuts test anxiety before finals.
-                </div>
-                <p className="font-body-sm text-[12px] text-outline">
-                  Use our study planners and Pomodoro timers to build a healthy, stress-free routine.
-                </p>
-              </div>
-
-              {/* Comparison 4 */}
-              <div className="bg-surface-container-low p-space-md rounded-xl border border-outline-variant/20">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="material-symbols-outlined text-secondary">functions</span>
-                  <h3 className="font-headline-md text-headline-md text-on-surface font-bold">
-                    Final Exam Required Score Formula
-                  </h3>
-                </div>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-sm leading-relaxed">
-                  To isolate the minimum score required on a terminal evaluation to achieve a course grade threshold:
-                </p>
-                <div className="bg-surface-container-lowest p-space-xs rounded-lg font-data-mono text-[13px] text-primary mb-2 border border-outline-variant/15">
-                  Score = [Target - (Current × (1 - Weight))] / Weight
-                </div>
-                <p className="font-body-sm text-[13px] text-on-surface-variant">
-                  Example: With 82% current grade, desired 90% (A), and a 30% final exam weight:
-                  <span className="font-data-mono text-[12px] block mt-1">[90 - (82 × 0.70)] / 0.30 = 108.67% (impossible without bonus curve).</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 10: Academic Integrity, Formula Reference & FAQs */}
-        <section className="w-full py-space-3xl bg-surface-container-low border-t border-outline-variant/20">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="text-center max-w-2xl mx-auto mb-space-xl">
-              <span className="font-label-caps text-primary uppercase tracking-wider font-semibold">HELP &amp; ANSWERS</span>
-              <h2 className="font-headline-lg text-headline-lg text-on-surface mt-1 font-bold">
-                Frequently Asked Academic Questions
-              </h2>
-              <p className="font-body-sm text-body-sm text-on-surface-variant mt-2">
-                Clear, simple explanations for calculating grades, test scores, and study plans.
+              <h3 className="text-sm font-bold text-on-surface mb-1">Estimates &amp; Planning</h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Results serve as planning estimates to help you understand thresholds and organize your study schedule.
               </p>
             </div>
-            <div className="max-w-3xl mx-auto space-y-space-sm">
-              <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30">
-                <h3 className="font-headline-md text-headline-md text-on-surface font-bold flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-[20px]">help_outline</span>
-                  Are these calculators private and free?
-                </h3>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
-                  Yes, 100% free and completely private. All calculations happen right on your device or computer. We never collect or save your grades, courses, or personal data.
-                </p>
-              </div>
 
-              <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30">
-                <h3 className="font-headline-md text-headline-md text-on-surface font-bold flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-[20px]">calculate</span>
-                  What is the standard formula for high school and university GPA?
-                </h3>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
-                  Grade Point Average is calculated as the sum product of each course&apos;s credit hours and earned quality points, divided by the aggregate number of credits attempted:
-                  <br />
-                  <span className="font-data-mono text-[13px] text-primary block mt-1 bg-surface-container-low p-2 rounded border border-outline-variant/15">
-                    GPA = Σ(Credits_i × QualityPoints_i) / Σ Credits_i
-                  </span>
-                </p>
+            <div className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30">
+              <div className="w-9 h-9 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center mb-3">
+                <span className="material-symbols-outlined text-[20px]">verified_user</span>
               </div>
-
-              <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30">
-                <h3 className="font-headline-md text-headline-md text-on-surface font-bold flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-[20px]">verified</span>
-                  How do test score curves work?
-                </h3>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
-                  Teachers commonly adjust test scores using a few transparent methods: flat point additions (adding points so the highest score reaches 100%), grading on a standard bell curve relative to the class average, or applying a square root curve (New Score = 10 × √Raw Score) to give a fair boost to lower scores.
-                </p>
-              </div>
-
-              <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/30">
-                <h3 className="font-headline-md text-headline-md text-on-surface font-bold flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-[20px]">format_list_bulleted</span>
-                  Are citations updated for the latest 2024–2025 editorial guidelines?
-                </h3>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 leading-relaxed">
-                  Yes. All citation engines adhere to APA 7th Edition (updated guidelines for digital objects, multiple authors, and online media), MLA 9th Edition (expanded container logic and inclusive language specifications), and Chicago 17th/18th Edition standards.
-                </p>
-              </div>
+              <h3 className="text-sm font-bold text-on-surface mb-1">Institutional Verification</h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Always confirm your official graduation requirements and academic policies with your registrar or advisor.
+              </p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Section 11: Call to Action Banner */}
-        <section className="w-full py-space-2xl bg-surface">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-            <div className="bg-primary text-on-primary rounded-2xl p-space-xl text-center relative overflow-hidden shadow-lg">
-              <div className="max-w-2xl mx-auto relative z-10">
-                <span className="font-label-caps uppercase tracking-widest text-primary-fixed-dim font-semibold">
-                  READY TO REACH YOUR ACADEMIC GOALS?
+      {/* SECTION 11: FAQ SECTION */}
+      <section className="w-full py-12 md:py-16 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-surface">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <span className="text-xs font-bold text-primary uppercase tracking-wider">Frequently Asked Questions</span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-on-surface mt-1">Frequently Asked Academic Questions</h2>
+            <p className="text-sm text-on-surface-variant mt-2">
+              Clear answers to common questions about calculating GPA, final exam requirements, and attendance thresholds.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {[
+              {
+                q: 'How is GPA calculated?',
+                a: 'GPA (Grade Point Average) is calculated by multiplying each course\'s credit hours by the numeric quality points earned, summing those points across all courses, and dividing by the total attempted credit hours: GPA = Total Quality Points / Total Attempted Credits. Many institutions use this model, but specific point mappings and grading scales vary by school.'
+              },
+              {
+                q: 'What is the difference between GPA and CGPA?',
+                a: 'GPA typically represents your academic performance in a single term, trimester, or semester (often called SGPA or Semester Grade Point Average). CGPA (Cumulative Grade Point Average) is the overall weighted average across all completed semesters throughout your entire degree program.'
+              },
+              {
+                q: 'How do I calculate my final grade?',
+                a: 'To find the exam score required to achieve a target course grade: Required Score = [Target Grade % - (Current Grade % × (1 - Final Exam Weight %))] / Final Exam Weight %. For example, if you have an 85% and the final is worth 20% to reach a 90% overall, you need: [90 - (85 × 0.80)] / 0.20 = 110% (which would require extra credit).'
+              },
+              {
+                q: 'How is attendance percentage calculated?',
+                a: 'Attendance percentage is calculated as: (Classes Attended / Total Classes Held) × 100. To find how many classes you can miss while remaining above a required institutional threshold (such as 75%), evaluate how many absences still leave your attendance count at or above 75% of the total session count.'
+              },
+              {
+                q: 'Can I customize my grading scale?',
+                a: 'Yes. SolveItCalculator tools support multiple standard grading frameworks—including 4.0 standard scales, 4.33 scales with plus/minus modifiers, 5.0 AP/IB weighted scales, and 10.0 CGPA scales—so you can adjust calculations to match your specific school, college, or university rubric.'
+              },
+              {
+                q: 'Are GPA calculations the same at every university?',
+                a: 'No. While credit-weighted arithmetic is standard, grading policies, letter-to-point mappings (e.g. whether A+ is 4.0 or 4.33), plus/minus modifiers, course retake rules, and honors weightings vary across schools, districts, and international universities. Always check your official student handbook or registrar policies.'
+              },
+              {
+                q: 'Can I use these calculators for different countries?',
+                a: 'Yes. SolveItCalculator includes methodologies supporting education systems from the United States (4.0/5.0 GPA), India (10.0 CGPA & percentage conversions), the United Kingdom (UK Honours classifications and UCAS points), Canada (4.0/4.33/9.0 scales), and global percentage-based grading.'
+              }
+            ].map((faq, idx) => (
+              <div
+                key={idx}
+                className="p-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-xs"
+              >
+                <h3 className="text-base font-bold text-on-surface flex items-start gap-2.5">
+                  <span className="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">help</span>
+                  <span>{faq.q}</span>
+                </h3>
+                <p className="text-xs sm:text-sm text-on-surface-variant mt-2.5 pl-7 leading-relaxed">
+                  {faq.a}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 12: EXPLORE RELATED SISTER HUBS */}
+      <section className="w-full py-12 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/20 bg-surface-container-low/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <span className="text-xs font-bold text-primary uppercase tracking-wider">SolveItCalculator Ecosystem</span>
+            <h2 className="text-xl sm:text-2xl font-bold text-on-surface mt-1">Explore Related Calculation Hubs</h2>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {[
+              { name: 'Percentage Calculator', icon: 'percent', link: '/percentage-calculator' },
+              { name: 'Standard Deviation', icon: 'query_stats', link: '/math/standard-deviation-calculator' },
+              { name: 'Time & Date Tools', icon: 'schedule', link: '/time-date/date-difference-calculator' },
+              { name: 'Financial Planning', icon: 'account_balance', link: '/finance/compound-interest-calculator' },
+              { name: 'Unit Conversions', icon: 'swap_horiz', link: '/conversion-center' },
+              { name: 'Health & Fitness', icon: 'fitness_center', link: '/health-fitness-calculators' }
+            ].map(item => (
+              <Link
+                key={item.name}
+                href={item.link}
+                className="p-4 bg-surface-container-lowest rounded-xl border border-outline-variant/30 hover:border-primary/50 text-center flex flex-col items-center justify-center group transition-all"
+              >
+                <span className="material-symbols-outlined text-primary text-[22px] mb-1.5 group-hover:scale-110 transition-transform">
+                  {item.icon}
                 </span>
-                <h2 className="font-headline-lg text-headline-lg md:font-display-hero md:text-headline-lg text-on-primary mt-2 font-bold">
-                  Calculate Your Path to Academic Excellence
-                </h2>
-                <p className="font-body-md text-body-md text-on-primary/80 mt-space-xs max-w-xl mx-auto">
-                  Start planning your GPA, study schedule, and exam preparation with free, easy-to-use tools.
-                </p>
-                <div className="mt-space-lg flex flex-wrap items-center justify-center gap-space-sm">
-                  <a
-                    className="px-space-lg py-3 rounded-lg bg-surface-container-lowest text-primary font-body-md font-semibold hover:bg-surface transition-colors shadow-sm"
-                    href="#workbenches"
-                  >
-                    Launch Live Workbenches
-                  </a>
-                  <a
-                    className="px-space-lg py-3 rounded-lg bg-primary-container text-on-primary font-body-md font-semibold hover:bg-opacity-80 transition-colors shadow-sm"
-                    href="#directory"
-                  >
-                    Explore All Calculators
-                  </a>
-                </div>
-              </div>
-            </div>
+                <span className="text-xs font-semibold text-on-surface group-hover:text-primary transition-colors">
+                  {item.name}
+                </span>
+              </Link>
+            ))}
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
+
+      {/* FOOTER CALL TO ACTION */}
+      <section className="w-full py-12 px-4 sm:px-6 lg:px-8 bg-surface">
+        <div className="max-w-4xl mx-auto text-center bg-linear-to-r from-primary/10 via-surface-container-low to-secondary/10 p-8 sm:p-10 rounded-3xl border border-outline-variant/30">
+          <h2 className="text-2xl sm:text-3xl font-bold text-on-surface">Plan Your Academic Success with Confidence</h2>
+          <p className="text-sm text-on-surface-variant max-w-xl mx-auto mt-2 leading-relaxed">
+            Free, privacy-friendly calculators for grades, exams, study schedules, and academic milestones.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="#tool-gpa"
+              className="px-6 py-3 rounded-xl bg-primary text-on-primary font-semibold text-sm hover:bg-primary-container shadow-xs transition-colors"
+            >
+              Calculate Target GPA
+            </a>
+            <a
+              href="#directory"
+              className="px-6 py-3 rounded-xl bg-surface-container text-on-surface font-semibold text-sm hover:bg-surface-container-high transition-colors"
+            >
+              Browse All Calculators
+            </a>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

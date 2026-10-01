@@ -115,7 +115,7 @@ export default function ElectricalSeoSection() {
           </div>
           <div className="flex items-center gap-2 font-body-sm text-xs text-on-surface-variant bg-surface-container px-3 py-1.5 rounded-lg shrink-0">
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span>100% Client-Side Private Computation</span>
+            <span>In-Browser Computation</span>
           </div>
         </div>
 

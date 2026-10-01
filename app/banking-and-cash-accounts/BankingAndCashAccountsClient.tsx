@@ -311,7 +311,7 @@ export default function BankingAndCashAccountsClient() {
     <div className="min-h-screen bg-surface font-body-md text-on-surface">
       
 
-      <main className="w-full pt-16 bg-surface">
+      <main className="w-full pt-0 bg-surface">
         <div className="flex flex-col w-full">
 
           {/* CATEGORY HEADER & CONTEXT */}
@@ -334,7 +334,7 @@ export default function BankingAndCashAccountsClient() {
                 <div className="inline-flex items-center gap-space-xs px-space-sm py-1 bg-surface-container-lowest rounded-full shadow-sm text-secondary border border-outline-variant/30">
                   <span className="material-symbols-outlined text-[16px] text-primary">account_balance</span>
                   <span className="font-label-caps text-label-caps uppercase font-semibold">
-                    FDIC &amp; NCUA Benchmark Formulas · 100% Client-Side Privacy
+                    Compound Interest &amp; APY Tools · In-Browser Privacy
                   </span>
                 </div>
               </div>
@@ -1050,19 +1050,22 @@ export default function BankingAndCashAccountsClient() {
                           {cluster.tools.length} tools
                         </span>
                       </div>
-                      <ul className="flex flex-col gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
+                      <div className="flex flex-col gap-1.5 font-body-sm text-body-sm">
                         {cluster.tools.map((tool) => (
-                          <li key={tool.name}>
-                            <Link
-                              href={tool.href}
-                              className="hover:text-primary transition-colors flex items-center justify-between py-0.5"
-                            >
-                              <span>{tool.name}</span>
-                              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-                            </Link>
-                          </li>
+                          <Link
+                            key={tool.name}
+                            href={tool.href}
+                            title={tool.name}
+                            className="px-3 py-2 rounded-xl bg-surface-container-low/60 hover:bg-primary/10 hover:border-primary/40 border border-outline-variant/20 transition-all flex items-center justify-between gap-2 group cursor-pointer shadow-2xs hover:shadow-xs hover:translate-x-0.5"
+                          >
+                            <span className="font-semibold text-xs text-on-surface group-hover:text-primary transition-colors flex items-center gap-2 truncate">
+                              <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary shrink-0 transition-colors" />
+                              <span className="truncate">{tool.name}</span>
+                            </span>
+                            <span className="material-symbols-outlined text-[14px] text-outline-variant group-hover:text-primary group-hover:translate-x-0.5 transition-transform shrink-0">arrow_forward</span>
+                          </Link>
                         ))}
-                      </ul>
+                      </div>
                     </div>
                   ))}
                 </div>

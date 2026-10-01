@@ -497,7 +497,7 @@ export default function CreditCardsAndRevolvingClient() {
     <div className="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col">
       
 
-      <main className="w-full pt-16 bg-background flex-1">
+      <main className="w-full pt-0 bg-background flex-1">
         <div className="flex flex-col w-full">
           {/* Top Category Banner */}
           <section className="w-full bg-surface-container-lowest py-space-xl md:py-space-2xl border-b border-surface-container-high/40">
@@ -1192,21 +1192,24 @@ export default function CreditCardsAndRevolvingClient() {
                         {cluster.toolsCount} Tools
                       </span>
                     </div>
-                    <ul className="space-y-1.5 font-body-sm text-body-sm">
+                    <div className="space-y-1.5 font-body-sm text-body-sm">
                       {cluster.tools.map((tool, idx) => (
-                        <li key={idx}>
-                          <Link
-                            href={tool.href}
-                            className="hover:text-primary transition-colors flex items-center justify-between py-1 text-on-surface-variant hover:text-primary group"
-                          >
-                            <span className="group-hover:translate-x-0.5 transition-transform">{tool.name}</span>
-                            <span className="material-symbols-outlined text-[16px] text-outline group-hover:text-primary transition-colors">
-                              arrow_forward
-                            </span>
-                          </Link>
-                        </li>
+                        <Link
+                          key={idx}
+                          href={tool.href}
+                          title={tool.name}
+                          className="px-3 py-2 rounded-xl bg-surface-container-low/60 hover:bg-primary/10 hover:border-primary/40 border border-outline-variant/20 transition-all flex items-center justify-between gap-2 group cursor-pointer shadow-2xs hover:shadow-xs hover:translate-x-0.5"
+                        >
+                          <span className="font-semibold text-xs text-on-surface group-hover:text-primary transition-colors flex items-center gap-2 truncate">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary shrink-0 transition-colors" />
+                            <span className="truncate">{tool.name}</span>
+                          </span>
+                          <span className="material-symbols-outlined text-[14px] text-outline-variant group-hover:text-primary group-hover:translate-x-0.5 transition-transform shrink-0">
+                            arrow_forward
+                          </span>
+                        </Link>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -1605,34 +1608,26 @@ export default function CreditCardsAndRevolvingClient() {
           {/* Editorial Advisory, Trust & Compliance Section */}
           <section className="w-full py-space-3xl bg-surface-container-lowest border-t border-surface-container-high/40">
             <div className="max-w-max-width-canvas mx-auto px-gutter-desktop flex flex-col gap-space-2xl">
-              {/* Expert Review Grid */}
+              {/* Methodology & Notice */}
               <div className="p-space-xl rounded-xl bg-surface-container-low flex flex-col md:flex-row items-center gap-space-xl border border-outline-variant/30">
-                <div className="flex -space-x-3 shrink-0">
-                  <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold shadow-md">
-                    MV
-                  </div>
-                  <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center text-on-secondary font-bold shadow-md">
-                    SJ
-                  </div>
-                </div>
                 <div className="flex flex-col gap-1 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary text-[20px]">verified</span>
+                    <span className="material-symbols-outlined text-primary text-[20px]">info</span>
                     <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-bold">
-                      Actuarial &amp; Financial Review Board
+                      Calculation Methodology &amp; Disclosures
                     </span>
                   </div>
                   <h3 className="font-headline-md text-headline-md text-on-surface">
-                    Audited by Certified Financial Planners &amp; Credit Specialists
+                    Revolving Credit &amp; Debt Payoff Math
                   </h3>
                   <p className="font-body-sm text-body-sm text-on-surface-variant">
-                    Content, algorithmic amortizations, and statutory disclosures reviewed by <strong>Marcus Vance, CFP®, AFC®</strong> (Accredited Financial Counselor) and <strong>Sarah Jenkins, CPA, CFP®</strong> (Former FDIC Compliance Specialist). All models align with the Credit CARD Act of 2009, Truth in Lending Act (TILA Regulation Z § 1026.5), and the Fair Credit Reporting Act (FCRA).
+                    All calculations utilize standard daily periodic rate (DPR) compounding and revolving amortization formulas. Estimates are for educational and financial scenario comparison. Contact your card issuer for your exact statement balances and terms.
                   </p>
                 </div>
                 <div className="shrink-0 flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-container-lowest shadow-sm text-center border border-outline-variant/30">
-                  <span className="material-symbols-outlined text-[32px] text-secondary">memory</span>
-                  <span className="font-label-caps text-label-caps uppercase text-on-surface font-bold mt-1">Zero Cloud Logging</span>
-                  <span className="font-label-caps text-[10px] text-on-surface-variant">100% In-Browser Memory</span>
+                  <span className="material-symbols-outlined text-[32px] text-primary">security</span>
+                  <span className="font-label-caps text-label-caps uppercase text-on-surface font-bold mt-1">Client-Side Privacy</span>
+                  <span className="font-label-caps text-[10px] text-on-surface-variant">No Account Data Sent to Server</span>
                 </div>
               </div>
 

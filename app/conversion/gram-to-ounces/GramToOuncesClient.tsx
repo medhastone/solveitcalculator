@@ -270,31 +270,9 @@ export default function GramToOuncesClient() {
 
       
 
-      <main className="w-full pt-20 bg-surface min-h-screen">
+      <main className="w-full pt-4 bg-surface min-h-screen">
         <div className="flex flex-col w-full">
-          {/* Metrology & Telemetry Sub-header Strip */}
-          <div className="w-full bg-surface-container-low/70 py-1.5 overflow-x-auto border-b border-outline-variant/20">
-            <div className="max-w-[1280px] mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center justify-between gap-space-md min-w-max">
-              <div className="flex items-center gap-space-lg">
-                <div className="flex items-center gap-space-xs font-label-caps text-label-caps text-on-surface-variant">
-                  <span className="material-symbols-outlined text-primary text-[16px]">verified</span>
-                  <span>BIPM / NIST SP 811 Metrology Verified</span>
-                </div>
-                <div className="flex items-center gap-space-xs font-label-caps text-label-caps text-on-surface-variant">
-                  <span className="material-symbols-outlined text-secondary text-[16px]">memory</span>
-                  <span>100% Client-Side Local Sandbox</span>
-                </div>
-                <div className="flex items-center gap-space-xs font-label-caps text-label-caps text-on-surface-variant">
-                  <span className="material-symbols-outlined text-tertiary-container text-[16px]">bolt</span>
-                  <span>Zero-Lag IEEE 754 High-Precision Core</span>
-                </div>
-              </div>
-              <div className="hidden md:flex items-center gap-space-xs font-data-mono text-[12px] text-outline">
-                <span className="material-symbols-outlined text-[14px]">shield_lock</span>
-                Strict Zero-Telemetry Policy
-              </div>
-            </div>
-          </div>
+
 
           {/* Top Hero & Breadcrumb Area */}
           <section className="w-full bg-surface-container-low/40 border-b border-outline-variant/30 py-space-md">

@@ -4,7 +4,7 @@ import LoansAndAmortizationClient from './LoansAndAmortizationClient';
 export const metadata: Metadata = {
   title: 'Loans & Amortization Calculators – SolveIt Calculator',
   description:
-    'Calculate loan payments, monthly schedules, early payoff savings, car leases, and debt payoff timelines with instant, accurate results verified under Truth in Lending Act standards.',
+    'Calculate loan payments, monthly schedules, early payoff savings, car leases, and debt payoff timelines with instant, accurate financial results.',
   keywords: [
     'loan calculator',
     'amortization schedule',

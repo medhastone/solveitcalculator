@@ -177,8 +177,8 @@ function LengthVisualizer({
             📏
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Precision Scale & Dimension Span</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Live dual-standard visual ruler comparison</p>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Visual Ruler &amp; Size Guide</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">See how your measurement looks on a standard ruler</p>
           </div>
         </div>
         <div className="text-xs font-mono px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-medium">
@@ -190,8 +190,8 @@ function LengthVisualizer({
       <div className="space-y-2">
         <div className="flex justify-between text-xs text-slate-500 font-mono">
           <span>0 {fromUnit.symbol}</span>
-          <span className="text-blue-600 dark:text-blue-400 font-bold">Span: {inputValue} {fromUnit.symbol}</span>
-          <span>Max Scale</span>
+          <span className="text-blue-600 dark:text-blue-400 font-bold">Length: {inputValue} {fromUnit.symbol}</span>
+          <span>Full Scale</span>
         </div>
 
         <div className="relative h-9 bg-slate-100 dark:bg-slate-800/70 rounded-xl overflow-hidden p-1 border border-slate-200 dark:border-slate-700/60">
@@ -207,8 +207,8 @@ function LengthVisualizer({
       {/* Dual Calibration Ruler Rendering */}
       <div className="space-y-1">
         <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 flex justify-between">
-          <span>Metric Calibrated Axis (mm / cm)</span>
-          <span>Imperial Calibrated Axis (in / ft)</span>
+          <span>Metric (mm / cm)</span>
+          <span>Inches &amp; Feet (in / ft)</span>
         </div>
 
         <div className="relative h-14 bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-900/40 rounded-xl p-2 flex flex-col justify-between select-none">
@@ -269,12 +269,12 @@ function WeightVisualizer({
             ⚖️
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Precision Balance Scale</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Gravitational mass equilibrium comparator</p>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Interactive Balance Scale</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">See both weights balance equally on the scale</p>
           </div>
         </div>
         <div className="text-xs font-mono px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 font-medium">
-          Equilibrium Match
+          Balanced Weights
         </div>
       </div>
 
@@ -317,7 +317,7 @@ function WeightVisualizer({
         {/* Dual Pan Readout */}
         <div className="grid grid-cols-2 gap-4 w-full mt-2">
           <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40 text-center">
-            <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block">Input Mass</span>
+            <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider block">Starting Weight</span>
             <div className="text-sm font-bold font-mono text-emerald-900 dark:text-emerald-200 mt-0.5">
               {inputValue} {fromUnit.symbol}
             </div>
@@ -325,7 +325,7 @@ function WeightVisualizer({
           </div>
 
           <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/40 text-center">
-            <span className="text-[10px] font-semibold text-blue-700 dark:text-blue-400 uppercase tracking-wider block">Equivalent Mass</span>
+            <span className="text-[10px] font-semibold text-blue-700 dark:text-blue-400 uppercase tracking-wider block">Equal Weight</span>
             <div className="text-sm font-bold font-mono text-blue-900 dark:text-blue-200 mt-0.5">
               {formattedResult} {toUnit.symbol}
             </div>
@@ -383,8 +383,8 @@ function TemperatureVisualizer({
             🌡️
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Calibrated Thermodynamic Column</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Thermal state visualizer with standard phase markers</p>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Visual Thermometer</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Live thermometer with everyday reference temperatures</p>
           </div>
         </div>
         <div className={`text-xs font-semibold px-2.5 py-1 rounded-full ${tempTheme.badge}`}>
@@ -412,11 +412,11 @@ function TemperatureVisualizer({
         <div className="sm:col-span-2 space-y-3">
           <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 space-y-1">
             <div className="flex justify-between items-center text-xs">
-              <span className="text-slate-500 font-medium">Calculated Celsius:</span>
+              <span className="text-slate-500 font-medium">Temperature in Celsius:</span>
               <span className="font-mono font-bold text-slate-900 dark:text-white">{celsius.toFixed(2)} °C</span>
             </div>
             <div className="flex justify-between items-center text-xs">
-              <span className="text-slate-500 font-medium">Output Result:</span>
+              <span className="text-slate-500 font-medium">Converted Temperature:</span>
               <span className="font-mono font-bold text-blue-600 dark:text-blue-400">{formattedResult} {toUnit.symbol}</span>
             </div>
           </div>
@@ -468,8 +468,8 @@ function AreaVisualizer({
             🗺️
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Architectural Surface Plot</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Two-dimensional spatial footprint matrix</p>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Visual Area &amp; Floor Space</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Visual square footprint comparison</p>
           </div>
         </div>
         <div className="text-xs font-mono px-2.5 py-1 rounded-full bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 font-medium">
@@ -480,11 +480,11 @@ function AreaVisualizer({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
         {/* Blueprint Isometric Square Graphic */}
         <div className="relative h-44 rounded-xl bg-slate-900 border border-slate-800 p-4 flex flex-col items-center justify-center overflow-hidden">
-          {/* Subtle Blueprint Grid Pattern */}
+          {/* Subtle Grid Pattern */}
           <div className="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:16px_16px]" />
 
           <div className="relative w-28 h-28 border-2 border-dashed border-purple-400/80 bg-purple-500/20 rounded-lg flex flex-col items-center justify-center text-center p-2 backdrop-blur-xs">
-            <span className="text-[10px] text-purple-300 font-mono">Area Surface</span>
+            <span className="text-[10px] text-purple-300 font-mono">Floor Space</span>
             <span className="text-xs font-bold text-white font-mono mt-0.5">{inputValue} {fromUnit.symbol}</span>
           </div>
         </div>
@@ -492,17 +492,17 @@ function AreaVisualizer({
         {/* Spatial Comparison Details */}
         <div className="space-y-2 text-xs">
           <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 space-y-1">
-            <span className="text-slate-400 font-semibold uppercase tracking-wider text-[10px] block">Calculated Coverage</span>
+            <span className="text-slate-400 font-semibold uppercase tracking-wider text-[10px] block">Total Area</span>
             <div className="text-base font-bold font-mono text-purple-600 dark:text-purple-400">
               {formattedResult} {toUnit.symbol}
             </div>
             <p className="text-slate-500 dark:text-slate-400 text-[11px]">
-              Equal to a square plot of approximately {Math.sqrt(Math.max(0, inputValue)).toFixed(2)} {fromUnit.symbol} per side.
+              Equal to a square space of about {Math.sqrt(Math.max(0, inputValue)).toFixed(2)} {fromUnit.symbol} on each side.
             </p>
           </div>
           <div className="text-[11px] text-slate-500 space-y-1">
-            <div>• 1 Square Meter = 10.7639 Square Feet</div>
-            <div>• 1 Hectare = 10,000 m² = 2.471 Acres</div>
+            <div>• 1 Square Meter = 10.76 Square Feet</div>
+            <div>• 1 Hectare = 10,000 m² = 2.47 Acres</div>
             <div>• 1 Acre = 43,560 Square Feet</div>
           </div>
         </div>
@@ -550,12 +550,12 @@ function SpeedVisualizer({
             ⚡
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Precision Velocity Instrument</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Analog gauge with Mach sonic barrier indicators</p>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Speedometer Dial</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Visual speed comparison like a car dashboard</p>
           </div>
         </div>
         <div className="text-xs font-mono px-2.5 py-1 rounded-full bg-orange-50 dark:bg-orange-950/50 text-orange-600 dark:text-orange-400 font-medium">
-          {kmh.toFixed(1)} km/h equiv
+          {kmh.toFixed(1)} km/h speed
         </div>
       </div>
 
@@ -595,11 +595,11 @@ function SpeedVisualizer({
         {/* Benchmark Readouts */}
         <div className="space-y-2 w-full max-w-[240px] text-xs">
           <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 flex justify-between items-center">
-            <span className="text-slate-500">Converted Value:</span>
+            <span className="text-slate-500">Speed in {toUnit.symbol}:</span>
             <span className="font-mono font-bold text-orange-600 dark:text-orange-400">{formattedResult} {toUnit.symbol}</span>
           </div>
           <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 flex justify-between items-center">
-            <span className="text-slate-500">Highway Pace:</span>
+            <span className="text-slate-500">Highway Speed:</span>
             <span className="font-mono font-semibold">110 km/h (68 mph)</span>
           </div>
           <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 flex justify-between items-center">
@@ -613,7 +613,7 @@ function SpeedVisualizer({
 }
 
 // -------------------------------------------------------------
-// 6. PRESSURE VISUALIZER: Bourdon Tube Manometer Dial
+// 6. PRESSURE VISUALIZER: Pressure Gauge & Reference
 // -------------------------------------------------------------
 function PressureVisualizer({
   fromUnit,
@@ -635,8 +635,8 @@ function PressureVisualizer({
             🎛️
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Industrial Pressure Manometer</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Pneumatic and hydraulic gauge instrument</p>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Pressure Gauge &amp; Reference</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Everyday tire, tank, and atmospheric pressure values</p>
           </div>
         </div>
         <div className="text-xs font-mono px-2.5 py-1 rounded-full bg-cyan-50 dark:bg-cyan-950/50 text-cyan-600 dark:text-cyan-400 font-medium">
@@ -646,7 +646,7 @@ function PressureVisualizer({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
         <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 text-center space-y-2">
-          <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Pressure Equivalent</span>
+          <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Converted Pressure</span>
           <div className="text-2xl font-black font-mono text-cyan-600 dark:text-cyan-400">
             {formattedResult} {toUnit.symbol}
           </div>
@@ -655,15 +655,15 @@ function PressureVisualizer({
 
         <div className="space-y-1.5 text-xs">
           <div className="flex justify-between p-2 rounded-lg bg-slate-100 dark:bg-slate-800">
-            <span className="text-slate-500">1 Atmosphere (atm)</span>
-            <span className="font-mono font-semibold">14.696 PSI = 1.013 Bar</span>
+            <span className="text-slate-500">Normal Air (1 atm)</span>
+            <span className="font-mono font-semibold">14.7 PSI = 1.01 Bar</span>
           </div>
           <div className="flex justify-between p-2 rounded-lg bg-slate-100 dark:bg-slate-800">
             <span className="text-slate-500">Car Tire Inflation</span>
             <span className="font-mono font-semibold">32 PSI = 2.2 Bar</span>
           </div>
           <div className="flex justify-between p-2 rounded-lg bg-slate-100 dark:bg-slate-800">
-            <span className="text-slate-500">Espresso Extraction</span>
+            <span className="text-slate-500">Espresso Machine</span>
             <span className="font-mono font-semibold">9 Bar = 130.5 PSI</span>
           </div>
         </div>
@@ -698,8 +698,8 @@ function NumberSystemsVisualizer({
             🔢
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Live Computer Architecture Register</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400">8-bit hardware binary and hexadecimal breakdown</p>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">Binary Bits &amp; Hex Numbers</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">See how numbers look in computer bits (0s and 1s)</p>
           </div>
         </div>
         <div className="text-xs font-mono px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-medium">
@@ -709,7 +709,7 @@ function NumberSystemsVisualizer({
 
       {/* 8-Bit Interactive Register Graphic */}
       <div className="space-y-2">
-        <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">8-Bit Data Register (0-255)</span>
+        <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">8-Bit Binary (0 to 255)</span>
         <div className="grid grid-cols-8 gap-1.5">
           {binary8.split('').map((bit, idx) => (
             <div
@@ -775,8 +775,8 @@ function DataStorageVisualizer({
             💾
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">{category.name} Analysis</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Binary (1024) vs Decimal (1000) capacity</p>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">{category.name} Visualizer</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Real drive space vs advertised capacity</p>
           </div>
         </div>
         <div className="text-xs font-mono px-2.5 py-1 rounded-full bg-teal-50 dark:bg-teal-950/50 text-teal-600 dark:text-teal-400 font-medium">
@@ -793,7 +793,7 @@ function DataStorageVisualizer({
           <div className="h-full bg-teal-500 rounded-full w-3/4" />
         </div>
         <p className="text-[11px] text-slate-500 leading-relaxed">
-          Remember that 1 Byte equals 8 bits. Storage drives calculate in decimal (1 GB = 1,000,000,000 bytes), while operating systems calculate in binary (1 GiB = 1,073,741,824 bytes).
+          Remember that 1 Byte equals 8 bits. Storage drives count in thousands (1 GB = 1,000 MB), while operating systems count in 1024s (1 GiB = 1,024 MiB).
         </p>
       </div>
     </div>
@@ -825,8 +825,8 @@ function EnergyPowerVisualizer({
             ⚡
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">{category.name} Reservoir</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Thermodynamic and work output equivalent</p>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">{category.name} Visualizer</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Energy and power comparison</p>
           </div>
         </div>
         <div className="text-xs font-mono px-2.5 py-1 rounded-full bg-yellow-50 dark:bg-yellow-950/50 text-yellow-700 dark:text-yellow-400 font-medium">
@@ -836,7 +836,7 @@ function EnergyPowerVisualizer({
 
       <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="space-y-1 text-center sm:text-left">
-          <span className="text-[10px] text-slate-400 uppercase font-semibold block">Calculated Work Output</span>
+          <span className="text-[10px] text-slate-400 uppercase font-semibold block">Calculated Result</span>
           <div className="text-xl font-bold font-mono text-yellow-600 dark:text-yellow-400">
             {formattedResult} {toUnit.symbol}
           </div>
@@ -876,18 +876,18 @@ function GeneralDialVisualizer({
             <span className="material-symbols-outlined text-[20px]">{category.icon}</span>
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">{category.name} Instrument</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400">High-precision laboratory-grade conversion readout</p>
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">{category.name} Visualizer</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Live visual readout for your conversion</p>
           </div>
         </div>
         <div className="text-xs font-mono px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 font-medium">
-          64-bit Precision
+          Accurate Result
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 space-y-1 text-center sm:text-left">
-          <span className="text-[10px] text-slate-400 uppercase font-semibold block">Input Specification</span>
+          <span className="text-[10px] text-slate-400 uppercase font-semibold block">You Entered</span>
           <div className="text-lg font-bold font-mono text-slate-900 dark:text-white">
             {inputValue} {fromUnit.symbol}
           </div>
@@ -895,7 +895,7 @@ function GeneralDialVisualizer({
         </div>
 
         <div className="p-4 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200/80 dark:border-blue-800/40 space-y-1 text-center sm:text-left">
-          <span className="text-[10px] text-blue-600 dark:text-blue-400 uppercase font-semibold block">Equivalent Output</span>
+          <span className="text-[10px] text-blue-600 dark:text-blue-400 uppercase font-semibold block">Converted Result</span>
           <div className="text-lg font-bold font-mono text-blue-700 dark:text-blue-300">
             {formattedResult} {toUnit.symbol}
           </div>

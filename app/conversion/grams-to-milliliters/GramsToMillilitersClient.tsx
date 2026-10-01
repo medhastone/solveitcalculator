@@ -22,7 +22,7 @@ export default function GramsToMillilitersClient() {
     <div className="bg-surface font-body-md text-on-surface antialiased min-h-screen flex flex-col selection:bg-primary/20">
       
 
-      <main className="w-full pt-16 bg-surface flex-1">
+      <main className="w-full pt-0 bg-surface flex-1">
         <div className="flex flex-col w-full">
           
           {/* Telemetry Bar & Breadcrumb Matrix */}
@@ -65,13 +65,7 @@ export default function GramsToMillilitersClient() {
                   Convert grams to milliliters instantly with scientific accuracy using NIST and USDA FoodData Central specific gravity formulas. Engineered for precision culinary arts, pharmacology compounding, micro-nutrient tracking, and chemical lab formulations.
                 </p>
 
-                {/* Trust Badges */}
-                <div className="flex flex-wrap items-center gap-2 mb-space-md font-body-sm text-body-sm text-on-surface-variant">
-                  <span className="px-2.5 py-1 rounded-md bg-surface-container flex items-center gap-1"><span className="material-symbols-outlined text-[16px] text-primary">check_circle</span> NIST / USDA Calibrated</span>
-                  <span className="px-2.5 py-1 rounded-md bg-surface-container flex items-center gap-1"><span className="material-symbols-outlined text-[16px] text-primary">check_circle</span> 500+ Pure Densities</span>
-                  <span className="px-2.5 py-1 rounded-md bg-surface-container flex items-center gap-1"><span className="material-symbols-outlined text-[16px] text-primary">check_circle</span> Zero Volumetric Drift</span>
-                  <span className="px-2.5 py-1 rounded-md bg-surface-container flex items-center gap-1"><span className="material-symbols-outlined text-[16px] text-primary">check_circle</span> 100% Client-Side Private</span>
-                </div>
+
 
                 {/* Quick Jump Preset Chips */}
                 <div className="flex flex-wrap items-center gap-2 pt-2">

@@ -7,7 +7,7 @@ export default function ArticleLayout({
 }) {
   return (
     <div className="min-h-screen bg-surface flex flex-col">
-      <main className="flex-grow pt-24">{children}</main>
+      <main className="flex-grow pt-0">{children}</main>
     </div>
   );
 }

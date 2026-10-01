@@ -161,28 +161,7 @@ export default function GramHubClient() {
     <div className="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col selection:bg-primary/20">
       <main className="w-full pt-[98px] bg-background min-h-[calc(100vh-380px)]">
 
-{/*  Telemetry Strip & BIPM Metrology Anchor  */}
-<div className="w-full bg-surface-container-high py-2 px-gutter-mobile md:px-gutter-desktop">
-<div className="max-w-max-width-canvas mx-auto flex flex-wrap items-center justify-between gap-2 text-body-sm font-body-sm">
-<div className="flex flex-wrap items-center gap-space-sm text-on-surface-variant">
-<span className="flex items-center gap-1 text-primary font-medium">
-<span className="material-symbols-outlined text-[16px]">science</span>
-          BIPM SI Standard (Planck Constant <i>h</i> = 6.62607015&times;10⁻³⁴ J·s)
-        </span>
-<span className="hidden md:inline text-outline-variant">•</span>
-<span className="hidden md:inline">NIST SP 811 &amp; Handbook 44 Metrology Verified</span>
-<span className="hidden lg:inline text-outline-variant">•</span>
-<span className="hidden lg:flex items-center gap-1 text-secondary">
-<span className="material-symbols-outlined text-[15px]">security</span>
-          100% Client-Side Local Sandbox
-        </span>
-</div>
-<div className="flex items-center gap-space-xs font-data-mono text-label-caps text-primary bg-surface-container-lowest px-2 py-0.5 rounded-full shadow-sm">
-<span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
-        LATENCY &lt;0.0008ms • ENGINE v4.26.1
-      </div>
-</div>
-</div>
+
 {/*  Breadcrumbs & Trust Ribbon  */}
 <div className="w-full bg-surface py-space-sm px-gutter-mobile md:px-gutter-desktop">
 <div className="max-w-max-width-canvas mx-auto flex flex-wrap items-center justify-between gap-space-md">

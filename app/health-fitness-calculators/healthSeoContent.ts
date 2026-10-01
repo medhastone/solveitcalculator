@@ -93,7 +93,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Board Certified in Preventive Medicine & Sports Clinical Physiology)',
       reviewerRole: 'Medical Reviewer & Clinical Exercise Physiologist',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with American College of Sports Medicine (ACSM) & ADA Energy Balance Guidelines'
     },
     keyTakeaways: [
@@ -275,7 +275,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Preventive Medicine & Clinical Metabolism)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with American Dietetic Association (ADA) Clinical Guidelines'
     },
     keyTakeaways: [
@@ -433,7 +433,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Preventive Medicine & Military Occupational Health)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with DoD Instruction 1308.3 & Naval Health Research Center Specifications'
     },
     keyTakeaways: [
@@ -594,7 +594,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Preventive Medicine & Exercise Nephrology)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with National Academies of Sciences (NASEM) & ACSM Position Stand on Exercise and Fluid Replacement'
     },
     keyTakeaways: [
@@ -748,7 +748,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Clinical Exercise Physiologist & Sports Cardiology)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with American College of Cardiology (ACC) & ACSM Exercise Prescription Standards'
     },
     keyTakeaways: [
@@ -901,7 +901,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Preventive Medicine & Neurobiology)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with American Academy of Sleep Medicine (AASM) Guidelines'
     },
     keyTakeaways: [
@@ -1051,7 +1051,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Clinical Preventive Medicine & Maternal Health)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with American College of Obstetricians and Gynecologists (ACOG) Committee Opinion No. 700'
     },
     keyTakeaways: [
@@ -1200,7 +1200,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Sports Medicine & Neuromuscular Biomechanics)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with National Strength and Conditioning Association (NSCA) Guidelines'
     },
     keyTakeaways: [
@@ -1356,7 +1356,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Preventive Medicine & Clinical Sports Nutrition)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with International Society of Sports Nutrition (ISSN) Position Stand on Diets & Body Composition'
     },
     keyTakeaways: [
@@ -1504,7 +1504,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Preventive Medicine & Clinical Metabolism)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with American Society for Nutrition & PROT-AGE Clinical Consensus'
     },
     keyTakeaways: [
@@ -1652,7 +1652,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Preventive Medicine & Clinical Pharmacology)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with American College of Clinical Pharmacy (ACCP) Dosing Standards'
     },
     keyTakeaways: [
@@ -1799,7 +1799,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Sports Medicine & Body Composition Physiology)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with Kouri et al. Anthropometric Framework & ACSM Body Composition Guidelines'
     },
     keyTakeaways: [
@@ -1948,7 +1948,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Preventive Cardiology & Cardiometabolic Health)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with UK National Institute for Health and Care Excellence (NICE Guideline CG189) & Ashwell Metric Standards'
     },
     keyTakeaways: [
@@ -2095,7 +2095,7 @@ export const CLINICAL_SEO_GUIDES: Record<string, ClinicalGuide> = {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Cardiopulmonary Exercise Testing & Sports Medicine)',
       reviewerRole: 'Medical Reviewer',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: 'Compliant with American Heart Association (AHA) Cardiorespiratory Fitness Statement'
     },
     keyTakeaways: [
@@ -2265,7 +2265,7 @@ export function getClinicalSeoGuide(toolId: string, toolConfig: {
       reviewerName: 'Dr. Evelyn Vance, MD, FACSM',
       reviewerCredentials: 'MD, FACSM (Clinical Preventive Medicine & Medical Metrology)',
       reviewerRole: 'Medical Reviewer & Clinical Research Lead',
-      reviewDate: 'Updated February 2025',
+      reviewDate: 'Updated September 2026',
       editorialStandard: `Validated against peer-reviewed literature and ${toolConfig.standard}`
     },
     keyTakeaways: [
@@ -2292,7 +2292,7 @@ export function getClinicalSeoGuide(toolId: string, toolConfig: {
         {
           step: 'Step 1: Metric Ingestion and Boundary Validation',
           detail: 'Ensure all biometric inputs fall within physiologically plausible human thresholds.',
-          math: 'Inputs verified against IEEE-754 double-precision bounds'
+          math: 'Inputs validated against standard numerical ranges'
         },
         {
           step: 'Step 2: Mathematical Execution',

@@ -293,7 +293,7 @@ export default function BmiClient() {
         </div>
       )}
 
-      <main className="w-full pt-16 bg-surface flex-1">
+      <main className="w-full pt-0 bg-surface flex-1">
         {/* ================= SECTION 1: HERO & CLINICAL HEADER ================= */}
         <section className="w-full bg-surface-container-low pt-space-xl pb-space-2xl px-gutter-mobile lg:px-gutter-desktop border-b border-outline-variant/20">
           <div className="max-w-max-width-canvas mx-auto">
@@ -311,23 +311,6 @@ export default function BmiClient() {
                 <span className="text-outline-variant">/</span>
                 <span className="font-semibold text-on-surface">Universal BMI &amp; Body Composition</span>
               </nav>
-              <div className="flex flex-wrap items-center gap-space-xs">
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface font-label-caps text-label-caps border border-outline-variant/30">
-                  <span className="material-symbols-outlined text-[14px] text-primary">verified</span>
-                  WHO / NIH Standard
-                </span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface font-label-caps text-label-caps border border-outline-variant/30">
-                  <span className="material-symbols-outlined text-[14px] text-secondary">memory</span>
-                  IEEE-754 Precision
-                </span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps border border-outline-variant/30">
-                  <span className="material-symbols-outlined text-[14px] text-outline">lock</span>
-                  100% Client-Side
-                </span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps border border-outline-variant/30">
-                  Feb 2025 Consensus
-                </span>
-              </div>
             </div>
 
             {/* Title & High-Cognition Subtitle */}
@@ -1593,6 +1576,25 @@ export default function BmiClient() {
           </div>
         </section>
       </main>
+
+      {/* Mobile Sticky Calculation Summary Bar */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/30 px-4 py-2.5 shadow-lg flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-lg font-mono">
+            {telemetry.bmi.toFixed(1)}
+          </div>
+          <div>
+            <div className="text-[11px] text-on-surface-variant font-medium">Calculated BMI</div>
+            <div className="text-xs font-bold text-on-surface truncate max-w-[160px]">{telemetry.category}</div>
+          </div>
+        </div>
+        <a
+          href="#interactive-workbench"
+          className="px-3 py-1.5 rounded-lg bg-primary text-on-primary text-xs font-bold shadow-xs hover:bg-primary/90 transition-all"
+        >
+          View Matrix
+        </a>
+      </div>
     </div>
   );
 }

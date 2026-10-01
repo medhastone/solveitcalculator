@@ -419,7 +419,7 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
   return (
     <div className="bg-surface font-body-md text-body-md text-on-surface min-h-screen flex flex-col">
       
-      <main className="w-full pt-16 bg-surface flex-1">
+      <main className="w-full pt-0 bg-surface flex-1">
         <div className="flex flex-col w-full">
           
           {/* SECTION 1: Top Context Bar & Institutional Badges */}
@@ -441,10 +441,7 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                   <span className="material-symbols-outlined text-[13px] text-secondary">trending_up</span>
                   Dynamic Real Return Model
                 </span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container font-label-caps text-label-caps text-on-surface-variant">
-                  <span className="material-symbols-outlined text-[13px] text-primary">lock</span>
-                  100% Client-Side Air-Gapped
-                </span>
+
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-caps text-label-caps">
                   ⚡ Sub-0.01s Calculation
                 </span>

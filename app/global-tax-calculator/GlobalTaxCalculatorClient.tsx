@@ -610,7 +610,7 @@ export default function GlobalTaxCalculatorClient() {
     <div className="min-h-screen bg-surface text-on-surface flex flex-col selection:bg-primary/20 selection:text-primary">
       
 
-      <main className="w-full pt-16 flex-1">
+      <main className="w-full pt-0 flex-1">
         {/* Top Global Compliance Strip */}
         <section className="w-full bg-surface-container-high/60 border-b border-outline-variant/20 py-2">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop flex flex-wrap items-center justify-between gap-3 text-on-surface-variant font-data-mono text-xs">

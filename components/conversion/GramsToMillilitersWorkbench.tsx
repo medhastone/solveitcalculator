@@ -104,13 +104,15 @@ export default function GramsToMillilitersWorkbench() {
     const csvContent = "data:text/csv;charset=utf-8," 
       + "Ingredient,Input Value,Input Unit,Computed Output,Output Unit,Density (g/mL),Calibrated Temp\n"
       + `"${selectedIngredient.name}",${inputValueStr},${inputUnit},${val},${unit},${customDensityStr},"20C / 68F NIST Standard"`;
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blobUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', blobUrl);
     link.setAttribute("download", `SolveIt_${selectedIngredient.name.replace(/\\s+/g, '_')}_conversion.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(blobUrl);
   };
 
   // Allow other components to trigger load

@@ -208,7 +208,7 @@ export default function GramToCupClient() {
   return (
     <div className="min-h-screen flex flex-col bg-surface text-on-surface">
       
-      <main className="w-full pt-16 bg-surface flex-1">
+      <main className="w-full pt-0 bg-surface flex-1">
       {/* Top Metadata Navigation & Metrology Trust Badges */}
       <div className="w-full bg-surface-container-low py-space-sm px-gutter-mobile lg:px-gutter-desktop shadow-sm">
         <div className="max-w-max-width-canvas mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-space-xs">
@@ -224,20 +224,6 @@ export default function GramToCupClient() {
             <span className="material-symbols-outlined text-[14px] text-outline-variant">chevron_right</span>
             <span className="text-primary font-semibold">Gram to Cups (g to cups)</span>
           </nav>
-          <div className="flex items-center flex-wrap gap-space-xs">
-            <span className="inline-flex items-center gap-space-2xs px-space-xs py-space-2xs bg-surface rounded-lg shadow-sm font-label-caps text-label-caps text-secondary uppercase font-semibold">
-              <span className="material-symbols-outlined text-[14px] text-secondary">verified</span>
-              NIST SP 811 Compliant
-            </span>
-            <span className="inline-flex items-center gap-space-2xs px-space-xs py-space-2xs bg-surface rounded-lg shadow-sm font-label-caps text-label-caps text-on-surface uppercase font-semibold">
-              <span className="material-symbols-outlined text-[14px] text-primary">menu_book</span>
-              USDA FoodData Central Ref 28
-            </span>
-            <span className="hidden sm:inline-flex items-center gap-space-2xs px-space-xs py-space-2xs bg-surface rounded-lg shadow-sm font-label-caps text-label-caps text-secondary uppercase font-semibold">
-              <span className="material-symbols-outlined text-[14px] text-secondary">lock</span>
-              100% Client-Side Private
-            </span>
-          </div>
         </div>
       </div>
 

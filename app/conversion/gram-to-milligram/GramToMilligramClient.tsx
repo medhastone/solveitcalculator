@@ -355,28 +355,9 @@ export default function GramToMilligramClient({ initialDirection = 'g-to-mg' }: 
 
       
 
-      <main className="w-full pt-16 bg-surface min-h-screen">
+      <main className="w-full pt-0 bg-surface min-h-screen">
         <div className="flex flex-col w-full">
-          {/* TOP METROLOGY TELEMETRY STRIP */}
-          <div className="w-full bg-surface-container-low border-b border-outline-variant/20">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop h-7 flex items-center justify-between text-label-caps font-label-caps uppercase tracking-wider text-on-surface-variant overflow-x-auto whitespace-nowrap">
-              <div className="flex items-center gap-space-md">
-                <span className="flex items-center gap-space-2xs text-secondary font-semibold">
-                  <span className="material-symbols-outlined text-[14px]">verified</span>
-                  <span>BIPM / NIST SP 811 Metrology Verified</span>
-                </span>
-                <span className="hidden md:inline-block text-outline-variant">•</span>
-                <span className="hidden md:flex items-center gap-space-2xs text-primary font-semibold">
-                  <span className="material-symbols-outlined text-[14px]">shield</span>
-                  <span>100% Client-Side Sandbox</span>
-                </span>
-              </div>
-              <div className="flex items-center gap-space-2xs text-on-surface-variant font-data-mono text-[10px] lowercase">
-                <span className="material-symbols-outlined text-[13px] text-secondary">memory</span>
-                <span>Zero-LAG IEEE 754 High-Precision Core</span>
-              </div>
-            </div>
-          </div>
+
 
           {/* BREADCRUMBS & COMPLIANCE BAR */}
           <div className="w-full bg-surface-container-low/70 backdrop-blur-md border-b border-outline-variant/20">

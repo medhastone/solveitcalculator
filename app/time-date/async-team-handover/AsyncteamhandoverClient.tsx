@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function AsyncteamhandoverClient() {
   const [mounted, setMounted] = useState(false);
-  const [utcTime, setUtcTime] = useState<Date | null>(null);
+  const [utcTime, setUtcTime] = useState<Date>(() => new Date('2026-03-20T12:00:00Z'));
 
   const formatUtcTime = (date: Date) => {
     const h = String(date.getUTCHours()).padStart(2, '0');
@@ -24,8 +24,6 @@ export default function AsyncteamhandoverClient() {
     return () => clearInterval(timer);
   }, []);
 
-  if (!mounted) return null;
-
   return (
     <div className="flex flex-col w-full min-h-[calc(100vh-380px)]">
       {/* Telemetry Bar & Contextual Path */}
@@ -39,8 +37,6 @@ export default function AsyncteamhandoverClient() {
             <span className="text-outline-variant">/</span>
             <Link className="hover:text-primary transition-colors" href="/time-date">Time &amp; Date</Link>
             <span className="text-outline-variant">/</span>
-            <Link className="hover:text-primary transition-colors" href="/time-date/time-zone-overlap">Time Zone Overlap Planner</Link>
-            <span className="text-outline-variant">/</span>
             <span className="text-on-surface font-medium flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px] text-primary">forum</span>
               Async Team Handover
@@ -50,8 +46,8 @@ export default function AsyncteamhandoverClient() {
           
           <div className="hidden sm:flex items-center gap-space-xs text-on-surface-variant font-data-mono text-body-sm">
             <span className="text-primary font-bold">UTC:</span>
-            <span className="bg-surface-container-high px-2 py-0.5 rounded text-on-surface">
-              {utcTime ? formatUtcTime(utcTime) : '00:00:00Z'}
+            <span suppressHydrationWarning className="bg-surface-container-high px-2 py-0.5 rounded text-on-surface">
+              {utcTime ? formatUtcTime(utcTime) : '12:00:00Z'}
             </span>
           </div>
 
@@ -110,7 +106,7 @@ export default function AsyncteamhandoverClient() {
               <span className="text-on-surface-variant font-body-sm text-body-sm">Active Module</span>
             </div>
             <h1 className="font-headline-lg md:font-display-hero text-headline-lg md:text-display-hero text-on-surface tracking-tight leading-none mb-space-sm">
-              Async Team Handover
+              Async Team Handover Time Planner
             </h1>
             <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
               Protocol designer and schedule generator for zero-latency engineering baton passes.

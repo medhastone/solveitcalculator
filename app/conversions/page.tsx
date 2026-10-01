@@ -1,69 +1,62 @@
+import React from 'react';
 import { Metadata } from 'next';
 import ConversionsClient from './ConversionsClient';
+import { CONVERSION_FAQS, POPULAR_CONVERSION_PAIRS } from './conversionsData';
 
 export const metadata: Metadata = {
-  title: 'Unit Converter & Conversion Tools – Convert Length, Weight, Volume & More | SolveItCalculator',
-  description: 'Use free unit converters to convert length, weight, temperature, volume, area, speed, time, data storage, cooking measurements, and more with accurate results.',
-  keywords: [
-    'Unit Converter',
-    'Conversion Tools',
-    'Measurement Converter',
-    'Weight Converter',
-    'Length Converter',
-    'Volume Converter',
-    'Temperature Converter',
-    'Area Converter',
-    'Speed Converter',
-    'Time Converter',
-    'Data Storage Converter',
-    'Cooking Converter',
-    'Metric Converter',
-    'Imperial Converter',
-    'Online Unit Converter',
-    'Unit Conversion Calculator',
-    'conversion calculator',
-    'free converter tools'
-  ],
+  title: 'Unit Converter | Length, Weight, Temperature & More | SolveItCalculator',
+  description:
+    'Convert length, weight, temperature, volume, area, speed, time, pressure, energy, data and more. Use free unit converters with clear results, formulas and conversion tables.',
   alternates: {
-    canonical: 'https://solveitcalculator.com/unit-converter-conversion-tools/',
+    canonical: 'https://solveitcalculator.com/conversions',
   },
   openGraph: {
-    title: 'Unit Converter & Conversion Tools | Free Measurement Converters',
-    description: 'Convert length, weight, volume, temperature, area, speed, time, data storage, and more with accurate unit conversion tools from SolveItCalculator.',
-    url: 'https://solveitcalculator.com/unit-converter-conversion-tools/',
+    title: 'Unit Converter for Length, Weight, Temperature & More | SolveItCalculator',
+    description:
+      'Convert everyday, technical, engineering, scientific, cooking, automotive, and technology units with clear results, formulas, and conversion tables.',
+    url: 'https://solveitcalculator.com/conversions',
     siteName: 'SolveItCalculator',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Unit Converter & Conversion Tools | Free Measurement Converters',
-    description: 'Convert units quickly and accurately with free converters for weight, length, volume, temperature, speed, area, time, and more.',
+    title: 'Unit Converter | SolveItCalculator',
+    description:
+      'Convert length, weight, temperature, volume, speed, data, pressure, energy, and more with easy-to-use unit conversion tools.',
   },
 };
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'CollectionPage',
-      '@id': 'https://solveitcalculator.com/unit-converter-conversion-tools/',
-      url: 'https://solveitcalculator.com/unit-converter-conversion-tools/',
-      name: 'Unit Converter & Conversion Tools – Convert Length, Weight, Volume & More | SolveItCalculator',
-      description: 'Use free unit converters to convert length, weight, temperature, volume, area, speed, time, data storage, cooking measurements, and more with accurate results.',
-      inLanguage: 'en-US',
-      isPartOf: {
-        '@type': 'WebSite',
-        '@id': 'https://solveitcalculator.com/#website',
-        url: 'https://solveitcalculator.com/',
-        name: 'SolveItCalculator',
+export default function ConversionsPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': 'https://solveitcalculator.com/conversions',
+        url: 'https://solveitcalculator.com/conversions',
+        name: 'Unit Converter for Length, Weight, Temperature & More | SolveItCalculator',
+        description:
+          'Convert length, weight, temperature, volume, area, speed, time, pressure, energy, data and more. Use free unit converters with clear results, formulas and conversion tables.',
+        inLanguage: 'en-US',
+        isPartOf: {
+          '@type': 'WebSite',
+          '@id': 'https://solveitcalculator.com/#website',
+          url: 'https://solveitcalculator.com/',
+          name: 'SolveItCalculator',
+        },
+        about: {
+          '@type': 'Thing',
+          name: 'Unit Converter',
+          description:
+            'Free unit converter for length, weight, temperature, volume, area, speed, pressure, energy, data storage, and cooking measurements.',
+        },
+        breadcrumb: {
+          '@id': 'https://solveitcalculator.com/conversions#breadcrumb',
+        },
       },
-      about: {
-        '@type': 'Thing',
-        name: 'Unit Converter',
-        description: 'Find free Unit Converter & Conversion Tools for converting weight, length, temperature, volume, area, speed, time, data storage, cooking measurements, and more. Fast, accurate, and easy-to-use converters for everyday calculations.',
-      },
-      breadcrumb: {
+      {
         '@type': 'BreadcrumbList',
+        '@id': 'https://solveitcalculator.com/conversions#breadcrumb',
         itemListElement: [
           {
             '@type': 'ListItem',
@@ -74,64 +67,47 @@ const jsonLd = {
           {
             '@type': 'ListItem',
             position: 2,
-            name: 'Unit Converter & Conversion Tools',
-            item: 'https://solveitcalculator.com/unit-converter-conversion-tools/',
+            name: 'Unit Converter',
+            item: 'https://solveitcalculator.com/conversions',
           },
         ],
       },
-    },
-    {
-      '@type': 'SoftwareApplication',
-      name: 'SolveIt Universal Unit Converter & Conversion Tools',
-      applicationCategory: 'UtilityApplication',
-      operatingSystem: 'Any',
-      offers: {
-        '@type': 'Offer',
-        price: '0.00',
-        priceCurrency: 'USD',
+      {
+        '@type': 'SoftwareApplication',
+        name: 'SolveIt Universal Unit Converter',
+        applicationCategory: 'UtilityApplication',
+        operatingSystem: 'Any',
+        offers: {
+          '@type': 'Offer',
+          price: '0.00',
+          priceCurrency: 'USD',
+        },
       },
-    },
-    {
-      '@type': 'FAQPage',
-      mainEntity: [
-        {
+      {
+        '@type': 'ItemList',
+        name: 'Popular Unit Conversions',
+        itemListElement: POPULAR_CONVERSION_PAIRS.map((pair, idx) => ({
+          '@type': 'ListItem',
+          position: idx + 1,
+          name: `${pair.fromName} to ${pair.toName} Converter`,
+          description: `Convert ${pair.fromName} to ${pair.toName} (${pair.fromSymbol} to ${pair.toSymbol}) with formula and steps.`,
+          url: `https://solveitcalculator.com/conversion/${pair.slug}`,
+        })),
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: CONVERSION_FAQS.map((faq) => ({
           '@type': 'Question',
-          name: 'How does SolveIt Calculator ensure conversion accuracy?',
+          name: faq.q,
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Every calculation uses international standards (BIPM SI Brochure, NIST SP 811, and ISO 80000). Conversion factors between base units are defined with mathematical exactness, eliminating compounding errors.',
+            text: faq.a,
           },
-        },
-        {
-          '@type': 'Question',
-          name: 'Why are US gallons different from British Imperial gallons?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'The US gallon is historically based on the 18th-century Queen Anne wine gallon (~3.7854 L), while the British Imperial gallon was established in 1824 as the volume of 10 pounds of distilled water (~4.546 L).',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'How does temperature conversion work between Celsius and Fahrenheit?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Temperature scales feature different zero points and step sizes. To convert Celsius to Fahrenheit: F = (C * 9/5) + 32. To convert Fahrenheit to Celsius: C = (F - 32) * 5/9.',
-          },
-        },
-        {
-          '@type': 'Question',
-          name: 'Does SolveIt Calculator work offline?',
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: 'Yes. All unit conversions, radix number translations, and formula lookups run client-side in your browser for instant privacy and zero network delay.',
-          },
-        },
-      ],
-    },
-  ],
-};
+        })),
+      },
+    ],
+  };
 
-export default function ConversionsPage() {
   return (
     <>
       <script

@@ -68,7 +68,7 @@ export default function HealthToolClient({ initialSlug }: { initialSlug: string 
     setIsSyncing(true);
     setTimeout(() => {
       setIsSyncing(false);
-      showToast('Telemetry synchronized with IEEE-754 precision');
+      showToast('Calculations updated successfully');
     }, 450);
   };
 
@@ -169,13 +169,13 @@ export default function HealthToolClient({ initialSlug }: { initialSlug: string 
       {/* Breadcrumb Navigation Bar */}
       <div className="pt-20 pb-3 border-b border-outline-variant/30 bg-surface-container-low">
         <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center justify-between text-xs text-on-surface-variant font-medium">
-          <div className="flex items-center gap-1.5 flex-wrap">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 flex-wrap">
             <Link href="/" className="hover:text-primary transition-colors">Home</Link>
             <span>/</span>
             <Link href="/health-fitness-calculators" className="hover:text-primary transition-colors">Health &amp; Fitness</Link>
             <span>/</span>
             <span className="text-on-surface font-semibold">{config.name}</span>
-          </div>
+          </nav>
           <div className="hidden sm:flex items-center gap-2">
             <span className="px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary font-label-caps text-[10px] font-bold">
               {config.standard}
@@ -188,26 +188,6 @@ export default function HealthToolClient({ initialSlug }: { initialSlug: string 
         {/* ================= SECTION 1: HERO & CLINICAL TOOLBAR ================= */}
         <section className="w-full py-8 bg-surface-container-low border-b border-outline-variant/20 px-gutter-mobile lg:px-gutter-desktop">
           <div className="max-w-max-width-canvas mx-auto">
-            {/* Trust Badges */}
-            <div className="flex items-center gap-2 flex-wrap mb-4">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-caps text-[11px] font-bold uppercase tracking-wider">
-                <span className="material-symbols-outlined text-[14px]">verified</span>
-                {config.standard}
-              </span>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-caps text-[11px] font-semibold">
-                <span className="material-symbols-outlined text-[14px]">calculate</span>
-                IEEE-754 Precision
-              </span>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-caps text-[11px] font-semibold">
-                <span className="material-symbols-outlined text-[14px]">lock</span>
-                100% Client-Side Evaluation
-              </span>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-caps text-[11px] font-semibold">
-                <span className="material-symbols-outlined text-[14px]">event_note</span>
-                Clinical Consensus Active
-              </span>
-            </div>
-
             <h1 className="font-headline-lg text-3xl sm:text-5xl font-black text-on-surface tracking-tight mb-3">
               {config.title}
             </h1>
@@ -2086,7 +2066,7 @@ export default function HealthToolClient({ initialSlug }: { initialSlug: string 
                     </p>
                   </div>
                   <div className="text-xs font-mono text-on-surface-variant bg-surface-container-lowest px-3 py-1.5 rounded-xl self-start sm:self-auto">
-                    Validated IEEE-754 Precision
+                    Calculated Result
                   </div>
                 </div>
 

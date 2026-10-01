@@ -91,7 +91,7 @@ export default function TermsClient() {
   );
 
   return (
-    <main className="w-full pt-16 bg-surface flex-1">
+    <main className="w-full pt-0 bg-surface flex-1">
       <div className="flex flex-col w-full">
         {/* Subtle Ambient Glow Overlay */}
         <div className="relative w-full overflow-hidden">

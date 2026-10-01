@@ -85,7 +85,7 @@ export default function LiterToGramClient() {
     <div className="min-h-screen flex flex-col bg-background font-body-md text-on-surface antialiased">
       
 
-      <main className="w-full pt-16 bg-background min-h-screen flex-1">
+      <main className="w-full pt-0 bg-background min-h-screen flex-1">
         <section className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-xl">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-sm pb-space-lg">
             <nav aria-label="Breadcrumb" className="flex items-center gap-space-xs text-body-sm font-body-sm text-on-surface-variant flex-wrap">
@@ -108,16 +108,6 @@ export default function LiterToGramClient() {
               <span className="text-outline/40 select-none">/</span>
               <span className="text-primary font-semibold" aria-current="page">Liter to Gram</span>
             </nav>
-            <div className="flex items-center gap-space-xs flex-wrap">
-              <span className="px-space-sm py-space-2xs rounded-full bg-surface-container-high text-secondary text-label-caps font-label-caps uppercase flex items-center gap-space-2xs">
-                <span className="material-symbols-outlined text-[14px]">format_image_left</span>
-                100% Client-Side Private
-              </span>
-              <span className="px-space-sm py-space-2xs rounded-full bg-surface-container-low text-on-surface-variant text-label-caps font-label-caps uppercase hidden sm:flex items-center gap-space-2xs">
-                <span className="material-symbols-outlined text-[14px]">science</span>
-                NIST SP 811 Standard
-              </span>
-            </div>
           </div>
 
           <div className="max-w-4xl space-y-space-xs">

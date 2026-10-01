@@ -5,7 +5,7 @@ import PercentageCalculatorClient from './PercentageCalculatorClient';
 export const metadata: Metadata = {
   title: 'Universal Percentage Calculator | SolveIt Calculator Precision Engine',
   description:
-    'Compute direct percentages, symmetric relative variance, compounding markups, statutory VAT/GST, and reverse discounts with step-by-step deductive proofs. 100% Client-Side IEEE 754 precision.',
+    'Compute direct percentages, symmetric relative variance, compounding markups, statutory VAT/GST, and reverse discounts with step-by-step mathematical proofs.',
   openGraph: {
     title: 'Universal Percentage Calculator | SolveIt Calculator Precision Engine',
     description:

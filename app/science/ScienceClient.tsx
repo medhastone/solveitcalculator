@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import Header from '../../components/Header';
 
 export default function ScienceClient() {
   // --- Search & Filter State ---
@@ -507,7 +506,7 @@ export default function ScienceClient() {
     <div className="min-h-screen bg-background font-body-md text-on-surface antialiased flex flex-col justify-between">
       
 
-      <main className="w-full pt-16 bg-background flex-1">
+      <main className="w-full pt-0 bg-background flex-1">
         {/* Breadcrumbs & Trust Ribbon */}
         <div className="w-full bg-surface-container-low py-space-sm px-gutter-mobile lg:px-gutter-desktop border-b border-outline-variant/15">
           <div className="max-w-max-width-canvas mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-xs text-body-sm font-body-sm">
@@ -1148,42 +1147,32 @@ export default function ScienceClient() {
                     <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
                       {cat.desc}
                     </p>
-                    <ul className="space-y-1.5 font-body-sm text-body-sm">
+                    <div className="space-y-1.5 font-body-sm text-body-sm">
                       {cat.tools.map(tool => {
                         const href = getToolLink(tool, cat.id);
                         return (
-                          <li key={tool}>
-                            <Link
-                              href={href}
-                              onClick={() => {
-                                if (href.startsWith('#')) {
-                                  quickFillSearch(tool);
-                                }
-                              }}
-                              className="hover:text-primary transition-colors flex items-center justify-between group/tool py-0.5 text-on-surface font-bold"
-                            >
-                              <span className="flex items-center gap-1.5 font-bold">
-                                <span
-                                  className={`material-symbols-outlined text-[14px] ${
-                                    cat.badgeColor === 'primary'
-                                      ? 'text-primary'
-                                      : cat.badgeColor === 'secondary'
-                                      ? 'text-secondary'
-                                      : 'text-tertiary'
-                                  }`}
-                                >
-                                  arrow_right
-                                </span>
-                                <span className="font-bold">{tool}</span>
-                              </span>
-                              <span className="material-symbols-outlined text-[14px] opacity-0 group-hover/tool:opacity-100 transition-opacity text-primary">
-                                arrow_outward
-                              </span>
-                            </Link>
-                          </li>
+                          <Link
+                            key={tool}
+                            href={href}
+                            title={tool}
+                            onClick={() => {
+                              if (href.startsWith('#')) {
+                                quickFillSearch(tool);
+                              }
+                            }}
+                            className="group/tool px-3 py-2 rounded-xl bg-surface-container-low/60 hover:bg-primary/10 hover:border-primary/40 border border-outline-variant/20 text-xs text-on-surface transition-all flex items-center justify-between gap-2 cursor-pointer shadow-2xs hover:shadow-xs hover:translate-x-0.5 font-semibold"
+                          >
+                            <span className="flex items-center gap-2 truncate">
+                              <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover/tool:bg-primary shrink-0 transition-colors" />
+                              <span className="truncate">{tool}</span>
+                            </span>
+                            <span className="material-symbols-outlined text-[14px] text-outline-variant group-hover/tool:text-primary transition-colors shrink-0">
+                              arrow_outward
+                            </span>
+                          </Link>
                         );
                       })}
-                    </ul>
+                    </div>
                   </div>
                   <a
                     className={`mt-space-md pt-space-xs flex items-center gap-1 font-body-sm text-body-sm font-bold ${

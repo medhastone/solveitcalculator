@@ -525,20 +525,51 @@ Calculated via SolveItCalculator.com (Client-Side Actuarial Engine)`;
   }
 
   return (
-    <div className="flex flex-col w-full">
-      <section className="w-full bg-surface-container-low py-space-xs px-gutter-mobile lg:px-gutter-desktop shadow-sm">
-        <div className="max-w-max-width-canvas mx-auto flex flex-col xl:flex-row xl:items-center justify-between gap-space-xs text-on-surface-variant">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-space-2xs text-body-sm font-body-sm overflow-x-auto whitespace-nowrap py-1">
-            <Link className="hover:text-primary transition-colors flex items-center gap-1" href="/">
-              <span className="material-symbols-outlined text-[16px]">home</span>Home
-            </Link>
-            <span className="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
-            <Link className="hover:text-primary transition-colors" href="/finance">Financial Calculators</Link>
-            <span className="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
-            <span className="hover:text-primary transition-colors">Loans &amp; Mortgages</span>
-            <span className="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
-            <span className="text-on-surface font-semibold">Global EMI &amp; Mortgage Payoff Workbench</span>
+    <div className="flex flex-col w-full pt-0">
+      <section className="w-full bg-surface-container-low/90 backdrop-blur-sm py-2.5 px-gutter-mobile lg:px-gutter-desktop border-b border-outline-variant/30 shadow-xs">
+        <div className="max-w-max-width-canvas mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-on-surface-variant">
+          <nav aria-label="Breadcrumb" id="homeLoanBreadcrumbNav" className="flex items-center gap-space-2xs text-body-sm font-body-sm overflow-x-auto whitespace-nowrap py-0.5">
+            <ol className="flex items-center gap-space-2xs flex-wrap" itemScope itemType="https://schema.org/BreadcrumbList">
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" className="flex items-center">
+                <Link className="hover:text-primary transition-colors flex items-center gap-1 text-on-surface-variant hover:underline" href="/" itemProp="item">
+                  <span className="material-symbols-outlined text-[16px] text-primary">home</span>
+                  <span itemProp="name">Home</span>
+                </Link>
+                <meta itemProp="position" content="1" />
+              </li>
+              <li className="flex items-center text-outline select-none" aria-hidden="true">
+                <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+              </li>
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" className="flex items-center">
+                <Link className="hover:text-primary transition-colors text-on-surface-variant hover:underline" href="/finance" itemProp="item">
+                  <span itemProp="name">Financial Calculators</span>
+                </Link>
+                <meta itemProp="position" content="2" />
+              </li>
+              <li className="flex items-center text-outline select-none" aria-hidden="true">
+                <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+              </li>
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" className="flex items-center">
+                <Link className="hover:text-primary transition-colors text-on-surface-variant hover:underline" href="/loans-and-amortization" itemProp="item">
+                  <span itemProp="name">Loans &amp; Mortgages</span>
+                </Link>
+                <meta itemProp="position" content="3" />
+              </li>
+              <li className="flex items-center text-outline select-none" aria-hidden="true">
+                <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+              </li>
+              <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" className="flex items-center">
+                <span className="text-on-surface font-semibold truncate" aria-current="page" itemProp="name">
+                  {activeCountry === 'IN' ? 'Home Loan EMI & Part-Prepayment Calculator' : (seoData?.meta?.h1 || 'Home Loan EMI & Part-Prepayment Calculator')}
+                </span>
+                <meta itemProp="position" content="4" />
+              </li>
+            </ol>
           </nav>
+          <div className="hidden md:flex items-center gap-1.5 text-xs text-on-surface-variant">
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Institutionally Verified Amortization</span>
+          </div>
         </div>
       </section>
 
@@ -585,9 +616,9 @@ Calculated via SolveItCalculator.com (Client-Side Actuarial Engine)`;
             </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-space-xs text-body-sm font-body-sm text-on-surface-variant pt-space-xs">
-            {['Exact Compounding Laws', 'Multi-Payment Acceleration', 'Dynamic Tipping Point', 'Offset & Redraw Simulator', '100% Client-Side Privacy'].map((text, i) => (
+            {['Exact Compounding Laws', 'Multi-Payment Acceleration', 'Dynamic Tipping Point', 'Offset & Redraw Simulator', 'Private & In-Browser'].map((text, i) => (
               <div key={i} className={`flex items-center gap-2 p-2 rounded-lg bg-surface-container-low/60 ${i === 4 ? 'col-span-2 md:col-span-1' : ''}`}>
-                <span className={`material-symbols-outlined text-[18px] text-primary`}>{i === 4 ? 'lock' : 'check_circle'}</span>
+                <span className={`material-symbols-outlined text-[18px] text-primary`}>{i === 4 ? 'shield' : 'check_circle'}</span>
                 <span className="text-xs font-medium">{text}</span>
               </div>
             ))}

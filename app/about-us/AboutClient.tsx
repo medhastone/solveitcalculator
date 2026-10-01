@@ -2,12 +2,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ChevronDown, HelpCircle } from "lucide-react";
+import Breadcrumbs from "../../components/Breadcrumbs";
 
 export default function AboutClient() {
-  const [openFaqs, setOpenFaqs] = useState<Record<number, boolean>>({});
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const toggleFaq = (index: number) => {
-    setOpenFaqs((prev) => ({ ...prev, [index]: !prev[index] }));
+    setOpenFaq((prev) => (prev === index ? null : index));
   };
 
   const faqs = [
@@ -54,34 +56,23 @@ export default function AboutClient() {
   ];
 
   return (
-    <main className="w-full pt-16 bg-surface min-h-[calc(100vh-16rem)]">
+    <main className="w-full pt-0 bg-surface min-h-[calc(100vh-16rem)]">
       <div className="flex flex-col w-full">
         
-        {/* Top Metrology Precision Bar & Breadcrumbs */}
-        <div className="w-full bg-surface-container-low/70 backdrop-blur-md">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
-            <nav aria-label="Breadcrumbs" className="flex items-center gap-space-2xs text-on-surface-variant">
-              <Link className="hover:text-primary transition-colors flex items-center gap-1" href="/">
-                <span className="material-symbols-outlined text-[16px]">home</span>
-                <span>Home</span>
-              </Link>
-              <span className="text-outline-variant select-none">/</span>
-              <span className="text-on-surface-variant/80">Company &amp; Information</span>
-              <span className="text-outline-variant select-none">/</span>
-              <span className="text-on-surface font-semibold">About Us</span>
-            </nav>
-            <div className="flex items-center gap-space-sm font-data-mono text-data-mono text-[11px] text-on-surface-variant">
-              <span className="inline-flex items-center gap-1 bg-surface-container px-2 py-0.5 rounded-full text-secondary font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                Engine v2.4.0
-              </span>
-              <span className="hidden md:inline text-outline-variant">•</span>
-              <span className="hidden md:inline">Continuous Metrological Audit</span>
-              <span className="hidden sm:inline text-outline-variant">•</span>
-              <span className="text-primary font-medium">Status: Active Operational</span>
+        {/* 1st Tier: Standard Breadcrumbs */}
+        <Breadcrumbs
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'About Us' },
+          ]}
+          badge="Continuous Quality & Verification"
+          rightContent={
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container font-data-mono text-[11px] text-on-surface border border-outline-variant/40">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Engine v2.4.0 · Verified</span>
             </div>
-          </div>
-        </div>
+          }
+        />
 
         {/* Hero Header Section */}
         
@@ -777,41 +768,53 @@ export default function AboutClient() {
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="w-full py-space-2xl bg-surface-container-low/50">
-          <div className="max-w-max-width-calculator mx-auto px-gutter-mobile lg:px-0">
-            <div className="text-center mb-space-xl space-y-space-2xs">
-              <span className="font-label-caps text-label-caps uppercase tracking-wider text-primary font-semibold">Inquiries &amp; Clarifications</span>
-              <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+        {/* FAQ Section: Perfectly Centered & Grid-Aligned Accordion */}
+        <section className="w-full py-16 bg-surface-container-low/40 border-t border-outline-variant/30">
+          <div className="max-w-4xl mx-auto px-gutter-mobile lg:px-gutter-desktop space-y-8">
+            <div className="text-center space-y-3 max-w-2xl mx-auto">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-xs font-semibold text-primary uppercase tracking-wider border border-outline-variant/40">
+                <HelpCircle className="w-3.5 h-3.5 text-primary" />
+                <span>Inquiries &amp; Clarifications</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-on-surface font-headline-lg tracking-tight">
                 Frequently Asked Questions
               </h2>
-              <p className="font-body-md text-body-md text-on-surface-variant">
+              <p className="text-sm text-on-surface-variant leading-relaxed">
                 Transparent answers detailing our technical architecture, business sustainability, and editorial standards.
               </p>
             </div>
-            
-            <div className="space-y-space-sm">
-              {faqs.map((faq, idx) => (
-                <div key={idx} className="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden transition-all duration-200">
-                  <button
-                    aria-expanded={openFaqs[idx] ? "true" : "false"}
-                    className="w-full px-space-lg py-space-md text-left flex items-center justify-between gap-space-sm cursor-pointer select-none focus:outline-none"
-                    onClick={() => toggleFaq(idx)}
-                    type="button"
+
+            <div className="space-y-3">
+              {faqs.map((faq, idx) => {
+                const isOpen = openFaq === idx;
+                return (
+                  <div
+                    key={idx}
+                    className="bg-surface-container-lowest rounded-xl border border-outline-variant/50 overflow-hidden shadow-xs hover:border-primary/40 transition-colors"
                   >
-                    <span className="font-headline-md text-headline-md text-on-surface text-base md:text-lg">{faq.q}</span>
-                    <span
-                      className="material-symbols-outlined text-on-surface-variant transition-transform duration-200 text-[22px]"
-                      style={{ transform: openFaqs[idx] ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      className="w-full px-5 py-4 text-left flex items-center justify-between gap-4 cursor-pointer select-none focus:outline-none"
+                      onClick={() => toggleFaq(idx)}
                     >
-                      expand_more
-                    </span>
-                  </button>
-                  <div className={`faq-content px-space-lg pb-space-md pt-0 text-on-surface-variant font-body-sm text-body-sm leading-relaxed border-t border-surface-container-high/40 mt-1 ${openFaqs[idx] ? 'block' : 'hidden'}`}>
-                    {faq.a}
+                      <span className="font-bold text-on-surface text-sm sm:text-base leading-snug">
+                        {faq.q}
+                      </span>
+                      <ChevronDown
+                        className={`w-4 h-4 text-outline transition-transform duration-200 shrink-0 ${
+                          isOpen ? 'rotate-180 text-primary' : ''
+                        }`}
+                      />
+                    </button>
+                    {isOpen && (
+                      <div className="px-5 pb-5 pt-1 text-on-surface-variant text-xs sm:text-sm leading-relaxed border-t border-outline-variant/30 animate-in fade-in-50 duration-150">
+                        {faq.a}
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>

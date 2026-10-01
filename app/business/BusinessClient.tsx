@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
-import Header from '../../components/Header';
 
 export default function BusinessClient() {
   // --- Search & Filter State ---
@@ -408,7 +407,7 @@ export default function BusinessClient() {
     <div className="min-h-screen bg-background font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container flex flex-col">
       
 
-      <main className="w-full pt-16 bg-background flex-1">
+      <main className="w-full pt-0 bg-background flex-1">
         {/* Breadcrumb Navigation Bar */}
         <section className="w-full bg-surface-container-low/70 py-space-xs border-b border-outline-variant/20">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop flex items-center justify-between gap-space-xs text-body-sm font-body-sm">
@@ -490,21 +489,21 @@ export default function BusinessClient() {
               <div className="w-full pt-space-lg">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-space-sm bg-surface-container-lowest rounded-xl p-space-md shadow-sm border border-outline-variant/30">
                   <div className="flex flex-col items-center justify-center p-space-xs">
-                    <span className="font-numerical-display text-numerical-display text-primary font-bold">250+</span>
+                    <span className="font-numerical-display text-numerical-display text-primary font-bold">Instant</span>
                     <span className="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant mt-space-2xs">
-                      Business Tools
+                      Live Calculation
                     </span>
                   </div>
                   <div className="flex flex-col items-center justify-center p-space-xs">
-                    <span className="font-numerical-display text-numerical-display text-secondary font-bold">30+</span>
+                    <span className="font-numerical-display text-numerical-display text-secondary font-bold">Standard</span>
                     <span className="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant mt-space-2xs">
-                      Specialized Suites
+                      Industry Formulas
                     </span>
                   </div>
                   <div className="flex flex-col items-center justify-center p-space-xs">
-                    <span className="font-numerical-display text-numerical-display text-on-surface font-bold">100K+</span>
+                    <span className="font-numerical-display text-numerical-display text-on-surface font-bold">Client-Side</span>
                     <span className="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant mt-space-2xs">
-                      Calculations Solved
+                      In-Browser Engine
                     </span>
                   </div>
                   <div className="flex flex-col items-center justify-center p-space-xs">
@@ -512,7 +511,7 @@ export default function BusinessClient() {
                       <span className="material-symbols-outlined text-[28px] text-secondary">verified</span>
                     </div>
                     <span className="font-label-caps text-label-caps uppercase tracking-wider text-on-surface-variant mt-space-2xs">
-                      100% Free &amp; Private
+                      Free &amp; Private
                     </span>
                   </div>
                 </div>
@@ -1243,7 +1242,7 @@ export default function BusinessClient() {
               </div>
               <div className="flex items-center gap-space-xs font-data-mono text-data-mono text-xs shrink-0">
                 <span className="w-2 h-2 rounded-full bg-primary"></span>
-                <span>250+ Business Calculators • 100% Free &amp; Private</span>
+                <span>Business Tools &amp; Calculators • Free &amp; Private in Browser</span>
               </div>
             </div>
 
@@ -1337,33 +1336,16 @@ export default function BusinessClient() {
                     {cat.tools.map(tool => (
                       <a
                         key={tool.name}
-                        className="p-space-md bg-surface-container-low hover:bg-surface-container rounded-xl transition-all flex flex-col justify-between group border border-outline-variant/20 hover:border-outline-variant/50"
+                        title={tool.desc}
+                        className="px-3 py-2.5 bg-surface-container-low hover:bg-primary/10 rounded-xl transition-all flex items-center justify-between gap-2 group border border-outline-variant/20 hover:border-primary/40 shadow-2xs hover:shadow-xs hover:translate-x-0.5"
                         href="#"
                       >
-                        <div>
-                          <span
-                            className={`font-headline-md text-headline-md text-on-surface font-bold transition-colors text-base ${
-                              cat.color === 'primary'
-                                ? 'group-hover:text-primary'
-                                : cat.color === 'secondary'
-                                ? 'group-hover:text-secondary'
-                                : 'group-hover:text-tertiary'
-                            }`}
-                          >
-                            {tool.name}
-                          </span>
-                          <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">{tool.desc}</p>
-                        </div>
-                        <span
-                          className={`font-label-caps text-label-caps mt-space-md font-bold ${
-                            cat.color === 'primary'
-                              ? 'text-primary'
-                              : cat.color === 'secondary'
-                              ? 'text-secondary'
-                              : 'text-tertiary'
-                          }`}
-                        >
-                          → {tool.action}
+                        <span className="font-semibold text-xs text-on-surface group-hover:text-primary transition-colors flex items-center gap-2 truncate">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary shrink-0 transition-colors" />
+                          <span className="truncate">{tool.name}</span>
+                        </span>
+                        <span className="text-primary font-bold text-[14px] transition-transform duration-200 group-hover:translate-x-0.5 shrink-0 select-none">
+                          →
                         </span>
                       </a>
                     ))}
@@ -1372,156 +1354,156 @@ export default function BusinessClient() {
               ))}
 
               {/* Remaining Quick Categories 13 to 17 */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Cat 13 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30">
-                  <div className="flex items-center gap-space-xs mb-space-sm text-secondary">
-                    <span className="material-symbols-outlined text-[22px]">laptop_mac</span>
-                    <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-base">
+                <div className="bg-surface-container-lowest p-4 rounded-xl shadow-xs border border-outline-variant/30">
+                  <div className="flex items-center gap-2 mb-2.5 text-secondary">
+                    <span className="material-symbols-outlined text-[20px]">laptop_mac</span>
+                    <h3 className="font-bold text-on-surface text-sm">
                       13. Freelancers &amp; Agencies
                     </h3>
                   </div>
-                  <ul className="space-y-space-xs font-body-sm text-body-sm">
+                  <ul className="space-y-1 text-xs">
                     <li>
-                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-secondary">Billable Hourly Rate Engine</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-secondary truncate">Billable Hourly Rate Engine</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-secondary">Fixed-Fee Project Scope Calculator</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-secondary truncate">Fixed-Fee Project Scope</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-secondary">Monthly Retainer Profitability</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-secondary truncate">Monthly Retainer Profit</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-secondary">Agency Capacity Utilization</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1 transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-secondary truncate">Agency Capacity Utilization</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                   </ul>
                 </div>
 
                 {/* Cat 14 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30" id="category-ai">
-                  <div className="flex items-center gap-space-xs mb-space-sm text-primary">
-                    <span className="material-symbols-outlined text-[22px]">neurology</span>
-                    <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-base">
-                      14. AI Business &amp; Cloud Tools
+                <div className="bg-surface-container-lowest p-4 rounded-xl shadow-xs border border-outline-variant/30" id="category-ai">
+                  <div className="flex items-center gap-2 mb-2.5 text-primary">
+                    <span className="material-symbols-outlined text-[20px]">neurology</span>
+                    <h3 className="font-bold text-on-surface text-sm">
+                      14. AI Business &amp; Cloud
                     </h3>
                   </div>
-                  <ul className="space-y-space-xs font-body-sm text-body-sm">
+                  <ul className="space-y-1 text-xs">
                     <li>
-                      <a className="text-on-surface hover:text-primary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-primary">LLM Token Cost &amp; Margin Estimator</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-primary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-primary truncate">LLM Token Cost &amp; Margin</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-primary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-primary">AI Workflow Automation ROI</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-primary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-primary truncate">AI Automation ROI</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-primary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-primary">Cloud GPU Server Unit Economics</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-primary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-primary truncate">Cloud GPU Economics</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-primary flex justify-between py-1.5 transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-primary">RAG Pipeline Cost Architect</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-primary flex justify-between py-1 transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-primary truncate">RAG Pipeline Cost</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                   </ul>
                 </div>
 
                 {/* Cat 15 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30">
-                  <div className="flex items-center gap-space-xs mb-space-sm text-tertiary">
-                    <span className="material-symbols-outlined text-[22px]">restaurant</span>
-                    <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-base">
+                <div className="bg-surface-container-lowest p-4 rounded-xl shadow-xs border border-outline-variant/30">
+                  <div className="flex items-center gap-2 mb-2.5 text-tertiary">
+                    <span className="material-symbols-outlined text-[20px]">restaurant</span>
+                    <h3 className="font-bold text-on-surface text-sm">
                       15. Local Business &amp; Hospitality
                     </h3>
                   </div>
-                  <ul className="space-y-space-xs font-body-sm text-body-sm">
+                  <ul className="space-y-1 text-xs">
                     <li>
-                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-tertiary">Restaurant Prime Cost &amp; Food %</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-tertiary truncate">Restaurant Prime Cost &amp; Food %</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-tertiary">Menu Engineering Profit Matrix</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-tertiary truncate">Menu Engineering Matrix</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-tertiary">Salon &amp; Studio Chair Yield</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-tertiary truncate">Salon &amp; Studio Chair Yield</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1.5 transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-tertiary">Gym Member ARPU &amp; Churn</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-tertiary flex justify-between py-1 transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-tertiary truncate">Gym Member ARPU &amp; Churn</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                   </ul>
                 </div>
 
                 {/* Cat 16 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30" id="category-realestate">
-                  <div className="flex items-center gap-space-xs mb-space-sm text-secondary">
-                    <span className="material-symbols-outlined text-[22px]">domain</span>
-                    <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-base">
-                      16. Real Estate &amp; Commercial Investing
+                <div className="bg-surface-container-lowest p-4 rounded-xl shadow-xs border border-outline-variant/30" id="category-realestate">
+                  <div className="flex items-center gap-2 mb-2.5 text-secondary">
+                    <span className="material-symbols-outlined text-[20px]">domain</span>
+                    <h3 className="font-bold text-on-surface text-sm">
+                      16. Real Estate &amp; Commercial
                     </h3>
                   </div>
-                  <ul className="space-y-space-xs font-body-sm text-body-sm">
+                  <ul className="space-y-1 text-xs">
                     <li>
-                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-secondary">Commercial Cap Rate Calculator</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-secondary truncate">Commercial Cap Rate</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-secondary">Cash-on-Cash Return Modeler</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-secondary truncate">Cash-on-Cash Return</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 border-b border-surface-container-low transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-secondary">Net Operating Income (NOI) Workbench</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1 border-b border-surface-container-low transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-secondary truncate">Net Operating Income (NOI)</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                     <li>
-                      <a className="text-on-surface hover:text-secondary flex justify-between py-1.5 transition-colors group" href="#">
-                        <span className="font-bold text-on-surface group-hover:text-secondary">Gross Rent Multiplier (GRM)</span>
-                        <span className="font-data-mono text-xs font-bold">→</span>
+                      <a className="text-on-surface hover:text-secondary flex justify-between py-1 transition-colors group" href="#">
+                        <span className="font-semibold text-on-surface group-hover:text-secondary truncate">Gross Rent Multiplier (GRM)</span>
+                        <span className="font-mono text-xs font-bold shrink-0 ml-1">→</span>
                       </a>
                     </li>
                   </ul>
                 </div>
 
                 {/* Cat 17 */}
-                <div className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 md:col-span-2">
-                  <div className="flex items-center gap-space-xs mb-space-sm text-primary">
-                    <span className="material-symbols-outlined text-[22px]">document_scanner</span>
-                    <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-base">
+                <div className="bg-surface-container-lowest p-4 rounded-xl shadow-xs border border-outline-variant/30 col-span-1 sm:col-span-2 lg:col-span-4">
+                  <div className="flex items-center gap-2 mb-2.5 text-primary">
+                    <span className="material-symbols-outlined text-[20px]">document_scanner</span>
+                    <h3 className="font-bold text-on-surface text-sm">
                       17. Generators &amp; Financial Templates
                     </h3>
                   </div>
@@ -1986,7 +1968,7 @@ export default function BusinessClient() {
                   Is my company&apos;s financial data private and secure?
                 </h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-space-xs leading-relaxed">
-                  Yes, 100%. All calculations run entirely in your web browser. None of your financial figures, revenue numbers, cap tables, or pricing details are ever sent to our servers or any third parties.
+                  Yes. All calculations run entirely in your web browser. None of your financial figures, revenue numbers, cap tables, or pricing details are ever sent to our servers or any third parties.
                 </p>
               </div>
 
@@ -2025,7 +2007,7 @@ export default function BusinessClient() {
                 </div>
                 <div>
                   <h3 className="font-headline-md text-headline-md font-bold text-on-surface text-lg">
-                    100% Free, Private &amp; Secure Guarantee
+                    Free, Private &amp; Secure in Browser
                   </h3>
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
                     All calculations run safely right in your browser. We never collect or save your company data.
@@ -2035,7 +2017,7 @@ export default function BusinessClient() {
               <div className="flex items-center gap-space-md flex-shrink-0">
                 <div className="flex flex-col text-right">
                   <span className="font-data-mono text-data-mono text-xs font-bold text-primary">GAAP &amp; IFRS Formulas</span>
-                  <span className="font-label-caps text-label-caps text-on-surface-variant">100% Private in Browser</span>
+                  <span className="font-label-caps text-label-caps text-on-surface-variant">Private in Browser</span>
                 </div>
                 <span className="material-symbols-outlined text-primary text-[28px]">lock</span>
               </div>

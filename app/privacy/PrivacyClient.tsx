@@ -78,7 +78,7 @@ export default function PrivacyClient() {
   };
 
   return (
-    <main className="w-full pt-20 bg-background flex-1">
+    <main className="w-full pt-4 bg-background flex-1">
       <div className="flex flex-col w-full">
         {/* Subtle Gradient Ambient Backdrop Overlay */}
         <div className="relative w-full overflow-hidden">
@@ -138,11 +138,11 @@ export default function PrivacyClient() {
             <section className="grid grid-cols-2 sm:grid-cols-4 gap-space-sm">
               <div className="flex items-center gap-space-sm p-space-sm bg-surface-container-lowest rounded-xl shadow-sm">
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                  <span className="material-symbols-outlined text-primary text-[22px]">memory</span>
+                  <span className="material-symbols-outlined text-primary text-[22px]">laptop_chromebook</span>
                 </div>
                 <div className="flex flex-col">
                   <span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Architecture</span>
-                  <span className="font-body-sm text-body-sm font-semibold text-on-surface">100% Client-Side Engine</span>
+                  <span className="font-body-sm text-body-sm font-semibold text-on-surface">Local Device Processing</span>
                 </div>
               </div>
               <div className="flex items-center gap-space-sm p-space-sm bg-surface-container-lowest rounded-xl shadow-sm">

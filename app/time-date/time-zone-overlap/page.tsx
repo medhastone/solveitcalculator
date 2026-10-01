@@ -3,15 +3,18 @@ import type { Metadata } from 'next';
 import TimeZoneOverlapClient from './TimeZoneOverlapClient';
 
 export const metadata: Metadata = {
-  title: 'Time Zone Overlap Meeting Scheduler | Global Sync & World Clock | SolveIt',
+  title: 'Time Zone Overlap Planner | Working Hours | SolveItCalculator',
   description:
-    'Find the perfect overlapping meeting window across multiple world time zones. Compare UTC/GMT offsets, visualize 24-hour business hours, and coordinate distributed remote teams without jet lag.',
+    'Find overlapping working hours across multiple locations. Compare business hours, daylight saving rules, and shift handoffs for remote teams.',
+  alternates: {
+    canonical: 'https://solveitcalculator.com/time-date/time-zone-overlap',
+  },
 };
 
 export default function TimeZoneOverlapPage() {
   return (
     <div className="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col">
-      <main className="w-full pt-16 bg-background flex-grow">
+      <main className="w-full pt-0 bg-background flex-grow">
         <TimeZoneOverlapClient />
       </main>
     </div>

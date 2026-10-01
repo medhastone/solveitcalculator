@@ -323,7 +323,7 @@ export default function SalaryAndPayrollClient() {
     <>
       
 
-      <main className="w-full pt-16 bg-surface flex-1">
+      <main className="w-full pt-0 bg-surface flex-1">
         <div className="flex flex-col w-full">
       {/* Section 1: Breadcrumb & Visual Editorial Header */}
       <section className="w-full bg-surface py-space-xl px-gutter-mobile lg:px-gutter-desktop">
@@ -356,25 +356,7 @@ export default function SalaryAndPayrollClient() {
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">Free, precision payroll and salary tools. Calculate hourly rates, overtime premiums, paycheck deductions, and total employer costs across US, UK, Canada, Australia, and India.</p>
 
-              {/* Trust & EEAT Badges Bar */}
-              <div className="flex flex-wrap items-center gap-space-sm pt-space-xs">
-                <div className="flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-surface-container-low shadow-sm">
-                  <span className="material-symbols-outlined text-[18px] text-primary">security</span>
-                  <span className="font-data-mono text-body-sm text-on-surface font-medium">100% Client-Side Private</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-surface-container-low shadow-sm">
-                  <span className="material-symbols-outlined text-[18px] text-primary">public</span>
-                  <span className="font-data-mono text-body-sm text-on-surface font-medium">US • UK • CA • AU • IN</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-surface-container-low shadow-sm">
-                  <span className="material-symbols-outlined text-[18px] text-primary">verified_user</span>
-                  <span className="font-data-mono text-body-sm text-on-surface font-medium">CPA & Payroll Specialist Audited</span>
-                </div>
-                <div className="flex items-center gap-1.5 px-space-sm py-1.5 rounded-lg bg-surface-container-low shadow-sm">
-                  <span className="material-symbols-outlined text-[18px] text-primary">calculate</span>
-                  <span className="font-data-mono text-body-sm text-on-surface font-medium">IEEE 754 Floating Standard</span>
-                </div>
-              </div>
+
             </div>
 
             {/* Metric Snapshot Sidecar Box */}
@@ -527,7 +509,7 @@ export default function SalaryAndPayrollClient() {
                           <span className="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-data-mono text-xs">{tool.badge}</span>
                         </div>
                         <h3 className="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">{tool.title}</h3>
-                        <p className="font-body-sm text-body-sm text-on-surface-variant">{tool.description}</p>
+                        <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-1" title={tool.description}>{tool.description}</p>
                       </div>
                       <div className="mt-space-lg pt-space-md border-t border-surface-container-low flex items-center justify-between">
                         <div className="flex gap-1.5 flex-wrap">
@@ -1305,18 +1287,18 @@ export default function SalaryAndPayrollClient() {
       <section className="w-full bg-surface-container py-space-xl px-gutter-mobile lg:px-gutter-desktop border-t border-surface-container-highest">
         <div className="max-w-max-width-canvas mx-auto flex flex-col gap-space-lg">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
-            {/* Reviewers Bio */}
+            {/* Methodology Note */}
             <div className="lg:col-span-6 flex items-start gap-space-md">
-              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center flex-shrink-0 text-on-primary">
-                <span className="material-symbols-outlined text-[24px]">verified</span>
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary">
+                <span className="material-symbols-outlined text-[24px]">info</span>
               </div>
               <div className="space-y-1">
-                <h4 className="font-headline-md text-body-lg font-semibold text-on-surface">Subject Matter Editorial Review</h4>
+                <h4 className="font-headline-md text-body-lg font-semibold text-on-surface">Payroll Calculation Methodology</h4>
                 <p className="font-body-sm text-body-sm text-on-surface-variant">
-                  Curated and mathematically audited by <strong>Elena Rostova, CPA</strong> (Senior Payroll Auditor, former Big 4) and <strong>Marcus Vance, CFA</strong>. Compensation calculations conform to IEEE 754 precision standards and are verified against updated 2024–2025 revenue publication guidelines.
+                  Wage, overtime, and tax calculations implement standard mathematical formulas and statutory overtime rules (such as FLSA 1.5x threshold after 40 regular hours). Use estimates for operational and budgeting scenarios.
                 </p>
                 <p className="font-data-mono text-xs text-outline">
-                  Last Full Audit: January 15, 2025 • Statutory Tax Year: 2025 Active
+                  Tax Year: 2025/2026 Reference Models
                 </p>
               </div>
             </div>

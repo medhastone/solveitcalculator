@@ -3,7 +3,6 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Header from '@/components/Header';
 import { CONVERSION_CATEGORIES } from '@/lib/conversions';
 import { CANONICAL_POPULAR_PAIRS } from '@/lib/converterSlugs';
 
@@ -40,7 +39,7 @@ export default function ConvertDirectoryPage() {
     <div className="bg-surface text-on-surface min-h-screen transition-colors duration-200">
       
 
-      <main className="pt-24 sm:pt-28 pb-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+      <main className="pt-4 sm:pt-6 pb-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
         {/* Hub Hero */}
         <section className="text-center max-w-4xl mx-auto space-y-4 pt-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800">

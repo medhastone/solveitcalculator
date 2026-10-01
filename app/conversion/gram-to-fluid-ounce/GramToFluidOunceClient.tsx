@@ -193,7 +193,7 @@ export default function GramToFluidOunceClient() {
     <div className="min-h-screen flex flex-col bg-surface text-on-surface">
       
 
-      <main className="w-full pt-20 bg-surface flex-1">
+      <main className="w-full pt-4 bg-surface flex-1">
         {/* Top Metrology Breadcrumbs & Runtime Bar */}
         <div className="w-full bg-surface-container-lowest/50 py-2.5 px-4 sm:px-6 lg:px-8 border-b border-outline-variant/15">
           <div className="max-w-7xl mx-auto flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm">

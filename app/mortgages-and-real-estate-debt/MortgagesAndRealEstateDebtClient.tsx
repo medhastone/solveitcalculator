@@ -449,7 +449,7 @@ export default function MortgagesAndRealEstateDebtClient() {
     <div className="min-h-screen bg-surface font-body-md text-on-surface">
       
 
-      <main className="w-full pt-16 bg-surface">
+      <main className="w-full pt-0 bg-surface">
         <div className="flex flex-col w-full">
 
           {/* TOP BREADCRUMBS & CATEGORY HERO */}
@@ -468,12 +468,6 @@ export default function MortgagesAndRealEstateDebtClient() {
               <div className="flex flex-wrap items-center gap-space-xs mb-space-xs">
                 <span className="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded bg-primary/10 text-primary font-label-caps text-label-caps uppercase font-bold">
                   <span className="material-symbols-outlined text-[14px]">real_estate_agent</span> Consumer Housing &amp; Mortgage Finance
-                </span>
-                <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-surface-container-high text-secondary font-label-caps text-label-caps uppercase font-semibold">
-                  <span className="material-symbols-outlined text-[13px]">verified</span> Free, Accurate &amp; Independent Guide
-                </span>
-                <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-caps text-label-caps uppercase">
-                  <span className="material-symbols-outlined text-[13px]">gavel</span> Truth in Lending Act (TILA) &amp; RESPA Calibrated
                 </span>
               </div>
 

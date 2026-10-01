@@ -67,7 +67,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'm',
     countLabel: '14 Units',
     popularPair: { from: 'cm', to: 'in', label: 'Centimeters to Inches' },
-    description: 'Transform between metric, imperial, astronomical, and sub-atomic dimensions with nanometer precision.',
+    description: 'Convert between inches, feet, meters, centimeters, and miles for construction, maps, or everyday measurements.',
     units: [
       { id: 'nm', name: 'Nanometer', symbol: 'nm', system: 'metric', factorToBase: 1e-9, factorFromBase: 1e9 },
       { id: 'um', name: 'Micrometer', symbol: 'µm', system: 'metric', factorToBase: 1e-6, factorFromBase: 1e6 },
@@ -92,7 +92,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'kg',
     countLabel: '12 Units',
     popularPair: { from: 'kg', to: 'lb', label: 'Kilograms to Pounds' },
-    description: 'Accurate conversion between metric grams/tonnes and imperial pounds, ounces, and stones.',
+    description: 'Switch easily between pounds, kilograms, ounces, grams, and stones for health, gym weights, shipping, or luggage.',
     units: [
       { id: 'mg', name: 'Milligram', symbol: 'mg', system: 'metric', factorToBase: 1e-6, factorFromBase: 1e6 },
       { id: 'g', name: 'Gram', symbol: 'g', system: 'metric', factorToBase: 0.001, factorFromBase: 1000 },
@@ -115,7 +115,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'c',
     countLabel: '4 Units',
     popularPair: { from: 'c', to: 'f', label: 'Celsius to Fahrenheit' },
-    description: 'Instant thermal conversions across Celsius, Fahrenheit, Kelvin, and Rankine scales.',
+    description: 'Convert between Celsius, Fahrenheit, and Kelvin for weather, recipes, baking, or science projects.',
     units: [
       {
         id: 'c',
@@ -158,7 +158,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'l',
     countLabel: '22 Units',
     popularPair: { from: 'l', to: 'gal', label: 'Liters to Gallons' },
-    description: 'Liquid and dry volume across metric liters, US gallons, fluid ounces, pints, and cubic meters.',
+    description: 'Convert between liters, gallons, cups, tablespoons, milliliters, and fluid ounces for cooking, liquids, or drinks.',
     units: [
       { id: 'ml', name: 'Milliliter', symbol: 'mL', system: 'metric', factorToBase: 0.001, factorFromBase: 1000 },
       { id: 'l', name: 'Liter', symbol: 'L', system: 'metric', factorToBase: 1, factorFromBase: 1 },
@@ -191,7 +191,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'm2',
     countLabel: '10 Units',
     popularPair: { from: 'sqft', to: 'sqm', label: 'Square Feet to Square Meters' },
-    description: 'Calculate property, construction, and architectural land coverage with exact hectare and acre ratios.',
+    description: 'Convert between square feet, square meters, acres, and hectares for home improvement, land, or room sizes.',
     units: [
       { id: 'sqmm', name: 'Square Millimeter', symbol: 'mm²', system: 'metric', factorToBase: 1e-6, factorFromBase: 1e6 },
       { id: 'sqcm', name: 'Square Centimeter', symbol: 'cm²', system: 'metric', factorToBase: 0.0001, factorFromBase: 10000 },
@@ -212,7 +212,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'mps',
     countLabel: '7 Units',
     popularPair: { from: 'mph', to: 'kmh', label: 'Miles/hr to Kilometers/hr' },
-    description: 'Automotive, aerospace, and marine velocity conversions from knots to Mach numbers.',
+    description: 'Convert between miles per hour (mph), kilometers per hour (km/h), knots, and meters per second.',
     units: [
       { id: 'mps', name: 'Meters per second', symbol: 'm/s', system: 'metric', factorToBase: 1, factorFromBase: 1 },
       { id: 'kmh', name: 'Kilometers per hour', symbol: 'km/h', system: 'metric', factorToBase: 1 / 3.6, factorFromBase: 3.6 },
@@ -230,7 +230,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 's',
     countLabel: '10 Units',
     popularPair: { from: 'hr', to: 'min', label: 'Hours to Minutes' },
-    description: 'Astronomical, standard, and micro-second intervals for schedules, science, and computing.',
+    description: 'Convert seconds, minutes, hours, days, weeks, and years for work schedules, projects, and everyday planning.',
     units: [
       { id: 'ns', name: 'Nanosecond', symbol: 'ns', system: 'metric', factorToBase: 1e-9, factorFromBase: 1e9 },
       { id: 'us', name: 'Microsecond', symbol: 'µs', system: 'metric', factorToBase: 1e-6, factorFromBase: 1e6 },
@@ -251,7 +251,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'pa',
     countLabel: '9 Units',
     popularPair: { from: 'psi', to: 'bar', label: 'PSI to Bar' },
-    description: 'Industrial tire, hydraulic, HVAC, and meteorological atmospheric pressures.',
+    description: 'Convert between PSI, bar, pascals, and atmospheres for car tires, air tanks, plumbing, and weather.',
     units: [
       { id: 'pa', name: 'Pascal', symbol: 'Pa', system: 'metric', factorToBase: 1, factorFromBase: 1 },
       { id: 'kpa', name: 'Kilopascal', symbol: 'kPa', system: 'metric', factorToBase: 1000, factorFromBase: 0.001 },
@@ -271,7 +271,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'j',
     countLabel: '10 Units',
     popularPair: { from: 'kwh', to: 'j', label: 'Kilowatt-hours to Joules' },
-    description: 'Mechanical work, electrical power consumption, heat calories, and thermal units.',
+    description: 'Convert joules, calories, food calories (kcal), watt-hours, and kilowatt-hours (kWh) for nutrition and electric bills.',
     units: [
       { id: 'j', name: 'Joule', symbol: 'J', system: 'si', factorToBase: 1, factorFromBase: 1 },
       { id: 'kj', name: 'Kilojoule', symbol: 'kJ', system: 'metric', factorToBase: 1000, factorFromBase: 0.001 },
@@ -292,7 +292,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'w',
     countLabel: '7 Units',
     popularPair: { from: 'hp', to: 'kw', label: 'Horsepower to Kilowatts' },
-    description: 'Mechanical horsepower, electrical wattage, and heating/cooling BTU outputs.',
+    description: 'Convert horsepower, watts, kilowatts, and BTUs for cars, air conditioning, and electrical appliances.',
     units: [
       { id: 'w', name: 'Watt', symbol: 'W', system: 'si', factorToBase: 1, factorFromBase: 1 },
       { id: 'kw', name: 'Kilowatt', symbol: 'kW', system: 'metric', factorToBase: 1000, factorFromBase: 0.001 },
@@ -310,7 +310,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'nm',
     countLabel: '5 Units',
     popularPair: { from: 'lbft', to: 'nm', label: 'Pound-feet to Newton-meters' },
-    description: 'Rotational force conversions crucial for automotive engines, fasteners, and machinery.',
+    description: 'Convert pound-feet (lb·ft), newton-meters (N·m), and pound-inches for car wheels, bike repair, and tools.',
     units: [
       { id: 'nm', name: 'Newton-meter', symbol: 'N·m', system: 'si', factorToBase: 1, factorFromBase: 1 },
       { id: 'lbft', name: 'Pound-foot', symbol: 'lb·ft', system: 'imperial', factorToBase: 1.3558179483314, factorFromBase: 0.737562149277 },
@@ -326,7 +326,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'hz',
     countLabel: '7 Units',
     popularPair: { from: 'rpm', to: 'hz', label: 'RPM to Hertz' },
-    description: 'Electromagnetic wave frequencies, audio acoustics, and engine revolutions.',
+    description: 'Convert Hertz (Hz), kHz, MHz, and RPM for audio, engine speeds, and electronic signals.',
     units: [
       { id: 'hz', name: 'Hertz', symbol: 'Hz', system: 'si', factorToBase: 1, factorFromBase: 1 },
       { id: 'khz', name: 'Kilohertz', symbol: 'kHz', system: 'metric', factorToBase: 1000, factorFromBase: 0.001 },
@@ -344,7 +344,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'mpg_us',
     countLabel: '4 Units',
     popularPair: { from: 'mpg_us', to: 'l100km', label: 'MPG (US) to L/100km' },
-    description: 'Vehicle consumption rates across US MPG, UK Imperial MPG, and metric L/100km.',
+    description: 'Convert between US MPG, UK MPG, and Liters/100km to compare car gas mileage and fuel costs.',
     units: [
       {
         id: 'mpg_us',
@@ -387,7 +387,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'b',
     countLabel: '11 Units',
     popularPair: { from: 'gb', to: 'tb', label: 'Gigabytes to Terabytes' },
-    description: 'Binary (1024-based GiB/MiB) and Decimal (1000-based GB/MB) computing capacities.',
+    description: 'Convert megabytes (MB), gigabytes (GB), terabytes (TB), and kibibytes (KiB) for phone storage and hard drives.',
     units: [
       { id: 'bit', name: 'Bit', symbol: 'b', system: 'si', factorToBase: 1 / 8, factorFromBase: 8 },
       { id: 'b', name: 'Byte', symbol: 'B', system: 'si', factorToBase: 1, factorFromBase: 1 },
@@ -409,7 +409,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'bps',
     countLabel: '9 Units',
     popularPair: { from: 'mbps', to: 'mbs', label: 'Megabits/s to Megabytes/s' },
-    description: 'Network bandwidth speed tests, fiber optics, and file download transfer times.',
+    description: 'Convert internet speed test numbers (Mbps) into real file download speeds (MB/s).',
     units: [
       { id: 'bps', name: 'Bits per second', symbol: 'bps', system: 'si', factorToBase: 1, factorFromBase: 1 },
       { id: 'kbps', name: 'Kilobits per second', symbol: 'Kbps', system: 'si', factorToBase: 1000, factorFromBase: 0.001 },
@@ -429,7 +429,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'v',
     countLabel: '10 Units',
     popularPair: { from: 'kv', to: 'v', label: 'Kilovolts to Volts' },
-    description: 'Ohmic resistance, electrical charge, electromotive potential, and current flow.',
+    description: 'Convert volts, millivolts, amperes, milliamps, and ohms for batteries, chargers, and home wiring.',
     units: [
       { id: 'mv', name: 'Millivolt', symbol: 'mV', system: 'si', factorToBase: 0.001, factorFromBase: 1000 },
       { id: 'v', name: 'Volt', symbol: 'V', system: 'si', factorToBase: 1, factorFromBase: 1 },
@@ -450,7 +450,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'ml',
     countLabel: '12 Units',
     popularPair: { from: 'tbsp', to: 'tsp', label: 'Tablespoons to Teaspoons' },
-    description: 'Recipe scaling and culinary kitchen measures across spoons, cups, and fluid ounces.',
+    description: 'Convert teaspoons, tablespoons, cups, fluid ounces, and milliliters for kitchen recipes and baking.',
     units: [
       { id: 'tsp', name: 'Teaspoon (US)', symbol: 'tsp', system: 'us', factorToBase: 4.92892, factorFromBase: 1 / 4.92892 },
       { id: 'tbsp', name: 'Tablespoon (US)', symbol: 'tbsp', system: 'us', factorToBase: 14.7868, factorFromBase: 1 / 14.7868 },
@@ -473,7 +473,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'mpa',
     countLabel: '8 Units',
     popularPair: { from: 'ksi', to: 'mpa', label: 'ksi to Megapascals' },
-    description: 'Material yield strength, young modulus, volumetric flow rates, and dynamic stress.',
+    description: 'Convert pressure, strength, and flow rates like megapascals, ksi, liters per minute, and GPM.',
     units: [
       { id: 'mpa', name: 'Megapascal (Stress)', symbol: 'MPa', system: 'metric', factorToBase: 1, factorFromBase: 1 },
       { id: 'gpa', name: 'Gigapascal (Modulus)', symbol: 'GPa', system: 'metric', factorToBase: 1000, factorFromBase: 0.001 },
@@ -492,7 +492,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'mol',
     countLabel: '8 Units',
     popularPair: { from: 'rad', to: 'deg', label: 'Radians to Degrees' },
-    description: 'Chemistry amount of substance, optical illuminance, radioactivity, and angular radians.',
+    description: 'Convert degrees, radians, moles, and light levels (lux) for science classes and school math.',
     units: [
       { id: 'mol', name: 'Mole', symbol: 'mol', system: 'si', factorToBase: 1, factorFromBase: 1 },
       { id: 'mmol', name: 'Millimole', symbol: 'mmol', system: 'si', factorToBase: 0.001, factorFromBase: 1000 },
@@ -511,7 +511,7 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
     baseUnitId: 'dec',
     countLabel: '5 Systems',
     popularPair: { from: 'dec', to: 'hex', label: 'Decimal to Hexadecimal' },
-    description: 'Computer architecture radices across Decimal (10), Binary (2), Hex (16), Octal (8), and Roman Numerals.',
+    description: 'Convert numbers between regular decimal (10), binary (01), hexadecimal (hex), and Roman numerals.',
     units: [
       { id: 'dec', name: 'Decimal (Base 10)', symbol: 'DEC', system: 'other', factorToBase: 1, factorFromBase: 1 },
       { id: 'bin', name: 'Binary (Base 2)', symbol: 'BIN', system: 'other', factorToBase: 1, factorFromBase: 1 },
@@ -522,19 +522,83 @@ export const CONVERSION_CATEGORIES: CategoryDefinition[] = [
   }
 ];
 
+// Category alias map for flexible lookup
+export const CATEGORY_ALIASES: Record<string, string> = {
+  'weight-and-mass': 'weight',
+  'weight-mass': 'weight',
+  'weight_mass': 'weight',
+  'weights': 'weight',
+  'mass': 'weight',
+  'distance': 'length',
+  'lengths': 'length',
+  'temperatures': 'temperature',
+  'temp': 'temperature',
+  'volumes': 'volume',
+  'volume-capacity': 'volume',
+  'volume-and-capacity': 'volume',
+  'areas': 'area',
+  'speeds': 'speed',
+  'speed-velocity': 'speed',
+  'times': 'time',
+  'pressures': 'pressure',
+  'energies': 'energy',
+  'energy-work': 'energy',
+  'powers': 'power',
+  'data': 'data_storage',
+  'datastorage': 'data_storage',
+  'data-storage': 'data_storage',
+  'fuel': 'fuel_economy',
+  'fueleconomy': 'fuel_economy',
+  'fuel-economy': 'fuel_economy',
+};
+
+export function resolveCategoryId(rawId: string): string {
+  if (!rawId) return '';
+  const clean = rawId.toLowerCase().trim().replace(/-converter$/, '');
+  return CATEGORY_ALIASES[clean] || clean;
+}
+
 // Perform exact conversion between any two units in a category
+// Supports both signatures:
+// 1) convertValue(value, categoryId, fromUnitId, toUnitId)
+// 2) convertValue(categoryId, fromUnitId, toUnitId, value)
 export function convertValue(
-  value: number | string,
-  categoryId: string,
-  fromUnitId: string,
-  toUnitId: string
+  arg1: number | string,
+  arg2: string,
+  arg3: string,
+  arg4?: number | string
 ): {
   resultNumber: number;
   resultString: string;
   formula: string;
   factor: number;
 } {
-  const category = CONVERSION_CATEGORIES.find((c) => c.id === categoryId);
+  let value: number | string;
+  let categoryId: string;
+  let fromUnitId: string;
+  let toUnitId: string;
+
+  // Determine if arg1 is categoryId
+  const candidateCat1 = typeof arg1 === 'string' ? resolveCategoryId(arg1) : '';
+  const isArg1Category =
+    typeof arg1 === 'string' &&
+    (CONVERSION_CATEGORIES.some((c) => c.id === candidateCat1) || Boolean(CATEGORY_ALIASES[candidateCat1]));
+
+  if (isArg1Category) {
+    categoryId = candidateCat1;
+    fromUnitId = arg2;
+    toUnitId = arg3;
+    value = arg4 !== undefined ? arg4 : 1;
+  } else {
+    value = arg1;
+    categoryId = resolveCategoryId(arg2);
+    fromUnitId = arg3;
+    toUnitId = typeof arg4 === 'string' ? arg4 : '';
+  }
+
+  const category =
+    CONVERSION_CATEGORIES.find((c) => c.id === categoryId) ||
+    CONVERSION_CATEGORIES.find((c) => c.id === resolveCategoryId(categoryId));
   if (!category) {
     return { resultNumber: 0, resultString: '0', formula: '', factor: 1 };
   }

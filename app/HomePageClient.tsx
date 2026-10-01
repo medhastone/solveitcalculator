@@ -1,2297 +1,1837 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
-import Header from "../components/Header";
+import QuickEverydaySolver from "../components/QuickEverydaySolver";
 
-import HomePageSeoSections from './HomePageSeoSections';
+// --- Types ---
+interface CalculatorItem {
+  id: string;
+  name: string;
+  category: string;
+  categoryHref: string;
+  description: string;
+  href: string;
+  icon: string;
+  synonyms: string[];
+}
 
-// --- Static Data ---
-const categoriesData = [
-  {
-    title: "Finance",
-    link: "/finance",
-    icon: "payments",
-    iconBg: "bg-primary-fixed text-primary",
-    count: "420+",
-    desc: "Mortgages, investments, and loan planning.",
-    tags: ["SIP", "Mortgage", "401(k)", "CAGR", "FIRE"],
-  },
-  {
-    title: "Health",
-    link: "/health-fitness-calculators",
-    icon: "vital_signs",
-    iconBg: "bg-error-container text-error",
-    count: "180+",
-    desc: "BMR, heart rate, and body fat tracking.",
-    tags: ["BMI", "TDEE", "Calorie Deficit"],
-  },
-  {
-    title: "Math",
-    link: "/math",
-    icon: "square_foot",
-    iconBg: "bg-secondary-fixed text-secondary",
-    count: "100+",
-    desc: "Algebra, fractions, and statistics.",
-    tags: ["Percentage", "Fraction", "Standard Dev"],
-  },
-  {
-    title: "Conversion",
-    link: "/conversions",
-    icon: "swap_horiz",
-    iconBg: "bg-surface-container-highest text-on-surface",
-    count: "260+",
-    desc: "Metric, imperial, and scientific conversions.",
-    tags: ["Length", "Mass", "Volume"],
-  },
-  {
-    title: "Date & Time",
-    link: "/time-date",
-    icon: "schedule",
-    iconBg: "bg-primary-fixed text-primary",
-    count: "104+",
-    desc: "Calculate age, time zones, and business days.",
-    tags: ["Age Diff", "Working Days", "Time Zones"],
-  },
-  {
-    title: "Home & Construction",
-    link: "/home-construction",
-    icon: "construction",
-    iconBg: "bg-tertiary-fixed text-tertiary",
-    count: "100+",
-    desc: "Concrete, roof pitch, and material estimates.",
-    tags: ["Concrete", "Square Feet", "Roof Pitch"],
-  },
-  {
-    title: "Education",
-    link: "/education",
-    icon: "school",
-    iconBg: "bg-secondary-fixed-dim text-on-secondary-fixed-variant",
-    count: "100+",
-    desc: "GPA models, final exam solvers, and attendance buffers.",
-    tags: ["GPA", "Final Grade", "Percentile"],
-  },
-  {
-    title: "Business",
-    link: "/business",
-    icon: "domain",
-    iconBg: "bg-primary-fixed text-primary",
-    count: "250+",
-    desc: "Profit margins, runway, and markup calculators.",
-    tags: ["Margin", "Burn Rate", "Break-Even"],
-  },
-  {
-    title: "Electrical",
-    link: "/electrical",
-    icon: "electric_bolt",
-    iconBg: "bg-primary-fixed text-primary",
-    count: "300+",
-    desc: "Wire sizing, voltage drop, and solar battery storage.",
-    tags: ["Ohm's Law", "AWG Sizing", "kW to Amps"],
-  },
-  {
-    title: "Automotive",
-    link: "/automotive-calculators-estimators",
-    icon: "directions_car",
-    iconBg: "bg-surface-container-highest text-on-surface-variant",
-    count: "90+",
-    desc: "Fuel economy, auto loans, and EV efficiency.",
-    tags: ["MPG / EV", "Lease vs Buy", "Tire Size"],
-  },
-  {
-    title: "Science",
-    link: "/science",
-    icon: "science",
-    iconBg: "bg-secondary-fixed text-secondary",
-    count: "100+",
-    desc: "Physics, chemistry, and biology problem solvers.",
-    tags: ["Molarity", "Velocity", "Half-Life"],
-  },
-  {
-    title: "Technology",
-    link: "/technology",
-    icon: "terminal",
-    iconBg: "bg-primary-fixed text-primary",
-    count: "100+",
-    desc: "Subnet masks, bandwidth speeds, and aspect ratios.",
-    tags: ["Subnet IPv4", "Bitrate", "Aspect Ratio"],
-  },
-];
+interface CategoryItem {
+  name: string;
+  href: string;
+  icon: string;
+  description: string;
+  sampleTools: { name: string; href: string }[];
+}
 
-const trendingData = [
-  {
-    id: 1,
-    title: "BMI Calculator",
-    desc: "Calculate body mass index for adults and children.",
-    rating: "4.9",
-    tagBg: "bg-primary/10 text-primary",
-    link: "/health-fitness-calculators/bmi",
-    linkText: "Open Calculator",
-    linkIcon: "arrow_forward",
-    linkBg: "bg-primary text-on-primary hover:bg-on-primary-fixed-variant",
-  },
-  {
-    id: 2,
-    title: "Age Calculator",
-    desc: "Calculate exact age down to the second.",
-    rating: "5.0",
-    tagBg: "bg-primary/10 text-primary",
-    link: "/time-date/age-calculator",
-    linkText: "Open Calculator",
-    linkIcon: "arrow_forward",
-    linkBg: "bg-primary text-on-primary hover:bg-on-primary-fixed-variant",
-  },
-  {
-    id: 3,
-    title: "Investing & Growth",
-    desc: "Calculate compound interest, investment returns, and SIP.",
-    rating: "4.9",
-    tagBg: "bg-surface-container text-on-surface-variant",
-    link: "/investing-and-growth",
-    linkText: "Open Calculator",
-    linkIcon: "arrow_forward",
-    linkBg: "bg-primary text-on-primary hover:bg-on-primary-fixed-variant",
-  },
-  {
-    id: 4,
-    title: "EMI Calculator",
-    desc: "Calculate monthly loan installments and payoff schedules.",
-    rating: "4.8",
-    tagBg: "bg-surface-container text-on-surface-variant",
-    link: "/finance/emi-calculator",
-    linkText: "Open Calculator",
-    linkIcon: "arrow_forward",
-    linkBg: "bg-primary text-on-primary hover:bg-on-primary-fixed-variant",
-  },
-  {
-    id: 5,
-    title: "GST Calculator",
-    desc: "Calculate inclusive and exclusive GST amounts.",
-    rating: "4.8",
-    tagBg: "bg-surface-container text-on-surface-variant",
-    link: "/tax-calculator",
-    linkText: "Open Calculator",
-    linkIcon: "arrow_forward",
-    linkBg: "bg-primary text-on-primary hover:bg-on-primary-fixed-variant",
-  },
-  {
-    id: 6,
-    title: "Percentage Calculator",
-    desc: "Calculate percentage difference, increase, and decrease.",
-    rating: "4.9",
-    tagBg: "bg-surface-container text-on-surface-variant",
-    link: "/percentage-calculator",
-    linkText: "Open Calculator",
-    linkIcon: "arrow_forward",
-    linkBg: "bg-primary text-on-primary hover:bg-on-primary-fixed-variant",
-  },
-  {
-    id: 7,
-    title: "Standard Deviation Calculator",
-    desc: "Calculate variance, mean, and standard deviation for population or sample datasets.",
-    rating: "4.9",
-    tagBg: "bg-surface-container text-on-surface-variant",
-    link: "/math/standard-deviation-calculator",
-    linkText: "Open Calculator",
-    linkIcon: "arrow_forward",
-    linkBg: "bg-primary text-on-primary hover:bg-on-primary-fixed-variant",
-  },
-  {
-    id: 8,
-    title: "Mortgage Calculator",
-    desc: "Estimate mortgage payments including taxes and insurance.",
-    rating: "4.9",
-    tagBg: "bg-surface-container text-on-surface-variant",
-    link: "/finance/mortgage-calculator",
-    linkText: "Open Calculator",
-    linkIcon: "arrow_forward",
-    linkBg: "bg-primary text-on-primary hover:bg-on-primary-fixed-variant",
-  },
-];
+interface GoalCategory {
+  id: string;
+  title: string;
+  icon: string;
+  description: string;
+  tools: { name: string; href: string; note: string }[];
+}
 
-const purposeData = [
+interface EducationalGuide {
+  title: string;
+  question: string;
+  answer: string;
+  guideHref: string;
+  calculatorHref: string;
+  calculatorName: string;
+}
+
+// --- Data: Curated Calculator Search Index (100% Real Routes) ---
+const CALCULATOR_DIRECTORY: CalculatorItem[] = [
   {
-    title: "Save Money",
-    icon: "savings",
-    iconBg: "bg-primary-fixed text-primary",
-    desc: "Model compounding yields and savings goals.",
-    links: ["Compound Interest Tool", "Emergency Fund Target"],
-    categoryLink: "/finance#savings-section",
+    id: "mortgage",
+    name: "Mortgage Calculator",
+    category: "Finance",
+    categoryHref: "/finance",
+    description: "Estimate monthly home loan payments with principal, interest, taxes, and amortization schedules.",
+    href: "/finance/mortgage-calculator",
+    icon: "home",
+    synonyms: ["home loan", "house payment", "amortization", "property tax", "escrow", "real estate", "down payment"],
   },
   {
-    title: "Lose Weight",
+    id: "bmi",
+    name: "BMI Calculator",
+    category: "Health & Fitness",
+    categoryHref: "/health-fitness-calculators",
+    description: "Assess body mass index and healthy weight ranges for adults and children according to WHO benchmarks.",
+    href: "/health-fitness-calculators/bmi",
     icon: "monitor_weight",
-    iconBg: "bg-error-container text-error",
-    desc: "Calculate strict daily caloric deficits.",
-    links: ["Caloric Deficit Planner", "Target Date Projector"],
-    categoryLink: "/health-fitness-calculators",
+    synonyms: ["body mass index", "weight", "body fat", "calories", "obesity", "underweight", "ideal weight", "height"],
   },
   {
-    title: "Track Fitness",
-    icon: "fitness_center",
-    iconBg: "bg-secondary-fixed text-secondary",
-    desc: "Balance macronutrients and fitness goals.",
-    links: ["Macro Split Calculator", "One-Rep Max (1RM)"],
-    categoryLink: "/health-fitness-calculators",
+    id: "age",
+    name: "Age Calculator",
+    category: "Time & Date",
+    categoryHref: "/time-date",
+    description: "Calculate your exact chronological age in years, months, weeks, days, hours, and seconds.",
+    href: "/time-date/age-calculator",
+    icon: "cake",
+    synonyms: ["birthday", "date of birth", "how old am i", "chronological age", "age difference", "dob"],
   },
   {
-    title: "Buy A Home",
-    icon: "real_estate_agent",
-    iconBg: "bg-surface-container-highest text-on-surface",
-    desc: "Estimate true mortgage affordability and closing costs.",
-    links: ["Home Affordability Index", "Down Payment Timeline"],
-    categoryLink: "/finance/mortgage-calculator",
+    id: "percentage",
+    name: "Percentage Calculator",
+    category: "Math & Statistics",
+    categoryHref: "/math",
+    description: "Solve percentage increases, decreases, differences, fractions, and discounts with step-by-step math.",
+    href: "/percentage-calculator",
+    icon: "percent",
+    synonyms: ["percent", "discount", "markup", "percentage change", "fraction to percent", "proportion"],
   },
   {
-    title: "Plan Retirement",
+    id: "loan-emi",
+    name: "Loan & EMI Calculator",
+    category: "Finance",
+    categoryHref: "/finance",
+    description: "Calculate monthly loan installments, total interest costs, and full payment breakdown curves.",
+    href: "/finance/emi-calculator",
+    icon: "payments",
+    synonyms: ["emi", "car loan", "personal loan", "borrowing", "monthly installment", "amortization table"],
+  },
+  {
+    id: "compound-interest",
+    name: "Compound Interest Calculator",
+    category: "Finance",
+    categoryHref: "/finance",
+    description: "Model wealth accumulation with compound growth frequencies and periodic contributions.",
+    href: "/finance/compound-interest-calculator",
+    icon: "trending_up",
+    synonyms: ["compound growth", "interest", "future value", "investing", "annual yield", "apy"],
+  },
+  {
+    id: "sip",
+    name: "SIP Calculator",
+    category: "Finance",
+    categoryHref: "/finance",
+    description: "Forecast potential returns from systematic monthly mutual fund investments over time.",
+    href: "/investing-and-growth",
+    icon: "savings",
+    synonyms: ["systematic investment plan", "mutual funds", "recurring deposit", "cagr", "wealth builder"],
+  },
+  {
+    id: "salary-payroll",
+    name: "Salary & Payroll Calculator",
+    category: "Business",
+    categoryHref: "/business",
+    description: "Estimate gross earnings, take-home pay, hourly rates, and standard withholding deductions.",
+    href: "/salary-and-payroll",
+    icon: "badge",
+    synonyms: ["take home pay", "hourly to salary", "wages", "paycheck", "gross to net", "payroll taxes"],
+  },
+  {
+    id: "time-calculator",
+    name: "Time Calculator",
+    category: "Time & Date",
+    categoryHref: "/time-date",
+    description: "Add, subtract, and convert clock hours, minutes, and seconds across multiple time intervals.",
+    href: "/time-date/time-calculator",
+    icon: "schedule",
+    synonyms: ["hours and minutes", "clock calculator", "elapsed time", "time sum", "duration"],
+  },
+  {
+    id: "gpa",
+    name: "GPA & Academic Planning Calculator",
+    category: "Education",
+    categoryHref: "/education",
+    description: "Calculate cumulative grade point averages and determine target scores needed on final exams.",
+    href: "/education",
+    icon: "school",
+    synonyms: ["grade point average", "college gpa", "grades", "final exam", "weighted gpa", "marks"],
+  },
+  {
+    id: "unit-converter",
+    name: "Universal Unit Converter",
+    category: "Unit Conversion",
+    categoryHref: "/conversions",
+    description: "Convert length, weight, temperature, area, volume, speed, data, and power units with exact precision.",
+    href: "/conversions",
+    icon: "swap_horiz",
+    synonyms: ["metric conversion", "imperial", "kg to lbs", "meters to feet", "celsius to fahrenheit", "units"],
+  },
+  {
+    id: "scientific",
+    name: "Scientific Calculator",
+    category: "Math & Statistics",
+    categoryHref: "/math",
+    description: "Solve advanced algebra, trigonometry, logarithms, exponentials, and scientific equations.",
+    href: "/scientific-calculator",
+    icon: "calculate",
+    synonyms: ["sin cos tan", "logarithm", "square root", "powers", "trigonometry", "scientific notation"],
+  },
+  {
+    id: "retirement",
+    name: "Retirement Countdown & Super Calculator",
+    category: "Finance",
+    categoryHref: "/finance",
+    description: "Model safe withdrawal rates, nest egg targets, and countdown workdays remaining until retirement.",
+    href: "/time-date/retirement-countdown-in-workdays",
     icon: "beach_access",
-    iconBg: "bg-primary-fixed-dim text-primary",
-    desc: "Compute drawdown horizons and safe withdrawal limits.",
-    links: ["FIRE Movement Calculator", "401(k) Match Optimizer"],
-    categoryLink: "/retirement-and-super",
+    synonyms: ["401k", "pension", "fire", "retirement age", "working days left", "nest egg"],
   },
   {
-    title: "Calculate Taxes",
-    icon: "receipt_long",
-    iconBg: "bg-tertiary-fixed text-tertiary",
-    desc: "Evaluate marginal brackets and standard deductions.",
-    links: ["2025 Income Tax Bracket", "Capital Gains Tax Suite"],
-    categoryLink: "/global-tax-calculator",
+    id: "business-days",
+    name: "Business Days Calculator",
+    category: "Time & Date",
+    categoryHref: "/time-date",
+    description: "Count exact working days between dates, automatically excluding weekends and public holidays.",
+    href: "/business-days-calculator",
+    icon: "event_available",
+    synonyms: ["workdays", "working days", "business day countdown", "exclude weekends", "calendar days"],
   },
   {
-    title: "Study Better",
-    icon: "auto_stories",
-    iconBg: "bg-secondary-fixed text-secondary",
-    desc: "Forecast final exam scores and track GPA.",
-    links: ["Final Exam Score Needed", "Cumulative GPA Tool"],
-    categoryLink: "/education",
+    id: "date-diff",
+    name: "Date Difference Calculator",
+    category: "Time & Date",
+    categoryHref: "/time-date",
+    description: "Determine the exact duration between any two dates in days, months, and years.",
+    href: "/date-difference-calculator",
+    icon: "date_range",
+    synonyms: ["days between dates", "calendar span", "time between dates", "countdown", "date math"],
   },
   {
-    title: "Build A House",
-    icon: "architecture",
-    iconBg: "bg-surface-container-highest text-on-surface",
-    desc: "Compute yardages for concrete, lumber, and drywall.",
-    links: ["Concrete Yardage Tool", "Drywall & Stud Estimator"],
-    categoryLink: "/home-construction",
-  },
-];
-
-const collectionData: Record<
-  string,
-  Array<{
-    title: string;
-    badge: string;
-    badgeBg: string;
-    formula: string;
-    desc: string;
-    btnText: string;
-    link?: string;
-  }>
-> = {
-  finance: [
-    {
-      title: "EMI Suite",
-      link: "/finance/emi-calculator",
-      badge: "Formula Verified",
-      badgeBg: "bg-surface-container-highest text-primary",
-      formula: "P × r × (1 + r)ⁿ / ((1 + r)ⁿ - 1)",
-      desc: "Calculate monthly loan repayment schedules.",
-      btnText: "Launch EMI Suite",
-    },
-    {
-      title: "SIP & Recurring",
-      link: "/investing-and-growth",
-      badge: "Formula Verified",
-      badgeBg: "bg-surface-container-highest text-primary",
-      formula: "M × {[(1 + i)ⁿ - 1] / i} × (1 + i)",
-      desc: "Model dollar-cost averaging and mutual fund returns.",
-      btnText: "Open SIP Tool",
-    },
-    {
-      title: "CAGR & ROI",
-      link: "/investing-and-growth",
-      badge: "Formula Verified",
-      badgeBg: "bg-surface-container-highest text-primary",
-      formula: "(Ending / Beginning)^(1/n) - 1",
-      desc: "Calculate annualized returns and ROI.",
-      btnText: "Launch CAGR Tool",
-    },
-  ],
-  health: [
-    {
-      title: "BMI WHO Metric",
-      link: "/health-fitness-calculators/bmi",
-      badge: "ISO Standard",
-      badgeBg: "bg-surface-container-highest text-secondary",
-      formula: "Weight (kg) / [Height (m)]²",
-      desc: "Calculate body mass index for adults and children.",
-      btnText: "Launch BMI Suite",
-    },
-    {
-      title: "Mifflin-St Jeor BMR",
-      link: "/health-fitness-calculators#bmr-card",
-      badge: "Clinical Grade",
-      badgeBg: "bg-surface-container-highest text-secondary",
-      formula: "10W + 6.25H - 5A (+5 or -161)",
-      desc: "Calculate basal metabolic rate based on Mifflin-St Jeor.",
-      btnText: "Launch BMR Suite",
-    },
-    {
-      title: "U.S. Navy Body Fat",
-      link: "/health-fitness-calculators#navy-card",
-      badge: "Anthropometric",
-      badgeBg: "bg-surface-container-highest text-secondary",
-      formula: "86.010×log10(abdomen-neck) - ...",
-      desc: "Calculate body fat percentage based on US Navy formula.",
-      btnText: "Launch Body Fat Tool",
-    },
-  ],
-  math: [
-    {
-      title: "Percentage Delta",
-      link: "/percentage-calculator",
-      badge: "Exact",
-      badgeBg: "bg-surface-container-highest text-primary",
-      formula: "|(V2 - V1)| / ((V1 + V2) / 2) × 100",
-      desc: "Calculate percentage difference, increase, and decrease.",
-      btnText: "Launch Percentage Tool",
-    },
-    {
-      title: "Fraction Simplifier",
-      link: "/math#quick-solve",
-      badge: "Euclidean",
-      badgeBg: "bg-surface-container-highest text-primary",
-      formula: "gcd(a, b) recursively computed",
-      desc: "Simplify fractions and find decimal equivalents.",
-      btnText: "Launch Fractions",
-    },
-    {
-      title: "Matrix Determinant",
-      link: "/math#directory",
-      badge: "Linear Algebra",
-      badgeBg: "bg-surface-container-highest text-primary",
-      formula: "det(A) = ∏ diag(U)",
-      desc: "Calculate matrix determinants, inverses, and eigenvalues.",
-      btnText: "Launch Matrix Solver",
-    },
-  ],
-  conversion: [
-    {
-      title: "Grams to Milliliters",
-      link: "/conversion/grams-to-milliliters",
-      badge: "NIST Standard",
-      badgeBg: "bg-surface-container-highest text-primary",
-      formula: "V = m ÷ ρ",
-      desc: "Convert grams to milliliters using specific gravity.",
-      btnText: "Launch Converter",
-    },
-    {
-      title: "Universal Metric-Imperial",
-      link: "/conversions",
-      badge: "NIST Standard",
-      badgeBg: "bg-surface-container-highest text-primary",
-      formula: "1 in = 0.0254 m (exact)",
-      desc: "Convert length and distance across all units.",
-      btnText: "Launch Distance Tool",
-    },
-    {
-      title: "Temperature Thermodynamic",
-      link: "/temperature-converter",
-      badge: "Kelvin / Rankine",
-      badgeBg: "bg-surface-container-highest text-primary",
-      formula: "K = °C + 273.15 • °F = 1.8(K - 273) + 32",
-      desc: "Convert between Celsius, Fahrenheit, Kelvin, and Rankine.",
-      btnText: "Launch Temperature",
-    },
-  ],
-};
-
-const leaderboardData = [
-  {
-    rank: 1,
-    title: "Age & Chronological Duration",
-    badge: "Trending #1",
-    badgeBg: "bg-primary-fixed text-primary",
-    desc: "Category: Date & Time",
-    count: "482,920",
-    link: "/time-date/age-calculator",
-    numBg: "bg-primary text-on-primary",
+    id: "fuel-cost",
+    name: "Fuel Economy & Cost Calculator",
+    category: "Automotive",
+    categoryHref: "/automotive-calculators-estimators",
+    description: "Estimate trip gas expenses, fuel consumption, and distance efficiency in MPG or L/100km.",
+    href: "/fuel-economy-converter",
+    icon: "local_gas_station",
+    synonyms: ["gas cost", "mpg", "liters per 100km", "trip cost", "mileage", "gas mileage"],
   },
   {
-    rank: 2,
-    title: "Scientific Matrix & Function Calculator",
-    badge: "Academic",
-    badgeBg: "bg-secondary-fixed text-secondary",
-    desc: "Category: Math",
-    count: "391,140",
-    link: "/math",
-    numBg: "bg-surface-container-highest text-on-surface",
-  },
-  {
-    rank: 3,
-    title: "Mortgage Payment & Amortization Suite",
-    badge: "Real Estate",
-    badgeBg: "bg-surface-container-high text-on-surface",
-    desc: "Category: Finance",
-    count: "318,450",
-    link: "/finance/mortgage-calculator",
-    numBg: "bg-surface-container-highest text-on-surface",
-  },
-  {
-    rank: 4,
-    title: "Body Mass Index (BMI) & Ideal Body Weight",
-    badge: "Health",
-    badgeBg: "bg-surface-container-high text-on-surface",
-    desc: "Category: Health",
-    count: "284,010",
-    link: "/health-fitness-calculators/bmi",
-    numBg: "bg-surface-container-highest text-on-surface",
-  },
-  {
-    rank: 5,
-    title: "Goods & Services Tax (GST/VAT) Splitter",
-    badge: "Taxation",
-    badgeBg: "bg-surface-container-high text-on-surface",
-    desc: "Category: Business",
-    count: "249,700",
-    link: "/tax-calculator",
-    numBg: "bg-surface-container-highest text-on-surface",
-  },
-];
-
-const trustData = [
-  {
-    title: "Accurate Formulas",
-    icon: "verified",
-    iconBg: "bg-primary-fixed text-primary",
-    desc: "Cross-referenced with rigorous industry and mathematical standards.",
-  },
-  {
-    title: "Expert Reviewed",
+    id: "ultradian-rhythm",
+    name: "90-Minute Ultradian Rhythm Planner",
+    category: "Time & Date",
+    categoryHref: "/time-date",
+    description: "Align deep work sessions with Dr. Nathaniel Kleitman’s 90-minute biological BRAC cycle and rest pauses.",
+    href: "/time-date/90-minute-ultradian-rhythm-planner",
     icon: "psychology",
-    iconBg: "bg-secondary-fixed text-secondary",
-    desc: "Audited by certified professionals across all domains.",
+    synonyms: ["ultradian", "90 minute", "focus block", "brac", "pomodoro alternative", "sleep cycle", "circadian"],
   },
   {
-    title: "Sub-0.02s Execution",
-    icon: "speed",
-    iconBg: "bg-surface-container-highest text-on-surface",
-    desc: "Zero network lag with direct in-browser CPU computation.",
+    id: "running-pace",
+    name: "Running Pace Calculator",
+    category: "Health & Fitness",
+    categoryHref: "/health-fitness-calculators",
+    description: "Calculate pace, speed, finish times, and split intervals for 5K, 10K, half marathon, or marathon.",
+    href: "/running-pace-calculator",
+    icon: "directions_run",
+    synonyms: ["pace", "split times", "marathon finish time", "min per km", "min per mile", "5k pace"],
   },
   {
-    title: "Mobile Ergonomics",
-    icon: "devices",
-    iconBg: "bg-surface-container-highest text-primary",
-    desc: "Designed with touch-friendly keypads for one-handed use.",
+    id: "leap-year",
+    name: "Leap Year Calculator",
+    category: "Time & Date",
+    categoryHref: "/time-date",
+    description: "Verify if any calendar year is a leap year according to the 400-year Gregorian cycle.",
+    href: "/leap-year-calculator",
+    icon: "event_repeat",
+    synonyms: ["february 29", "leap day", "gregorian rules", "astronomical year", "calendar cycle"],
   },
   {
-    title: "Free Forever",
-    icon: "all_inclusive",
-    iconBg: "bg-primary-fixed-dim text-primary",
-    desc: "No subscriptions, artificial gates, or registrations required.",
+    id: "income-tax",
+    name: "Global Income Tax Calculator",
+    category: "Finance",
+    categoryHref: "/finance",
+    description: "Evaluate progressive marginal tax brackets, effective tax rates, and standard deductions.",
+    href: "/tax-calculator",
+    icon: "receipt_long",
+    synonyms: ["tax brackets", "income tax", "federal tax", "state tax", "withholding", "marginal tax"],
   },
   {
-    title: "Absolute Privacy",
-    icon: "shield_person",
-    iconBg: "bg-error-container text-error",
-    desc: "Your data never leaves your browser sandbox. Pure local processing.",
+    id: "gst-vat",
+    name: "GST & VAT Calculator",
+    category: "Business",
+    categoryHref: "/business",
+    description: "Calculate inclusive and exclusive sales tax, VAT, or GST amounts with clear tax splits.",
+    href: "/tax-calculator",
+    icon: "receipt",
+    synonyms: ["gst", "vat", "sales tax", "tax inclusive", "tax exclusive"],
+  },
+  {
+    id: "home-construction",
+    name: "Home & Construction Estimators",
+    category: "Home & Construction",
+    categoryHref: "/home-construction",
+    description: "Estimate materials for concrete slabs, flooring, roofing, drywall, and paint projects.",
+    href: "/home-construction",
+    icon: "construction",
+    synonyms: ["concrete", "flooring", "drywall", "roofing", "paint", "square footage", "yardage"],
+  },
+  {
+    id: "electrical",
+    name: "Electrical Engineering Tools",
+    category: "Electrical",
+    categoryHref: "/electrical",
+    description: "Solve Ohm’s law, wire gauge sizing, voltage drop, and power conversions with electrical standards.",
+    href: "/electrical",
+    icon: "electric_bolt",
+    synonyms: ["ohms law", "voltage drop", "amperage", "wire gauge", "awg", "watts to amps"],
+  },
+  {
+    id: "work-hours",
+    name: "Work Hours & Timesheet Calculator",
+    category: "Time & Date",
+    categoryHref: "/time-date",
+    description: "Track daily clock-in and clock-out hours, break deductions, and billable timesheet totals.",
+    href: "/time-date/work-hours",
+    icon: "more_time",
+    synonyms: ["timesheet", "punch card", "billable hours", "shift time", "clock in clock out"],
+  },
+  {
+    id: "fire-forecaster",
+    name: "FIRE Forecaster & Financial Independence",
+    category: "Finance",
+    categoryHref: "/finance",
+    description: "Forecast the timeline to financial independence based on annual savings rate and withdrawal rules.",
+    href: "/finance/fire-forecaster",
+    icon: "local_fire_department",
+    synonyms: ["financial independence", "early retirement", "fire movement", "safe withdrawal", "lean fire"],
+  },
+  {
+    id: "project-planner",
+    name: "Project Timeline & Plan Estimator",
+    category: "Business",
+    categoryHref: "/business",
+    description: "Schedule milestones, estimate task durations, and project completion dates.",
+    href: "/plan-a-project-calculator",
+    icon: "timeline",
+    synonyms: ["project schedule", "timeline", "task duration", "milestones", "gantt planning"],
   },
 ];
 
-const dirCardsData = [
+// --- 12 Main Categories ---
+const CATEGORIES: CategoryItem[] = [
   {
-    id: 1,
-    category: "finance",
-    link: "/finance/mortgage-calculator",
+    name: "Finance",
+    href: "/finance",
+    icon: "payments",
+    description: "Loans, mortgages, investing, retirement, taxes, savings and more.",
+    sampleTools: [
+      { name: "Mortgage Calculator", href: "/finance/mortgage-calculator" },
+      { name: "EMI & Loans", href: "/finance/emi-calculator" },
+      { name: "Compound Interest", href: "/finance/compound-interest-calculator" },
+    ],
+  },
+  {
+    name: "Health & Fitness",
+    href: "/health-fitness-calculators",
+    icon: "favorite",
+    description: "BMI, calories, BMR, TDEE, body metrics and wellness calculations.",
+    sampleTools: [
+      { name: "BMI Calculator", href: "/health-fitness-calculators/bmi" },
+      { name: "Running Pace", href: "/running-pace-calculator" },
+      { name: "Zone 2 Training", href: "/article/zone-2-cardio-training" },
+    ],
+  },
+  {
+    name: "Math & Statistics",
+    href: "/math",
+    icon: "calculate",
+    description: "Percentages, fractions, algebra, statistics and everyday math.",
+    sampleTools: [
+      { name: "Percentage Calculator", href: "/percentage-calculator" },
+      { name: "Standard Deviation", href: "/math/standard-deviation-calculator" },
+      { name: "Scientific Solver", href: "/scientific-calculator" },
+    ],
+  },
+  {
+    name: "Unit Conversion",
+    href: "/conversions",
+    icon: "swap_horiz",
+    description: "Length, weight, area, volume, temperature and other conversions.",
+    sampleTools: [
+      { name: "Universal Converter", href: "/conversions" },
+      { name: "Temperature (°C / °F)", href: "/temperature-converter" },
+      { name: "Weight & Mass", href: "/weight-mass-converter" },
+    ],
+  },
+  {
+    name: "Time & Date",
+    href: "/time-date",
+    icon: "schedule",
+    description: "Age, date differences, countdowns, durations, workdays and time zones.",
+    sampleTools: [
+      { name: "Age Calculator", href: "/time-date/age-calculator" },
+      { name: "90-Minute Ultradian", href: "/time-date/90-minute-ultradian-rhythm-planner" },
+      { name: "Business Days", href: "/business-days-calculator" },
+    ],
+  },
+  {
+    name: "Home & Construction",
+    href: "/home-construction",
+    icon: "home_work",
+    description: "Concrete, flooring, roofing, paint, area and project calculations.",
+    sampleTools: [
+      { name: "Material Estimator", href: "/home-construction" },
+      { name: "Project Timeline", href: "/plan-a-project-calculator" },
+      { name: "Area Converter", href: "/area-converter" },
+    ],
+  },
+  {
+    name: "Business",
+    href: "/business",
+    icon: "domain",
+    description: "Profit, margin, pricing, payroll, revenue and business planning.",
+    sampleTools: [
+      { name: "Salary & Payroll", href: "/salary-and-payroll" },
+      { name: "GST & Sales Tax", href: "/tax-calculator" },
+      { name: "Freelance Rate", href: "/freelance-hourly-rate-calculator" },
+    ],
+  },
+  {
+    name: "Education",
+    href: "/education",
+    icon: "school",
+    description: "Grades, GPA, study planning, attendance and academic calculations.",
+    sampleTools: [
+      { name: "Cumulative GPA", href: "/education" },
+      { name: "Final Exam Planner", href: "/education" },
+      { name: "Percentage Solver", href: "/percentage-calculator" },
+    ],
+  },
+  {
+    name: "Science",
+    href: "/science",
+    icon: "science",
+    description: "Physics, chemistry, biology and scientific calculations.",
+    sampleTools: [
+      { name: "Scientific Tools", href: "/science" },
+      { name: "Density & Mass", href: "/conversion/grams-to-milliliters" },
+      { name: "Astronomy & Solstice", href: "/equinox-solstice-calculator" },
+    ],
+  },
+  {
+    name: "Electrical",
+    href: "/electrical",
+    icon: "electric_bolt",
+    description: "Voltage, current, resistance, power and electrical formulas.",
+    sampleTools: [
+      { name: "Ohm’s Law Solver", href: "/electrical" },
+      { name: "Voltage Drop", href: "/electrical" },
+      { name: "Power Converter", href: "/power-converter" },
+    ],
+  },
+  {
+    name: "Automotive",
+    href: "/automotive-calculators-estimators",
+    icon: "directions_car",
+    description: "Fuel economy, vehicle costs, auto loans, EV calculations and more.",
+    sampleTools: [
+      { name: "Fuel Economy (MPG)", href: "/fuel-economy-converter" },
+      { name: "Auto Loan Estimator", href: "/finance/emi-calculator" },
+      { name: "Speed & Velocity", href: "/speed-velocity-converter" },
+    ],
+  },
+  {
+    name: "Technology",
+    href: "/technology",
+    icon: "terminal",
+    description: "Data, bandwidth, networking, aspect ratio and developer calculations.",
+    sampleTools: [
+      { name: "Data Storage Units", href: "/data-storage-converter" },
+      { name: "Unix Timestamp", href: "/unix-timestamp-converter" },
+      { name: "Transfer Speeds", href: "/data-transfer-converter" },
+    ],
+  },
+];
+
+// --- Finance Subcategories ---
+const FINANCE_SUBCATEGORIES = [
+  { name: "Loans & Amortization", href: "/loans-and-amortization", desc: "Personal, auto, and amortized fixed installment schedules." },
+  { name: "Mortgages & Real Estate", href: "/mortgages-and-real-estate", desc: "Home purchases, refinancing, escrow, and property taxes." },
+  { name: "Investing & Growth", href: "/investing-and-growth", desc: "Compound returns, SIP wealth accumulation, and CAGR models." },
+  { name: "Retirement & Pension", href: "/retirement-and-super", desc: "401(k), nest egg depletion horizons, and safe withdrawal." },
+  { name: "Savings & Liquidity", href: "/savings-and-liquidity", desc: "Emergency funds, high-yield deposit yields, and milestone pacing." },
+  { name: "Banking & Cash Accounts", href: "/banking-and-cash-accounts", desc: "Checking fee balances, overdraft models, and money market yields." },
+  { name: "Credit Cards", href: "/credit-cards-and-revolving", desc: "Interest payoff acceleration, balance transfers, and minimum fees." },
+  { name: "Taxes", href: "/global-tax-calculator", desc: "Marginal income tax brackets, deductions, and statutory levies." },
+];
+
+// --- Goal-Based Discovery (Easy Everyday English) ---
+const GOAL_CATEGORIES: GoalCategory[] = [
+  {
+    id: "money",
+    title: "LOANS & MORTGAGES",
+    icon: "payments",
+    description: "Figure out monthly payments, total interest costs, and payoff timelines.",
+    tools: [
+      { name: "Mortgage Calculator", href: "/finance/mortgage-calculator", note: "Monthly home loan payments" },
+      { name: "Loan & EMI Calculator", href: "/finance/emi-calculator", note: "Car and personal loan payments" },
+      { name: "Compound Interest", href: "/finance/compound-interest-calculator", note: "See how your savings can grow" },
+      { name: "Retirement Countdown", href: "/time-date/retirement-countdown-in-workdays", note: "Days until you can retire" },
+    ],
+  },
+  {
+    id: "home",
+    title: "HOME & DIY PROJECTS",
+    icon: "home_work",
+    description: "Calculate room size, floor tiles, paint, concrete, and materials.",
+    tools: [
+      { name: "Home Construction Suite", href: "/home-construction", note: "Concrete, walls & materials" },
+      { name: "Project Timeline", href: "/plan-a-project-calculator", note: "Track project days & milestones" },
+      { name: "Area & Room Size", href: "/area-converter", note: "Square feet, meters & yards" },
+      { name: "Mortgage Affordability", href: "/finance/mortgage-calculator", note: "See what house fits your budget" },
+    ],
+  },
+  {
+    id: "health",
+    title: "HEALTH & FITNESS",
+    icon: "favorite",
+    description: "Check your body weight, BMI score, walking and running pace.",
+    tools: [
+      { name: "BMI Calculator", href: "/health-fitness-calculators/bmi", note: "Check if your weight is in a healthy range" },
+      { name: "Running & Walking Pace", href: "/running-pace-calculator", note: "Minutes per mile or kilometer" },
+      { name: "Health & Fitness Tools", href: "/health-fitness-calculators", note: "All body and workout tools" },
+      { name: "Pet Age Converter", href: "/pet-age-converter", note: "Find your dog or cat age in human years" },
+    ],
+  },
+  {
+    id: "time",
+    title: "DATES, AGE & TIME",
+    icon: "schedule",
+    description: "Find your exact age, count days between dates, and count work hours.",
+    tools: [
+      { name: "Exact Age Calculator", href: "/time-date/age-calculator", note: "Exact years, months, and days" },
+      { name: "Days Between Dates", href: "/date-difference-calculator", note: "Count days between any two dates" },
+      { name: "Working Days Counter", href: "/business-days-calculator", note: "Skip weekends and holidays" },
+      { name: "Add or Subtract Time", href: "/time-date/add-subtract-time", note: "Add up clock hours and minutes" },
+    ],
+  },
+  {
+    id: "business",
+    title: "WORK, PAYROLL & TAX",
+    icon: "domain",
+    description: "See your take-home paycheck, hourly rates, and sales tax.",
+    tools: [
+      { name: "Salary & Paycheck", href: "/salary-and-payroll", note: "Hourly wage to monthly paycheck" },
+      { name: "Sales Tax & GST", href: "/tax-calculator", note: "Add or remove tax from a price" },
+      { name: "Freelance Hourly Rate", href: "/freelance-hourly-rate-calculator", note: "What to charge for your time" },
+      { name: "Business Tools", href: "/business", note: "Profit and cost calculators" },
+    ],
+  },
+  {
+    id: "study",
+    title: "SCHOOL & MATH HELP",
+    icon: "school",
+    description: "Easy step-by-step help for percentages, grades, and science.",
+    tools: [
+      { name: "Percentage Calculator", href: "/percentage-calculator", note: "Discounts and percentage changes" },
+      { name: "Grade & GPA Calculator", href: "/education", note: "Calculate test and school scores" },
+      { name: "Scientific Calculator", href: "/scientific-calculator", note: "Fractions, powers, and equations" },
+      { name: "Unit Converter", href: "/conversions", note: "Feet to meters, lbs to kg, and more" },
+    ],
+  },
+];
+
+// --- 16 Popular Calculators ---
+const POPULAR_CALCULATORS = [
+  { name: "Mortgage Calculator", href: "/finance/mortgage-calculator", desc: "Estimate monthly home loan payments, interest, and taxes.", icon: "home" },
+  { name: "BMI Calculator", href: "/health-fitness-calculators/bmi", desc: "Assess body mass index and clinical category ranges.", icon: "monitor_weight" },
+  { name: "Age Calculator", href: "/time-date/age-calculator", desc: "Compute exact chronological age in years, days, and seconds.", icon: "cake" },
+  { name: "Percentage Calculator", href: "/percentage-calculator", desc: "Solve percentage changes, differences, and discount values.", icon: "percent" },
+  { name: "Loan & EMI Calculator", href: "/finance/emi-calculator", desc: "Calculate fixed monthly loan payments and amortization.", icon: "payments" },
+  { name: "Compound Interest", href: "/finance/compound-interest-calculator", desc: "Model compounding interest over flexible growth intervals.", icon: "trending_up" },
+  { name: "SIP Calculator", href: "/investing-and-growth", desc: "Forecast wealth accumulated through monthly mutual fund plans.", icon: "savings" },
+  { name: "Salary & Payroll", href: "/salary-and-payroll", desc: "Estimate hourly wage to annual salary and take-home pay.", icon: "badge" },
+  { name: "Time Calculator", href: "/time-date/time-calculator", desc: "Add, subtract, and total hours, minutes, and clock intervals.", icon: "schedule" },
+  { name: "GPA Calculator", href: "/education", desc: "Compute cumulative college and high school grade averages.", icon: "school" },
+  { name: "Unit Converter", href: "/conversions", desc: "Convert length, weight, area, volume, and temperature units.", icon: "swap_horiz" },
+  { name: "Scientific Calculator", href: "/scientific-calculator", desc: "Solve trigonometry, logarithms, powers, and math equations.", icon: "calculate" },
+  { name: "Retirement Countdown", href: "/time-date/retirement-countdown-in-workdays", desc: "Track calendar days and remaining workdays until retirement.", icon: "beach_access" },
+  { name: "Business Days Calculator", href: "/business-days-calculator", desc: "Calculate business days between dates excluding holidays.", icon: "event_available" },
+  { name: "Date Calculator", href: "/date-difference-calculator", desc: "Find the exact span of days and months between two dates.", icon: "date_range" },
+  { name: "Fuel Cost Calculator", href: "/fuel-economy-converter", desc: "Estimate road trip fuel costs and mileage consumption.", icon: "local_gas_station" },
+];
+
+// --- 6 Featured Calculators ---
+const FEATURED_CALCULATORS = [
+  {
+    name: "Retirement Countdown",
+    href: "/time-date/retirement-countdown-in-workdays",
+    desc: "Count calendar days, workdays, shifts, PTO and remaining work hours until retirement.",
+    icon: "beach_access",
+    tag: "Long-Term Planning",
+  },
+  {
+    name: "90-Minute Ultradian Rhythm Planner",
+    href: "/time-date/90-minute-ultradian-rhythm-planner",
+    desc: "Align deep creative focus blocks with Dr. Nathaniel Kleitman’s biological BRAC cycle and 20-minute refractory pauses.",
+    icon: "psychology",
+    tag: "Productivity Science",
+  },
+  {
+    name: "Running Pace Calculator",
+    href: "/running-pace-calculator",
+    desc: "Calculate pace, speed, finish time and race splits in min/mile and min/km for any distance.",
+    icon: "directions_run",
+    tag: "Athletics & Training",
+  },
+  {
+    name: "Leap Year Calculator",
+    href: "/leap-year-calculator",
+    desc: "Check any year and explore the Gregorian 400-year cycle and leap day astronomical rules.",
+    icon: "event_repeat",
+    tag: "Chronology",
+  },
+  {
+    name: "Global Income Tax Calculator",
+    href: "/tax-calculator",
+    desc: "Calculate tax based on selected marginal brackets, personal exemptions, and applicable deduction rules.",
+    icon: "receipt_long",
+    tag: "Tax Planning",
+  },
+  {
+    name: "FIRE Forecaster",
+    href: "/finance/fire-forecaster",
+    desc: "Model financial independence timelines using annual savings rate and safe withdrawal horizons.",
+    icon: "local_fire_department",
+    tag: "Wealth Strategy",
+  },
+];
+
+// --- 6 Recently Updated Calculators ---
+const RECENTLY_UPDATED = [
+  {
+    name: "90-Minute Ultradian Rhythm Planner",
+    href: "/time-date/90-minute-ultradian-rhythm-planner",
+    explanation: "Added chronotype presets, custom refractory rest duration, and Web Audio timer synthesis.",
+    lastUpdated: "September 2026",
+    icon: "psychology",
+  },
+  {
+    name: "Global Income Tax Calculator",
+    href: "/tax-calculator",
+    explanation: "Updated marginal rate bracket tiers and standard deduction limits for the 2026 fiscal cycle.",
+    lastUpdated: "March 2026",
+    icon: "receipt_long",
+  },
+  {
     name: "Mortgage Payment Calculator",
-    title: "Mortgage Payment",
-    rating: "4.9",
-    count: "14.2k",
-    desc: "Calculate home loan amortization with escrow.",
-    time: "1 MIN",
-    badgeClass: "bg-primary-fixed text-primary",
-    label: "Finance",
+    href: "/finance/mortgage-calculator",
+    explanation: "Enhanced escrow breakdown logic and multi-tier amortization comparison schedules.",
+    lastUpdated: "February 2026",
+    icon: "home",
   },
   {
-    id: 2,
-    category: "health",
-    link: "/health-fitness-calculators/bmi",
-    name: "BMI & Body Composition",
-    title: "BMI & Body Composition",
-    rating: "4.9",
-    count: "28.4k",
-    desc: "Clinical BMI assessment with healthy weight targets.",
-    time: "30 SEC",
-    badgeClass: "bg-error-container text-error",
-    label: "Health",
+    name: "Retirement Countdown",
+    href: "/time-date/retirement-countdown-in-workdays",
+    explanation: "Added configurable work-week shifts, PTO leave deductions, and milestone projections.",
+    lastUpdated: "February 2026",
+    icon: "beach_access",
   },
   {
-    id: 3,
-    category: "math",
-    link: "/percentage-calculator",
-    name: "Percentage Change & Delta Calculator",
-    title: "Percentage Calculator",
-    rating: "4.9",
-    count: "19.5k",
-    desc: "Calculate percentage difference, margins, and taxes.",
-    time: "10 SEC",
-    badgeClass: "bg-secondary-fixed text-secondary",
-    label: "Math",
+    name: "Business Days Calculator",
+    href: "/business-days-calculator",
+    explanation: "Updated statutory bank holidays and regional calendar registries for accurate working day spans.",
+    lastUpdated: "January 2026",
+    icon: "event_available",
   },
   {
-    id: 4,
-    category: "finance",
-    link: "/investing-and-growth",
-    name: "Investing & Growth (SIP & ROI)",
-    title: "Investing & Growth Compounder",
-    rating: "4.9",
-    count: "18.1k",
-    desc: "Mutual fund projections, investing returns, and growth benchmarks.",
-    time: "1 MIN",
-    badgeClass: "bg-primary-fixed text-primary",
-    label: "Finance",
-  },
-  {
-    id: 5,
-    category: "construction",
-    link: "/home-construction#concrete-calc",
-    name: "Concrete Volume & Yardage",
-    title: "Concrete Volume & Bags",
-    rating: "4.7",
-    count: "7.2k",
-    desc: "Calculate cubic yards for slabs, footings, and holes.",
-    time: "45 SEC",
-    badgeClass: "bg-tertiary-fixed text-tertiary",
-    label: "Construction",
-  },
-  {
-    id: 6,
-    category: "conversion",
-    link: "/conversions",
-    name: "Pressure & Force Units",
-    title: "Pressure & Pascals",
-    rating: "4.8",
-    count: "5.9k",
-    desc: "Convert pressure units including Psi, bar, and Pascals.",
-    time: "20 SEC",
-    badgeClass: "bg-surface-container-highest text-on-surface",
-    label: "Conversion",
+    name: "Leap Year Calculator",
+    href: "/leap-year-calculator",
+    explanation: "Refined Gregorian century modulo validation and astronomical solar year delta calculations.",
+    lastUpdated: "January 2026",
+    icon: "event_repeat",
   },
 ];
 
-const guidesData = [
+// --- 6 Calculator Collections ---
+const COLLECTIONS = [
   {
-    category: "HEALTH",
-    time: "6 MIN READ",
-    title: "How To Calculate BMI: Formula, Categories & Limitations",
-    desc: "Understand when the Quetelet index works and when it under-reports muscular density.",
-    svgIcon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-      </svg>
-    )
+    title: "Finance Calculator Suite",
+    href: "/finance",
+    icon: "payments",
+    desc: "All major tools for loans, investing, savings, taxes, mortgages, and retirement planning.",
+    tools: ["Mortgage Amortization", "Loan EMI", "Compound Growth", "Retirement Super", "Income Tax"],
   },
   {
-    category: "FINANCE",
-    time: "8 MIN READ",
-    title: "How EMI Works: The Mathematical Breakdown of Amortization",
-    desc: "Learn how the reducing balance method and bi-weekly payments can save you years on loans.",
-    svgIcon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-500">
-        <rect width="16" height="20" x="4" y="2" rx="2" />
-        <line x1="8" x2="16" y1="6" y2="6" />
-        <line x1="16" x2="16" y1="14" y2="18" />
-        <path d="M16 10h.01" />
-        <path d="M12 10h.01" />
-        <path d="M8 10h.01" />
-        <path d="M12 14h.01" />
-        <path d="M8 14h.01" />
-        <path d="M12 18h.01" />
-        <path d="M8 18h.01" />
-      </svg>
-    )
+    title: "Health & Fitness Suite",
+    href: "/health-fitness-calculators",
+    icon: "favorite",
+    desc: "BMI, calories, BMR, TDEE, running splits, and related wellness metric calculations.",
+    tools: ["Clinical BMI", "Running Pace", "Zone 2 Cardio", "Body Composition"],
   },
   {
-    category: "BUSINESS",
-    time: "5 MIN READ",
-    title: "Understanding GST: Step-by-Step Calculation for Buyers & Sellers",
-    desc: "Learn how to extract inclusive base costs and input credit pass-throughs.",
-    svgIcon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-purple-500">
-        <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" />
-        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
-        <path d="M12 17V7" />
-      </svg>
-    )
+    title: "Time & Date Suite",
+    href: "/time-date",
+    icon: "schedule",
+    desc: "Age, dates, duration, countdowns, workdays, 90-minute focus cycles, and time zones.",
+    tools: ["Exact Age", "90-Min Ultradian", "Business Days", "Add/Subtract Time", "Date Difference"],
   },
   {
-    category: "INVESTING",
-    time: "7 MIN READ",
-    title: "Investment Planning Basics: The Power of Compound Interest & SIP",
-    desc: "Understand the exponential growth of reinvested dividends over long horizons.",
-    svgIcon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-orange-500">
-        <path d="M3 3v18h18" />
-        <path d="m19 9-5 5-4-4-3 3" />
-        <path d="M14 9h5v5" />
-      </svg>
-    )
+    title: "Home & Construction Suite",
+    href: "/home-construction",
+    icon: "home_work",
+    desc: "Construction, material, area, project scheduling, and surface estimation tools.",
+    tools: ["Concrete Slabs", "Square Footage", "Drywall & Framing", "Project Milestones"],
+  },
+  {
+    title: "Math & Statistics Suite",
+    href: "/math",
+    icon: "calculate",
+    desc: "Everyday mathematics, algebra, percentages, fractions, and statistical distributions.",
+    tools: ["Percentage Solver", "Standard Deviation", "Scientific Algebra", "Fractions"],
+  },
+  {
+    title: "Business Suite",
+    href: "/business",
+    icon: "domain",
+    desc: "Profit, pricing, payroll, revenue, freelance rates, and operational planning tools.",
+    tools: ["Salary & Payroll", "GST / VAT Splitter", "Freelance Hourly Rate", "Break-Even"],
   },
 ];
 
-export default function HomePage() {
-  const [collectionTab, setCollectionTab] = useState("finance");
-  const [heroSearch, setHeroSearch] = useState("");
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const searchRef = useRef<HTMLFormElement>(null);
+// --- 8 Educational Guides ---
+const EDUCATIONAL_GUIDES: EducationalGuide[] = [
+  {
+    title: "How Does an EMI Calculator Work?",
+    question: "How Does an EMI Calculator Work?",
+    answer: "EMI is calculated using principal, interest rate, and tenure through the standard reducing-balance annuity formula: E = P × r × (1+r)ⁿ / ((1+r)ⁿ - 1).",
+    guideHref: "/article/how-emi-works",
+    calculatorHref: "/finance/emi-calculator",
+    calculatorName: "EMI Calculator",
+  },
+  {
+    title: "How Is BMI Calculated?",
+    question: "How Is BMI Calculated?",
+    answer: "BMI divides body weight in kilograms by the square of height in meters (kg/m²), categorizing metrics into standard WHO health ranges.",
+    guideHref: "/article/how-to-calculate-bmi",
+    calculatorHref: "/health-fitness-calculators/bmi",
+    calculatorName: "BMI Calculator",
+  },
+  {
+    title: "What Is Compound Interest?",
+    question: "What Is Compound Interest?",
+    answer: "Compound interest adds accumulated earnings back to the principal balance at set intervals, driving exponential wealth growth over time.",
+    guideHref: "/article/investment-planning-basics",
+    calculatorHref: "/finance/compound-interest-calculator",
+    calculatorName: "Compound Interest",
+  },
+  {
+    title: "How Are Business Days Calculated?",
+    question: "How Are Business Days Calculated?",
+    answer: "Business days calculate calendar intervals while automatically filtering out weekend days (Saturdays and Sundays) and designated banking holidays.",
+    guideHref: "/business-days-calculator",
+    calculatorHref: "/business-days-calculator",
+    calculatorName: "Business Days Calculator",
+  },
+  {
+    title: "How Does a Mortgage Payment Work?",
+    question: "How Does a Mortgage Payment Work?",
+    answer: "A standard mortgage payment bundles principal repayment, loan interest, property taxes, and homeowner hazard insurance into one monthly schedule.",
+    guideHref: "/article/how-emi-works",
+    calculatorHref: "/finance/mortgage-calculator",
+    calculatorName: "Mortgage Calculator",
+  },
+  {
+    title: "How Is Percentage Calculated?",
+    question: "How Is Percentage Calculated?",
+    answer: "Percentages represent a ratio per 100, calculated as (part ÷ whole) × 100 to evaluate relative changes, financial margins, and proportion changes.",
+    guideHref: "/percentage-calculator",
+    calculatorHref: "/percentage-calculator",
+    calculatorName: "Percentage Calculator",
+  },
+  {
+    title: "What Is the Science of 90-Minute Sleep Cycles?",
+    question: "What Is the Science of 90-Minute Sleep Cycles?",
+    answer: "Human circadian rhythms include ultradian 90-minute Basic Rest-Activity Cycles (BRAC) discovered by Dr. Nathaniel Kleitman that dictate natural focus peaks.",
+    guideHref: "/article/science-of-90-minute-sleep-cycles",
+    calculatorHref: "/time-date/90-minute-ultradian-rhythm-planner",
+    calculatorName: "90-Minute Planner",
+  },
+  {
+    title: "Understanding GST and VAT Calculations",
+    question: "Understanding GST and VAT Calculations",
+    answer: "Sales taxes are evaluated as tax-exclusive (base price + tax) or tax-inclusive (tax extracted from total amount) using statutory rates.",
+    guideHref: "/article/understanding-gst",
+    calculatorHref: "/tax-calculator",
+    calculatorName: "Tax Calculator",
+  },
+];
 
-  // Interactive Age Calculator State
-  const [calcDob, setCalcDob] = useState("1998-06-15");
-  const [calcTarget, setCalcTarget] = useState("");
-  const [ageRes, setAgeRes] = useState({
-    years: 26,
-    months: 8,
-    days: 14,
-    totalMonths: 320,
-    totalWeeks: 1393,
-    totalDays: 9754,
-    totalHours: 234096,
-    nextBday: "In 108 days (Monday)",
-    zodiac: "Gemini (Air Element)",
-  });
+// --- Unified Master FAQs (12 High-Value Questions) ---
+const FAQS = [
+  {
+    q: "What is SolveItCalculator?",
+    a: "SolveItCalculator is a free online platform providing fast, accurate, search-intent-focused computational tools across finance, health, math, unit conversions, time, construction, business, and education.",
+  },
+  {
+    q: "Are all calculators completely free to use?",
+    a: "Yes. Every single calculator on SolveItCalculator is 100% free forever without subscriptions, payment methods, or paywalls.",
+  },
+  {
+    q: "Do I need to sign up or create an account?",
+    a: "No. You can access and run calculations immediately without signing up, providing an email address, or creating an account.",
+  },
+  {
+    q: "Do you store or track my financial or health numbers?",
+    a: "No. SolveItCalculator uses an offline-first, client-side processing architecture. Your numbers (income, debts, body weight, dates) are computed locally inside your web browser and are never transmitted to or stored on remote databases.",
+  },
+  {
+    q: "How accurate and reliable are the calculations?",
+    a: "Our calculators use robust arbitrary numerical precision to avoid standard floating-point rounding drift. Financial formulas conform to statutory compounding and amortization benchmarks, and health metrics follow WHO and clinical standards.",
+  },
+  {
+    q: "Can I see the underlying formulas and steps?",
+    a: "Yes. Every tool explains the underlying mathematical formulas, stated assumptions, step-by-step arithmetic stages, and practical real-world examples.",
+  },
+  {
+    q: "Can I use SolveItCalculator on my smartphone?",
+    a: "Yes. Every calculator is designed with touch-friendly controls, responsive inputs, and optimized layouts that work smoothly on phones, tablets, and desktop computers.",
+  },
+  {
+    q: "Can I print or save my calculation results?",
+    a: "Yes. You can save your favorite tools to your local browser storage with one click or print/export detailed schedules and amortization tables directly to clean PDFs.",
+  },
+  {
+    q: "How often are tax brackets and rates updated?",
+    a: "We continuously update statutory reference tables, standard deductions, and tax brackets for each fiscal cycle so your planning remains current.",
+  },
+  {
+    q: "What formulas are used for the health calculators?",
+    a: "Our health tools follow clinical benchmarks. For example, our BMR calculator uses the Mifflin-St Jeor equation (the clinical gold standard), and BMI adheres to World Health Organization (WHO) categories.",
+  },
+  {
+    q: "Are the scientific tools capable of handling complex equations?",
+    a: "Yes. Our scientific suite handles deep algebraic parentheses, trigonometry, powers, logarithms, and fractions with step-by-step mathematical work.",
+  },
+  {
+    q: "Are these results considered professional financial or medical advice?",
+    a: "No. All calculations are intended strictly for planning and educational purposes. Important financial, tax, legal, or health decisions should always be confirmed with qualified professionals.",
+  },
+];
 
-  // Directory Filter State
-  const [dirSearch, setDirSearch] = useState("");
-  const [dirCategory, setDirCategory] = useState("all");
-  const [dirSort, setDirSort] = useState("popular");
+// --- Popular Search Pills ---
+const POPULAR_SEARCH_TERMS = [
+  "Mortgage",
+  "BMI",
+  "Percentage",
+  "Age",
+  "Loan",
+  "SIP",
+  "Salary",
+  "GST",
+  "Time",
+  "Scientific",
+];
 
-  // Initialization
-  useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    const t = setTimeout(() => setCalcTarget(today), 0);
-    return () => clearTimeout(t);
-  }, []);
+export default function HomePageClient() {
+  const [query, setQuery] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [activeGoal, setActiveGoal] = useState<string>("money");
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  // Search Click Outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setIsSearchOpen(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const suggestionsListRef = useRef<HTMLUListElement>(null);
+
+  // Search filtering logic
+  const searchResults = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+
+    return CALCULATOR_DIRECTORY.filter((calc) => {
+      const nameMatch = calc.name.toLowerCase().includes(q);
+      const catMatch = calc.category.toLowerCase().includes(q);
+      const descMatch = calc.description.toLowerCase().includes(q);
+      const synMatch = calc.synonyms.some((s) => s.toLowerCase().includes(q));
+      return nameMatch || catMatch || descMatch || synMatch;
+    }).slice(0, 8);
+  }, [query]);
+
+  // Keyboard navigation for search suggestions
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (searchResults.length > 0) {
+        setSelectedIndex((prev) => (prev < searchResults.length - 1 ? prev + 1 : 0));
       }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // Age Calculation Logic
-  useEffect(() => {
-    if (!calcDob || !calcTarget) return;
-    const birthDate = new Date(calcDob);
-    const targetDate = new Date(calcTarget);
-    if (
-      isNaN(birthDate.getTime()) ||
-      isNaN(targetDate.getTime()) ||
-      birthDate > targetDate
-    )
-      return;
-
-    let years = targetDate.getFullYear() - birthDate.getFullYear();
-    let months = targetDate.getMonth() - birthDate.getMonth();
-    let days = targetDate.getDate() - birthDate.getDate();
-
-    if (days < 0) {
-      months -= 1;
-      const prevMonthDays = new Date(
-        targetDate.getFullYear(),
-        targetDate.getMonth(),
-        0,
-      ).getDate();
-      days += prevMonthDays;
-    }
-    if (months < 0) {
-      years -= 1;
-      months += 12;
-    }
-
-    const diffMs = targetDate.getTime() - birthDate.getTime();
-    const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const totalWeeks = Math.floor(totalDays / 7);
-    const totalHours = totalDays * 24;
-    const totalMonths = years * 12 + months;
-
-    const currentYear = targetDate.getFullYear();
-    let nextBirthday = new Date(
-      currentYear,
-      birthDate.getMonth(),
-      birthDate.getDate(),
-    );
-    if (nextBirthday < targetDate) {
-      nextBirthday = new Date(
-        currentYear + 1,
-        birthDate.getMonth(),
-        birthDate.getDate(),
-      );
-    }
-    const bdayDiffDays = Math.ceil(
-      (nextBirthday.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24),
-    );
-    const dayNames = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const nextDayName = dayNames[nextBirthday.getDay()];
-
-    const m = birthDate.getMonth() + 1;
-    const d = birthDate.getDate();
-    let zodiac = "Gemini (Air Element)";
-    if ((m === 3 && d >= 21) || (m === 4 && d <= 19))
-      zodiac = "Aries (Fire Element)";
-    else if ((m === 4 && d >= 20) || (m === 5 && d <= 20))
-      zodiac = "Taurus (Earth Element)";
-    else if ((m === 5 && d >= 21) || (m === 6 && d <= 20))
-      zodiac = "Gemini (Air Element)";
-    else if ((m === 6 && d >= 21) || (m === 7 && d <= 22))
-      zodiac = "Cancer (Water Element)";
-    else if ((m === 7 && d >= 23) || (m === 8 && d <= 22))
-      zodiac = "Leo (Fire Element)";
-    else if ((m === 8 && d >= 23) || (m === 9 && d <= 22))
-      zodiac = "Virgo (Earth Element)";
-    else if ((m === 9 && d >= 23) || (m === 10 && d <= 22))
-      zodiac = "Libra (Air Element)";
-    else if ((m === 10 && d >= 23) || (m === 11 && d <= 21))
-      zodiac = "Scorpio (Water Element)";
-    else if ((m === 11 && d >= 22) || (m === 12 && d <= 21))
-      zodiac = "Sagittarius (Fire Element)";
-    else if ((m === 12 && d >= 22) || (m === 1 && d <= 19))
-      zodiac = "Capricorn (Earth Element)";
-    else if ((m === 1 && d >= 20) || (m === 2 && d <= 18))
-      zodiac = "Aquarius (Air Element)";
-    else if ((m === 2 && d >= 19) || (m === 3 && d <= 20))
-      zodiac = "Pisces (Water Element)";
-
-    const t = setTimeout(
-      () =>
-        setAgeRes({
-          years,
-          months,
-          days,
-          totalMonths,
-          totalWeeks,
-          totalDays,
-          totalHours,
-          nextBday: `In ${bdayDiffDays} days (${nextDayName})`,
-          zodiac,
-        }),
-      0,
-    );
-    return () => clearTimeout(t);
-  }, [calcDob, calcTarget]);
-
-  const quickToolLinks: Record<string, string> = {
-    BMI: "/health-fitness-calculators/bmi",
-    Age: "/time-date/age-calculator",
-    EMI: "/finance/emi-calculator",
-    GST: "/tax-calculator",
-    Percentage: "/percentage-calculator",
-    SIP: "/investing-and-growth",
-    Loan: "/finance/mortgage-calculator",
-    Scientific: "/math#quick-solve",
-  };
-
-  const handleHeroSubmit = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    const query = heroSearch.trim().toLowerCase();
-    if (!query) return;
-    if (query.includes("percent")) {
-      window.location.href = "/percentage-calculator";
-      return;
-    }
-    if (query.includes("mortgage")) {
-      window.location.href = "/finance/mortgage-calculator";
-      return;
-    }
-    if (query.includes("invest") || query.includes("growth")) {
-      window.location.href = "/investing-and-growth";
-      return;
-    }
-    if (query.includes("bmi")) {
-      window.location.href = "/health-fitness-calculators/bmi";
-      return;
-    }
-    if (query.includes("age")) {
-      window.location.href = "/time-date/age-calculator";
-      return;
-    }
-    if (query.includes("emi")) {
-      window.location.href = "/finance/emi-calculator";
-      return;
-    }
-    if (query.includes("tax") || query.includes("gst")) {
-      window.location.href = "/tax-calculator";
-      return;
-    }
-    setDirSearch(heroSearch);
-    document
-      .getElementById("search-section")
-      ?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const applyQuickSearch = (term: string) => {
-    if (quickToolLinks[term]) {
-      window.location.href = quickToolLinks[term];
-      return;
-    }
-    setHeroSearch(term);
-    setDirSearch(term);
-    document
-      .getElementById("search-section")
-      ?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const filteredHeroResults = useMemo(() => {
-    const query = heroSearch.trim().toLowerCase();
-    if (!query) return { categories: [], tools: [] };
-    
-    const matchedCategories = categoriesData.filter(c => 
-      c.title.toLowerCase().includes(query) || 
-      c.tags.some(t => t.toLowerCase().includes(query)) ||
-      c.desc.toLowerCase().includes(query)
-    ).slice(0, 3);
-    
-    // Gather all tools from multiple arrays and deduplicate by link
-    const combinedTools = [
-      ...dirCardsData.map(c => ({ ...c, title: c.name || c.title })),
-      ...trendingData.map(c => ({ ...c, name: c.title, label: "Trending" })),
-    ];
-    
-    const uniqueToolsMap = new Map();
-    combinedTools.forEach(c => {
-      if (!uniqueToolsMap.has(c.link)) {
-        uniqueToolsMap.set(c.link, c);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (searchResults.length > 0) {
+        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : searchResults.length - 1));
       }
-    });
-    
-    const allUniqueTools = Array.from(uniqueToolsMap.values());
+    } else if (e.key === "Enter") {
+      if (selectedIndex >= 0 && selectedIndex < searchResults.length) {
+        e.preventDefault();
+        window.location.href = searchResults[selectedIndex].href;
+      }
+    } else if (e.key === "Escape") {
+      setQuery("");
+      setSelectedIndex(-1);
+      searchInputRef.current?.blur();
+    }
+  };
 
-    const matchedTools = allUniqueTools.filter(c =>
-      (c.name && c.name.toLowerCase().includes(query)) ||
-      (c.desc && c.desc.toLowerCase().includes(query)) ||
-      (c.label && c.label.toLowerCase().includes(query)) ||
-      (c.title && c.title.toLowerCase().includes(query))
-    ).slice(0, 5);
-    
-    return { categories: matchedCategories, tools: matchedTools };
-  }, [heroSearch]);
+  const handlePopularSearchClick = (term: string) => {
+    setQuery(term);
+    setSelectedIndex(-1);
+    searchInputRef.current?.focus();
+  };
 
-  const filteredDirectory = useMemo(() => {
-    return dirCardsData
-      .filter((c) => {
-        const matchCat = dirCategory === "all" || c.category === dirCategory;
-        const matchSearch =
-          dirSearch === "" ||
-          c.name.toLowerCase().includes(dirSearch.toLowerCase());
-        return matchCat && matchSearch;
-      })
-      .sort((a, b) => {
-        if (dirSort === "az") return a.name.localeCompare(b.name);
-        if (dirSort === "rating")
-          return parseFloat(b.rating) - parseFloat(a.rating);
-        return 0;
-      });
-  }, [dirSearch, dirCategory, dirSort]);
+  const scrollToSearch = () => {
+    searchInputRef.current?.focus();
+    searchInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  useEffect(() => {
+    if (selectedIndex >= 0 && suggestionsListRef.current) {
+      const items = suggestionsListRef.current.querySelectorAll("li");
+      if (items[selectedIndex]) {
+        items[selectedIndex].scrollIntoView({ block: "nearest" });
+      }
+    }
+  }, [selectedIndex]);
 
   return (
-    <>
-      
-      <main className="w-full pt-16 bg-background min-h-[calc(100vh-380px)]">
-        <div className="flex flex-col w-full">
-          {/* ================= SECTION 1: HERO ================= */}
-          <section className="relative w-full overflow-hidden bg-surface py-space-2xl md:py-space-3xl">
-            <div className="pointer-events-none absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full bg-primary/10 blur-[120px] transition-all duration-1000"></div>
-            <div className="pointer-events-none absolute top-1/3 -right-40 h-[500px] w-[500px] rounded-full bg-secondary-container/20 blur-[130px]"></div>
-            <div className="pointer-events-none absolute -bottom-20 left-1/3 h-[400px] w-[400px] rounded-full bg-primary-fixed/25 blur-[100px]"></div>
+    <div className="flex flex-col w-full min-h-screen bg-surface text-on-surface font-body-md">
+      {/* ================= 1. HERO SECTION & SEARCH (COMPACT & RESPONSIVE) ================= */}
+      <section className="w-full bg-gradient-to-b from-surface-container-lowest via-surface to-surface-container-low/40 border-b border-outline-variant/20 py-8 sm:py-10 md:py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold mb-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>100% Free &amp; Private · In-Browser Tools</span>
+          </div>
 
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop relative z-10">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
-                {/* Left Hero Content */}
-                <div className="lg:col-span-7 flex flex-col items-start space-y-space-md">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high text-primary font-label-caps text-label-caps shadow-sm">
-                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                    <span>Every Calculation. One Place.</span>
-                  </div>
-                  <h1 className="font-headline-lg md:font-display-hero text-headline-lg md:text-display-hero text-on-surface tracking-tight leading-[1.08]">
-                    Find The Perfect <br className="hidden sm:inline" />
-                    Calculator For{" "}
-                    <span className="text-primary underline decoration-primary/30 decoration-wavy decoration-2">
-                      Any Problem
-                    </span>
-                  </h1>
-                  <p className="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
-                    Explore thousands of free calculators for finance, health,
-                    math, business, education, construction, science, and
-                    everyday life. Zero paywalls. Zero latency.
-                  </p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-on-surface tracking-tight leading-tight mb-3">
+            Free, Easy Calculators for Everyday Life
+          </h1>
 
-                  {/* Large Intelligent Search Bar */}
-                  <div className="w-full max-w-2xl mt-space-sm">
-                    <form
-                      ref={searchRef}
-                      onSubmit={handleHeroSubmit}
-                      className="relative flex items-center w-full rounded-2xl bg-surface-container-lowest shadow-xl p-2 transition-all duration-200 z-50"
-                    >
-                      <span className="material-symbols-outlined text-primary text-[24px] ml-3 mr-2">
-                        search
-                      </span>
-                      <input
-                        type="text"
-                        aria-label="Search calculators"
-                        value={heroSearch}
-                        onChange={(e) => {
-                          setHeroSearch(e.target.value);
-                          setIsSearchOpen(true);
-                        }}
-                        onFocus={() => setIsSearchOpen(true)}
-                        placeholder="Search calculators (e.g. percentage, mortgage, bmi)..."
-                        className="w-full bg-transparent font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none py-2"
-                      />
-                      <div className="relative hidden sm:block">
-                        <select aria-label="Select tool category" className="appearance-none bg-surface-container-low text-on-surface font-label-caps text-label-caps uppercase px-3 py-2 pr-7 rounded-xl focus:outline-none cursor-pointer">
-                          <option value="all">All Tools</option>
-                          <option value="finance">Finance</option>
-                          <option value="health">Health</option>
-                        </select>
-                        <span className="material-symbols-outlined text-[16px] text-on-surface-variant pointer-events-none absolute right-2 top-2.5">
-                          expand_more
-                        </span>
-                      </div>
-                      <button
-                        type="submit"
-                        className="ml-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-headline-md text-body-sm transition-all flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer"
-                      >
-                        <span>Explore</span>
-                        <span className="material-symbols-outlined text-[16px]">
-                          arrow_forward
-                        </span>
-                      </button>
+          <p className="text-xs sm:text-sm md:text-base text-on-surface-variant max-w-2xl mx-auto mb-5 leading-relaxed">
+            Quickly figure out your loan payments, check your birthday age, calculate discounts, or convert measurements. Simple, fast, and 100% free with no sign-up needed.
+          </p>
 
-                    {/* Search Dropdown */}
-                    {isSearchOpen && heroSearch.trim() !== "" && (filteredHeroResults.categories.length > 0 || filteredHeroResults.tools.length > 0) && (
-                      <div className="absolute top-[110%] left-0 right-0 bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant/30 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 text-left">
-                        <div className="max-h-[60vh] overflow-y-auto overscroll-contain flex flex-col">
-                          
-                          {filteredHeroResults.categories.length > 0 && (
-                            <div className="p-2 pb-1">
-                              <div className="px-3 py-2 text-xs font-label-caps tracking-wider uppercase text-on-surface-variant/70 font-semibold">
-                                Categories
-                              </div>
-                              <div className="flex flex-col gap-1">
-                                {filteredHeroResults.categories.map((cat, idx) => (
-                                  <Link 
-                                    key={`cat-${idx}`} 
-                                    href={cat.link}
-                                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-container-low transition-colors"
-                                    onClick={() => setIsSearchOpen(false)}
-                                  >
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${cat.iconBg}`}>
-                                      <span className="material-symbols-outlined text-[16px]">{cat.icon}</span>
-                                    </div>
-                                    <div className="flex flex-col">
-                                      <span className="text-sm font-semibold text-on-surface">{cat.title} Hub</span>
-                                      <span className="text-xs text-on-surface-variant truncate">{cat.desc}</span>
-                                    </div>
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {filteredHeroResults.categories.length > 0 && filteredHeroResults.tools.length > 0 && (
-                            <div className="mx-4 mt-1 mb-1 border-t border-outline-variant/20"></div>
-                          )}
-
-                          {filteredHeroResults.tools.length > 0 && (
-                            <div className="p-2 pt-1">
-                              <div className="px-3 py-2 text-xs font-label-caps tracking-wider uppercase text-on-surface-variant/70 font-semibold">
-                                Calculators & Tools
-                              </div>
-                              <div className="flex flex-col gap-1">
-                                {filteredHeroResults.tools.map((tool, idx) => (
-                                  <Link 
-                                    key={`tool-${idx}`} 
-                                    href={tool.link}
-                                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-container-low transition-colors"
-                                    onClick={() => setIsSearchOpen(false)}
-                                  >
-                                    <div className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
-                                      <span className="material-symbols-outlined text-[16px]">calculate</span>
-                                    </div>
-                                    <div className="flex flex-col flex-1 min-w-0">
-                                      <span className="text-sm font-semibold text-on-surface truncate">{tool.name}</span>
-                                      <div className="flex items-center gap-2 mt-0.5">
-                                        <span className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${tool.badgeClass}`}>
-                                          {tool.label}
-                                        </span>
-                                        <span className="text-xs text-on-surface-variant truncate">{tool.desc}</span>
-                                      </div>
-                                    </div>
-                                    <span className="material-symbols-outlined text-[16px] text-on-surface-variant/50">arrow_forward</span>
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                        </div>
-                      </div>
-                    )}
-                    </form>
-
-                    {/* Popular Quick Chips */}
-                    <div className="flex flex-wrap items-center gap-2 mt-space-sm pt-1">
-                      <span className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mr-1">
-                        Popular:
-                      </span>
-                      {[
-                        "BMI",
-                        "Age",
-                        "EMI",
-                        "GST",
-                        "Percentage",
-                        "SIP",
-                        "Loan",
-                        "Scientific",
-                      ].map((term) => (
-                        <Link
-                          key={term}
-                          href={
-                            quickToolLinks[term] || "/percentage-calculator"
-                          }
-                          className="px-3 py-1 rounded-full bg-surface-container text-on-surface hover:bg-primary-fixed hover:text-on-primary-fixed transition-all font-body-sm text-body-sm shadow-sm inline-block"
-                        >
-                          {term}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Trust Sub-metrics */}
-                  <div className="flex items-center gap-6 pt-3 text-on-surface-variant font-body-sm text-body-sm">
-                    <div className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-primary text-[18px]">
-                        verified
-                      </span>
-                      <span>100% Free Access</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-primary text-[18px]">
-                        bolt
-                      </span>
-                      <span>Sub-20ms Speed</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 hidden sm:flex">
-                      <span className="material-symbols-outlined text-primary text-[18px]">
-                        lock
-                      </span>
-                      <span>Local Computing</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Hero Interactive Dynamic Glass Showcase */}
-                <div className="lg:col-span-5 relative mt-space-lg lg:mt-0">
-                  <div className="relative w-full max-w-md mx-auto space-y-space-md">
-                    {/* Card 1: SIP Compound Growth preview */}
-                    <Link
-                      href="/investing-and-growth"
-                      className="block relative p-5 rounded-2xl bg-surface-container-lowest/90 backdrop-blur-xl shadow-xl transition-transform hover:-translate-y-1 duration-300 group cursor-pointer"
-                    >
-                      <div className="flex items-center justify-between pb-3">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
-                            <span className="material-symbols-outlined text-[18px]">
-                              trending_up
-                            </span>
-                          </div>
-                          <div>
-                            <h2 className="font-headline-md text-body-md text-on-surface font-semibold group-hover:text-primary transition-colors">
-                              SIP Growth Visualizer
-                            </h2>
-                            <span className="font-label-caps text-label-caps text-on-surface-variant">
-                              10 YRS • 14% EXPECTED CAGR
-                            </span>
-                          </div>
-                        </div>
-                        <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-data-mono text-label-caps font-bold">
-                          LIVE
-                        </span>
-                      </div>
-                      {/* Mini SVG Bar & Area Chart */}
-                      <div className="w-full h-24 my-2">
-                        <svg
-                          className="w-full h-full overflow-visible"
-                          preserveAspectRatio="none"
-                          viewBox="0 0 320 90"
-                        >
-                          <defs>
-                            <linearGradient
-                              id="sipGrad"
-                              x1="0"
-                              x2="0"
-                              y1="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="0%"
-                                stopColor="#004ac6"
-                                stopOpacity="0.35"
-                              ></stop>
-                              <stop
-                                offset="100%"
-                                stopColor="#004ac6"
-                                stopOpacity="0.0"
-                              ></stop>
-                            </linearGradient>
-                          </defs>
-                          <path
-                            d="M 0 80 Q 80 75, 160 50 T 320 10 L 320 90 L 0 90 Z"
-                            fill="url(#sipGrad)"
-                          ></path>
-                          <path
-                            d="M 0 80 Q 80 75, 160 50 T 320 10"
-                            fill="none"
-                            stroke="#004ac6"
-                            strokeLinecap="round"
-                            strokeWidth="3"
-                          ></path>
-                          <circle
-                            cx="320"
-                            cy="10"
-                            fill="#004ac6"
-                            r="4"
-                          ></circle>
-                          <line
-                            stroke="#c3c6d7"
-                            strokeDasharray="3 3"
-                            strokeWidth="0.5"
-                            x1="0"
-                            x2="320"
-                            y1="30"
-                            y2="30"
-                          ></line>
-                          <line
-                            stroke="#c3c6d7"
-                            strokeDasharray="3 3"
-                            strokeWidth="0.5"
-                            x1="0"
-                            x2="320"
-                            y1="60"
-                            y2="60"
-                          ></line>
-                        </svg>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2 pt-2 bg-surface-container-low p-2.5 rounded-xl">
-                        <div>
-                          <span className="font-label-caps text-label-caps text-on-surface-variant">
-                            TOTAL INVESTED
-                          </span>
-                          <p className="font-data-mono text-body-md text-on-surface font-bold">
-                            $60,000
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <span className="font-label-caps text-label-caps text-on-surface-variant">
-                            EST. MATURITY
-                          </span>
-                          <p className="font-data-mono text-body-md text-primary font-bold">
-                            $131,065
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                    {/* Card 2 & 3 */}
-                    <div className="grid grid-cols-2 gap-space-sm">
-                      <Link
-                        href="/health-fitness-calculators/bmi"
-                        className="p-4 rounded-2xl bg-surface-container-lowest/90 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all cursor-pointer block group"
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-label-caps text-label-caps text-on-surface-variant group-hover:text-primary transition-colors">
-                            BMI GAUGE
-                          </span>
-                          <span className="material-symbols-outlined text-secondary text-[16px]">
-                            favorite
-                          </span>
-                        </div>
-                        <p className="font-numerical-display-mobile text-numerical-display-mobile text-on-surface leading-none mb-1">
-                          21.8
-                        </p>
-                        <div className="w-full bg-surface-container-high rounded-full h-1.5 my-2 overflow-hidden">
-                          <div className="bg-secondary-container h-full rounded-full w-3/5"></div>
-                        </div>
-                        <div className="flex justify-between items-center text-[10px] text-on-surface-variant font-medium">
-                          <span>Normal Weight</span>
-                          <span className="text-secondary font-bold">
-                            Optimal
-                          </span>
-                        </div>
-                      </Link>
-                      <Link
-                        href="/finance/emi-calculator"
-                        className="p-4 rounded-2xl bg-surface-container-lowest/90 backdrop-blur-xl shadow-lg hover:shadow-xl transition-all flex flex-col justify-between group cursor-pointer block"
-                      >
-                        <div>
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="font-label-caps text-label-caps text-on-surface-variant group-hover:text-primary transition-colors">
-                              MORTGAGE EMI
-                            </span>
-                            <span className="material-symbols-outlined text-primary text-[16px]">
-                              home
-                            </span>
-                          </div>
-                          <p className="font-data-mono text-headline-md text-on-surface font-bold group-hover:text-primary transition-colors">
-                            $2,149
-                            <span className="text-xs text-on-surface-variant font-normal">
-                              /mo
-                            </span>
-                          </p>
-                        </div>
-                        <div className="mt-2 text-[11px] text-on-surface-variant flex items-center gap-1">
-                          <span className="w-2 h-2 rounded-full bg-primary inline-block"></span>
-                          <span>Principal: 72% • Int: 28%</span>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ================= SECTION 2: FEATURED CATEGORIES ================= */}
-          <section className="w-full py-space-3xl bg-surface-container-lowest">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop">
-              <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-2xl gap-4">
-                <div>
-                  <span className="font-label-caps text-label-caps text-primary uppercase tracking-widest font-bold">
-                    Systematic Taxonomy
-                  </span>
-                  <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
-                    Featured Categories
-                  </h2>
-                  <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-                    Over 5,000 modular tools categorized into 12 core
-                    disciplines.
-                  </p>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-space-md">
-                {categoriesData.map((cat, idx) => (
-                  <div
-                    key={idx}
-                    className="group relative p-5 rounded-2xl bg-surface-container-low hover:bg-surface-container transition-all duration-300 shadow-sm hover:shadow-md flex flex-col justify-between"
-                  >
-                    {cat.link && (
-                      <Link href={cat.link} className="absolute inset-0 z-10">
-                        <span className="sr-only">Go to {cat.title}</span>
-                      </Link>
-                    )}
-                    <div>
-                      <div className="flex items-center justify-between mb-space-sm relative z-20">
-                        {cat.link ? (
-                          <Link
-                            href={cat.link}
-                            className={`w-10 h-10 rounded-xl ${cat.iconBg} flex items-center justify-center group-hover:scale-110 transition-transform`}
-                          >
-                            <span className="material-symbols-outlined text-[22px]">
-                              {cat.icon}
-                            </span>
-                          </Link>
-                        ) : (
-                          <div
-                            className={`w-10 h-10 rounded-xl ${cat.iconBg} flex items-center justify-center group-hover:scale-110 transition-transform`}
-                          >
-                            <span className="material-symbols-outlined text-[22px]">
-                              {cat.icon}
-                            </span>
-                          </div>
-                        )}
-                        <span className="px-2.5 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-caps text-label-caps">
-                          {cat.count} Tools
-                        </span>
-                      </div>
-                      <h3 className="font-headline-md text-headline-md text-on-surface mb-1 relative z-20">
-                        {cat.link ? (
-                          <Link
-                            href={cat.link}
-                            className="hover:text-primary transition-colors"
-                          >
-                            {cat.title}
-                          </Link>
-                        ) : (
-                          cat.title
-                        )}
-                      </h3>
-                      <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-sm">
-                        {cat.desc}
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 mb-space-md relative z-20">
-                        {cat.tags.map((tag) => {
-                          const tagHref =
-                            tag === "Volume"
-                              ? "/volume-converter"
-                              : tag === "Length"
-                                ? "/length-converter"
-                                : tag === "Mass"
-                                  ? "/weight-converter"
-                                  : tag === "Age Diff"
-                                    ? "/time-date/age-calculator"
-                                    : tag === "BMI"
-                                      ? "/health-fitness-calculators/bmi"
-                                      : tag === "TDEE"
-                                        ? "/health-fitness-calculators#tdee-card"
-                                        : tag === "Calorie Deficit"
-                                          ? "/health-fitness-calculators#tdee-card"
-                                          : tag === "SIP"
-                                            ? "/investing-and-growth"
-                                            : tag === "Mortgage"
-                                              ? "/finance/mortgage-calculator"
-                                              : tag === "Percentage"
-                                                ? "/percentage-calculator"
-                                                : tag === "Fraction"
-                                                  ? "/math#quick-solve"
-                                                  : tag === "401(k)"
-                                                    ? "/finance#retirement-section"
-                                                    : tag === "CAGR"
-                                                      ? "/investing-and-growth"
-                                                      : tag === "FIRE"
-                                                        ? "/fire-forecaster"
-                                                        : tag === "Concrete"
-                                                          ? "/home-construction#concrete-calc"
-                                                          : tag ===
-                                                              "Square Feet"
-                                                            ? "/home-construction"
-                                                            : tag ===
-                                                                "Roof Pitch"
-                                                              ? "/home-construction#roof-calc"
-                                                              : tag === "GPA"
-                                                                ? "/education#workbench-gpa"
-                                                                : tag ===
-                                                                    "Final Grade"
-                                                                  ? "/education#workbench-final"
-                                                                  : tag ===
-                                                                      "Percentile"
-                                                                    ? "/education#directory"
-                                                                    : tag ===
-                                                                        "Margin"
-                                                                      ? "/business#wb1-cogs"
-                                                                      : tag ===
-                                                                          "Burn Rate"
-                                                                        ? "/business#wb3-cash"
-                                                                        : tag ===
-                                                                            "Break-Even"
-                                                                          ? "/business#category-profit"
-                                                                          : tag ===
-                                                                              "Ohm's Law"
-                                                                            ? "/electrical#cat-1"
-                                                                            : tag ===
-                                                                                "AWG Sizing"
-                                                                              ? "/electrical#workbench-cable"
-                                                                              : tag ===
-                                                                                  "kW to Amps"
-                                                                                ? "/electrical#cat-2"
-                                                                                : tag ===
-                                                                                    "Molarity"
-                                                                                  ? "/science#workbenches"
-                                                                                  : tag ===
-                                                                                      "Velocity"
-                                                                                    ? "/science#workbenches"
-                                                                                    : tag ===
-                                                                                        "Half-Life"
-                                                                                      ? "/science#cat-11"
-                                                                                      : tag ===
-                                                                                          "Subnet IPv4"
-                                                                                        ? "/technology#workbench-subnet"
-                                                                                        : tag ===
-                                                                                            "Bitrate"
-                                                                                          ? "/technology#workbench-speed"
-                                                                                          : tag ===
-                                                                                              "Aspect Ratio"
-                                                                                            ? "/technology#frontend"
-                                                                                            : null;
-
-                          if (tagHref) {
-                            return (
-                              <Link
-                                key={tag}
-                                href={tagHref}
-                                className="text-[11px] bg-surface-container-lowest hover:bg-primary hover:text-on-primary px-2 py-0.5 rounded text-on-surface transition-colors cursor-pointer"
-                              >
-                                {tag}
-                              </Link>
-                            );
-                          }
-
-                          return (
-                            <span
-                              key={tag}
-                              className="text-[11px] bg-surface-container-lowest px-2 py-0.5 rounded text-on-surface"
-                            >
-                              {tag}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                    {cat.link ? (
-                      <Link
-                        href={cat.link}
-                        className="inline-flex items-center text-body-sm font-semibold text-primary group-hover:gap-2 transition-all relative z-20"
-                      >
-                        <span>Explore Category</span>
-                        <span className="material-symbols-outlined text-[16px] ml-1">
-                          arrow_forward
-                        </span>
-                      </Link>
-                    ) : (
-                      <button
-                        className="inline-flex items-center text-body-sm font-semibold text-primary group-hover:gap-2 transition-all relative z-20"
-                        type="button"
-                      >
-                        <span>Explore Category</span>
-                        <span className="material-symbols-outlined text-[16px] ml-1">
-                          arrow_forward
-                        </span>
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ================= SECTION 3: TRENDING CALCULATORS ================= */}
-          <section className="w-full py-space-3xl bg-surface">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop">
-              <div className="flex items-center justify-between mb-space-xl">
-                <div>
-                  <div className="inline-flex items-center gap-1.5 text-primary font-label-caps text-label-caps uppercase">
-                    <span className="material-symbols-outlined text-[16px]">
-                      local_fire_department
-                    </span>
-                    <span>Real-Time Frequency</span>
-                  </div>
-                  <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
-                    Trending Calculators
-                  </h2>
-                </div>
-                <div className="hidden sm:flex items-center gap-2">
-                  <span className="text-on-surface-variant font-body-sm text-body-sm">
-                    Updated continuous feed
-                  </span>
-                  <span className="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
-                {trendingData.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <span
-                          className={`px-2 py-0.5 rounded-md font-data-mono text-label-caps font-bold ${item.tagBg}`}
-                        >
-                          #{item.id} TRENDING
-                        </span>
-                        <div className="flex items-center gap-1 text-tertiary">
-                          <span className="material-symbols-outlined text-[14px]">
-                            star
-                          </span>
-                          <span className="font-data-mono text-xs font-bold">
-                            {item.rating}
-                          </span>
-                        </div>
-                      </div>
-                      <h3 className="font-headline-md text-headline-md text-on-surface">
-                        {item.title}
-                      </h3>
-                      <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                        {item.desc}
-                      </p>
-                    </div>
-                    <div className="mt-space-md pt-space-sm border-t border-outline-variant/20">
-                      {item.link ? (
-                        <Link
-                          href={item.link}
-                          className={`w-full py-2 rounded-xl text-body-sm font-semibold flex items-center justify-center gap-1 transition-colors ${item.linkBg}`}
-                        >
-                          <span>{item.linkText}</span>
-                          <span className="material-symbols-outlined text-[16px]">
-                            {item.linkIcon}
-                          </span>
-                        </Link>
-                      ) : (
-                        <button
-                          className="w-full py-2 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary transition-colors text-body-sm font-semibold flex items-center justify-center gap-1"
-                          type="button"
-                        >
-                          <span>Run Calculator</span>
-                          <span className="material-symbols-outlined text-[16px]">
-                            launch
-                          </span>
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ================= SECTION 4: DISCOVER BY PURPOSE ================= */}
-          <section className="w-full py-space-3xl bg-surface-container-low">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop">
-              <div className="text-center max-w-2xl mx-auto mb-space-2xl">
-                <span className="font-label-caps text-label-caps text-primary uppercase tracking-wider font-semibold">
-                  Goal-Oriented Pathways
-                </span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
-                  Discover By Purpose
-                </h2>
-                <p className="font-body-md text-body-md text-on-surface-variant mt-2">
-                  Skip formulas. Start with your real-life aspiration and let
-                  our curated toolkits assemble the numbers.
-                </p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
-                {purposeData.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="p-6 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all duration-200"
-                  >
-                    <div
-                      className={`w-12 h-12 rounded-2xl ${item.iconBg} flex items-center justify-center mb-space-md`}
-                    >
-                      <span className="material-symbols-outlined text-[24px]">
-                        {item.icon}
-                      </span>
-                    </div>
-                    <h3 className="font-headline-md text-headline-md text-on-surface mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">
-                      {item.desc}
-                    </p>
-                    <div className="space-y-2 border-t border-outline-variant/20 pt-3">
-                      {item.links.map((link) => {
-                        const href =
-                          (item as any).categoryLink ||
-                          (link.includes("BMI")
-                            ? "/health-fitness-calculators/bmi"
-                            : link.includes("Caloric") || link.includes("Macro")
-                              ? "/health-fitness-calculators#tdee-card"
-                              : link.includes("One-Rep")
-                                ? "/health-fitness-calculators#onerep-card"
-                                : "#");
-                        return (
-                          <Link
-                            key={link}
-                            href={href}
-                            className="flex items-center justify-between text-body-sm text-primary hover:underline font-medium"
-                          >
-                            <span>{link}</span>
-                            <span className="material-symbols-outlined text-[16px]">
-                              chevron_right
-                            </span>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ================= SECTION 5: CALCULATOR COLLECTIONS ================= */}
-          <section className="w-full py-space-3xl bg-surface">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop">
-              <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-4">
-                <div>
-                  <span className="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">
-                    Algorithmic Suites
-                  </span>
-                  <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
-                    Calculator Collections
-                  </h2>
-                  <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-                    Deep-dive into synchronized computation clusters built
-                    around core formulas.
-                  </p>
-                </div>
-                <div className="flex items-center p-1.5 rounded-2xl bg-surface-container-high overflow-x-auto max-w-full">
-                  {["finance", "health", "math", "conversion"].map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setCollectionTab(tab)}
-                      className={`px-4 py-2 rounded-xl text-body-sm font-semibold transition-all ${collectionTab === tab ? "bg-surface-container-lowest text-primary shadow-sm" : "text-on-surface-variant hover:text-on-surface"}`}
-                      type="button"
-                    >
-                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
-                {collectionData[collectionTab].map((card, idx) => (
-                  <div
-                    key={idx}
-                    className="p-5 rounded-2xl bg-surface-container-low hover:bg-surface-container-lowest transition-all duration-200 flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-data-mono text-body-md font-bold text-on-surface">
-                          {card.title}
-                        </span>
-                        <span
-                          className={`font-label-caps text-label-caps px-2 py-0.5 rounded ${card.badgeBg}`}
-                        >
-                          {card.badge}
-                        </span>
-                      </div>
-                      <p className="font-body-sm text-body-sm text-on-surface-variant mb-4">
-                        Formula:{" "}
-                        <code className="font-data-mono text-xs text-primary">
-                          {card.formula}
-                        </code>
-                      </p>
-                      <p className="font-body-sm text-body-sm text-on-surface-variant mb-4">
-                        {card.desc}
-                      </p>
-                    </div>
-                    {card.link || collectionTab === "health" ? (
-                      <Link
-                        href={card.link || "/health-fitness-calculators"}
-                        className="w-full py-2 rounded-xl bg-surface-container-lowest text-primary font-body-sm font-semibold hover:bg-primary hover:text-on-primary transition-colors flex items-center justify-center gap-1"
-                      >
-                        {card.btnText}{" "}
-                        <span className="material-symbols-outlined text-[16px]">
-                          arrow_forward
-                        </span>
-                      </Link>
-                    ) : (
-                      <button
-                        className="w-full py-2 rounded-xl bg-surface-container-lowest text-primary font-body-sm font-semibold hover:bg-primary hover:text-on-primary transition-colors flex items-center justify-center gap-1"
-                        type="button"
-                      >
-                        {card.btnText}{" "}
-                        <span className="material-symbols-outlined text-[16px]">
-                          arrow_forward
-                        </span>
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ================= SECTION 6: FEATURED INTERACTIVE AGE CALCULATOR ================= */}
-          <section
-            className="w-full py-space-3xl bg-surface-container-low scroll-mt-24"
-            id="interactive-age-calc"
-          >
-            <div className="max-w-max-width-calculator mx-auto px-gutter-mobile md:px-gutter-desktop">
-              <div className="text-center mb-space-xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-fixed text-primary font-label-caps text-label-caps font-bold mb-2">
-                  <span className="material-symbols-outlined text-[16px]">
-                    schedule
-                  </span>
-                  <span>Featured Interactive Calculator</span>
-                </div>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight">
-                  Precision Age Calculator
-                </h2>
-                <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-                  Compute chronological age down to the day, accounting for leap
-                  years, calendar shifts, and milestone countdowns.
-                </p>
-              </div>
-              <div className="rounded-3xl bg-surface-container-lowest p-6 md:p-8 shadow-2xl transition-all">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md mb-space-lg">
-                  <div>
-                    <label htmlFor="calcDob" className="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2 font-semibold">
-                      Date of Birth
-                    </label>
-                    <input
-                      id="calcDob"
-                      type="date"
-                      value={calcDob}
-                      onChange={(e) => setCalcDob(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-surface-container-low font-data-mono text-body-md text-on-surface focus:outline-none focus:bg-surface-container-lowest shadow-sm"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="calcTarget" className="block font-label-caps text-label-caps text-on-surface-variant uppercase mb-2 font-semibold">
-                      Calculate Age As Of
-                    </label>
-                    <input
-                      id="calcTarget"
-                      type="date"
-                      value={calcTarget}
-                      onChange={(e) => setCalcTarget(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-surface-container-low font-data-mono text-body-md text-on-surface focus:outline-none focus:bg-surface-container-lowest shadow-sm"
-                    />
-                  </div>
-                </div>
-                <div className="p-6 rounded-2xl bg-surface-container-low mb-space-md">
-                  <span className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block mb-1">
-                    Your Exact Chronological Age
-                  </span>
-                  <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-                    <div className="flex items-baseline gap-1.5">
-                      <span className="font-numerical-display text-numerical-display text-primary font-bold">
-                        {ageRes.years}
-                      </span>
-                      <span className="font-body-md text-body-md text-on-surface-variant">
-                        Years
-                      </span>
-                    </div>
-                    <div className="flex items-baseline gap-1.5">
-                      <span className="font-numerical-display text-numerical-display text-on-surface font-bold">
-                        {ageRes.months}
-                      </span>
-                      <span className="font-body-md text-body-md text-on-surface-variant">
-                        Months
-                      </span>
-                    </div>
-                    <div className="flex items-baseline gap-1.5">
-                      <span className="font-numerical-display text-numerical-display text-on-surface font-bold">
-                        {ageRes.days}
-                      </span>
-                      <span className="font-body-md text-body-md text-on-surface-variant">
-                        Days
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-sm mb-space-lg">
-                  <div className="p-3.5 rounded-xl bg-surface-container-low">
-                    <span className="font-label-caps text-label-caps text-on-surface-variant uppercase block">
-                      Total Months
-                    </span>
-                    <span className="font-data-mono text-headline-md font-bold text-on-surface">
-                      {ageRes.totalMonths.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="p-3.5 rounded-xl bg-surface-container-low">
-                    <span className="font-label-caps text-label-caps text-on-surface-variant uppercase block">
-                      Total Weeks
-                    </span>
-                    <span className="font-data-mono text-headline-md font-bold text-on-surface">
-                      {ageRes.totalWeeks.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="p-3.5 rounded-xl bg-surface-container-low">
-                    <span className="font-label-caps text-label-caps text-on-surface-variant uppercase block">
-                      Total Days
-                    </span>
-                    <span className="font-data-mono text-headline-md font-bold text-on-surface">
-                      {ageRes.totalDays.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="p-3.5 rounded-xl bg-surface-container-low">
-                    <span className="font-label-caps text-label-caps text-on-surface-variant uppercase block">
-                      Total Hours
-                    </span>
-                    <span className="font-data-mono text-headline-md font-bold text-on-surface">
-                      {ageRes.totalHours.toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm mb-space-lg">
-                  <div className="p-4 rounded-xl bg-primary-fixed/30 flex items-center gap-3">
-                    <span className="material-symbols-outlined text-primary text-[28px]">
-                      cake
-                    </span>
-                    <div>
-                      <span className="font-label-caps text-label-caps text-primary uppercase font-bold">
-                        Next Birthday
-                      </span>
-                      <p className="font-body-md text-body-md text-on-surface font-semibold">
-                        {ageRes.nextBday}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="p-4 rounded-xl bg-secondary-fixed/30 flex items-center gap-3">
-                    <span className="material-symbols-outlined text-secondary text-[28px]">
-                      stars
-                    </span>
-                    <div>
-                      <span className="font-label-caps text-label-caps text-secondary uppercase font-bold">
-                        Astrological Sign
-                      </span>
-                      <p className="font-body-md text-body-md text-on-surface font-semibold">
-                        {ageRes.zodiac}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-space-sm border-t border-outline-variant/30">
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      className="px-3.5 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm text-body-sm font-semibold transition-all flex items-center gap-1.5 active:scale-95"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">
-                        content_copy
-                      </span>
-                      <span>Copy Result</span>
-                    </button>
-                    <button
-                      type="button"
-                      className="px-3.5 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm text-body-sm font-semibold transition-all flex items-center gap-1.5 active:scale-95"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">
-                        share
-                      </span>
-                      <span>Share</span>
-                    </button>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      className="px-3.5 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-body-sm text-body-sm font-semibold transition-all flex items-center gap-1.5 active:scale-95"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">
-                        bookmark_add
-                      </span>
-                      <span>Save Result</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => window.print()}
-                      className="px-3.5 py-2 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-body-sm text-body-sm font-semibold transition-all flex items-center gap-1.5 active:scale-95"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">
-                        print
-                      </span>
-                      <span>Print</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ================= SECTION 7: MOST USED THIS WEEK (LEADERBOARD) ================= */}
-          <section className="w-full py-space-3xl bg-surface">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop">
-              <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-3">
-                <div>
-                  <span className="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">
-                    Algorithmic Velocity
-                  </span>
-                  <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
-                    Most Used This Week
-                  </h2>
-                  <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-                    Ranked calculation volume across 50K+ active global sessions.
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 font-data-mono text-body-sm text-on-surface-variant">
-                  <span className="w-2.5 h-2.5 rounded-full bg-primary inline-block"></span>
-                  <span>Week 10 • 2025 Audit</span>
-                </div>
-              </div>
-              <div className="space-y-space-xs">
-                {leaderboardData.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="p-4 sm:p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                  >
-                    <div className="flex items-center gap-4">
-                      <span
-                        className={`w-10 h-10 rounded-xl ${item.numBg} font-data-mono text-headline-md font-bold flex items-center justify-center flex-shrink-0`}
-                      >
-                        {item.rank}
-                      </span>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-headline-md text-headline-md text-on-surface">
-                            {item.title}
-                          </h3>
-                          <span
-                            className={`px-2 py-0.5 rounded-full ${item.badgeBg} font-label-caps text-label-caps font-bold`}
-                          >
-                            {item.badge}
-                          </span>
-                        </div>
-                        <p className="font-body-sm text-body-sm text-on-surface-variant">
-                          {item.desc}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between sm:justify-end gap-6">
-                      <div className="text-right">
-                        <span className="font-data-mono text-body-md font-bold text-on-surface">
-                          {item.count}
-                        </span>
-                        <span className="font-label-caps text-label-caps text-on-surface-variant block">
-                          Calculations this week
-                        </span>
-                      </div>
-                      <Link
-                        href={item.link || "#"}
-                        className="p-2.5 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary transition-colors text-primary flex items-center justify-center"
-                      >
-                        <span className="material-symbols-outlined text-[20px]">
-                          arrow_forward
-                        </span>
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ================= SECTION 8: WHY TRUST SOLVE IT CALCULATOR ================= */}
-          <section className="w-full py-space-3xl bg-surface-container-low">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop">
-              <div className="text-center max-w-2xl mx-auto mb-space-2xl">
-                <span className="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">
-                  Uncompromising Architecture
-                </span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
-                  Why Trust SolveIt Calculator
-                </h2>
-                <p className="font-body-md text-body-md text-on-surface-variant mt-2">
-                  Mathematical integrity meets client-side engineering. Every
-                  formula is transparent, vetted, and strictly isolated.
-                </p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
-                {trustData.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="p-6 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-lg transition-all"
-                  >
-                    <div
-                      className={`w-12 h-12 rounded-xl ${item.iconBg} flex items-center justify-center mb-4`}
-                    >
-                      <span className="material-symbols-outlined text-[26px]">
-                        {item.icon}
-                      </span>
-                    </div>
-                    <h3 className="font-headline-md text-headline-md text-on-surface mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant">
-                      {item.desc}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ================= SECTION 9: ADVANCED SEARCH & REAL-TIME FILTERING ================= */}
-          <section
-            className="w-full py-space-3xl bg-surface"
-            id="search-section"
-          >
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop">
-              <div className="text-center max-w-xl mx-auto mb-space-xl">
-                <span className="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">
-                  Instant Filter Matrix
-                </span>
-                <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
-                  Search All Calculators
-                </h2>
-                <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-                  Instant indexed access across our complete computational
-                  archive.
-                </p>
-              </div>
-
-              <div className="p-4 sm:p-5 rounded-2xl bg-surface-container-low mb-space-lg shadow-sm">
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-space-sm items-center">
-                  <div className="md:col-span-5 relative">
-                    <span className="material-symbols-outlined text-[20px] text-on-surface-variant absolute left-3 top-3">
-                      search
-                    </span>
-                    <input
-                      type="text"
-                      aria-label="Filter directory"
-                      value={dirSearch}
-                      onChange={(e) => setDirSearch(e.target.value)}
-                      placeholder="Filter by keyword (e.g. loan, bmi, matrix, watt)..."
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-surface-container-lowest font-body-sm text-body-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
-                    />
-                  </div>
-                  <div className="md:col-span-3">
-                    <select
-                      aria-label="Filter directory by category"
-                      value={dirCategory}
-                      onChange={(e) => setDirCategory(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl bg-surface-container-lowest font-body-sm text-body-sm text-on-surface focus:outline-none cursor-pointer shadow-sm"
-                    >
-                      <option value="all">All Categories</option>
-                      <option value="finance">Finance</option>
-                      <option value="health">Health</option>
-                      <option value="math">Math</option>
-                      <option value="construction">Construction</option>
-                      <option value="conversion">Conversion</option>
-                    </select>
-                  </div>
-                  <div className="md:col-span-4 flex items-center gap-2">
-                    <select
-                      aria-label="Sort directory results"
-                      value={dirSort}
-                      onChange={(e) => setDirSort(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl bg-surface-container-lowest font-body-sm text-body-sm text-on-surface focus:outline-none cursor-pointer shadow-sm"
-                    >
-                      <option value="popular">Sort: Most Popular</option>
-                      <option value="newest">Sort: Newest Added</option>
-                      <option value="rating">Sort: Highest Rated</option>
-                    </select>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setDirSearch("");
-                        setDirCategory("all");
-                        setDirSort("popular");
-                      }}
-                      className="px-3 py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-label-caps text-label-caps transition-colors"
-                    >
-                      <span className="material-symbols-outlined text-[18px]">
-                        restart_alt
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {filteredDirectory.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-space-md">
-                  {filteredDirectory.map((card, idx) => (
-                    <div
-                      key={idx}
-                      className="p-5 rounded-2xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
-                    >
-                      <div>
-                        <div className="flex justify-between items-center mb-2">
-                          <span
-                            className={`px-2 py-0.5 rounded font-label-caps text-label-caps uppercase ${card.badgeClass}`}
-                          >
-                            {card.label}
-                          </span>
-                        </div>
-                        <h3 className="font-headline-md text-headline-md text-on-surface">
-                          {card.title}
-                        </h3>
-                        <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                          {card.desc}
-                        </p>
-                      </div>
-                      <div className="mt-4 pt-3 border-t border-outline-variant/20 flex justify-between items-center">
-                        <span className="font-label-caps text-label-caps text-on-surface-variant">
-                          EST. TIME: {card.time}
-                        </span>
-                        <Link
-                          href={
-                            (card as any).link ||
-                            (card.category === "health" ? "/health-fitness-calculators" : "#")
-                          }
-                          className="text-primary font-body-sm font-semibold hover:underline flex items-center"
-                        >
-                          Open{" "}
-                          <span className="material-symbols-outlined text-[16px]">
-                            chevron_right
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-space-2xl">
-                  <span className="material-symbols-outlined text-[48px] text-on-surface-variant">
-                    search_off
-                  </span>
-                  <h3 className="font-headline-md text-headline-md text-on-surface mt-2">
-                    No calculators matched your query
-                  </h3>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                    Try searching for terms like &quot;BMI&quot;,
-                    &quot;tax&quot;, &quot;loan&quot;, or
-                    &quot;percentage&quot;.
-                  </p>
-                  <button
-                    className="mt-4 px-4 py-2 rounded-xl bg-primary text-on-primary font-body-sm font-semibold"
-                    onClick={() => {
-                      setDirSearch("");
-                      setDirCategory("all");
-                    }}
-                    type="button"
-                  >
-                    Clear Filters
-                  </button>
-                </div>
+          {/* Primary Search Box */}
+          <div className="relative max-w-2xl mx-auto text-left mb-4">
+            <label htmlFor="hero-search" className="block text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider mb-1.5">
+              What would you like to calculate today?
+            </label>
+            <div className="relative flex items-center bg-surface-container-lowest border border-outline-variant/40 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 rounded-xl shadow-xs transition-all">
+              <span className="material-symbols-outlined text-on-surface-variant/80 pl-3.5 text-xl select-none" aria-hidden="true">
+                search
+              </span>
+              <input
+                id="hero-search"
+                ref={searchInputRef}
+                type="text"
+                role="combobox"
+                aria-expanded={searchResults.length > 0 || (query.trim().length > 0 && searchResults.length === 0)}
+                aria-controls="search-suggestions-box"
+                aria-autocomplete="list"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setSelectedIndex(-1);
+                }}
+                onKeyDown={handleKeyDown}
+                placeholder="Type what you need, like loan, BMI, age, discount, or dates..."
+                className="w-full py-3 pl-2.5 pr-9 bg-transparent text-on-surface placeholder:text-on-surface-variant/60 text-sm sm:text-base focus:outline-none"
+                autoComplete="off"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery("");
+                    setSelectedIndex(-1);
+                    searchInputRef.current?.focus();
+                  }}
+                  className="pr-3 text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer"
+                  aria-label="Clear search input"
+                >
+                  <span className="material-symbols-outlined text-lg">close</span>
+                </button>
               )}
             </div>
-          </section>
 
-          {/* ================= SECTION 10: BLOG & GUIDES (AUTHORITY CONTENT) ================= */}
-          <section className="w-full py-space-3xl bg-surface-container-low">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop">
-              <div className="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-4">
+            {/* Instant Suggestions Dropdown */}
+            {query.trim().length > 0 && (
+              <div
+                id="search-suggestions-box"
+                className="absolute z-40 left-0 right-0 mt-1.5 bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-xl overflow-hidden"
+              >
+                {searchResults.length > 0 ? (
+                  <ul ref={suggestionsListRef} role="listbox" className="divide-y divide-outline-variant/15 max-h-80 overflow-y-auto">
+                    {searchResults.map((calc, idx) => (
+                      <li
+                        key={calc.id}
+                        role="option"
+                        aria-selected={idx === selectedIndex}
+                        className={`transition-colors ${idx === selectedIndex ? "bg-primary/10" : "hover:bg-surface-container-high"}`}
+                      >
+                        <Link
+                          href={calc.href}
+                          className="flex items-center gap-3 p-3 block"
+                          onClick={() => setQuery("")}
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-surface-container text-primary flex items-center justify-center shrink-0">
+                            <span className="material-symbols-outlined text-lg">{calc.icon}</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold text-on-surface text-xs sm:text-sm truncate">{calc.name}</span>
+                              <span className="text-[10px] font-medium text-on-surface-variant px-1.5 py-0.5 rounded bg-surface-container">
+                                {calc.category}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-on-surface-variant truncate mt-0.5">{calc.description}</p>
+                          </div>
+                          <span className="material-symbols-outlined text-on-surface-variant text-sm">arrow_forward</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div className="p-4 text-center">
+                    <h3 className="text-xs sm:text-sm font-semibold text-on-surface mb-1">No matching calculator found.</h3>
+                    <p className="text-xs text-on-surface-variant mb-3">
+                      Try searching for “mortgage”, “BMI”, “percentage”, “loan”, “age”, or “tax”.
+                    </p>
+                    <a
+                      href="#categories-section"
+                      onClick={() => setQuery("")}
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+                    >
+                      Browse Categories <span className="material-symbols-outlined text-xs">arrow_downward</span>
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Popular Searches */}
+          <div className="flex items-center justify-center flex-wrap gap-1.5 text-xs mb-3">
+            <span className="text-[11px] font-medium text-on-surface-variant mr-0.5">Quick Searches:</span>
+            {POPULAR_SEARCH_TERMS.map((term) => (
+              <button
+                key={term}
+                type="button"
+                onClick={() => handlePopularSearchClick(term)}
+                className="px-2.5 py-0.5 rounded-full bg-surface-container-high hover:bg-primary/10 hover:text-primary text-on-surface transition-colors cursor-pointer border border-outline-variant/30 text-xs font-medium"
+              >
+                {term}
+              </button>
+            ))}
+          </div>
+
+          {/* Interactive Everyday Quick Solver Widget */}
+          <QuickEverydaySolver />
+
+          {/* Hero CTAs */}
+          <div className="flex items-center justify-center gap-3 flex-wrap mt-5">
+            <button
+              type="button"
+              onClick={scrollToSearch}
+              className="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-semibold text-xs sm:text-sm hover:opacity-95 shadow-xs transition-opacity flex items-center gap-1.5 cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-base">search</span>
+              Find Any Calculator
+            </button>
+            <a
+              href="#categories-section"
+              className="px-5 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-semibold text-xs sm:text-sm hover:bg-surface-container-highest border border-outline-variant/40 transition-colors flex items-center gap-1.5"
+            >
+              <span>Browse All Topics</span>
+              <span className="material-symbols-outlined text-base">arrow_downward</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 2. QUICK DISCOVERY OPTIONS (COMPACT GRID) ================= */}
+      <section className="w-full py-8 sm:py-10 bg-surface-container-lowest border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+              Find Any Calculator Easily
+            </h2>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto">
+              Choose the easiest way to find what you are looking for today.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="p-4 sm:p-4.5 rounded-xl bg-surface border border-outline-variant/30 shadow-xs flex flex-col justify-between hover:border-primary/40 transition-colors">
+              <div>
+                <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-3">
+                  <span className="material-symbols-outlined text-xl">search</span>
+                </div>
+                <h3 className="font-bold text-sm text-on-surface mb-1">Search by Word</h3>
+                <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">
+                  Type any word like “loan”, “discount”, or “age” for instant suggestions.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={scrollToSearch}
+                className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline cursor-pointer pt-2 border-t border-outline-variant/15"
+              >
+                Go to Search <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </button>
+            </div>
+
+            <div className="p-4 sm:p-4.5 rounded-xl bg-surface border border-outline-variant/30 shadow-xs flex flex-col justify-between hover:border-primary/40 transition-colors">
+              <div>
+                <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-3">
+                  <span className="material-symbols-outlined text-xl">grid_view</span>
+                </div>
+                <h3 className="font-bold text-sm text-on-surface mb-1">Browse by Topic</h3>
+                <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">
+                  Explore simple tools grouped by money, health, dates, math, and daily life.
+                </p>
+              </div>
+              <a
+                href="#categories-section"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline pt-2 border-t border-outline-variant/15"
+              >
+                Browse Topics <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
+
+            <div className="p-4 sm:p-4.5 rounded-xl bg-surface border border-outline-variant/30 shadow-xs flex flex-col justify-between hover:border-primary/40 transition-colors">
+              <div>
+                <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-3">
+                  <span className="material-symbols-outlined text-xl">task_alt</span>
+                </div>
+                <h3 className="font-bold text-sm text-on-surface mb-1">Pick Your Goal</h3>
+                <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">
+                  Choose what you want to do: buy a car, save cash, get fit, or count days.
+                </p>
+              </div>
+              <a
+                href="#solve-goals-section"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline pt-2 border-t border-outline-variant/15"
+              >
+                Start with a Goal <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
+
+            <div className="p-4 sm:p-4.5 rounded-xl bg-surface border border-outline-variant/30 shadow-xs flex flex-col justify-between hover:border-primary/40 transition-colors">
+              <div>
+                <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-3">
+                  <span className="material-symbols-outlined text-xl">trending_up</span>
+                </div>
+                <h3 className="font-bold text-sm text-on-surface mb-1">Top Everyday Tools</h3>
+                <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">
+                  Quick access to mortgage, BMI, discounts, age, and conversion tools.
+                </p>
+              </div>
+              <a
+                href="#popular-calculators-section"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline pt-2 border-t border-outline-variant/15"
+              >
+                View Popular Tools <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 3. BROWSE CALCULATORS BY CATEGORY (COMPACT DESKTOP GRID) ================= */}
+      <section id="categories-section" className="w-full py-8 sm:py-10 md:py-12 bg-surface border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+              Browse Calculators by Category
+            </h2>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto">
+              Select a domain to access specialized calculation workbenches and tools.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            {CATEGORIES.map((cat) => (
+              <div
+                key={cat.name}
+                className="p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary/40 transition-colors flex flex-col justify-between group"
+              >
                 <div>
-                  <span className="font-label-caps text-label-caps text-primary uppercase font-bold tracking-wider">
-                    Educational Rigor
-                  </span>
-                  <h2 className="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
-                    Mathematical Guides & Deep Dives
-                  </h2>
-                  <p className="font-body-md text-body-md text-on-surface-variant mt-1">
-                    Detailed proofs, formula breakdowns, and practical guidance
-                    from domain specialists.
-                  </p>
+                  <div className="flex items-center gap-2.5 mb-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-surface-container text-primary flex items-center justify-center shrink-0">
+                      <span className="material-symbols-outlined text-lg">{cat.icon}</span>
+                    </div>
+                    <h3 className="font-bold text-sm text-on-surface truncate">{cat.name}</h3>
+                  </div>
+                  <p className="text-xs text-on-surface-variant leading-relaxed mb-3 line-clamp-2">{cat.description}</p>
+                  <div className="border-t border-outline-variant/15 pt-2 mb-3 space-y-1">
+                    {cat.sampleTools.slice(0, 3).map((tool) => (
+                      <Link
+                        key={tool.name}
+                        href={tool.href}
+                        className="block text-xs text-on-surface hover:text-primary transition-colors truncate"
+                      >
+                        · {tool.name}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
                 <Link
-                  href="/article"
-                  className="font-headline-md text-body-sm text-primary hover:underline flex items-center gap-1"
+                  href={cat.href}
+                  className="inline-flex items-center justify-between text-xs font-semibold text-primary group-hover:underline pt-2 border-t border-outline-variant/15"
                 >
-                  <span>Browse Knowledge Base</span>
-                  <span className="material-symbols-outlined text-[16px]">
-                    arrow_forward
-                  </span>
+                  <span>Explore {cat.name}</span>
+                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
                 </Link>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
-                {guidesData.map((guide, idx) => {
-                  let href = "/article";
-                  if (guide.title.includes("BMI")) href = "/article/how-to-calculate-bmi";
-                  if (guide.title.includes("EMI")) href = "/article/how-emi-works";
-                  if (guide.title.includes("GST")) href = "/article/understanding-gst";
-                  if (guide.title.includes("Investment")) href = "/article/investment-planning-basics";
+            ))}
+          </div>
 
-                  return (
-                    <Link href={href} key={idx} className="block group">
-                      <article
-                        className="h-full p-5 rounded-2xl bg-surface-container-lowest shadow-sm group-hover:shadow-lg transition-all flex flex-col justify-between border border-outline-variant/20 group-hover:border-primary/30"
-                      >
-                        <div>
-                          <div className="w-full h-36 rounded-xl mb-4 bg-surface-container-high flex items-center justify-center">
-                            {guide.svgIcon}
-                          </div>
-                          <div className="flex items-center gap-2 mb-2 font-label-caps text-label-caps text-on-surface-variant flex-wrap">
-                            <span>{guide.category}</span>
-                            <span>•</span>
-                            <span>{guide.time}</span>
-                            {(guide.category === 'FINANCE' || guide.category === 'BUSINESS' || guide.category === 'INVESTING') && (
-                              <>
-                                <span>•</span>
-                                <span className="text-primary font-semibold">Updated Sep 15, 2026</span>
-                              </>
-                            )}
-                          </div>
-                          <h3 className="font-headline-md text-headline-md text-on-surface leading-snug group-hover:text-primary transition-colors">
-                            {guide.title}
-                          </h3>
-                          <p className="font-body-sm text-body-sm text-on-surface-variant mt-2">
-                            {guide.desc}
-                          </p>
-                        </div>
-                        <div className="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-end">
-                          <span className="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors">
-                            arrow_forward
-                          </span>
-                        </div>
-                      </article>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-
-          {/* ================= SECTION 11: STATISTICS ================= */}
-          <section className="w-full py-space-3xl bg-surface">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile md:px-gutter-desktop">
-              <div className="p-8 md:p-12 rounded-3xl bg-surface-container-highest/60 backdrop-blur-md relative overflow-hidden">
-                <div className="pointer-events-none absolute inset-0 opacity-10">
-                  <svg
-                    className="w-full h-full"
-                    preserveAspectRatio="none"
-                    viewBox="0 0 1000 400"
-                  >
-                    <path
-                      d="M0,100 C300,300 700,0 1000,200 L1000,400 L0,400 Z"
-                      fill="#004ac6"
-                    ></path>
-                  </svg>
-                </div>
-                <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-space-lg text-center">
-                  <div className="flex flex-col items-center">
-                    <span className="font-data-mono font-headline-lg md:font-numerical-display text-headline-lg md:text-numerical-display text-primary font-bold">
-                      5,000+
-                    </span>
-                    <span className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mt-1">
-                      Calculators & Tools
-                    </span>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 hidden sm:block">
-                      Continuously updated algorithm library
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <span className="font-data-mono font-headline-lg md:font-numerical-display text-headline-lg md:text-numerical-display text-on-surface font-bold">
-                      50+
-                    </span>
-                    <span className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mt-1">
-                      Specialized Categories
-                    </span>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 hidden sm:block">
-                      From civil engineering to macrobiotics
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <span className="font-data-mono font-headline-lg md:font-numerical-display text-headline-lg md:text-numerical-display text-primary font-bold">
-                      50K+
-                    </span>
-                    <span className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mt-1">
-                      Monthly Computations
-                    </span>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 hidden sm:block">
-                      Trusted by researchers and analysts
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <span className="font-data-mono font-headline-lg md:font-numerical-display text-headline-lg md:text-numerical-display text-secondary font-bold">
-                      100%
-                    </span>
-                    <span className="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mt-1">
-                      Free & Open Access
-                    </span>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 hidden sm:block">
-                      No credit card or login ever needed
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          <div className="text-center">
+            <Link
+              href="/time-date"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-surface-container-high text-on-surface font-semibold text-xs hover:bg-surface-container-highest transition-colors"
+            >
+              <span>View All Categories &amp; Tools</span>
+              <span className="material-symbols-outlined text-base">apps</span>
+            </Link>
+          </div>
         </div>
-        
-        <HomePageSeoSections />
-      </main>
-    </>
+      </section>
+
+      {/* ================= 4. FINANCE CATEGORY FEATURE ================= */}
+      <section className="w-full py-8 sm:py-10 bg-surface-container-lowest border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-3">
+            <div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary uppercase tracking-wider mb-1">
+                <span className="material-symbols-outlined text-sm">payments</span>
+                <span>Financial Planning</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+                Finance Calculators
+              </h2>
+              <p className="text-xs sm:text-sm text-on-surface-variant max-w-2xl">
+                Understand loans, savings, taxes, investments, mortgages, retirement, and everyday money decisions.
+              </p>
+            </div>
+            <Link
+              href="/finance"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-primary text-on-primary font-semibold text-xs hover:opacity-95 shrink-0 self-start sm:self-auto"
+            >
+              Explore Finance <span className="material-symbols-outlined text-sm">arrow_forward</span>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {FINANCE_SUBCATEGORIES.map((sub) => (
+              <Link
+                key={sub.name}
+                href={sub.href}
+                className="p-3.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary/50 transition-colors group"
+              >
+                <h3 className="font-semibold text-xs sm:text-sm text-on-surface group-hover:text-primary transition-colors mb-1 flex items-center justify-between">
+                  <span>{sub.name}</span>
+                  <span className="material-symbols-outlined text-sm text-on-surface-variant group-hover:text-primary transition-colors">
+                    chevron_right
+                  </span>
+                </h3>
+                <p className="text-[11px] text-on-surface-variant leading-relaxed">{sub.desc}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 5. WHAT ARE YOU TRYING TO SOLVE? (RESPONSIVE TABS & COMPACT CARDS) ================= */}
+      <section id="solve-goals-section" className="w-full py-8 sm:py-10 md:py-12 bg-surface border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+              What Would You Like to Solve?
+            </h2>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto">
+              Pick your goal below to see the most helpful calculators right away.
+            </p>
+          </div>
+
+          {/* Goal Selector Tabs */}
+          <div className="flex items-center justify-start sm:justify-center gap-1.5 overflow-x-auto pb-2 mb-5 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+            {GOAL_CATEGORIES.map((goal) => (
+              <button
+                key={goal.id}
+                type="button"
+                onClick={() => setActiveGoal(goal.id)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors flex items-center gap-1.5 cursor-pointer border ${
+                  activeGoal === goal.id
+                    ? "bg-primary text-on-primary border-primary shadow-xs"
+                    : "bg-surface-container-low text-on-surface hover:bg-surface-container-high border-outline-variant/30"
+                }`}
+              >
+                <span className="material-symbols-outlined text-sm">{goal.icon}</span>
+                <span>{goal.title}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Active Goal Content Display */}
+          {(() => {
+            const current = GOAL_CATEGORIES.find((g) => g.id === activeGoal) || GOAL_CATEGORIES[0];
+            return (
+              <div className="p-4 sm:p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 shadow-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-4 border-b border-outline-variant/20">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      <span className="material-symbols-outlined text-xl">{current.icon}</span>
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-sm sm:text-base text-on-surface">{current.title}</h3>
+                      <p className="text-xs text-on-surface-variant">{current.description}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {current.tools.map((tool) => (
+                    <Link
+                      key={tool.name}
+                      href={tool.href}
+                      title={tool.note}
+                      className="px-3 py-2.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary/50 hover:bg-primary/10 transition-all flex items-center justify-between gap-2 group shadow-2xs hover:shadow-xs hover:translate-x-0.5"
+                    >
+                      <span className="font-semibold text-xs sm:text-sm text-on-surface group-hover:text-primary transition-colors truncate flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary shrink-0 transition-colors" />
+                        <span className="truncate">{tool.name}</span>
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary group-hover:translate-x-0.5 transition-transform shrink-0">
+                        <span className="material-symbols-outlined text-xs">arrow_forward</span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+        </div>
+      </section>
+
+      {/* ================= 6. POPULAR CALCULATORS (HIGH DENSITY GRID) ================= */}
+      <section id="popular-calculators-section" className="w-full py-8 sm:py-10 bg-surface-container-lowest border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+              Popular Calculators
+            </h2>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto">
+              Commonly used calculators for rapid everyday estimates and decisions.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {POPULAR_CALCULATORS.map((calc) => (
+              <div
+                key={calc.name}
+                className="p-3.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary/40 flex flex-col justify-between transition-colors group"
+              >
+                <div>
+                  <div className="w-7 h-7 rounded-lg bg-surface-container text-primary flex items-center justify-center mb-2.5">
+                    <span className="material-symbols-outlined text-base">{calc.icon}</span>
+                  </div>
+                  <h3 className="font-semibold text-xs sm:text-sm text-on-surface group-hover:text-primary transition-colors mb-1">{calc.name}</h3>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed mb-3">{calc.desc}</p>
+                </div>
+                <Link
+                  href={calc.href}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline pt-2 border-t border-outline-variant/15"
+                >
+                  Calculate →
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 7. FEATURED DIFFERENTIATED TOOLS ================= */}
+      <section className="w-full py-8 sm:py-10 md:py-12 bg-surface border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+              Featured Calculators
+            </h2>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto">
+              Deep-model workbenches designed to solve specific real-world tasks.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+            {FEATURED_CALCULATORS.map((tool) => (
+              <div
+                key={tool.name}
+                className="p-4 sm:p-5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                      <span className="material-symbols-outlined text-xl">{tool.icon}</span>
+                    </div>
+                    <span className="text-[10px] font-mono font-medium text-on-surface-variant px-2 py-0.5 rounded bg-surface-container">
+                      {tool.tag}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-sm sm:text-base text-on-surface mb-1.5">{tool.name}</h3>
+                  <p className="text-xs text-on-surface-variant leading-relaxed mb-4">{tool.desc}</p>
+                </div>
+                <Link
+                  href={tool.href}
+                  className="inline-flex items-center justify-between w-full py-2 px-3.5 rounded-lg bg-surface-container text-on-surface font-semibold text-xs hover:bg-primary hover:text-on-primary transition-colors"
+                >
+                  <span>Launch Tool</span>
+                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 8. RECENTLY UPDATED CALCULATORS ================= */}
+      <section className="w-full py-8 sm:py-10 bg-surface-container-lowest border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+              Recently Updated Calculators
+            </h2>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto">
+              Calculators that have recently received methodology, tax rate, or clinical benchmark updates.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+            {RECENTLY_UPDATED.map((item) => (
+              <div
+                key={item.name}
+                className="p-4 rounded-xl bg-surface border border-outline-variant/30 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2.5">
+                    <span className="text-[10px] font-mono text-on-surface-variant flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                      Updated: {item.lastUpdated}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-xs sm:text-sm text-on-surface mb-1">{item.name}</h3>
+                  <p className="text-xs text-on-surface-variant leading-relaxed mb-3">{item.explanation}</p>
+                </div>
+                <Link
+                  href={item.href}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline pt-2 border-t border-outline-variant/15"
+                >
+                  Open Tool →
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 9. CALCULATOR COLLECTIONS ================= */}
+      <section className="w-full py-8 sm:py-10 md:py-12 bg-surface border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+              Explore Calculator Collections
+            </h2>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto">
+              Curated suites of complementary tools grouped for complete task workflows.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
+            {COLLECTIONS.map((col) => (
+              <div
+                key={col.title}
+                className="p-4 sm:p-5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <div className="w-8 h-8 rounded-lg bg-surface-container text-primary flex items-center justify-center shrink-0">
+                      <span className="material-symbols-outlined text-lg">{col.icon}</span>
+                    </div>
+                    <h3 className="font-bold text-xs sm:text-sm text-on-surface">{col.title}</h3>
+                  </div>
+                  <p className="text-xs text-on-surface-variant leading-relaxed mb-3">{col.desc}</p>
+                  <div className="flex flex-wrap gap-1 mb-4">
+                    {col.tools.map((t) => (
+                      <span key={t} className="text-[10px] font-medium text-on-surface-variant px-1.5 py-0.5 rounded bg-surface-container">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <Link
+                  href={col.href}
+                  className="inline-flex items-center justify-between text-xs font-semibold text-primary hover:underline pt-2.5 border-t border-outline-variant/15"
+                >
+                  <span>Explore Collection</span>
+                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 10. HOW SOLVEITCALCULATOR WORKS ================= */}
+      <section className="w-full py-8 sm:py-10 bg-surface-container-lowest border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+              How SolveItCalculator Works in 4 Easy Steps
+            </h2>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto">
+              Simple and clear calculation steps from your input to your final answer.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5">
+            <div className="p-4 rounded-xl bg-surface border border-outline-variant/30">
+              <span className="text-xl font-bold text-primary font-mono block mb-1.5">01</span>
+              <h3 className="font-bold text-xs sm:text-sm text-on-surface mb-1">Pick Your Tool</h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Find what you need by searching or clicking any topic like loans, age, or health.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-surface border border-outline-variant/30">
+              <span className="text-xl font-bold text-primary font-mono block mb-1.5">02</span>
+              <h3 className="font-bold text-xs sm:text-sm text-on-surface mb-1">Type Your Numbers</h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                Enter your numbers with clear, simple labels and helpful example values.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-surface border border-outline-variant/30">
+              <span className="text-xl font-bold text-primary font-mono block mb-1.5">03</span>
+              <h3 className="font-bold text-xs sm:text-sm text-on-surface mb-1">Get Instant Answers</h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                See your final results right away on your screen—no waiting and no email required.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-surface border border-outline-variant/30">
+              <span className="text-xl font-bold text-primary font-mono block mb-1.5">04</span>
+              <h3 className="font-bold text-xs sm:text-sm text-on-surface mb-1">Follow Simple Steps</h3>
+              <p className="text-xs text-on-surface-variant leading-relaxed">
+                See exactly how the math was done in easy-to-understand words.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 11. CALCULATION TRANSPARENCY SECTION ================= */}
+      <section className="w-full py-8 sm:py-10 md:py-12 bg-surface border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+                Clear Calculations, Fully Transparent
+              </h2>
+              <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto">
+                We never hide formulas. Every calculation is explained clearly.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="p-4 sm:p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs flex items-start gap-3">
+                <span className="material-symbols-outlined text-primary text-xl mt-0.5 shrink-0">functions</span>
+                <div>
+                  <h3 className="font-semibold text-xs sm:text-sm text-on-surface mb-0.5">Everyday Formulas</h3>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">Standard, verified formulas displayed openly in simple language.</p>
+                </div>
+              </div>
+              <div className="p-4 sm:p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs flex items-start gap-3">
+                <span className="material-symbols-outlined text-primary text-xl mt-0.5 shrink-0">input</span>
+                <div>
+                  <h3 className="font-semibold text-xs sm:text-sm text-on-surface mb-0.5">Simple Input Boxes</h3>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">Clear labels and helpful placeholders so you always know what to enter.</p>
+                </div>
+              </div>
+              <div className="p-4 sm:p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs flex items-start gap-3">
+                <span className="material-symbols-outlined text-primary text-xl mt-0.5 shrink-0">help_outline</span>
+                <div>
+                  <h3 className="font-semibold text-xs sm:text-sm text-on-surface mb-0.5">Clear Explanations</h3>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">Know exactly how interest or tax was applied to your numbers.</p>
+                </div>
+              </div>
+              <div className="p-4 sm:p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs flex items-start gap-3">
+                <span className="material-symbols-outlined text-primary text-xl mt-0.5 shrink-0">format_list_numbered</span>
+                <div>
+                  <h3 className="font-semibold text-xs sm:text-sm text-on-surface mb-0.5">Step-by-Step Breakdown</h3>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">Follow the simple math steps to see how your result was reached.</p>
+                </div>
+              </div>
+              <div className="p-4 sm:p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs flex items-start gap-3">
+                <span className="material-symbols-outlined text-primary text-xl mt-0.5 shrink-0">lightbulb</span>
+                <div>
+                  <h3 className="font-semibold text-xs sm:text-sm text-on-surface mb-0.5">Helpful Examples</h3>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">Real-life examples demonstrating how to use the results.</p>
+                </div>
+              </div>
+              <div className="p-4 sm:p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs flex items-start gap-3">
+                <span className="material-symbols-outlined text-primary text-xl mt-0.5 shrink-0">link</span>
+                <div>
+                  <h3 className="font-semibold text-xs sm:text-sm text-on-surface mb-0.5">Related Helpers</h3>
+                  <p className="text-[11px] text-on-surface-variant leading-relaxed">Quick links to other helpful tools to finish your calculations.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 12. TRUST & PRINCIPLES ================= */}
+      <section className="w-full py-8 sm:py-10 bg-surface-container-lowest border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+              Why People Love SolveItCalculator
+            </h2>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto">
+              Built to make everyday math simple, private, and stress-free for everyone.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
+            <div className="p-3.5 rounded-xl bg-surface border border-outline-variant/30 text-center">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2">
+                <span className="material-symbols-outlined text-lg">visibility</span>
+              </div>
+              <h3 className="font-bold text-xs text-on-surface mb-1">CLEAR RESULTS</h3>
+              <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                Your answer is shown first in large, clear numbers.
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-surface border border-outline-variant/30 text-center">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2">
+                <span className="material-symbols-outlined text-lg">menu_book</span>
+              </div>
+              <h3 className="font-bold text-xs text-on-surface mb-1">EASY WORDS</h3>
+              <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                No confusing jargon. Plain English anyone can follow.
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-surface border border-outline-variant/30 text-center">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2">
+                <span className="material-symbols-outlined text-lg">shield</span>
+              </div>
+              <h3 className="font-bold text-xs text-on-surface mb-1">100% PRIVATE</h3>
+              <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                Runs on your device. We never see or store your data.
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-surface border border-outline-variant/30 text-center">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2">
+                <span className="material-symbols-outlined text-lg">bolt</span>
+              </div>
+              <h3 className="font-bold text-xs text-on-surface mb-1">INSTANT SPEED</h3>
+              <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                Works instantly without loading delays or server lag.
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-surface border border-outline-variant/30 text-center col-span-2 sm:col-span-1">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2">
+                <span className="material-symbols-outlined text-lg">lock_open</span>
+              </div>
+              <h3 className="font-bold text-xs text-on-surface mb-1">100% FREE</h3>
+              <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                No sign-up, no subscriptions, and no hidden fees ever.
+              </p>
+            </div>
+          </div>
+
+          {/* Privacy-Considerate Message */}
+          <div className="max-w-2xl mx-auto p-3.5 sm:p-4 rounded-xl bg-surface border border-outline-variant/30 text-center">
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary mb-1">
+              <span className="material-symbols-outlined text-sm">shield</span>
+              <span>Privacy-Conscious Calculations</span>
+            </div>
+            <p className="text-xs text-on-surface-variant leading-relaxed">
+              Calculator inputs are processed locally in your browser. Review our{" "}
+              <Link href="/privacy" className="text-primary hover:underline font-medium">
+                Privacy Policy
+              </Link>{" "}
+              for complete details.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 13. EDUCATIONAL CONTENT ================= */}
+      <section className="w-full py-8 sm:py-10 md:py-12 bg-surface border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-on-surface mb-1">
+              Learn How Calculations Work
+            </h2>
+            <p className="text-xs sm:text-sm text-on-surface-variant max-w-lg mx-auto">
+              Understand the formulas, assumptions, and meaning behind standard numerical models.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            {EDUCATIONAL_GUIDES.map((g) => (
+              <div
+                key={g.title}
+                className="p-3.5 sm:p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/30 flex flex-col justify-between"
+              >
+                <div>
+                  <h3 className="font-bold text-xs sm:text-sm text-on-surface mb-1.5 leading-snug">{g.question}</h3>
+                  <p className="text-xs text-on-surface-variant leading-relaxed mb-3">{g.answer}</p>
+                </div>
+                <div className="flex items-center justify-between pt-2.5 border-t border-outline-variant/15 text-xs">
+                  <Link href={g.guideHref} className="text-on-surface-variant hover:text-primary transition-colors font-medium text-[11px]">
+                    Read Guide →
+                  </Link>
+                  <Link href={g.calculatorHref} className="text-primary hover:underline font-semibold text-[11px]">
+                    Use Tool →
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 14. SEARCH-INTENT SEO SHORTCUTS ================= */}
+      <section className="w-full py-8 sm:py-10 bg-surface-container-lowest border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-sm sm:text-base font-bold text-on-surface mb-3">
+              Looking for a Specific Calculation?
+            </h2>
+            <div className="flex flex-wrap justify-center gap-2 text-xs">
+              <Link href="/finance/mortgage-calculator" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                Mortgage Payment
+              </Link>
+              <Link href="/finance/emi-calculator" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                Loan EMI
+              </Link>
+              <Link href="/health-fitness-calculators/bmi" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                BMI Index
+              </Link>
+              <Link href="/time-date/age-calculator" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                Age Calculator
+              </Link>
+              <Link href="/percentage-calculator" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                Percentage Math
+              </Link>
+              <Link href="/investing-and-growth" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                Compound Growth
+              </Link>
+              <Link href="/time-date/retirement-countdown-in-workdays" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                Retirement Countdown
+              </Link>
+              <Link href="/business-days-calculator" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                Working Days
+              </Link>
+              <Link href="/conversions" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                Unit Converter
+              </Link>
+              <Link href="/business" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                Business Profit
+              </Link>
+              <Link href="/education" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                GPA Planner
+              </Link>
+              <Link href="/home-construction" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+                Concrete Volume
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 15. UNIFIED MASTER FAQ ACCORDION ================= */}
+      <section className="w-full py-12 sm:py-16 bg-surface border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-xs font-semibold text-primary uppercase tracking-wider border border-outline-variant/40 mb-2">
+                <span className="material-symbols-outlined text-sm">help</span>
+                <span>Common Questions Answered</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-on-surface mb-2 tracking-tight">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-xs sm:text-sm text-on-surface-variant max-w-xl mx-auto leading-relaxed">
+                Clear and transparent answers detailing our tools, 100% in-browser privacy, and verified accuracy.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {FAQS.map((faq, index) => {
+                const isOpen = openFaq === index;
+                return (
+                  <div
+                    key={faq.q}
+                    className="rounded-2xl bg-surface-container-lowest border border-outline-variant/40 overflow-hidden shadow-xs hover:border-primary/40 transition-colors"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setOpenFaq(isOpen ? null : index)}
+                      className="w-full py-4 px-5 text-left font-bold text-xs sm:text-sm text-on-surface flex items-center justify-between gap-4 cursor-pointer select-none focus:outline-none"
+                      aria-expanded={isOpen}
+                    >
+                      <span className="leading-snug">{faq.q}</span>
+                      <span
+                        className={`material-symbols-outlined text-base transition-transform duration-200 shrink-0 ${
+                          isOpen ? "rotate-180 text-primary" : "text-on-surface-variant"
+                        }`}
+                      >
+                        expand_more
+                      </span>
+                    </button>
+                    {isOpen && (
+                      <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-on-surface-variant leading-relaxed border-t border-outline-variant/20 animate-in fade-in-50 duration-150">
+                        {faq.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 16. FINAL CALL TO ACTION ================= */}
+      <section className="w-full py-12 sm:py-16 bg-surface-container-low/50 border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-3xl mx-auto bg-surface-container-lowest p-8 sm:p-10 rounded-2xl border border-outline-variant/40 shadow-xs">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-on-surface mb-2 tracking-tight">
+              Ready to Solve Your Calculation?
+            </h2>
+            <p className="text-xs sm:text-sm text-on-surface-variant mb-6 max-w-md mx-auto leading-relaxed">
+              Find the right calculator in seconds or explore our topic categories. 100% free with no sign-up or paywalls.
+            </p>
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              <button
+                type="button"
+                onClick={scrollToSearch}
+                className="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-semibold text-xs sm:text-sm hover:opacity-95 shadow-xs transition-opacity flex items-center gap-1.5 cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-base">search</span>
+                Find a Calculator
+              </button>
+              <a
+                href="#categories-section"
+                className="px-5 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-semibold text-xs sm:text-sm hover:bg-surface-container-highest border border-outline-variant/40 transition-colors flex items-center gap-1.5"
+              >
+                <span>Browse All Topics</span>
+                <span className="material-symbols-outlined text-base">arrow_downward</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

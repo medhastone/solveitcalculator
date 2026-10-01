@@ -353,21 +353,9 @@ export default function GramToKilogramClient() {
 
       
 
-      <main className="w-full pt-16 bg-background min-h-screen">
+      <main className="w-full pt-0 bg-background min-h-screen">
         <div className="flex flex-col w-full">
-          {/* Sub-header Metrology Verification Strip */}
-          <div className="bg-surface-container-low px-gutter-mobile lg:px-gutter-desktop py-1 flex items-center justify-center overflow-x-auto whitespace-nowrap border-b border-outline-variant/20">
-            <div className="flex items-center gap-space-sm font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-              <span>BIPM / NIST SP 811 Metrology Verified</span>
-              <span className="opacity-40">•</span>
-              <span>100% Client-Side Local Sandbox</span>
-              <span className="opacity-40">•</span>
-              <span>Zero-Lag IEEE 754 High-Precision Core</span>
-              <span className="opacity-40">•</span>
-              <span>Strict Zero-Telemetry Policy</span>
-            </div>
-          </div>
+
 
           {/* SECTION 1: TOP METROLOGY TELEMETRY & INTRO */}
           <section className="w-full px-gutter-mobile lg:px-gutter-desktop max-w-max-width-canvas mx-auto pt-space-lg pb-space-md">

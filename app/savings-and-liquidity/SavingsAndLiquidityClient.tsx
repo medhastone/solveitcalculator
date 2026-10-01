@@ -419,7 +419,7 @@ export default function SavingsAndLiquidityClient() {
     <div className="min-h-screen bg-surface font-body-md text-on-surface">
       
 
-      <main className="w-full pt-16 bg-surface">
+      <main className="w-full pt-0 bg-surface">
         <div className="flex flex-col w-full">
 
           {/* TOP TRUST BANNER & BREADCRUMB AREA */}

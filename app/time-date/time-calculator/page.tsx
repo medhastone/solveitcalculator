@@ -3,9 +3,9 @@ import type { Metadata } from 'next';
 import TimeCalculatorClient from './TimeCalculatorClient';
 
 export const metadata: Metadata = {
-  title: 'Time Calculator | Add, Subtract & Convert HH:MM:SS Time | SolveIt',
+  title: 'Time Calculator | Add, Subtract, Multiply & Divide | SolveItCalculator',
   description:
-    'Free time duration calculator to add or subtract hours, minutes, and seconds (HH:MM:SS). Convert decimal hours to minutes, calculate timestamps, running pace splits, and cumulative time logs.',
+    'Add, subtract, multiply, or divide hours, minutes, seconds, and milliseconds. Convert results between time units with instant, easy-to-read output.',
   keywords: [
     'time calculator',
     'add time',
@@ -15,25 +15,23 @@ export const metadata: Metadata = {
     'decimal hours to minutes',
     'seconds to hh mm ss',
     'add hours to time',
-    'time accumulator',
-    'running pace split calculator',
-    'unix epoch timestamp converter'
+    'time accumulator'
   ],
   alternates: {
-    canonical: 'https://solveitcalculator.com/time-date/time-calculator/',
+    canonical: 'https://solveitcalculator.com/time-date/time-calculator',
   },
   openGraph: {
-    title: 'Time Calculator | Add, Subtract & Convert HH:MM:SS Time | SolveIt',
+    title: 'Time Calculator | Add, Subtract, Multiply & Divide | SolveItCalculator',
     description:
-      'Free time duration calculator to add or subtract hours, minutes, and seconds (HH:MM:SS). Convert decimal hours to minutes, calculate timestamps, running pace splits, and cumulative time logs.',
-    url: 'https://solveitcalculator.com/time-date/time-calculator/',
+      'Add, subtract, multiply, or divide hours, minutes, seconds, and milliseconds. Convert results between time units with instant, easy-to-read output.',
+    url: 'https://solveitcalculator.com/time-date/time-calculator',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Time Calculator | Add, Subtract & Convert HH:MM:SS Time | SolveIt',
+    title: 'Time Calculator | Add, Subtract, Multiply & Divide | SolveItCalculator',
     description:
-      'Free time duration calculator to add or subtract hours, minutes, and seconds (HH:MM:SS). Convert decimal hours to minutes, calculate timestamps, running pace splits, and cumulative time logs.',
+      'Add, subtract, multiply, or divide hours, minutes, seconds, and milliseconds. Convert results between time units with instant, easy-to-read output.',
   },
 };
 
@@ -43,8 +41,8 @@ const jsonLd = {
     {
       '@type': 'WebApplication',
       '@id': 'https://solveitcalculator.com/time-date/time-calculator/#app',
-      name: 'Time Calculator - Add & Subtract HH:MM:SS Duration',
-      url: 'https://solveitcalculator.com/time-date/time-calculator/',
+      name: 'Time Calculator',
+      url: 'https://solveitcalculator.com/time-date/time-calculator',
       applicationCategory: 'UtilityApplication',
       operatingSystem: 'All',
       description:

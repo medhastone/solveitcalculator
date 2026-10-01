@@ -2,7 +2,6 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { taxConfigData } from '@/lib/tax-data-rich';
-import Header from '@/components/Header';
 import GSTCalculatorClient from '../GSTCalculatorClient';
 import { Metadata } from 'next';
 
@@ -107,10 +106,7 @@ export default async function CountryTaxCalculatorPage({ params }: PageProps) {
                 <span className="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
                 FY 2026 Ready
               </span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-caps text-label-caps">
-                <span className="material-symbols-outlined text-[12px] text-primary">security</span>
-                100% Client-Side Engine
-              </span>
+
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-caps text-label-caps">
                 <span className="material-symbols-outlined text-[12px] text-primary">gavel</span>
                 {config.regulator} Statutory Formula

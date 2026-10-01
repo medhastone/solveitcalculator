@@ -143,7 +143,7 @@ Verified on SolveItCalculator.com`;
           <div className="max-w-3xl space-y-space-xs">
             <div className="inline-flex items-center gap-2 px-space-sm py-1 rounded-lg bg-surface-container text-primary font-label-caps text-label-caps">
               <span className="material-symbols-outlined text-[15px]">precision_manufacturing</span>
-              TAX METROLOGY BENCHMARK · IEEE 754 HIGH PRECISION ARITHMETIC
+              STATUTORY TAX CALCULATION BENCHMARK
             </div>
             <h1 className="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">
               {cfg.heroTitle}
@@ -706,7 +706,7 @@ Verified on SolveItCalculator.com`;
             </div>
           </div>
           <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-            <strong>Statutory Notice:</strong> SolveItCalculator.com provides mathematical computational tools for general operational estimation. Calculations are conducted client-side via JavaScript IEEE 754 precision math. While continuously audited against ATO, CRA, IRAS, IRD, and GST Council tax bulletins, this utility does not constitute formal taxation advice. Entities should consult a registered Tax Agent, BAS Agent, or CPA before lodging official statutory tax returns.
+            <strong>Notice:</strong> SolveItCalculator.com provides mathematical computational tools for general operational estimation. Calculations are conducted in-browser using standard tax formulas. This utility does not constitute formal taxation advice. Consult a certified tax advisor or accountant before filing official tax returns.
           </p>
         </div>
       </section>

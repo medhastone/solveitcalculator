@@ -725,7 +725,7 @@ export default function ElectricalClient() {
     <div className="min-h-screen bg-background font-body-md text-on-surface antialiased flex flex-col justify-between">
       
 
-      <main className="w-full pt-16 bg-background flex-1">
+      <main className="w-full pt-0 bg-background flex-1">
         {/* Verification & Electrical Standards Sub-Bar */}
         <div className="w-full bg-surface-container-low border-b border-outline-variant/15 sticky top-16 z-40 backdrop-blur-md bg-surface-container-low/95">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-2xs flex flex-col md:flex-row items-center justify-between gap-space-xs">
@@ -1468,30 +1468,35 @@ export default function ElectricalClient() {
                       </span>
                     </div>
                     <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">{cat.desc}</p>
-                    <ul className="space-y-1.5 font-body-sm text-body-sm text-on-surface">
+                    <div className="space-y-1.5 font-body-sm text-body-sm">
                       {cat.featuredTool && (
-                        <li>
-                          <a
-                            className="flex items-center justify-between py-1 px-2 rounded hover:bg-surface-container transition-colors font-bold text-primary"
-                            href="#workbench-cable"
-                          >
-                            <span>{cat.featuredTool}</span>
-                            <span className="material-symbols-outlined text-[16px] text-primary">bolt</span>
-                          </a>
-                        </li>
+                        <a
+                          title={cat.featuredTool}
+                          className="flex items-center justify-between px-3 py-2 rounded-xl bg-primary/10 hover:bg-primary/20 border border-primary/30 transition-all font-semibold text-xs text-primary shadow-2xs hover:shadow-xs hover:translate-x-0.5"
+                          href="#workbench-cable"
+                        >
+                          <span className="flex items-center gap-2 truncate">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                            <span className="truncate">{cat.featuredTool}</span>
+                          </span>
+                          <span className="material-symbols-outlined text-[16px] text-primary shrink-0">bolt</span>
+                        </a>
                       )}
                       {cat.tools.map(tool => (
-                        <li key={tool}>
-                          <a
-                            className="flex items-center justify-between py-1 px-2 rounded hover:bg-surface-container transition-colors font-bold text-on-surface hover:text-primary"
-                            href="#"
-                          >
-                            <span>{tool}</span>
-                            <span className="material-symbols-outlined text-[16px] text-outline">chevron_right</span>
-                          </a>
-                        </li>
+                        <a
+                          key={tool}
+                          title={tool}
+                          className="flex items-center justify-between px-3 py-2 rounded-xl bg-surface-container-low/60 hover:bg-primary/10 hover:border-primary/40 border border-outline-variant/20 transition-all font-semibold text-xs text-on-surface hover:text-primary shadow-2xs hover:shadow-xs hover:translate-x-0.5 group"
+                          href="#"
+                        >
+                          <span className="flex items-center gap-2 truncate">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary/40 group-hover:bg-primary shrink-0 transition-colors" />
+                            <span className="truncate">{tool}</span>
+                          </span>
+                          <span className="material-symbols-outlined text-[16px] text-outline-variant group-hover:text-primary transition-colors shrink-0">chevron_right</span>
+                        </a>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                   <div className="mt-space-md pt-space-xs border-t border-surface-container font-label-caps text-label-caps text-primary flex items-center justify-between">
                     <span>{cat.badge}</span>

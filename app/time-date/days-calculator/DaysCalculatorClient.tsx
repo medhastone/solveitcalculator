@@ -69,7 +69,13 @@ function getJulianDayNumber(year: number, month: number, day: number): number {
   );
 }
 
-export default function DaysCalculatorClient() {
+export default function DaysCalculatorClient({
+  initialUnitType = 'days',
+  pageTitle = 'Days Calculator',
+}: {
+  initialUnitType?: 'days' | 'business_days' | 'weeks' | 'months' | 'years';
+  pageTitle?: string;
+} = {}) {
   const [mounted, setMounted] = useState(false);
   const [utcTime, setUtcTime] = useState<Date | null>(null);
 
@@ -82,7 +88,7 @@ export default function DaysCalculatorClient() {
 
   const [startDate, setStartDate] = useState('2025-02-27');
   const [operation, setOperation] = useState<'add' | 'subtract'>('add');
-  const [unitType, setUnitType] = useState<'days' | 'business_days' | 'weeks' | 'months' | 'years'>('days');
+  const [unitType, setUnitType] = useState<'days' | 'business_days' | 'weeks' | 'months' | 'years'>(initialUnitType);
   const [quantity, setQuantity] = useState<number>(30);
   const [excludeHolidays, setExcludeHolidays] = useState<boolean>(true);
 
@@ -246,16 +252,6 @@ Julian Day Number (JDN): ${result.jdn}`;
     },
   ];
 
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-surface flex items-center justify-center font-body-md text-on-surface">
-        <div className="animate-pulse font-label-caps text-label-caps text-outline">
-          Initializing Date Projection Engine...
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-surface text-on-surface flex flex-col font-body-md selection:bg-primary/20">
       
@@ -271,22 +267,21 @@ Julian Day Number (JDN): ${result.jdn}`;
       {/* Header Banner */}
       <section className="w-full bg-surface-container-lowest border-b border-outline-variant/30 pt-space-xl pb-space-lg">
         <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-          <div className="flex items-center gap-2 mb-2">
-            <Link
-              href="/time-date"
-              className="font-label-caps text-label-caps text-outline hover:text-primary transition-colors flex items-center gap-1"
-            >
-              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-              Time & Date Suite
+          <nav aria-label="Breadcrumb" className="flex items-center gap-space-2xs font-body-sm text-body-sm text-on-surface-variant mb-4 flex-wrap">
+            <Link className="hover:text-primary transition-colors flex items-center gap-1" href="/">
+              <span className="material-symbols-outlined text-[16px]">home</span>
+              <span>Home</span>
             </Link>
-            <span className="text-outline-variant text-[12px]">•</span>
-            <span className="font-label-caps text-label-caps text-primary font-semibold">Date Projection</span>
-          </div>
+            <span className="text-outline-variant">/</span>
+            <Link className="hover:text-primary transition-colors" href="/time-date">Time &amp; Date</Link>
+            <span className="text-outline-variant">/</span>
+            <span className="text-on-surface font-medium">Days Calculator (Add / Subtract Days)</span>
+          </nav>
 
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h1 className="font-headline-xl text-headline-xl tracking-tight text-on-surface font-bold">
-                Days Calculator: Add or Subtract Days from Date
+                {pageTitle}
               </h1>
               <p className="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mt-1">
                 Project past and future milestone dates with mathematical precision. Add or subtract calendar days, business working days (skipping weekends & federal holidays), weeks, or months.

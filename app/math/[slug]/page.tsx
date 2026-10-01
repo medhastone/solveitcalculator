@@ -45,16 +45,6 @@ export default async function MathToolPage({ params }: { params: Promise<{ slug:
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="min-h-screen bg-surface flex flex-col">
-        {/* Simple Top Nav */}
-        <header className="sticky top-0 z-50 w-full border-b border-outline-variant/30 bg-surface/80 backdrop-blur-md">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop h-16 flex items-center justify-between">
-            <Link href="/" className="font-display text-title-lg font-bold text-on-surface tracking-tight flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary text-[28px]">function</span>
-              SolveIt
-            </Link>
-          </div>
-        </header>
-
         {/* Breadcrumb */}
         <div className="border-b border-outline-variant/15 bg-surface-container-lowest">
           <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-xs">
