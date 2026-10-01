@@ -3,10 +3,10 @@
 export const THEME_STORAGE_KEY = 'solveit_theme';
 
 export function getSystemTheme(): 'light' | 'dark' {
-  if (typeof window === 'undefined') return 'dark';
-  return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
-    ? 'light'
-    : 'dark';
+  if (typeof window === 'undefined') return 'light';
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
 }
 
 export function getCurrentTheme(): 'light' | 'dark' {

@@ -55,7 +55,7 @@ export default function RootLayout({
               (function() {
                 try {
                   var stored = localStorage.getItem('solveit_theme');
-                  var theme = stored || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+                  var theme = stored || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
                   document.documentElement.classList.remove('light', 'dark');
                   document.documentElement.classList.add(theme);
                   document.documentElement.setAttribute('data-theme', theme);
