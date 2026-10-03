@@ -75,13 +75,6 @@ const jsonLd = {
         'Professional tactical timekeeping utility converting between 12-hour civilian time, 24-hour military format, NATO phonetic pronunciations, and STANAG 2211 Date-Time Groups (DTG) across 25 international defense nautical zones.',
       browserRequirements: 'Requires JavaScript. Requires HTML5.',
       softwareVersion: '2.4.0',
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.9',
-        ratingCount: '1420',
-        bestRating: '5',
-        worstRating: '1',
-      },
       offers: {
         '@type': 'Offer',
         price: '0.00',

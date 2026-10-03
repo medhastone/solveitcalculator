@@ -905,56 +905,6 @@ export default function EventCountdownClient() {
     },
   }[colorTheme];
 
-  if (!mounted) {
-    return (
-      <main className="w-full pt-0 bg-surface min-h-screen">
-        {/* Breadcrumb Navigation */}
-        <div className="w-full bg-surface-container-low border-b border-outline-variant/10">
-          <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop py-space-sm">
-            <nav aria-label="Breadcrumb" className="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
-              <Link className="hover:text-primary transition-colors flex items-center gap-1" href="/">
-                <span className="material-symbols-outlined text-[16px]">home</span>
-                <span>Home</span>
-              </Link>
-              <span className="material-symbols-outlined text-[14px] text-outline-variant">chevron_right</span>
-              <Link className="hover:text-primary transition-colors" href="/time-date">
-                Time &amp; Date Calculators
-              </Link>
-              <span className="material-symbols-outlined text-[14px] text-outline-variant">chevron_right</span>
-              <span className="text-on-surface font-medium">Event Countdown Calculator</span>
-            </nav>
-          </div>
-        </div>
-
-        <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop pt-space-xl pb-space-xl">
-          <div className="flex flex-col items-center text-center max-w-3xl mx-auto space-y-space-md">
-            <div className="inline-flex items-center gap-2 px-space-sm py-1 rounded-full bg-surface-container-high shadow-sm text-primary">
-              <span className="material-symbols-outlined text-[16px]">hourglass_top</span>
-              <span className="font-label-caps text-label-caps uppercase tracking-wider font-semibold">
-                ONLINE EVENT COUNTDOWN TIMER
-              </span>
-            </div>
-
-            <h1 className="font-headline-lg text-headline-lg md:font-display-hero md:text-display-hero text-on-surface tracking-tight font-bold">
-              Event Countdown Calculator
-            </h1>
-
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
-              Create a live countdown for any upcoming event, wedding, vacation, exam, birthday, or personal milestone. Track days, hours, and minutes left with progress bars and celebration checkpoints.
-            </p>
-          </div>
-
-          <div className="mt-8 flex justify-center items-center py-12">
-            <div className="flex flex-col items-center gap-3 text-on-surface-variant">
-              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-              <p className="font-label-caps text-label-caps text-outline">Synchronizing Countdown Timer...</p>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main className="w-full pt-0 bg-surface min-h-screen">
       {/* Breadcrumb Navigation */}

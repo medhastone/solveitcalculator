@@ -1657,7 +1657,7 @@ export default function JulianDayCalculatorClient() {
                     Complete Date &amp; Time Category Hub
                   </h3>
                   <p className="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
-                    Browse all 37 tools categorized by Age, Calendars, Time Arithmetic, Global Zones, Shift Payroll, and Countdowns.
+                    Browse time and calendar tools categorized by Age, Calendars, Time Arithmetic, Global Zones, Shift Payroll, and Countdowns.
                   </p>
                 </div>
               </div>

@@ -173,7 +173,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search all 100+ calculators by name, keyword or formula..."
+            placeholder="Search calculators and converters by name, keyword or formula..."
             className="w-full bg-transparent font-body-lg text-body-lg text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none"
             aria-autocomplete="list"
           />

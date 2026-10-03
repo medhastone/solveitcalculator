@@ -84,14 +84,14 @@ export default async function HealthToolPage({ params }: PageProps) {
         medicalAudience: 'Patients, Athletes, Health Enthusiasts, Clinical Practitioners',
         aspect: ['Overview', 'Mathematical Derivation', 'Physiological Basis', 'Normative Classification', 'Clinical Guidelines'],
         author: {
-          '@type': 'Person',
-          name: seoGuide.medicalReview.reviewerName,
-          jobTitle: seoGuide.medicalReview.reviewerCredentials,
+          '@type': 'Organization',
+          name: 'SolveIt Calculator Editorial & Metrology Desk',
+          url: 'https://solveitcalculator.com',
         },
-        reviewedBy: {
-          '@type': 'Person',
-          name: seoGuide.medicalReview.reviewerName,
-          jobTitle: seoGuide.medicalReview.reviewerCredentials,
+        publisher: {
+          '@type': 'Organization',
+          name: 'SolveIt Calculator',
+          url: 'https://solveitcalculator.com',
         },
         citation: seoGuide.academicReferences.map((ref) => `${ref.authors} (${ref.year}). ${ref.title}. ${ref.journal}. ${ref.citationInfo}`),
       },

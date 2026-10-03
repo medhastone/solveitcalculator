@@ -27,13 +27,13 @@ export const metadata: Metadata = {
   creator: 'SolveIt Calculator',
   publisher: 'SolveIt Calculator',
   alternates: {
-    canonical: 'https://solveitcalculator.com/running-pace-calculator/',
+    canonical: 'https://solveitcalculator.com/running-pace-calculator',
   },
   openGraph: {
     title: 'Running Pace & Lap Split Calculator | SolveIt',
     description:
       'Precision pacing workbench for runners: calculate pace, finish times, kilometer & mile splits, training zones, and negative split strategies.',
-    url: 'https://solveitcalculator.com/running-pace-calculator/',
+    url: 'https://solveitcalculator.com/running-pace-calculator',
     siteName: 'SolveIt Calculator',
     type: 'website',
     locale: 'en_US',

@@ -260,12 +260,11 @@ export default function GramsToTeaspoonsClient() {
             "@graph": [
               {
                 "@type": "WebApplication",
-                "@id": "https://solveit.io/conversion/grams-to-teaspoons/#app",
-                "name": "SolveIt Universal Grams to Teaspoons Calculator & Spice Metrology Suite",
+                "@id": "https://solveitcalculator.com/conversion/grams-to-teaspoons/#app",
+                "name": "Grams to Teaspoons Calculator",
                 "applicationCategory": "UtilitiesApplication",
                 "operatingSystem": "All",
-                "browserRequirements": "Requires JavaScript. Requires HTML5.",
-                "description": "High-precision culinary and spice metrology engine converting grams to teaspoons using NIST and USDA FoodData Central bulk density datasets.",
+                "description": "Culinary calculator converting grams to teaspoons using empirical bulk densities from USDA FoodData Central standards.",
                 "offers": {
                   "@type": "Offer",
                   "price": "0",
@@ -275,10 +274,10 @@ export default function GramsToTeaspoonsClient() {
               {
                 "@type": "BreadcrumbList",
                 "itemListElement": [
-                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://solveit.io/" },
-                  { "@type": "ListItem", "position": 2, "name": "Conversion", "item": "https://solveit.io/conversion" },
-                  { "@type": "ListItem", "position": 3, "name": "Weight & Mass", "item": "https://solveit.io/conversion/gram" },
-                  { "@type": "ListItem", "position": 4, "name": "Grams to Teaspoons Calculator", "item": "https://solveit.io/conversion/grams-to-teaspoons" }
+                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://solveitcalculator.com/" },
+                  { "@type": "ListItem", "position": 2, "name": "Conversions", "item": "https://solveitcalculator.com/conversions" },
+                  { "@type": "ListItem", "position": 3, "name": "Weight & Mass", "item": "https://solveitcalculator.com/weight-converter" },
+                  { "@type": "ListItem", "position": 4, "name": "Grams to Teaspoons Calculator", "item": "https://solveitcalculator.com/conversion/grams-to-teaspoons" }
                 ]
               },
               {

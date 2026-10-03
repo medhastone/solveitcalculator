@@ -1,114 +1,120 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
+
+@layer base {
+  :root,
+  [data-theme="dark"],
+  .dark {
+    /* Semantic Colors - Dark Theme (Default) */
+    --color-surface: #0b1120;
+    --color-surface-container-lowest: #0f172a;
+    --color-surface-container-low: #151e32;
+    --color-surface-container: #1e293b;
+    --color-surface-container-high: #334155;
+    --color-surface-container-highest: #475569;
+    --color-on-surface: #f8fafc;
+    --color-on-surface-variant: #cbd5e1;
+    --color-primary: #38bdf8;
+    --color-on-primary: #0f172a;
+    --color-secondary: #2dd4bf;
+    --color-tertiary: #fbbf24;
+    --color-error: #f87171;
+    --color-outline: #64748b;
+    --color-outline-variant: #334155;
+
+    --background: #0b1120;
+    --foreground: #f8fafc;
+  }
+
+  [data-theme="light"],
+  .light {
+    /* Semantic Colors - Light Theme (Crisp High-Contrast Daylight Mode) */
+    --color-surface: #f1f5f9;
+    --color-surface-container-lowest: #ffffff;
+    --color-surface-container-low: #f8fafc;
+    --color-surface-container: #e2e8f0;
+    --color-surface-container-high: #cbd5e1;
+    --color-surface-container-highest: #94a3b8;
+    --color-on-surface: #0f172a;
+    --color-on-surface-variant: #334155;
+    --color-primary: #0284c7;
+    --color-on-primary: #ffffff;
+    --color-secondary: #0d9488;
+    --color-tertiary: #d97706;
+    --color-error: #dc2626;
+    --color-outline: #94a3b8;
+    --color-outline-variant: #cbd5e1;
+
+    --background: #f1f5f9;
+    --foreground: #0f172a;
+  }
+
+  * {
+    border-color: var(--color-outline-variant);
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+}
+
 @theme {
-  --color-primary: #059669;
-  --color-primary-hover: #047857;
-  --color-on-primary: #ffffff;
-  
-  --color-primary-fixed: #d1fae5;
-  --color-on-primary-fixed: #065f46;
-  --color-primary-container: #059669;
-  --color-on-primary-container: #ffffff;
+  --color-surface: var(--color-surface);
+  --color-surface-container-lowest: var(--color-surface-container-lowest);
+  --color-surface-container-low: var(--color-surface-container-low);
+  --color-surface-container: var(--color-surface-container);
+  --color-surface-container-high: var(--color-surface-container-high);
+  --color-surface-container-highest: var(--color-surface-container-highest);
+  --color-on-surface: var(--color-on-surface);
+  --color-on-surface-variant: var(--color-on-surface-variant);
+  --color-primary: var(--color-primary);
+  --color-on-primary: var(--color-on-primary);
+  --color-secondary: var(--color-secondary);
+  --color-tertiary: var(--color-tertiary);
+  --color-error: var(--color-error);
+  --color-outline: var(--color-outline);
+  --color-outline-variant: var(--color-outline-variant);
 
-  --color-surface: var(--surface);
-  --color-on-surface: var(--on-surface);
-  --color-on-surface-variant: var(--on-surface-variant);
+  --font-data-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  --color-surface-container-lowest: var(--surface-container-lowest);
-  --color-surface-container-low: var(--surface-container-low);
-  --color-surface-container: var(--surface-container);
-  --color-surface-container-high: var(--surface-container-high);
-  --color-surface-container-highest: var(--surface-container-highest);
+  --text-label-caps: 0.75rem;
+  --text-headline-lg: 2.25rem;
+  --text-headline-md: 1.5rem;
+  --text-display-hero: 3rem;
+  --text-numerical-display-mobile: 1.75rem;
+  --text-body-md: 1rem;
+  --text-body-sm: 0.875rem;
 
-  --color-outline: var(--outline);
-  --color-outline-variant: var(--outline-variant);
-
-  --spacing-space-2xs: 0.25rem;
+  --spacing-gutter-mobile: 1.25rem;
+  --spacing-gutter-desktop: 3rem;
   --spacing-space-xs: 0.5rem;
   --spacing-space-sm: 0.75rem;
   --spacing-space-md: 1rem;
   --spacing-space-lg: 1.5rem;
   --spacing-space-xl: 2rem;
-  --spacing-space-2xl: 3rem;
 
-  --width-max-width-canvas: 1280px;
-}
-
-:root, html.light, [data-theme="light"] {
-  --surface: #f8fafc;
-  --on-surface: #0f172a;
-  --on-surface-variant: #334155;
-
-  --surface-container-lowest: #ffffff;
-  --surface-container-low: #f1f5f9;
-  --surface-container: #e2e8f0;
-  --surface-container-high: #cbd5e1;
-  --surface-container-highest: #94a3b8;
-
-  --outline: #64748b;
-  --outline-variant: #e2e8f0;
-}
-
-html.dark, [data-theme="dark"] {
-  --surface: #090d16;
-  --on-surface: #f8fafc;
-  --on-surface-variant: #cbd5e1;
-
-  --surface-container-lowest: #0f172a;
-  --surface-container-low: #1e293b;
-  --surface-container: #334155;
-  --surface-container-high: #475569;
-  --surface-container-highest: #64748b;
-
-  --outline: #94a3b8;
-  --outline-variant: #334155;
+  --width-max-width-canvas: 1400px;
 }
 
 @layer utilities {
   .max-w-max-width-canvas {
-    max-width: 1280px;
+    max-width: 1400px;
   }
   .px-gutter-mobile {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
-  @media (min-width: 768px) {
-    .md\:px-gutter-desktop {
-      padding-left: 2rem;
-      padding-right: 2rem;
-    }
+  .px-gutter-desktop {
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
-  .font-headline-lg {
-    font-weight: 700;
-  }
-  .text-headline-lg {
-    font-size: 2.25rem;
-    line-height: 2.5rem;
-  }
-  .font-body-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-  .text-body-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-  .font-body-md {
-    font-size: 1rem;
-    line-height: 1.5rem;
-  }
-  .text-body-md {
-    font-size: 1rem;
-    line-height: 1.5rem;
-  }
-  .font-body-lg {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-  }
-  .text-body-lg {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
+  .font-data-mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
   .font-label-caps {
     font-size: 0.75rem;
@@ -116,20 +122,38 @@ html.dark, [data-theme="dark"] {
     letter-spacing: 0.05em;
     font-weight: 600;
   }
-  .text-label-caps {
-    font-size: 0.75rem;
+  .font-headline-lg {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    font-weight: 800;
   }
-  .font-data-mono {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  .font-headline-md {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+  }
+  .font-body-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  .font-body-md {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  .font-display-hero {
+    font-size: 3rem;
+    line-height: 1.15;
+    font-weight: 800;
+  }
+  .font-numerical-display-mobile {
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
-
-@layer base {
-  body {
-    background-color: var(--surface);
-    color: var(--on-surface);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  }
-}
-
-

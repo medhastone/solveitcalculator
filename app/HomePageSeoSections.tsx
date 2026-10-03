@@ -11,7 +11,7 @@ export default function HomePageSeoSections() {
             <div className="text-center mb-6 sm:mb-8">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-xs font-semibold text-primary uppercase tracking-wider border border-outline-variant/40 mb-2">
                 <ShieldCheck className="w-3.5 h-3.5 text-primary" />
-                <span>Verified Computational Standards</span>
+                <span>Documented Formulas &amp; Public Standards</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight">
                 The Best Free Online Calculators For Every Need
@@ -111,7 +111,7 @@ export default function HomePageSeoSections() {
                     </tr>
                     <tr className="hover:bg-surface-container-low transition-colors">
                       <td className="p-3.5 font-medium">Calculation Speed</td>
-                      <td className="p-3.5 text-primary font-bold">Instant (~12ms native)</td>
+                      <td className="p-3.5 text-primary font-bold">Instant In-Browser Execution</td>
                       <td className="p-3.5 text-on-surface-variant">Slow network roundtrips</td>
                     </tr>
                     <tr className="hover:bg-surface-container-low transition-colors">

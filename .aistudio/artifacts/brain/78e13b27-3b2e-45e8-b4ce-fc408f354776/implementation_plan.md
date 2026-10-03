@@ -1,40 +1,35 @@
-# Implementation Plan — FormSubmit Integration & Public Email Configuration
+# Remove Non-Functional Regional Measurement Boxes from Live Rates
 
-Connect the Contact Us form to FormSubmit's free endpoint targeting `medhastone@gmail.com` via seamless AJAX, while displaying `info@solveitcalculator.com` as the official public support email.
-
----
-
-## 1. Overview of Proposed Changes
-
-1. **AJAX FormSubmit Pipeline (`app/contact/ContactClient.tsx`):**
-   - Wire form submission to `https://formsubmit.co/ajax/medhastone@gmail.com`.
-   - Send JSON payload containing user `name`, `email`, `_replyto`, `topic`, `tool_url`, `_subject`, `message`, `_captcha: 'false'`, and `_template: 'table'`.
-   - Keep user seamlessly on page and show the animated confirmation screen with reference code.
-   - Provide error handling with direct mailto fallback if network connection fails.
-
-2. **Public-Facing Email Branding:**
-   - Display `info@solveitcalculator.com` across all user-facing contact elements (copy-to-clipboard button, email display card, and helpful hints).
-   - Update JSON-LD `ContactPage` schema in `app/contact/page.tsx` to `info@solveitcalculator.com`.
+Review and remove the static, non-clickable "Standard Regional Measurement Conventions" display block from the header's live currency exchange rate feature.
 
 ---
 
-## 2. Technical Modifications
+## 1. Analysis & Review
 
-### Step 1: Update `app/contact/ContactClient.tsx`
-- Replace `support@solveitcalculator.com` with `info@solveitcalculator.com` in UI labels and clipboard copy logic.
-- Replace simulated timeout submission with `fetch('https://formsubmit.co/ajax/medhastone@gmail.com', ...)` sending formatted fields and metadata.
-- Handle success state with generated ticket code and friendly confirmation.
-- Handle error state with informative banner and direct fallback option.
-
-### Step 2: Update `app/contact/page.tsx`
-- Update JSON-LD Schema `contactPoint.email` to `info@solveitcalculator.com`.
+- **Current State**:
+  The `Standard Regional Measurement Conventions` section in `components/CurrencyUnitSearchCard.tsx` renders a 4-column grid of cards:
+  - *Road Speed*: e.g., "Miles per hour (mph)"
+  - *Distance*: e.g., "Miles (roads) & Metres"
+  - *Mass & Weight*: e.g., "Kilograms (official) & Stones/Pounds (informal)"
+  - *Temperature*: e.g., "Celsius (°C)"
+- **Functionality Check**:
+  These elements are static `<div>` containers. They do not trigger conversions, allow unit swapping, or link to calculators. Following the removal of the active converter apply row, they look like interactive buttons or options but have no functionality.
+- **Decision**:
+  Remove this entire static block so the live rates dropdown is cleanly dedicated to real-time currency exchange rates and verified grounding sources.
 
 ---
 
-## 3. Verification & Validation
+## 2. Proposed Changes
 
-- Verify that submitting the form makes a valid AJAX POST request to FormSubmit endpoint with structured payload.
-- Verify success screen renders with reference ticket without page refresh.
-- Verify copy button copies `info@solveitcalculator.com`.
-- Verify JSON-LD Schema reflects `info@solveitcalculator.com`.
-- Run `lint_applet` to confirm 0 build/type errors.
+### `components/CurrencyUnitSearchCard.tsx`
+- Remove the `Regional Unit Standards Matrix` section (the `straighten` header and the 4 static boxes for Road Speed, Distance, Mass & Weight, and Temperature).
+- Retain the clean, compact summary banner, the live currency exchange rate cards (with live indicators and reverse rates), and the Google Search Grounding verified sources.
+- Clean up any unused properties or imports in the component.
+
+---
+
+## 3. Verification Plan
+
+1. **Linting**: Run `lint_applet` to confirm 0 errors or broken references.
+2. **Server Test**: Verify that the header renders cleanly with HTTP 200 via `curl`.
+3. **UI Verification**: Ensure the live rates feature displays the location header, live market currency cards, and verified sources without the non-functional measurement boxes.

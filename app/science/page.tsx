@@ -1,86 +1,79 @@
 import React from 'react';
-import { Metadata } from 'next';
-import ScienceClient from './ScienceClient';
+import type { Metadata } from 'next';
+import CategoryTopicHub from '@/components/CategoryTopicHub';
+import { getCategoryHubConfig } from '@/lib/categoryHubConfigs';
 
 export const metadata: Metadata = {
-  title: 'Science Calculators & Scientific Tools – Physics, Chemistry, Biology & More | SolveItCalculator',
-  description: 'Use free science calculators for physics, chemistry, biology, astronomy, engineering, formulas, scientific conversions, and advanced calculations.',
-  keywords: [
-    'science calculators',
-    'scientific tools',
-    'physics calculator',
-    'chemistry calculator',
-    'biology calculator',
-    'engineering calculator',
-    'astronomy calculator',
-    'scientific formula calculator',
-    'molarity calculator',
-    'density calculator',
-    'scientific conversion calculator',
-    'laboratory calculator',
-    'free scientific calculators',
-    'velocity calculator',
-    'force calculator',
-    'pressure calculator',
-    'energy calculator',
-    'scientific tools online'
-  ],
+  title: 'Science Calculators | Physics Kinematics, Ideal Gas & Quantum Energy | SolveItCalculator',
+  description:
+    'Free scientific calculators for 2D kinematics, projectile motion, Ideal Gas Law (PV=nRT), photon energy, chemical molarity, and radioactive decay. CODATA constants.',
   alternates: {
-    canonical: '/science-calculators-scientific-tools/',
+    canonical: 'https://solveitcalculator.com/science',
   },
   openGraph: {
+    title: 'Science Calculators | SolveItCalculator',
+    description:
+      'Scientific computation engines for classical physics, thermodynamics, photon wave equations, and chemical stoichiometry.',
+    url: 'https://solveitcalculator.com/science',
     type: 'website',
-    title: 'Science Calculators & Scientific Tools | Free Physics & Chemistry Calculators',
-    description: 'Calculate scientific formulas, physics equations, chemistry reactions, biology metrics, engineering values, and more with free tools from SolveItCalculator.',
-    url: '/science-calculators-scientific-tools/',
-    siteName: 'SolveItCalculator',
+    images: [{ url: 'https://solveitcalculator.com/og-home.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Science Calculators & Scientific Tools | Free Scientific Calculation Tools',
-    description: 'Free science calculators for physics, chemistry, biology, engineering, astronomy, formulas, and scientific conversions.',
+    title: 'Science Calculators | SolveItCalculator',
+    description: 'Calculate kinematics, ideal gas equations, and quantum photon energies with CODATA constants.',
+    images: ['https://solveitcalculator.com/og-home.png'],
   },
-};
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: 'Science Calculators & Scientific Tools',
-  url: 'https://solveitcalculator.com/science-calculators-scientific-tools/',
-  description: 'Use free science calculators for physics, chemistry, biology, astronomy, engineering, formulas, scientific conversions, and advanced calculations.',
-  applicationCategory: 'EducationalApplication',
-  operatingSystem: 'All',
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-  },
-  featureList: [
-    'Physics Calculators',
-    'Chemistry Calculators',
-    'Biology Calculators',
-    'Engineering Calculators',
-    'Astronomy Calculators',
-    'Laboratory Calculators',
-    'Scientific Formula Calculators',
-    'Density Calculators',
-    'Molarity Calculators',
-    'Force & Motion Calculators',
-    'Energy Calculators',
-    'Pressure Calculators',
-    'Scientific Conversion Tools',
-    'Research & Academic Calculators',
-  ],
 };
 
 export default function SciencePage() {
+  const config = getCategoryHubConfig('science');
+  if (!config) return null;
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': 'https://solveitcalculator.com/science#collection',
+        url: 'https://solveitcalculator.com/science',
+        name: 'Science Calculators',
+        description: config.intro,
+        isPartOf: {
+          '@type': 'WebSite',
+          '@id': 'https://solveitcalculator.com/#website',
+          url: 'https://solveitcalculator.com/',
+          name: 'SolveItCalculator',
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://solveitcalculator.com' },
+          { '@type': 'ListItem', position: 2, name: 'Science Calculators', item: 'https://solveitcalculator.com/science' },
+        ],
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: config.faqs.map((f) => ({
+          '@type': 'Question',
+          name: f.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: f.answer,
+          },
+        })),
+      },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ScienceClient />
+      <CategoryTopicHub config={config} />
     </>
   );
 }

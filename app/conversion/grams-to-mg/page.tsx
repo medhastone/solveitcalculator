@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     'Convert grams to mg instantly with our free Grams to Milligrams Converter. Formulas, steps, and instant chart.',
   alternates: {
-    canonical: 'https://solveit.io/conversion/gram-to-milligram'
+    canonical: 'https://solveitcalculator.com/conversion/gram-to-milligram'
   }
 };
 

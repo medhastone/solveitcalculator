@@ -59,7 +59,7 @@ const CALCULATOR_DIRECTORY: CalculatorItem[] = [
     category: "Health & Fitness",
     categoryHref: "/health-fitness-calculators",
     description: "Assess body mass index and healthy weight ranges for adults and children according to WHO benchmarks.",
-    href: "/health-fitness-calculators/bmi",
+    href: "/bmi-calculator",
     icon: "monitor_weight",
     synonyms: ["body mass index", "weight", "body fat", "calories", "obesity", "underweight", "ideal weight", "height"],
   },
@@ -324,7 +324,7 @@ const CATEGORIES: CategoryItem[] = [
     icon: "favorite",
     description: "BMI, calories, BMR, TDEE, body metrics and wellness calculations.",
     sampleTools: [
-      { name: "BMI Calculator", href: "/health-fitness-calculators/bmi" },
+      { name: "BMI Calculator", href: "/bmi-calculator" },
       { name: "Running Pace", href: "/running-pace-calculator" },
       { name: "Zone 2 Training", href: "/article/zone-2-cardio-training" },
     ],
@@ -485,7 +485,7 @@ const GOAL_CATEGORIES: GoalCategory[] = [
     icon: "favorite",
     description: "Check your body weight, BMI score, walking and running pace.",
     tools: [
-      { name: "BMI Calculator", href: "/health-fitness-calculators/bmi", note: "Check if your weight is in a healthy range" },
+      { name: "BMI Calculator", href: "/bmi-calculator", note: "Check if your weight is in a healthy range" },
       { name: "Running & Walking Pace", href: "/running-pace-calculator", note: "Minutes per mile or kilometer" },
       { name: "Health & Fitness Tools", href: "/health-fitness-calculators", note: "All body and workout tools" },
       { name: "Pet Age Converter", href: "/pet-age-converter", note: "Find your dog or cat age in human years" },
@@ -532,7 +532,7 @@ const GOAL_CATEGORIES: GoalCategory[] = [
 // --- 16 Popular Calculators ---
 const POPULAR_CALCULATORS = [
   { name: "Mortgage Calculator", href: "/finance/mortgage-calculator", desc: "Estimate monthly home loan payments, interest, and taxes.", icon: "home" },
-  { name: "BMI Calculator", href: "/health-fitness-calculators/bmi", desc: "Assess body mass index and clinical category ranges.", icon: "monitor_weight" },
+  { name: "BMI Calculator", href: "/bmi-calculator", desc: "Assess body mass index and clinical category ranges.", icon: "monitor_weight" },
   { name: "Age Calculator", href: "/time-date/age-calculator", desc: "Compute exact chronological age in years, days, and seconds.", icon: "cake" },
   { name: "Percentage Calculator", href: "/percentage-calculator", desc: "Solve percentage changes, differences, and discount values.", icon: "percent" },
   { name: "Loan & EMI Calculator", href: "/finance/emi-calculator", desc: "Calculate fixed monthly loan payments and amortization.", icon: "payments" },
@@ -702,7 +702,7 @@ const EDUCATIONAL_GUIDES: EducationalGuide[] = [
     question: "How Is BMI Calculated?",
     answer: "BMI divides body weight in kilograms by the square of height in meters (kg/m²), categorizing metrics into standard WHO health ranges.",
     guideHref: "/article/how-to-calculate-bmi",
-    calculatorHref: "/health-fitness-calculators/bmi",
+    calculatorHref: "/bmi-calculator",
     calculatorName: "BMI Calculator",
   },
   {
@@ -1714,7 +1714,7 @@ export default function HomePageClient() {
               <Link href="/finance/emi-calculator" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
                 Loan EMI
               </Link>
-              <Link href="/health-fitness-calculators/bmi" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
+              <Link href="/bmi-calculator" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">
                 BMI Index
               </Link>
               <Link href="/time-date/age-calculator" className="px-3 py-1.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary text-on-surface hover:text-primary transition-colors text-xs font-medium shadow-2xs">

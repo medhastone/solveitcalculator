@@ -85,28 +85,28 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/loans-and-amortization" className="hover:text-primary transition-colors">
+                <Link href="/finance/emi-calculator" className="hover:text-primary transition-colors">
                   EMI &amp; Loan Payoff
                 </Link>
               </li>
               <li>
-                <Link href="/investing-and-growth" className="hover:text-primary transition-colors">
-                  SIP &amp; Compound Growth
+                <Link href="/finance/compound-interest-calculator" className="hover:text-primary transition-colors">
+                  Compound Interest &amp; SIP
                 </Link>
               </li>
               <li>
-                <Link href="/salary-and-payroll" className="hover:text-primary transition-colors">
+                <Link href="/finance/salary" className="hover:text-primary transition-colors">
                   Salary &amp; Payroll Breakdown
                 </Link>
               </li>
               <li>
-                <Link href="/tax-engines-global" className="hover:text-primary transition-colors">
+                <Link href="/finance/taxes" className="hover:text-primary transition-colors">
                   Global Tax &amp; GST Estimators
                 </Link>
               </li>
               <li>
-                <Link href="/freelance-hourly-rate-calculator" className="hover:text-primary transition-colors">
-                  Freelance Billable Rate
+                <Link href="/finance/fire-forecaster" className="hover:text-primary transition-colors">
+                  FIRE &amp; Retirement Planner
                 </Link>
               </li>
             </ul>
@@ -119,33 +119,33 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/date-difference-calculator" className="hover:text-primary transition-colors">
+                <Link href="/time-date/date-difference-calculator" className="hover:text-primary transition-colors">
                   Date Difference Calculator
                 </Link>
               </li>
               <li>
-                <Link href="/time-date/time-calculator" className="hover:text-primary transition-colors">
+                <Link href="/time-date/add-subtract-time-calculator" className="hover:text-primary transition-colors">
                   Add / Subtract Time Tools
                 </Link>
               </li>
               <li>
-                <Link href="/health-fitness-calculators/bmi" className="hover:text-primary transition-colors">
+                <Link href="/health-fitness/bmi-calculator" className="hover:text-primary transition-colors">
                   BMI &amp; Healthy Body Weight
                 </Link>
               </li>
               <li>
-                <Link href="/scientific-calculator" className="hover:text-primary transition-colors">
+                <Link href="/math/scientific-calculator" className="hover:text-primary transition-colors">
                   Scientific Solver Workbench
                 </Link>
               </li>
               <li>
-                <Link href="/percentage-calculator" className="hover:text-primary transition-colors">
+                <Link href="/math/percentage-calculator" className="hover:text-primary transition-colors">
                   Percentage Calculator Suite
                 </Link>
               </li>
               <li>
-                <Link href="/business-days-calculator" className="hover:text-primary transition-colors">
-                  Business Workdays Counter
+                <Link href="/time-date/work-hours" className="hover:text-primary transition-colors">
+                  Work Hours &amp; Timesheets
                 </Link>
               </li>
             </ul>
@@ -163,23 +163,23 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/conversions" className="hover:text-primary transition-colors">
+                <Link href="/conversions/length" className="hover:text-primary transition-colors">
                   Length &amp; Distance Units
                 </Link>
               </li>
               <li>
-                <Link href="/conversions" className="hover:text-primary transition-colors">
+                <Link href="/conversions/mass" className="hover:text-primary transition-colors">
                   Weight &amp; Mass Converter
                 </Link>
               </li>
               <li>
-                <Link href="/temperature-converter" className="hover:text-primary transition-colors">
+                <Link href="/conversions/temperature" className="hover:text-primary transition-colors">
                   Temperature Converter
                 </Link>
               </li>
               <li>
-                <Link href="/cooking-converter" className="hover:text-primary transition-colors">
-                  Kitchen &amp; Cooking Units
+                <Link href="/conversions/volume" className="hover:text-primary transition-colors">
+                  Volume &amp; Capacity Units
                 </Link>
               </li>
               <li>

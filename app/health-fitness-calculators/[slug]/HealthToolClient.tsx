@@ -237,10 +237,10 @@ export default function HealthToolClient({ initialSlug }: { initialSlug: string 
                 );
               })}
               <Link
-                href="/health-fitness-calculators"
+                href="/health-fitness"
                 className="px-3 py-1 rounded-xl text-xs font-bold text-primary hover:underline flex items-center gap-1 shrink-0 ml-auto"
               >
-                <span>Browse All 35+ Tools</span>
+                <span>Browse All Health Tools</span>
                 <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
               </Link>
             </div>
@@ -1895,14 +1895,14 @@ export default function HealthToolClient({ initialSlug }: { initialSlug: string 
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-1">
                       <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-mono text-xs font-bold">
-                        Medically Reviewed &amp; Fact-Checked
+                        Verified Physiological Standards
                       </span>
                     </div>
                     <h2 className="font-headline-lg text-xl sm:text-2xl font-bold text-on-surface">
                       {seoGuide.headline}
                     </h2>
                     <p className="text-xs text-on-surface-variant mt-1">
-                      Medically reviewed by <strong className="text-on-surface">{seoGuide.medicalReview.reviewerName}</strong>, {seoGuide.medicalReview.reviewerCredentials} ({seoGuide.medicalReview.reviewerRole}). Last updated {seoGuide.medicalReview.reviewDate}.
+                      Methodology: <strong className="text-on-surface">{seoGuide.medicalReview.reviewerName}</strong> ({seoGuide.medicalReview.reviewerCredentials}). {seoGuide.medicalReview.reviewDate}.
                     </p>
                   </div>
                 </div>

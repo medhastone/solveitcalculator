@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     'calendar duration'
   ],
   alternates: {
-    canonical: 'https://solveitcalculator.com/time-date/date-difference/',
+    canonical: 'https://solveitcalculator.com/time-date/date-difference',
   },
   openGraph: {
     title: 'Date Difference Calculator | SolveIt',

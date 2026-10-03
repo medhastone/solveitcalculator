@@ -10,9 +10,6 @@ export const metadata: Metadata = {
   },
   description:
     'Every Calculation. One Place. High-precision computational engines for finance, business, engineering, conversions, health, math, and daily productivity. 100% free, private, client-side execution.',
-  alternates: {
-    canonical: 'https://solveitcalculator.com/',
-  },
   openGraph: {
     title: 'SolveIt Calculator | Professional Free Online Calculators & Converters',
     description:
@@ -62,6 +59,37 @@ export default function RootLayout({
                 } catch (e) {}
               })();
             `,
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                '@context': 'https://schema.org',
+                '@type': 'Organization',
+                name: 'SolveIt Calculator',
+                url: 'https://solveitcalculator.com',
+                logo: 'https://solveitcalculator.com/solveit-1.webp',
+                description:
+                  'Free high-precision computational engines and converters for personal finance, mathematical formulas, physical conversions, health benchmarks, and daily productivity.',
+                sameAs: [],
+              },
+              {
+                '@context': 'https://schema.org',
+                '@type': 'WebSite',
+                name: 'SolveIt Calculator',
+                url: 'https://solveitcalculator.com',
+                potentialAction: {
+                  '@type': 'SearchAction',
+                  target: {
+                    '@type': 'EntryPoint',
+                    urlTemplate: 'https://solveitcalculator.com/?q={search_term_string}',
+                  },
+                  'query-input': 'required name=search_term_string',
+                },
+              },
+            ]),
           }}
         />
         <link

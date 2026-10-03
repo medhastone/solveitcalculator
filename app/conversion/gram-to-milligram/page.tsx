@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     'medical dosage converter'
   ],
   alternates: {
-    canonical: 'https://solveit.io/conversion/gram-to-milligram'
+    canonical: 'https://solveitcalculator.com/conversion/gram-to-milligram'
   },
   openGraph: {
     title: 'Gram to Milligram Converter (g to mg) – Instant Conversion Calculator',
     description:
       'Convert grams to milligrams instantly with our free Gram to Milligram Converter. Enter any value in grams and get accurate milligram conversions, formulas, conversion tables, and FAQs.',
-    url: 'https://solveit.io/conversion/gram-to-milligram',
-    siteName: 'SolveIt Precision Metrology Core',
+    url: 'https://solveitcalculator.com/conversion/gram-to-milligram',
+    siteName: 'SolveIt Calculator',
     type: 'website'
   }
 };

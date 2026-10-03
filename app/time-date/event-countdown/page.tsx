@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://solveitcalculator.com/time-date/event-countdown/',
+    canonical: 'https://solveitcalculator.com/time-date/event-countdown',
   },
   openGraph: {
     title: 'Event Countdown Calculator & Live Timer | SolveIt',
@@ -134,14 +134,6 @@ const jsonLd = {
         '@type': 'Offer',
         price: '0.00',
         priceCurrency: 'USD',
-      },
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.9',
-        bestRating: '5',
-        worstRating: '1',
-        ratingCount: '2840',
-        reviewCount: '1954',
       },
       featureList: [
         'Real-time down-to-the-second live ticking countdown clock',

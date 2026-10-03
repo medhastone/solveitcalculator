@@ -23,7 +23,7 @@ export const focusTimerMetadata: Metadata = {
     'productivity timer',
   ],
   alternates: {
-    canonical: 'https://solveitcalculator.com/time-date/focus-and-break-timer/',
+    canonical: 'https://solveitcalculator.com/time-date/focus-and-break-timer',
   },
   openGraph: {
     title: 'Focus & Break Timer – Pomodoro, 52/17 & 3 Calm Focus Music Soundscapes | SolveIt',
@@ -81,13 +81,6 @@ export const focusTimerJsonLd = {
         '@type': 'Offer',
         price: '0',
         priceCurrency: 'USD',
-      },
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.9',
-        ratingCount: '1280',
-        bestRating: '5',
-        worstRating: '1',
       },
       featureList: [
         'Classic Pomodoro 25/5 interval timer',

@@ -43,10 +43,10 @@ const CATEGORY_GROUPS = [
     href: '/finance',
     tools: [
       { name: 'Mortgage Calculator', href: '/finance/mortgage-calculator' },
-      { name: 'EMI Loan Repayment', href: '/loans-and-amortization' },
-      { name: 'SIP & Compounding', href: '/investing-and-growth' },
-      { name: 'Income Tax Estimator', href: '/tax-engines-global' },
-      { name: 'Salary & Payroll', href: '/salary-and-payroll' },
+      { name: 'EMI Loan Repayment', href: '/finance/emi-calculator' },
+      { name: 'Compound Interest & SIP', href: '/finance/compound-interest-calculator' },
+      { name: 'Income Tax Estimator', href: '/finance/taxes' },
+      { name: 'Salary & Payroll', href: '/finance/salary' },
     ],
   },
   {
@@ -54,10 +54,10 @@ const CATEGORY_GROUPS = [
     icon: HeartPulse,
     color: 'text-rose-400',
     bgColor: 'bg-rose-500/10 border-rose-500/20',
-    href: '/health-fitness-calculators',
+    href: '/health-fitness',
     tools: [
-      { name: 'BMI & Body Fat Matrix', href: '/health-fitness-calculators/bmi' },
-      { name: 'Running Pace & Splits', href: '/running-pace-calculator' },
+      { name: 'BMI & Body Composition', href: '/health-fitness/bmi-calculator' },
+      { name: 'Running Pace & Splits', href: '/time-date/running-pace-calculator' },
       { name: '90-Min Ultradian Cycles', href: '/time-date/90-minute-ultradian-rhythm-planner' },
     ],
   },
@@ -68,9 +68,9 @@ const CATEGORY_GROUPS = [
     bgColor: 'bg-sky-500/10 border-sky-500/20',
     href: '/time-date',
     tools: [
-      { name: 'Date Difference Counter', href: '/date-difference-calculator' },
-      { name: 'Add/Subtract Time Tool', href: '/time-date/time-calculator' },
-      { name: 'Business Workdays', href: '/business-days-calculator' },
+      { name: 'Date Difference Counter', href: '/time-date/date-difference-calculator' },
+      { name: 'Add/Subtract Time Tool', href: '/time-date/add-subtract-time-calculator' },
+      { name: 'Work Hours & Timesheets', href: '/time-date/work-hours' },
       { name: 'Age Calculator', href: '/time-date/age-calculator' },
     ],
   },
@@ -81,9 +81,10 @@ const CATEGORY_GROUPS = [
     bgColor: 'bg-amber-500/10 border-amber-500/20',
     href: '/conversions',
     tools: [
-      { name: 'Length & Distance', href: '/conversions' },
-      { name: 'Weight & Mass', href: '/conversions' },
-      { name: 'Temperature & Heat', href: '/conversions' },
+      { name: 'Length & Distance', href: '/conversions/length' },
+      { name: 'Weight & Mass', href: '/conversions/mass' },
+      { name: 'Temperature & Heat', href: '/conversions/temperature' },
+      { name: 'Volume & Capacity', href: '/conversions/volume' },
     ],
   },
   {
@@ -93,7 +94,7 @@ const CATEGORY_GROUPS = [
     bgColor: 'bg-purple-500/10 border-purple-500/20',
     href: '/science',
     tools: [
-      { name: 'Full Scientific Solver', href: '/scientific-calculator' },
+      { name: 'Full Scientific Solver', href: '/math/scientific-calculator' },
       { name: 'Electrical Sizing', href: '/electrical' },
     ],
   },
@@ -104,9 +105,9 @@ const CATEGORY_GROUPS = [
     bgColor: 'bg-blue-500/10 border-blue-500/20',
     href: '/business',
     tools: [
-      { name: 'Percentage Variations', href: '/percentage-calculator' },
-      { name: 'Freelance Billable Rate', href: '/freelance-hourly-rate-calculator' },
-      { name: 'Daily Wage Calculator', href: '/salary-and-payroll' },
+      { name: 'Percentage Calculator', href: '/math/percentage-calculator' },
+      { name: 'Standard Deviation', href: '/math/standard-deviation-calculator' },
+      { name: 'Salary & Wage Breakdown', href: '/finance/salary' },
     ],
   },
 ];
@@ -268,7 +269,7 @@ export default function Header({
                       onClick={() => setCategoriesOpen(false)}
                       className="inline-flex items-center gap-1.5 text-primary hover:underline font-medium"
                     >
-                      <span>Explore all 250+ tools</span>
+                      <span>Explore all calculators &amp; converters</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>

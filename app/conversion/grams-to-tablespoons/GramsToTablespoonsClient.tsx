@@ -257,12 +257,11 @@ export default function GramsToTablespoonsClient() {
             "@graph": [
               {
                 "@type": "WebApplication",
-                "@id": "https://solveit.io/conversion/grams-to-tablespoons/#app",
-                "name": "SolveIt Universal Grams to Tablespoons Calculator & Culinary Intelligence Workbench",
+                "@id": "https://solveitcalculator.com/conversion/grams-to-tablespoons/#app",
+                "name": "Grams to Tablespoons Calculator",
                 "applicationCategory": "UtilitiesApplication",
                 "operatingSystem": "All",
-                "browserRequirements": "Requires JavaScript. Requires HTML5.",
-                "description": "High-precision metrology culinary engine converting grams to tablespoons and volume metrics using NIST and USDA FoodData Central bulk density datasets.",
+                "description": "Culinary calculator converting grams to tablespoons using empirical bulk densities from USDA FoodData Central standards.",
                 "offers": {
                   "@type": "Offer",
                   "price": "0",
@@ -272,10 +271,10 @@ export default function GramsToTablespoonsClient() {
               {
                 "@type": "BreadcrumbList",
                 "itemListElement": [
-                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://solveit.io/" },
-                  { "@type": "ListItem", "position": 2, "name": "Conversion", "item": "https://solveit.io/conversion" },
-                  { "@type": "ListItem", "position": 3, "name": "Weight & Mass", "item": "https://solveit.io/conversion/gram" },
-                  { "@type": "ListItem", "position": 4, "name": "Grams to Tablespoons Calculator", "item": "https://solveit.io/conversion/grams-to-tablespoons" }
+                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://solveitcalculator.com/" },
+                  { "@type": "ListItem", "position": 2, "name": "Conversions", "item": "https://solveitcalculator.com/conversions" },
+                  { "@type": "ListItem", "position": 3, "name": "Weight & Mass", "item": "https://solveitcalculator.com/weight-converter" },
+                  { "@type": "ListItem", "position": 4, "name": "Grams to Tablespoons Calculator", "item": "https://solveitcalculator.com/conversion/grams-to-tablespoons" }
                 ]
               },
               {
@@ -285,7 +284,7 @@ export default function GramsToTablespoonsClient() {
                   {
                     "@type": "HowToStep",
                     "name": "Identify the Ingredient Density",
-                    "text": "Look up the bulk packing density (g/mL) of the ingredient from certified USDA or NIST datasets."
+                    "text": "Look up the bulk packing density (g/mL) of the ingredient from USDA FoodData Central reference values."
                   },
                   {
                     "@type": "HowToStep",
@@ -1196,13 +1195,13 @@ export default function GramsToTablespoonsClient() {
                 <div>
                   <div className="inline-flex items-center gap-1 text-label-caps font-label-caps uppercase text-primary font-semibold mb-1">
                     <span className="material-symbols-outlined text-[16px]">database</span>
-                    Certified Metrology Database
+                    Culinary Density Reference (USDA FoodData Central)
                   </div>
                   <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
-                    Calibrated Culinary Ingredient Density Explorer
+                    Culinary Ingredient Density Reference Explorer
                   </h2>
                   <p className="font-body-sm text-body-sm text-on-surface-variant">
-                    Cross-referenced with USDA FoodData Central and the National Institute of Standards and Technology.
+                    Cross-referenced with empirical values from USDA FoodData Central and culinary standards.
                   </p>
                 </div>
 

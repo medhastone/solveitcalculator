@@ -445,6 +445,10 @@ export default function MortgagesAndRealEstateDebtClient() {
     return filteredClusters.reduce((acc, c) => acc + c.tools.length, 0);
   }, [filteredClusters]);
 
+  const totalAllTools = useMemo(() => {
+    return CLUSTERS.reduce((acc, c) => acc + c.tools.length, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-surface font-body-md text-on-surface">
       
@@ -493,7 +497,7 @@ export default function MortgagesAndRealEstateDebtClient() {
                       className="w-full bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none"
                     />
                     <span className="font-data-mono text-label-caps text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">
-                      106 Tools
+                      {totalFilteredTools} Scenarios
                     </span>
                   </div>
                 </div>
@@ -521,7 +525,7 @@ export default function MortgagesAndRealEstateDebtClient() {
                         : 'bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface'
                     }`}
                   >
-                    {tag === 'All' ? 'All Tools (106)' : tag}
+                    {tag === 'All' ? `All Tools (${totalAllTools})` : tag}
                   </button>
                 ))}
               </div>

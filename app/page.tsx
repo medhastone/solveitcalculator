@@ -8,13 +8,13 @@ export const metadata: Metadata = {
   description:
     'Every Calculation. One Place. High-precision computational engines for finance, business, engineering, conversions, health, math, and daily productivity. 100% free, private, client-side execution.',
   alternates: {
-    canonical: 'https://solveitcalculator.com/',
+    canonical: 'https://solveitcalculator.com',
   },
   openGraph: {
     title: 'SolveIt Calculator | Professional Free Online Calculators & Converters',
     description:
       'Every Calculation. One Place. High-precision computational engines for finance, business, engineering, conversions, health, math, and daily productivity.',
-    url: 'https://solveitcalculator.com/',
+    url: 'https://solveitcalculator.com',
     siteName: 'SolveItCalculator',
     images: [
       {

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     'Free online live event countdown timer. Track days, hours, minutes, and seconds until your wedding, vacation, birthday, exam, retirement, or product launch.',
   alternates: {
-    canonical: 'https://solveitcalculator.com/time-date/event-countdown/',
+    canonical: 'https://solveitcalculator.com/time-date/event-countdown',
   },
 };
 

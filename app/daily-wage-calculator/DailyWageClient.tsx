@@ -1792,13 +1792,13 @@ export default function DailyWageClient() {
 <span className="material-symbols-outlined text-[24px]">verified</span>
 </div>
 <div>
-<p className="font-headline-md text-headline-md text-base text-on-surface font-bold">Editorial Transparency &amp; Compliance Authority</p>
-<p className="font-body-sm text-body-sm text-on-surface-variant">Reviewed by Certified Payroll Specialists &amp; Labor Law Analysts</p>
+<p className="font-headline-md text-headline-md text-base text-on-surface font-bold">Calculation Methodology &amp; Regulatory Context</p>
+<p className="font-body-sm text-body-sm text-on-surface-variant">Aligned with statutory labor standards (FLSA 21.67-day, standard 22-day, and 26-day business divisors)</p>
 </div>
 </div>
 <div className="text-right">
-<span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Last Verified Audit</span>
-<p className="font-data-mono text-data-mono font-semibold text-primary">January 2025 Edition</p>
+<span className="font-label-caps text-label-caps uppercase text-on-surface-variant">Methodology Reference</span>
+<p className="font-data-mono text-data-mono font-semibold text-primary">Standard Working Day Divisors</p>
 </div>
 </div>
 <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md pt-space-xs text-on-surface-variant font-body-sm text-body-sm">

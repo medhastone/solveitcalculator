@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description:
     'Explore the complete directory of free online calculators and conversion tools for finance, health, dates, time, units, and math on SolveItCalculator.',
   alternates: {
-    canonical: 'https://solveitcalculator.com/sitemap/',
+    canonical: 'https://solveitcalculator.com/sitemap',
   },
 };
 

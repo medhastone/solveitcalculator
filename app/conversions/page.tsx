@@ -1,107 +1,66 @@
 import React from 'react';
-import { Metadata } from 'next';
-import ConversionsClient from './ConversionsClient';
-import { CONVERSION_FAQS, POPULAR_CONVERSION_PAIRS } from './conversionsData';
+import type { Metadata } from 'next';
+import CategoryTopicHub from '@/components/CategoryTopicHub';
+import { getCategoryHubConfig } from '@/lib/categoryHubConfigs';
 
 export const metadata: Metadata = {
-  title: 'Unit Converter | Length, Weight, Temperature & More | SolveItCalculator',
+  title: 'Unit Conversion Calculators | Length, Weight, Volume & Temperature | SolveItCalculator',
   description:
-    'Convert length, weight, temperature, volume, area, speed, time, pressure, energy, data and more. Use free unit converters with clear results, formulas and conversion tables.',
+    'Free unit converters for length, mass, volume, temperature, speed, energy, pressure, and digital storage. Verified NIST SP 811 and ISO 80000 conversion factors.',
   alternates: {
     canonical: 'https://solveitcalculator.com/conversions',
   },
   openGraph: {
-    title: 'Unit Converter for Length, Weight, Temperature & More | SolveItCalculator',
+    title: 'Unit Conversion Calculators | SolveItCalculator',
     description:
-      'Convert everyday, technical, engineering, scientific, cooking, automotive, and technology units with clear results, formulas, and conversion tables.',
+      'Standardized unit conversions across length, mass, volume, temperature, and engineering dimensions.',
     url: 'https://solveitcalculator.com/conversions',
-    siteName: 'SolveItCalculator',
     type: 'website',
+    images: [{ url: 'https://solveitcalculator.com/og-home.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Unit Converter | SolveItCalculator',
-    description:
-      'Convert length, weight, temperature, volume, speed, data, pressure, energy, and more with easy-to-use unit conversion tools.',
+    title: 'Unit Conversion Calculators | SolveItCalculator',
+    description: 'Convert length, weight, temperature, volume, and data with exact scientific ratios.',
+    images: ['https://solveitcalculator.com/og-home.png'],
   },
 };
 
 export default function ConversionsPage() {
+  const config = getCategoryHubConfig('conversions');
+  if (!config) return null;
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'CollectionPage',
-        '@id': 'https://solveitcalculator.com/conversions',
+        '@id': 'https://solveitcalculator.com/conversions#collection',
         url: 'https://solveitcalculator.com/conversions',
-        name: 'Unit Converter for Length, Weight, Temperature & More | SolveItCalculator',
-        description:
-          'Convert length, weight, temperature, volume, area, speed, time, pressure, energy, data and more. Use free unit converters with clear results, formulas and conversion tables.',
-        inLanguage: 'en-US',
+        name: 'Unit Conversion Calculators',
+        description: config.intro,
         isPartOf: {
           '@type': 'WebSite',
           '@id': 'https://solveitcalculator.com/#website',
           url: 'https://solveitcalculator.com/',
           name: 'SolveItCalculator',
         },
-        about: {
-          '@type': 'Thing',
-          name: 'Unit Converter',
-          description:
-            'Free unit converter for length, weight, temperature, volume, area, speed, pressure, energy, data storage, and cooking measurements.',
-        },
-        breadcrumb: {
-          '@id': 'https://solveitcalculator.com/conversions#breadcrumb',
-        },
       },
       {
         '@type': 'BreadcrumbList',
-        '@id': 'https://solveitcalculator.com/conversions#breadcrumb',
         itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            name: 'Home',
-            item: 'https://solveitcalculator.com/',
-          },
-          {
-            '@type': 'ListItem',
-            position: 2,
-            name: 'Unit Converter',
-            item: 'https://solveitcalculator.com/conversions',
-          },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://solveitcalculator.com' },
+          { '@type': 'ListItem', position: 2, name: 'Unit Conversion Calculators', item: 'https://solveitcalculator.com/conversions' },
         ],
       },
       {
-        '@type': 'SoftwareApplication',
-        name: 'SolveIt Universal Unit Converter',
-        applicationCategory: 'UtilityApplication',
-        operatingSystem: 'Any',
-        offers: {
-          '@type': 'Offer',
-          price: '0.00',
-          priceCurrency: 'USD',
-        },
-      },
-      {
-        '@type': 'ItemList',
-        name: 'Popular Unit Conversions',
-        itemListElement: POPULAR_CONVERSION_PAIRS.map((pair, idx) => ({
-          '@type': 'ListItem',
-          position: idx + 1,
-          name: `${pair.fromName} to ${pair.toName} Converter`,
-          description: `Convert ${pair.fromName} to ${pair.toName} (${pair.fromSymbol} to ${pair.toSymbol}) with formula and steps.`,
-          url: `https://solveitcalculator.com/conversion/${pair.slug}`,
-        })),
-      },
-      {
         '@type': 'FAQPage',
-        mainEntity: CONVERSION_FAQS.map((faq) => ({
+        mainEntity: config.faqs.map((f) => ({
           '@type': 'Question',
-          name: faq.q,
+          name: f.question,
           acceptedAnswer: {
             '@type': 'Answer',
-            text: faq.a,
+            text: f.answer,
           },
         })),
       },
@@ -114,7 +73,7 @@ export default function ConversionsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ConversionsClient />
+      <CategoryTopicHub config={config} />
     </>
   );
 }

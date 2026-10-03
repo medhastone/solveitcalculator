@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 
 export interface GroundingResult {
   locationName: string;
@@ -59,7 +58,6 @@ export default function CurrencyUnitSearchCard({
   onApplyPair,
   className = ''
 }: CurrencyUnitSearchCardProps) {
-  const router = useRouter();
   const [isExpanded, setIsExpanded] = useState<boolean>(initialExpanded);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -137,18 +135,6 @@ export default function CurrencyUnitSearchCard({
     },
     [searchQuery, userDetectedLocale]
   );
-
-  // Handle Apply to Converter
-  const handleApply = (pair: { categoryId: string; fromUnitId: string; toUnitId: string }) => {
-    if (onApplyPair) {
-      onApplyPair(pair);
-      showToast(`Applied ${pair.fromUnitId.toUpperCase()} ➔ ${pair.toUnitId.toUpperCase()} to calculator!`);
-    } else {
-      // Map currency or units to standard route
-      const slug = `${pair.fromUnitId.toLowerCase()}-to-${pair.toUnitId.toLowerCase()}`;
-      router.push(`/conversion/${slug}`);
-    }
-  };
 
   return (
     <div
@@ -356,63 +342,6 @@ export default function CurrencyUnitSearchCard({
                   ))}
                 </div>
               </div>
-
-              {/* Regional Unit Standards Matrix */}
-              <div className="space-y-2">
-                <div className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-primary text-base">straighten</span>
-                  <span>Standard Regional Measurement Conventions</span>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800 space-y-1">
-                    <div className="text-[11px] text-slate-400 font-medium">Road Speed</div>
-                    <div className="font-bold text-slate-900 dark:text-white">{result.unitSystem.speed}</div>
-                  </div>
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800 space-y-1">
-                    <div className="text-[11px] text-slate-400 font-medium">Distance</div>
-                    <div className="font-bold text-slate-900 dark:text-white">{result.unitSystem.distance}</div>
-                  </div>
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800 space-y-1">
-                    <div className="text-[11px] text-slate-400 font-medium">Mass &amp; Weight</div>
-                    <div className="font-bold text-slate-900 dark:text-white">{result.unitSystem.mass}</div>
-                  </div>
-                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800 space-y-1">
-                    <div className="text-[11px] text-slate-400 font-medium">Temperature</div>
-                    <div className="font-bold text-slate-900 dark:text-white">
-                      {result.unitSystem.temperature}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* 1-Click Apply to Converter Row */}
-              {result.suggestedPairs && result.suggestedPairs.length > 0 && (
-                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                  <div>
-                    <div className="text-xs font-bold text-slate-900 dark:text-white">
-                      Apply Detected Units to Active Converter
-                    </div>
-                    <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                      Instantly configure your conversion calculator for this regional standard:
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {result.suggestedPairs.map((pair, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => handleApply(pair)}
-                        className="px-3 py-1.5 rounded-xl bg-primary hover:bg-sky-600 text-white font-bold text-xs transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
-                      >
-                        <span className="material-symbols-outlined text-sm">tune</span>
-                        <span>Apply {pair.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               {/* Google Search Grounding Sources */}
               {result.groundingSources && result.groundingSources.length > 0 && (
                 <div className="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 space-y-1">

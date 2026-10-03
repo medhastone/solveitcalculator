@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     'how many days until'
   ],
   alternates: {
-    canonical: 'https://solveitcalculator.com/time-date/countdown-timer/',
+    canonical: 'https://solveitcalculator.com/time-date/countdown-timer',
   },
   openGraph: {
     title: 'Event Countdown Timer & Days Until Calculator | Live Ticker | SolveIt',

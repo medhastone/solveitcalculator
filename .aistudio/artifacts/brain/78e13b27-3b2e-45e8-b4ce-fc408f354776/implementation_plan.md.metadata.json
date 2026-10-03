@@ -1,6 +1,6 @@
 {
-  "summary":  "Implementation plan to integrate real FormSubmit.co AJAX submission routing to medhastone@gmail.com, while presenting info@solveitcalculator.com as the public user-facing email address.",
-  "updatedAt":  "2026-10-01T09:32:35.956071058Z",
+  "summary":  "Implementation plan to review and remove the non-functional 'Standard Regional Measurement Conventions' static boxes (Road Speed, Distance, Mass & Weight, Temperature) from the header live rates dropdown.",
+  "updatedAt":  "2026-10-03T11:15:13.665490937Z",
   "requestFeedback":  true,
   "userFacing":  true
 }

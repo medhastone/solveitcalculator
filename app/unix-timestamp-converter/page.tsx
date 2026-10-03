@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   publisher: 'SolveIt Calculator',
   category: 'Time & Chronometry Tools',
   alternates: {
-    canonical: 'https://solveitcalculator.com/unix-timestamp-converter/',
+    canonical: 'https://solveitcalculator.com/unix-timestamp-converter',
   },
   openGraph: {
     title: 'Unix Timestamp Converter | Epoch to Human Date & Time Calculator | SolveIt',

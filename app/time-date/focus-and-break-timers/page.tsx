@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     'pomodoro timer',
   ],
   alternates: {
-    canonical: 'https://solveitcalculator.com/time-date/focus-and-break-timer/',
+    canonical: 'https://solveitcalculator.com/time-date/focus-and-break-timers',
   },
 };
 

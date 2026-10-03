@@ -55,8 +55,6 @@ export default function FireForecasterClient() {
 
   // Main Actuarial & Wealth Computation Engine
   const data = useMemo(() => {
-    if (!mounted) return null;
-
     // Real Rate of Return (Fisher equation)
     const netNominal = (nominalReturn - taxDrag) / 100;
     const netInflation = inflationRate / 100;

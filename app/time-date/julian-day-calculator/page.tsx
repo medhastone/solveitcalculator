@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   publisher: 'SolveIt Calculator',
   category: 'Astronomy & Chronometry Tools',
   alternates: {
-    canonical: 'https://solveitcalculator.com/time-date/julian-day-calculator/',
+    canonical: 'https://solveitcalculator.com/time-date/julian-day-calculator',
   },
   openGraph: {
     title: 'Julian Day Calculator | Astronomical JD, JDN & MJD Converter | SolveIt',

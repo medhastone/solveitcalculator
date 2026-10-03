@@ -52,7 +52,7 @@ export default function DynamicConverterClient({ initialFrom, initialTo, slug }:
     const newTo = UNITS.find(u => u.id === newToId);
     
     if (newFrom && newTo && newFrom.id !== newTo.id) {
-       router.push(`/conversion/${newFrom.id}-to-${newTo.id}`);
+       router.push(`/conversions/${newFrom.id}-to-${newTo.id}`);
     }
   };
 
@@ -83,7 +83,9 @@ export default function DynamicConverterClient({ initialFrom, initialTo, slug }:
                   <span className="material-symbols-outlined text-[16px]">home</span>Home
                 </Link>
                 <span className="text-outline-variant">/</span>
-                <span className="text-on-surface-variant cursor-default">Conversion</span>
+                <Link href="/conversions" className="hover:text-primary transition-colors">
+                  Conversions
+                </Link>
                 <span className="text-outline-variant">/</span>
                 <span className="text-primary font-semibold">{currentFrom.nameSingular} to {currentTo.nameSingular}</span>
               </nav>

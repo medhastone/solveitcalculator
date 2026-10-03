@@ -1,17 +1,17 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import AutomotiveClient from '../automotive/AutomotiveClient';
+import AutomotiveCategoryHub from '@/components/AutomotiveCategoryHub';
 
 export const metadata: Metadata = {
-  title: 'Automotive Calculators & Estimators | Free Vehicle Tools',
-  description: 'Calculate fuel costs, mileage, car loans, vehicle expenses, depreciation, EV charging costs, and more with free automotive calculators and estimators.',
+  title: 'Automotive Calculators & Estimators | Free Vehicle Tools | SolveItCalculator',
+  description: 'Calculate fuel costs, mileage, car loans, vehicle expenses, depreciation, EV charging costs, and tire size comparisons with free automotive calculators.',
   alternates: {
-    canonical: 'https://solveitcalculator.com/automotive-calculators-estimators',
+    canonical: 'https://solveitcalculator.com/automotive',
   },
   openGraph: {
     title: 'Automotive Calculators & Estimators | Free Vehicle Tools',
     description: 'Calculate fuel costs, gas mileage, car loans, vehicle depreciation, EV charging expenses, and tire sizes with free automotive calculators.',
-    url: 'https://solveitcalculator.com/automotive-calculators-estimators',
+    url: 'https://solveitcalculator.com/automotive',
     type: 'website',
   },
   twitter: {
@@ -22,5 +22,5 @@ export const metadata: Metadata = {
 };
 
 export default function AutomotiveCalculatorsPage() {
-  return <AutomotiveClient />;
+  return <AutomotiveCategoryHub />;
 }

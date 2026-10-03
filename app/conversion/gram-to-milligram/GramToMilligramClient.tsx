@@ -199,72 +199,70 @@ export default function GramToMilligramClient({ initialDirection = 'g-to-mg' }: 
             '@graph': [
               {
                 '@type': 'WebPage',
-                '@id': 'https://solveit.io/conversion/gram-to-milligram#webpage',
-                url: 'https://solveit.io/conversion/gram-to-milligram',
+                '@id': 'https://solveitcalculator.com/conversion/gram-to-milligram#webpage',
+                url: 'https://solveitcalculator.com/conversion/gram-to-milligram',
                 name: 'Gram to Milligram Converter (g to mg) – Instant Conversion Calculator',
                 description:
                   'Convert grams to milligrams instantly with our free Gram to Milligram Converter. Enter any value in grams and get accurate milligram conversions, formulas, conversion tables, and FAQs.',
                 isPartOf: {
                   '@type': 'WebSite',
-                  '@id': 'https://solveit.io/#website',
-                  name: 'SolveIt Precision Metrology Core',
-                  url: 'https://solveit.io',
+                  '@id': 'https://solveitcalculator.com/#website',
+                  name: 'SolveIt Calculator',
+                  url: 'https://solveitcalculator.com',
                 },
                 breadcrumb: {
                   '@type': 'BreadcrumbList',
                   itemListElement: [
-                    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://solveit.io/' },
-                    { '@type': 'ListItem', position: 2, name: 'Conversion Hub', item: 'https://solveit.io/conversion-suite' },
-                    { '@type': 'ListItem', position: 3, name: 'Mass & Weight', item: 'https://solveit.io/conversion/mass-and-weight' },
-                    { '@type': 'ListItem', position: 4, name: 'Gram to Milligram (g to mg)', item: 'https://solveit.io/conversion/gram-to-milligram' },
+                    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://solveitcalculator.com/' },
+                    { '@type': 'ListItem', position: 2, name: 'Conversions', item: 'https://solveitcalculator.com/conversions' },
+                    { '@type': 'ListItem', position: 3, name: 'Weight & Mass', item: 'https://solveitcalculator.com/weight-converter' },
+                    { '@type': 'ListItem', position: 4, name: 'Gram to Milligram (g to mg)', item: 'https://solveitcalculator.com/conversion/gram-to-milligram' },
                   ],
                 },
                 inLanguage: 'en-US',
               },
               {
                 '@type': 'WebApplication',
-                '@id': 'https://solveit.io/conversion/gram-to-milligram#app',
-                name: 'SolveIt Gram to Milligram Precision Workbench',
-                applicationCategory: 'EducationalApplication',
-                operatingSystem: 'All modern browsers with WebAssembly / ES6 support',
+                '@id': 'https://solveitcalculator.com/conversion/gram-to-milligram#app',
+                name: 'Gram to Milligram Converter',
+                applicationCategory: 'UtilityApplication',
+                operatingSystem: 'All modern browsers',
                 offers: {
                   '@type': 'Offer',
                   price: '0',
                   priceCurrency: 'USD',
                 },
-                browserRequirements: 'Requires JavaScript. Requires HTML5 Canvas.',
-                softwareVersion: 'v4.8.2-IEEE-754',
               },
               {
                 '@type': 'HowTo',
-                '@id': 'https://solveit.io/conversion/gram-to-milligram#howto',
+                '@id': 'https://solveitcalculator.com/conversion/gram-to-milligram#howto',
                 name: 'How to Convert Grams to Milligrams (g to mg)',
                 description:
-                  'Deterministic 3-step Standard Operating Procedure to convert mass measured in grams (g) to milligrams (mg) using the standard SI metric factor of 1,000.',
+                  'Standard 3-step calculation procedure to convert mass in grams (g) to milligrams (mg) using the SI metric factor of 1,000.',
                 step: [
                   {
                     '@type': 'HowToStep',
                     position: 1,
-                    name: 'Acquire the Mass Reading in Grams',
-                    text: 'Note the certified reading from your analytical balance, formulation protocol, or active pharmaceutical ingredient datasheet in grams (g).',
+                    name: 'Identify the Mass in Grams',
+                    text: 'Take your reading or recipe measurement in grams (g).',
                   },
                   {
                     '@type': 'HowToStep',
                     position: 2,
                     name: 'Apply the SI Metric Constant (Multiply by 1,000)',
-                    text: 'Multiply your numerical gram quantity by 1,000 (or shift the base-10 decimal marker exactly 3 positions to the right).',
+                    text: 'Multiply your gram value by 1,000 (shifting the decimal 3 places to the right).',
                   },
                   {
                     '@type': 'HowToStep',
                     position: 3,
-                    name: 'Verify and Append the Milligram (mg) Symbol',
-                    text: 'Record the resulting numerical value and append the unambiguous SI unit symbol mg with standard decimal notation.',
+                    name: 'Record the Result in Milligrams (mg)',
+                    text: 'Record the resulting numerical value and append the SI unit symbol mg.',
                   },
                 ],
               },
               {
                 '@type': 'FAQPage',
-                '@id': 'https://solveit.io/conversion/gram-to-milligram#faq',
+                '@id': 'https://solveitcalculator.com/conversion/gram-to-milligram#faq',
                 mainEntity: [
                   {
                     '@type': 'Question',

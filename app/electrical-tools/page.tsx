@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import ElectricalClient from '../electrical/ElectricalClient';
+import ElectricalCategoryHub from '@/components/ElectricalCategoryHub';
 
 export const metadata: Metadata = {
   title: 'Electrical Calculators & Sizing Tools | Free Online Tools',
@@ -22,5 +22,5 @@ export const metadata: Metadata = {
 };
 
 export default function ElectricalToolsPage() {
-  return <ElectricalClient />;
+  return <ElectricalCategoryHub />;
 }

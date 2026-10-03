@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Grams to Tablespoons Calculator | SolveIt Precision Metrology',
-  description: 'Convert grams to tablespoons instantly with certified bulk density formulas for flour, sugar, butter, oil, honey, salt, and 1,000+ calibrated culinary ingredients.',
+  description: 'Convert grams to tablespoons instantly using bulk density values for flour, sugar, butter, oil, honey, and salt calibrated from USDA FoodData Central.',
   keywords: [
     'grams to tablespoons',
     'convert grams to tablespoons',
