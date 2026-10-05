@@ -1,35 +1,40 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import CategoryTopicHub from '@/components/CategoryTopicHub';
-import { getCategoryHubConfig } from '@/lib/categoryHubConfigs';
+import FinanceHubClient from './FinanceHubClient';
+import { FINANCE_CATALOG, FINANCE_FAQS } from './financeData';
 
 export const metadata: Metadata = {
-  title: 'Finance Calculators | Easy Loans, Mortgages, Investing & Taxes | SolveItCalculator',
+  title: 'Finance Calculators | Loans, Investing, Retirement & Taxes | SolveItCalculator | SolveIt Calculator',
   description:
-    'Free and easy finance calculators for home mortgages, loan payments, compound interest, retirement targets, income taxes, and debt payoff with clear step-by-step results.',
+    'Explore free finance calculators for loans, mortgages, investing, savings, retirement, taxes, debt, credit cards, banking, and financial planning.',
   alternates: {
     canonical: 'https://solveitcalculator.com/finance',
   },
   openGraph: {
-    title: 'Finance Calculators | Easy Loans, Mortgages, Investing & Taxes | SolveItCalculator',
+    title: 'Finance Calculators for Smarter Money Decisions | SolveItCalculator',
     description:
-      'Simple, accurate financial calculators for mortgage payments, compound interest growth, retirement planning, loans, and income taxes.',
+      'Calculate loans, mortgages, investments, savings, retirement, taxes, debt, and more. Compare scenarios, understand assumptions, and explore financial tools.',
     url: 'https://solveitcalculator.com/finance',
     type: 'website',
-    images: [{ url: 'https://solveitcalculator.com/og-home.png', width: 1200, height: 630 }],
+    images: [
+      {
+        url: 'https://solveitcalculator.com/og-home.png',
+        width: 1200,
+        height: 630,
+        alt: 'SolveIt Calculator – Finance Calculators for Smarter Money Decisions',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Finance Calculators | SolveItCalculator',
-    description: 'Free finance calculators for mortgages, investments, retirement, taxes, and loans.',
+    title: 'Finance Calculators for Smarter Money Decisions | SolveItCalculator',
+    description:
+      'Free finance calculators for loans, investments, retirement, taxes, savings, mortgages, debt, business finance and more.',
     images: ['https://solveitcalculator.com/og-home.png'],
   },
 };
 
 export default function FinancePage() {
-  const config = getCategoryHubConfig('finance');
-  if (!config) return null;
-
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -37,32 +42,64 @@ export default function FinancePage() {
         '@type': 'CollectionPage',
         '@id': 'https://solveitcalculator.com/finance#collection',
         url: 'https://solveitcalculator.com/finance',
-        name: 'Finance Calculators',
-        description: config.intro,
+        name: 'Finance Calculators for Smarter Money Decisions',
+        description:
+          'A comprehensive collection of transparent financial calculators covering loans, mortgages, investing, retirement planning, savings, debt payoff, credit cards, taxes, and business finance.',
         isPartOf: {
           '@type': 'WebSite',
           '@id': 'https://solveitcalculator.com/#website',
           url: 'https://solveitcalculator.com/',
-          name: 'SolveItCalculator',
+          name: 'SolveIt Calculator',
         },
       },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://solveitcalculator.com' },
-          { '@type': 'ListItem', position: 2, name: 'Finance Calculators', item: 'https://solveitcalculator.com/finance' },
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://solveitcalculator.com/',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Finance Calculators',
+            item: 'https://solveitcalculator.com/finance',
+          },
         ],
       },
       {
+        '@type': 'ItemList',
+        name: 'Finance Calculators & Tools Directory',
+        description: 'Complete directory of 16 financial calculators across 10 core financial domains.',
+        numberOfItems: FINANCE_CATALOG.length,
+        itemListElement: FINANCE_CATALOG.map((tool, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: tool.name,
+          description: tool.description,
+          url: `https://solveitcalculator.com${tool.path}`,
+        })),
+      },
+      {
         '@type': 'FAQPage',
-        mainEntity: config.faqs.map((f) => ({
+        mainEntity: FINANCE_FAQS.map((faq) => ({
           '@type': 'Question',
-          name: f.question,
+          name: faq.q,
           acceptedAnswer: {
             '@type': 'Answer',
-            text: f.answer,
+            text: faq.a,
           },
         })),
+      },
+      {
+        '@type': 'Organization',
+        '@id': 'https://solveitcalculator.com/#organization',
+        name: 'SolveIt Calculator',
+        url: 'https://solveitcalculator.com/',
+        logo: 'https://solveitcalculator.com/logo.png?v=2',
+        email: 'info@solveitcalculator.com',
       },
     ],
   };
@@ -73,7 +110,7 @@ export default function FinancePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <CategoryTopicHub config={config} />
+      <FinanceHubClient />
     </>
   );
 }

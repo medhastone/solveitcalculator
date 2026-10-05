@@ -48,12 +48,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Col 1 & 2: Brand Lockup & Engine Mission */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group">
-              <div className="w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] -mr-1 sm:-mr-1.5 flex items-center justify-center group-hover:scale-105 transition-transform duration-200 shrink-0">
-                <SolveItLogo className="w-[52px] h-[52px] sm:w-[60px] sm:h-[60px]" />
+            <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 flex items-center justify-center group-hover:scale-105 transition-transform duration-200 shrink-0">
+                <SolveItLogo className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" />
               </div>
-              <span className="font-bold text-2xl sm:text-3xl tracking-tight text-on-surface">
-                SolveIt<span className="text-primary">Calculator</span>
+              <span className="font-extrabold text-lg sm:text-2xl lg:text-3xl tracking-tight text-on-surface leading-none">
+                SolveIt<span className="text-primary font-bold ml-0.5">Calculator</span>
               </span>
             </Link>
 

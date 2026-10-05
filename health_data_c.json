@@ -1,0 +1,206 @@
+[
+  {
+    "id": "manage-weight",
+    "title": "MANAGE MY WEIGHT",
+    "subtitle": "BMI, Calorie Needs, TDEE, BMR, Body Fat, Ideal Weight",
+    "description": "Understand commonly used body and energy metrics while keeping the limitations of each measure in mind.",
+    "icon": "monitor_weight",
+    "tools": [
+      {
+        "name": "BMI Calculator",
+        "desc": "Screen body size against height-weight reference categories.",
+        "path": "/health-fitness-calculators/bmi"
+      },
+      {
+        "name": "Calorie Needs Planner",
+        "desc": "Plan sustainable daily caloric deficits or maintenance targets.",
+        "path": "/health-fitness-calculators/deficit"
+      },
+      {
+        "name": "TDEE Calculator",
+        "desc": "Estimate total daily calorie burn including activity.",
+        "path": "/health-fitness-calculators/tdee"
+      },
+      {
+        "name": "BMR Calculator",
+        "desc": "Find estimated baseline calories required at complete rest.",
+        "path": "/health-fitness-calculators/bmr"
+      },
+      {
+        "name": "Body Fat Calculator",
+        "desc": "Estimate body composition using tape circumference values.",
+        "path": "/health-fitness-calculators/navy-fat"
+      },
+      {
+        "name": "Ideal Weight Calculator",
+        "desc": "Review traditional reference weight ranges for your height.",
+        "path": "/health-fitness-calculators/ibw"
+      }
+    ]
+  },
+  {
+    "id": "build-muscle",
+    "title": "BUILD MUSCLE",
+    "subtitle": "Protein, Macros, Lean Body Mass, FFMI, 1RM, Calorie Needs",
+    "description": "Explore calculations related to body composition, nutrition, and strength training.",
+    "icon": "fitness_center",
+    "tools": [
+      {
+        "name": "Protein Calculator",
+        "desc": "Estimate daily protein intake targets for resistance training.",
+        "path": "/health-fitness-calculators/protein-rda"
+      },
+      {
+        "name": "Macronutrient Splitter",
+        "desc": "Allocate daily calories into protein, carbs, and dietary fat.",
+        "path": "/health-fitness-calculators/macro-split"
+      },
+      {
+        "name": "Lean Body Mass (LBM)",
+        "desc": "Estimate fat-free active tissue mass using stature formulas.",
+        "path": "/health-fitness-calculators/lbm"
+      },
+      {
+        "name": "Fat-Free Mass Index (FFMI)",
+        "desc": "Track height-normalized muscularity over training phases.",
+        "path": "/health-fitness-calculators/ffmi"
+      },
+      {
+        "name": "One-Rep Max (1RM)",
+        "desc": "Estimate lifting maximums from submaximal repetition sets.",
+        "path": "/health-fitness-calculators/1rm"
+      },
+      {
+        "name": "Calorie Surplus Planner",
+        "desc": "Plan a modest energy surplus to support muscular hypertrophy.",
+        "path": "/health-fitness-calculators/deficit"
+      }
+    ]
+  },
+  {
+    "id": "improve-fitness",
+    "title": "IMPROVE FITNESS",
+    "subtitle": "Running Pace, Heart Rate, VO2 Max, Calories Burned, Training Metrics",
+    "description": "Calculate common exercise and performance metrics using your selected inputs.",
+    "icon": "directions_run",
+    "tools": [
+      {
+        "name": "Running Pace Calculator",
+        "desc": "Calculate speed, mile splits, and projected race finishes.",
+        "path": "/health-fitness-calculators/running-pace"
+      },
+      {
+        "name": "Target Heart Rate Zones",
+        "desc": "Determine aerobic and threshold training intensities.",
+        "path": "/health-fitness-calculators/thr"
+      },
+      {
+        "name": "VO2 Max Estimator",
+        "desc": "Estimate aerobic capacity from standardized run test results.",
+        "path": "/health-fitness-calculators/vo2max"
+      },
+      {
+        "name": "METs Calories Burned",
+        "desc": "Calculate energy expenditure across 800+ physical activities.",
+        "path": "/health-fitness-calculators/mets"
+      },
+      {
+        "name": "Cycling FTP & Wattage",
+        "desc": "Determine functional threshold power and training watt zones.",
+        "path": "/health-fitness-calculators/ftp"
+      }
+    ]
+  },
+  {
+    "id": "plan-nutrition",
+    "title": "PLAN MY NUTRITION",
+    "subtitle": "Calories, Protein, Macros, Water, BMR, TDEE",
+    "description": "Estimate nutrition-related metrics using the assumptions selected in each calculator.",
+    "icon": "nutrition",
+    "tools": [
+      {
+        "name": "Daily Calorie Needs",
+        "desc": "Determine maintenance or target daily intake levels.",
+        "path": "/health-fitness-calculators/deficit"
+      },
+      {
+        "name": "Protein Intake Calculator",
+        "desc": "Calculate grams of daily protein adjusted for weight and activity.",
+        "path": "/health-fitness-calculators/protein-rda"
+      },
+      {
+        "name": "Macro Distribution Split",
+        "desc": "Convert total calories into balanced grams of macro groups.",
+        "path": "/health-fitness-calculators/macro-split"
+      },
+      {
+        "name": "Daily Water Needs",
+        "desc": "Estimate hydration targets factoring weight and daily workouts.",
+        "path": "/health-fitness-calculators/water-matrix"
+      },
+      {
+        "name": "BMR Metabolic Rate",
+        "desc": "Find your baseline metabolic floor before daily activity.",
+        "path": "/health-fitness-calculators/bmr"
+      },
+      {
+        "name": "TDEE Energy Model",
+        "desc": "Model total energy output including active exercise thermogenesis.",
+        "path": "/health-fitness-calculators/tdee"
+      }
+    ]
+  },
+  {
+    "id": "improve-sleep",
+    "title": "IMPROVE MY SLEEP",
+    "subtitle": "Sleep Timing, Sleep Duration, Sleep Debt, Sleepiness Metrics",
+    "description": "Explore sleep-related timing and duration calculations without treating them as medical diagnoses.",
+    "icon": "bedtime",
+    "tools": [
+      {
+        "name": "Sleep Timing Calculator",
+        "desc": "Explore bedtime and wake-up times using cycle models.",
+        "path": "/health-fitness-calculators/sleep-wake"
+      },
+      {
+        "name": "Sleep Duration & Cycles",
+        "desc": "Plan total hours in bed around 90-minute cycle estimates.",
+        "path": "/health-fitness-calculators/sleep-wake"
+      },
+      {
+        "name": "Sleep Debt Accumulator",
+        "desc": "Track cumulative differences between personal need and sleep time.",
+        "path": "/health-fitness-calculators/sleep-debt"
+      },
+      {
+        "name": "Daytime Sleepiness (ESS)",
+        "desc": "Complete the standardized 8-question somnolence questionnaire.",
+        "path": "/health-fitness-calculators/ess"
+      }
+    ]
+  },
+  {
+    "id": "plan-pregnancy",
+    "title": "PLAN PREGNANCY DATES",
+    "subtitle": "Due Date, Gestational Age, Ovulation, Fertility Window, hCG Doubling",
+    "description": "Calculate calendar-based pregnancy and cycle-related estimates and review the assumptions behind each result.",
+    "icon": "child_friendly",
+    "tools": [
+      {
+        "name": "Pregnancy Due Date",
+        "desc": "Estimate delivery dates via Naegele’s Rule from your LMP.",
+        "path": "/health-fitness-calculators/due-date"
+      },
+      {
+        "name": "Ovulation & Fertile Window",
+        "desc": "Calculate the approximate 6-day fertile window from cycle length.",
+        "path": "/health-fitness-calculators/ovulation"
+      },
+      {
+        "name": "hCG Doubling Calculator",
+        "desc": "Calculate the rate of rise and doubling hours between two lab values.",
+        "path": "/health-fitness-calculators/hcg"
+      }
+    ]
+  }
+]

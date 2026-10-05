@@ -287,7 +287,7 @@ export default function EducationClient() {
   };
 
   // --- Categories & Tool Taxonomy ---
-  const categories = [
+  const categories = useMemo(() => [
     {
       id: 'grades-gpa',
       title: 'Grades & GPA',
@@ -395,7 +395,7 @@ export default function EducationClient() {
         { name: 'Class Score Normalizer', desc: 'Analyze test score distributions, mean, and standard deviation', link: '/math/standard-deviation-calculator' }
       ]
     }
-  ];
+  ], []);
 
   // Search filter
   const filteredCategories = useMemo(() => {

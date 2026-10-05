@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Mifflin-St Jeor (Basal Metabolic Rate)",
+    "whatItCalculates": "Resting energy expenditure (kcal/day) at complete thermal and physical rest.",
+    "inputs": "Weight (kg), Height (cm), Age (years), Biological Sex.",
+    "formula": "Men: (10 × W) + (6.25 × H) - (5 × A) + 5\nWomen: (10 × W) + (6.25 × H) - (5 × A) - 161",
+    "units": "kcal / 24 hours",
+    "assumptions": "Assumes standard ambient room temperature and normal thyroid/metabolic function.",
+    "limitations": "May underestimate energy expenditure in heavily muscled athletes or overestimate in severe sarcopenia.",
+    "source": "American Journal of Clinical Nutrition",
+    "year": "1990"
+  },
+  {
+    "name": "Karvonen Method (Target Heart Rate)",
+    "whatItCalculates": "Heart rate training zones customized to the individual’s true resting heart rate reserve.",
+    "inputs": "Resting Heart Rate (BPM), Age (years), Desired Intensity (%).",
+    "formula": "THR = [(Max HR - Resting HR) × % Intensity] + Resting HR\nMax HR = 208 - (0.7 × Age)",
+    "units": "Beats Per Minute (BPM)",
+    "assumptions": "Assumes heart rate reserve correlates linearly with percentage of VO2 reserve.",
+    "limitations": "Medications affecting heart rate (such as beta-blockers) invalidate standard calculations.",
+    "source": "Scandinavian Journal of Clinical and Laboratory Investigation",
+    "year": "1957 / Tanaka 2001"
+  },
+  {
+    "name": "Du Bois & Du Bois (Body Surface Area)",
+    "whatItCalculates": "Total external human body surface area in square meters.",
+    "inputs": "Weight (kg), Height (cm).",
+    "formula": "BSA (m²) = 0.007184 × Weight^0.425 × Height^0.725",
+    "units": "Square meters (m²)",
+    "assumptions": "Exponential regression based on geometric plaster casts of human subjects.",
+    "limitations": "Original sample size was small (9 subjects); modern clinical practice often uses Mosteller as well.",
+    "source": "Archives of Internal Medicine",
+    "year": "1916"
+  },
+  {
+    "name": "Brzycki Formula (One-Rep Max)",
+    "whatItCalculates": "Theoretical 1-repetition maximum lifting capacity from submaximal repetitions.",
+    "inputs": "Weight Lifted (kg or lbs), Repetitions Completed.",
+    "formula": "1RM = Weight / [1.0278 - (0.0278 × Repetitions)]",
+    "units": "Kilograms or Pounds",
+    "assumptions": "Assumes linear relationship between repetitions to fatigue and percentage of 1RM.",
+    "limitations": "Accuracy decreases significantly when repetitions exceed 10 reps.",
+    "source": "Journal of Physical Education, Recreation & Dance",
+    "year": "1993"
+  },
+  {
+    "name": "Fat-Free Mass Index (FFMI)",
+    "whatItCalculates": "Muscular tissue mass normalized for height, independent of body fat.",
+    "inputs": "Total Weight (kg), Body Fat Percentage (%), Height (meters).",
+    "formula": "FFM = Weight × [1 - (Body Fat% / 100)]\nFFMI = [FFM / Height²] + 6.1 × (1.8 - Height)",
+    "units": "kg / m²",
+    "assumptions": "Normalizes lean tissue to a reference height of 1.80 meters.",
+    "limitations": "Highly dependent on the accuracy of the underlying body fat measurement method.",
+    "source": "Clinical Journal of Sport Medicine (Kouri et al.)",
+    "year": "1995"
+  },
+  {
+    "name": "Mean Arterial Pressure (MAP)",
+    "whatItCalculates": "Time-weighted average blood pressure in arteries during one complete cardiac cycle.",
+    "inputs": "Systolic Blood Pressure (mmHg), Diastolic Blood Pressure (mmHg).",
+    "formula": "MAP = Diastolic BP + [1/3 × (Systolic BP - Diastolic BP)]",
+    "units": "Millimeters of mercury (mmHg)",
+    "assumptions": "Assumes diastole accounts for approximately two-thirds of the resting cardiac cycle.",
+    "limitations": "At elevated heart rates (e.g. during exercise), diastole shortens and the 1/3 fraction shifts.",
+    "source": "Cardiovascular Physiology Principles",
+    "year": "Standard Medical Physiology"
+  },
+  {
+    "name": "Tanaka Equation (Maximum Heart Rate)",
+    "whatItCalculates": "Age-predicted maximum achievable heart rate under maximal exertion.",
+    "inputs": "Age (years).",
+    "formula": "Max HR = 208 - (0.7 × Age)",
+    "units": "Beats Per Minute (BPM)",
+    "assumptions": "Meta-analysis regression over 351 studies and 18,712 subjects across all adult age groups.",
+    "limitations": "Standard error of estimate is approximately ±10 BPM; individual true max HR varies.",
+    "source": "Journal of the American College of Cardiology",
+    "year": "2001"
+  },
+  {
+    "name": "Ashwell Waist-to-Height Ratio (WHtR)",
+    "whatItCalculates": "Abdominal obesity screening relative to stature.",
+    "inputs": "Waist Circumference (cm or in), Height (cm or in).",
+    "formula": "WHtR = Waist Circumference / Height",
+    "units": "Dimensionless ratio",
+    "assumptions": "Boundary ratio of 0.50 (\"keep your waist circumference to less than half your height\").",
+    "limitations": "Tape measurement technique and exact anatomical waist landmark must be consistent.",
+    "source": "Obesity Reviews (Ashwell & Gibson)",
+    "year": "2016"
+  }
+]

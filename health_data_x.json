@@ -1,0 +1,62 @@
+[
+  {
+    "q": "What health calculators are available on SolveItCalculator?",
+    "a": "We provide over 35 transparent, formula-driven calculators organized across Body & Weight, Calories & Nutrition, Fitness & Training, Heart & Vitals, Sleep & Recovery, and Pregnancy & Family Planning. Each tool provides transparent formula explanations and stated assumptions."
+  },
+  {
+    "q": "Are SolveItCalculator health calculators free to use?",
+    "a": "Yes. All calculators on SolveItCalculator are completely free to use with no account registration, subscriptions, or paywalls required."
+  },
+  {
+    "q": "How do these health calculators work?",
+    "a": "Each calculator takes user-entered numerical inputs (such as height, weight, age, or exercise durations) and processes them through documented mathematical formulas (such as Mifflin-St Jeor for BMR, Karvonen for heart rate, or Naegele’s rule for pregnancy dates) to produce formula-based estimates."
+  },
+  {
+    "q": "How accurate are health calculator results?",
+    "a": "Calculator results are mathematical estimates based on population averages and specific formula assumptions. They provide helpful planning baselines, but they cannot account for individual biological nuances such as metabolic adaptation, hormonal variations, genetics, or medication effects."
+  },
+  {
+    "q": "Why can two calculators produce different results for the same inputs?",
+    "a": "Different calculators frequently use different underlying formulas, activity multipliers, reference populations, or rounding conventions. For example, a BMR calculator using the Mifflin-St Jeor formula will produce a slightly different number than one using the Harris-Benedict or Katch-McArdle equation."
+  },
+  {
+    "q": "Does BMI measure body fat percentage?",
+    "a": "No. BMI is a screening ratio calculated strictly from height and weight. It does not measure body fat directly and cannot distinguish between fat mass, skeletal muscle mass, bone density, or fluid retention."
+  },
+  {
+    "q": "What is the difference between BMR and TDEE?",
+    "a": "Basal Metabolic Rate (BMR) is the estimated number of calories burned at complete physical rest just to sustain vital organ function. Total Daily Energy Expenditure (TDEE) includes BMR plus the calories burned through non-exercise daily movement, deliberate workout exercise, and digesting food."
+  },
+  {
+    "q": "Are calorie calculators exact?",
+    "a": "No. Calorie calculators provide helpful planning estimates. True daily energy expenditure can fluctuate day-to-day based on spontaneous physical activity, ambient temperature, sleep quality, and individual metabolic efficiency."
+  },
+  {
+    "q": "Can a health calculator diagnose a medical condition?",
+    "a": "No. Calculator outputs are strictly informational and mathematical tools. They are not diagnostic assessments and should never substitute for clinical evaluation, laboratory tests, or professional medical diagnosis."
+  },
+  {
+    "q": "Are pregnancy due-date calculator results exact delivery dates?",
+    "a": "No. Due-date calculators provide an estimated date of delivery (EDD) assuming a standard 280-day gestation from the first day of your last menstrual period. Only a small percentage of babies are born on their exact calculated due date, and clinical ultrasound scans often adjust the date."
+  },
+  {
+    "q": "Do sleep-cycle calculators guarantee better sleep or eliminate grogginess?",
+    "a": "No. Sleep cycle calculators use a simplified model assuming typical 90-minute sleep cycles. However, individual sleep cycle lengths naturally vary between people and across different stages of the night. They are planning guidelines, not guaranteed sleep optimizations."
+  },
+  {
+    "q": "How are the formulas on SolveItCalculator selected?",
+    "a": "We select formulas with established documentation in peer-reviewed clinical, physiological, and sports medicine literature (such as publications in the American Journal of Clinical Nutrition, Journal of the American College of Cardiology, and ACOG clinical opinions)."
+  },
+  {
+    "q": "Can I see the calculation method and formula used?",
+    "a": "Yes. Every calculator page and our category methods section explicitly displays the underlying formula, input requirements, measurement units, assumptions, and known limitations."
+  },
+  {
+    "q": "Where do health-related reference ranges and guidelines come from?",
+    "a": "Reference ranges displayed on our tools are drawn from recognized public health and clinical authorities including the CDC, WHO, ACSM, ACOG, and NASEM."
+  },
+  {
+    "q": "Are these calculators a substitute for professional medical advice?",
+    "a": "No. The calculators and educational guides provided on SolveItCalculator are for informational and planning purposes only. Always consult a qualified physician or healthcare provider regarding any health concerns, diagnosis, or treatment decisions."
+  }
+]

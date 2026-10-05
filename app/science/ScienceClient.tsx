@@ -170,7 +170,7 @@ export default function ScienceClient() {
     const tempC = Number(wbGasT) || 0;
     const kelvin = tempC + 273.15;
     const R = 0.082057; // L·atm / (mol·K)
-    if (kelvin <= 0) return '0.00';
+    if (kelvin <= 0) return { moles: '0.00', kelvin: '0.0 K' };
     const moles = (p * v) / (R * kelvin);
     return {
       moles: moles.toFixed(2),

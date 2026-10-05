@@ -1,0 +1,260 @@
+[
+  {
+    "id": "body-weight",
+    "name": "Body & Weight",
+    "slug": "body-weight",
+    "icon": "accessibility",
+    "description": "Calculate common body-size and body-composition metrics using clearly stated formulas and stated reference ranges.",
+    "tools": [
+      {
+        "name": "BMI Calculator",
+        "desc": "Standard & Asian reference cutoffs for body mass index.",
+        "path": "/health-fitness-calculators/bmi"
+      },
+      {
+        "name": "Body Fat Calculator",
+        "desc": "U.S. Navy circumference method for men and women.",
+        "path": "/health-fitness-calculators/navy-fat"
+      },
+      {
+        "name": "Ideal Body Weight (IBW)",
+        "desc": "Comparison of Devine, Robinson, and Hamwi formulas.",
+        "path": "/health-fitness-calculators/ibw"
+      },
+      {
+        "name": "Lean Body Mass (LBM)",
+        "desc": "Estimate active tissue mass excluding stored body fat.",
+        "path": "/health-fitness-calculators/lbm"
+      },
+      {
+        "name": "Fat-Free Mass Index (FFMI)",
+        "desc": "Normalize muscularity against height for training progress.",
+        "path": "/health-fitness-calculators/ffmi"
+      },
+      {
+        "name": "Waist-to-Height Ratio (WHtR)",
+        "desc": "Screen central adiposity with the Ashwell boundary curve.",
+        "path": "/health-fitness-calculators/whtr"
+      },
+      {
+        "name": "Waist-to-Hip Ratio (WHR)",
+        "desc": "Evaluate android vs. gynoid body fat distribution patterns.",
+        "path": "/health-fitness-calculators/whr"
+      },
+      {
+        "name": "Body Surface Area (BSA)",
+        "desc": "Du Bois and Mosteller formulas for external skin surface area.",
+        "path": "/health-fitness-calculators/bsa"
+      },
+      {
+        "name": "A Body Shape Index (ABSI)",
+        "desc": "Adjusts BMI for waist circumference to evaluate shape metrics.",
+        "path": "/health-fitness-calculators/absi"
+      }
+    ]
+  },
+  {
+    "id": "nutrition",
+    "name": "Calories & Nutrition",
+    "slug": "nutrition",
+    "icon": "restaurant_menu",
+    "description": "Estimate daily energy and nutrition-related metrics from user-selected assumptions and stated activity levels.",
+    "tools": [
+      {
+        "name": "Calorie Needs Planner",
+        "desc": "Simulate steady caloric deficits, maintenance, or surpluses.",
+        "path": "/health-fitness-calculators/deficit"
+      },
+      {
+        "name": "BMR Calculator",
+        "desc": "Mifflin-St Jeor basal metabolic energy at complete rest.",
+        "path": "/health-fitness-calculators/bmr"
+      },
+      {
+        "name": "TDEE Daily Calorie Model",
+        "desc": "Factor in BMR, exercise volume, and non-exercise daily movement.",
+        "path": "/health-fitness-calculators/tdee"
+      },
+      {
+        "name": "Macronutrient Splitter",
+        "desc": "Convert daily calorie targets into grams of protein, carbs, and fat.",
+        "path": "/health-fitness-calculators/macro-split"
+      },
+      {
+        "name": "Protein Intake Calculator",
+        "desc": "Compare baseline dietary reference intakes with sports nutrition guidelines.",
+        "path": "/health-fitness-calculators/protein-rda"
+      },
+      {
+        "name": "Daily Water Needs",
+        "desc": "Calculate fluid baselines adjusted for body mass and workout duration.",
+        "path": "/health-fitness-calculators/water-matrix"
+      },
+      {
+        "name": "Carb Cycling Calculator",
+        "desc": "Plan higher carb workout days and lower carb recovery rest days.",
+        "path": "/health-fitness-calculators/carb-cycling"
+      },
+      {
+        "name": "Keto Macro Matrix",
+        "desc": "Formulate ketogenic macronutrient ratios and net carbohydrate caps.",
+        "path": "/health-fitness-calculators/keto"
+      }
+    ]
+  },
+  {
+    "id": "fitness",
+    "name": "Fitness & Training",
+    "slug": "fitness",
+    "icon": "directions_run",
+    "description": "Calculate common training, performance, pace, strength, and exercise metrics based on your provided inputs.",
+    "tools": [
+      {
+        "name": "Running Pace & Splits",
+        "desc": "Pace conversions and finish projections for 5K to marathon.",
+        "path": "/health-fitness-calculators/running-pace"
+      },
+      {
+        "name": "One-Rep Max (1RM)",
+        "desc": "Predict maximal lifting thresholds safely without testing to failure.",
+        "path": "/health-fitness-calculators/1rm"
+      },
+      {
+        "name": "VO2 Max Estimator",
+        "desc": "Cooper 12-minute run field test for aerobic capacity.",
+        "path": "/health-fitness-calculators/vo2max"
+      },
+      {
+        "name": "METs Calories Burned",
+        "desc": "Convert 800+ physical activities into metabolic energy equivalents.",
+        "path": "/health-fitness-calculators/mets"
+      },
+      {
+        "name": "Cycling FTP & Power Zones",
+        "desc": "Determine 7 training power zones from 20-minute field test values.",
+        "path": "/health-fitness-calculators/ftp"
+      },
+      {
+        "name": "Rucking & Pack Walking",
+        "desc": "Pandolf metabolic load equation factoring pack load and incline.",
+        "path": "/health-fitness-calculators/rucking"
+      }
+    ]
+  },
+  {
+    "id": "heart-vitals",
+    "name": "Heart & Vitals",
+    "slug": "heart-vitals",
+    "icon": "favorite",
+    "description": "Calculate selected cardiovascular and vital-sign metrics. Results are informational and should be interpreted in context.",
+    "tools": [
+      {
+        "name": "Target Heart Rate (Karvonen)",
+        "desc": "Calibrate training zones against measured resting heart rate.",
+        "path": "/health-fitness-calculators/thr"
+      },
+      {
+        "name": "Zone 2 Aerobic Base",
+        "desc": "Target heart rate boundaries for sustainable endurance training.",
+        "path": "/health-fitness-calculators/zone2"
+      },
+      {
+        "name": "Mean Arterial Pressure (MAP)",
+        "desc": "Average organ perfusion pressure across one cardiac cycle.",
+        "path": "/health-fitness-calculators/map"
+      },
+      {
+        "name": "Heart Rate Recovery (HRR)",
+        "desc": "Drop in heart rate after 1 and 2 minutes of post-exercise recovery.",
+        "path": "/health-fitness-calculators/hrr"
+      },
+      {
+        "name": "Pulse Pressure",
+        "desc": "Difference between systolic and diastolic resting blood pressure.",
+        "path": "/health-fitness-calculators/pulse-pressure"
+      },
+      {
+        "name": "Max Heart Rate (Tanaka)",
+        "desc": "Age-regression model replacing the traditional 220-age rule.",
+        "path": "/health-fitness-calculators/max-hr"
+      }
+    ]
+  },
+  {
+    "id": "sleep",
+    "name": "Sleep & Recovery",
+    "slug": "sleep",
+    "icon": "bedtime",
+    "description": "Explore sleep duration and timing calculations using clearly stated assumptions and simplified planning models.",
+    "tools": [
+      {
+        "name": "Sleep Cycle Wake Time",
+        "desc": "Align bedtimes and wake times with standard 90-minute sleep cycles.",
+        "path": "/health-fitness-calculators/sleep-wake"
+      },
+      {
+        "name": "Sleep Debt Accumulator",
+        "desc": "Quantify cumulative differences between personal need and sleep time.",
+        "path": "/health-fitness-calculators/sleep-debt"
+      },
+      {
+        "name": "Daytime Sleepiness Scale (ESS)",
+        "desc": "Standard 8-question screening questionnaire for daytime somnolence.",
+        "path": "/health-fitness-calculators/ess"
+      }
+    ]
+  },
+  {
+    "id": "pregnancy",
+    "name": "Pregnancy & Family Planning",
+    "slug": "pregnancy",
+    "icon": "child_care",
+    "description": "Estimate calendar dates and selected pregnancy or cycle-related metrics from the information entered.",
+    "tools": [
+      {
+        "name": "Pregnancy Due Date",
+        "desc": "Estimate delivery dates with Naegele’s Rule from your LMP.",
+        "path": "/health-fitness-calculators/due-date"
+      },
+      {
+        "name": "Ovulation & Fertile Window",
+        "desc": "Estimate fertile days assuming a typical 14-day luteal phase.",
+        "path": "/health-fitness-calculators/ovulation"
+      },
+      {
+        "name": "Beta hCG Doubling Time",
+        "desc": "Evaluate doubling kinetics between two quantitative hCG lab values.",
+        "path": "/health-fitness-calculators/hcg"
+      }
+    ]
+  },
+  {
+    "id": "specialized",
+    "name": "Specialized Health Calculators",
+    "slug": "specialized",
+    "icon": "biotech",
+    "description": "Explore specialized mathematical health metrics with formula details, documented assumptions, and stated limitations.",
+    "tools": [
+      {
+        "name": "Body Surface Area (BSA)",
+        "desc": "Clinical area calculations used in physiology and pharmacology.",
+        "path": "/health-fitness-calculators/bsa"
+      },
+      {
+        "name": "A Body Shape Index (ABSI)",
+        "desc": "Explore research context adjusting BMI for abdominal circumference.",
+        "path": "/health-fitness-calculators/absi"
+      },
+      {
+        "name": "Weight Loss Velocity Model",
+        "desc": "Simulate non-linear weight changes over multi-week planning windows.",
+        "path": "/health-fitness-calculators/velocity"
+      },
+      {
+        "name": "Fat-Free Mass Index (FFMI)",
+        "desc": "Stature-normalized muscularity for natural athletes.",
+        "path": "/health-fitness-calculators/ffmi"
+      }
+    ]
+  }
+]

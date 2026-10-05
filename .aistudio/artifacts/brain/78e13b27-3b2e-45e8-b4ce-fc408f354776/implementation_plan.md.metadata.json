@@ -1,6 +1,6 @@
 {
-  "summary":  "Implementation plan to review and remove the non-functional 'Standard Regional Measurement Conventions' static boxes (Road Speed, Distance, Mass & Weight, Temperature) from the header live rates dropdown.",
-  "updatedAt":  "2026-10-03T11:15:13.665490937Z",
+  "summary":  "Implementation plan for the comprehensive Science Calculators & Interactive Multi-Discipline Science Workbench Hub (/science), featuring 7 scientific categories, 50+ precision tools across Physics, Chemistry, Astronomy, Biology, and Mechanics, an interactive 5-mode Science Workbench (Kinematics, Ideal Gas Law, Periodic Table Molar Mass, Orbital Velocity, and Quantum Photon Energy), CODATA fundamental physical constants reference tables, Electromagnetic Spectrum chart, SI metric prefix scale, 6 curated academic/industry workbenches, and full Light/Dark mode compliance.",
+  "updatedAt":  "2026-10-05T08:30:32.020035736Z",
   "requestFeedback":  true,
   "userFacing":  true
 }

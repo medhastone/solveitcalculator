@@ -8,7 +8,7 @@ interface SolveItLogoProps {
   size?: number;
 }
 
-export default function SolveItLogo({ className = 'w-[52px] h-[52px] sm:w-[60px] sm:h-[60px]', size }: SolveItLogoProps) {
+export default function SolveItLogo({ className = 'w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12', size }: SolveItLogoProps) {
   const dimension = size || 80;
 
   return (

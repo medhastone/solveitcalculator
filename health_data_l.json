@@ -1,0 +1,659 @@
+[
+  {
+    "id": "bmi",
+    "name": "BMI Calculator",
+    "shortDesc": "Compute Body Mass Index using metric or imperial units with standard adult and regional reference cutoffs.",
+    "category": "Body & Weight",
+    "categorySlug": "body-weight",
+    "path": "/health-fitness-calculators/bmi",
+    "badge": "Screening",
+    "icon": "straighten",
+    "keywords": [
+      "bmi",
+      "body mass index",
+      "weight",
+      "height",
+      "underweight",
+      "overweight",
+      "obesity",
+      "quetelet"
+    ],
+    "formulaSummary": "Weight (kg) / [Height (m)]²"
+  },
+  {
+    "id": "navy-fat",
+    "name": "Body Fat Calculator (U.S. Navy)",
+    "shortDesc": "Estimate body fat percentage using body circumference measurements without skinfold calipers or water submersion.",
+    "category": "Body & Weight",
+    "categorySlug": "body-weight",
+    "path": "/health-fitness-calculators/navy-fat",
+    "badge": "Circumference",
+    "icon": "accessibility_new",
+    "keywords": [
+      "body fat",
+      "navy body fat",
+      "fat percentage",
+      "lean mass",
+      "waist",
+      "neck",
+      "hip",
+      "adipose"
+    ],
+    "formulaSummary": "Logarithmic circumference equation (Hodgdon & Beckett)"
+  },
+  {
+    "id": "ibw",
+    "name": "Ideal Body Weight Calculator (IBW)",
+    "shortDesc": "Compare baseline reference weight targets across established formulas including Devine, Robinson, and Hamwi.",
+    "category": "Body & Weight",
+    "categorySlug": "body-weight",
+    "path": "/health-fitness-calculators/ibw",
+    "badge": "Multi-Formula",
+    "icon": "scale",
+    "keywords": [
+      "ibw",
+      "ideal body weight",
+      "devine formula",
+      "healthy weight",
+      "target weight"
+    ],
+    "formulaSummary": "Devine, Robinson, and Hamwi height-regression formulas"
+  },
+  {
+    "id": "lbm",
+    "name": "Lean Body Mass Calculator (LBM)",
+    "shortDesc": "Estimate total non-fat tissue mass (muscles, organs, bone, and water) using the Boer and James equations.",
+    "category": "Body & Weight",
+    "categorySlug": "body-weight",
+    "path": "/health-fitness-calculators/lbm",
+    "badge": "Tissue Mass",
+    "icon": "fitness_center",
+    "keywords": [
+      "lean body mass",
+      "lbm",
+      "fat free mass",
+      "boer",
+      "james formula"
+    ],
+    "formulaSummary": "Boer & James stature-weight regressions"
+  },
+  {
+    "id": "ffmi",
+    "name": "Fat-Free Mass Index (FFMI)",
+    "shortDesc": "Calculate height-normalized muscularity to track natural muscle development over training cycles.",
+    "category": "Body & Weight",
+    "categorySlug": "body-weight",
+    "path": "/health-fitness-calculators/ffmi",
+    "badge": "Muscularity",
+    "icon": "exercise",
+    "keywords": [
+      "ffmi",
+      "fat free mass index",
+      "muscle mass",
+      "natural limit",
+      "hypertrophy"
+    ],
+    "formulaSummary": "FFM (kg) / [Height (m)]² + 6.1 × (1.8 - Height)"
+  },
+  {
+    "id": "whtr",
+    "name": "Waist-to-Height Ratio (WHtR)",
+    "shortDesc": "Evaluate central abdominal fat distribution against total height using established reference boundaries.",
+    "category": "Body & Weight",
+    "categorySlug": "body-weight",
+    "path": "/health-fitness-calculators/whtr",
+    "badge": "Central Adiposity",
+    "icon": "aspect_ratio",
+    "keywords": [
+      "waist to height",
+      "whtr",
+      "abdominal fat",
+      "ashwell",
+      "central obesity"
+    ],
+    "formulaSummary": "Waist Circumference / Height"
+  },
+  {
+    "id": "whr",
+    "name": "Waist-to-Hip Ratio (WHR)",
+    "shortDesc": "Assess android versus gynoid body fat distribution patterns from simple tape circumference inputs.",
+    "category": "Body & Weight",
+    "categorySlug": "body-weight",
+    "path": "/health-fitness-calculators/whr",
+    "badge": "Body Shape",
+    "icon": "pie_chart",
+    "keywords": [
+      "waist to hip",
+      "whr",
+      "body shape",
+      "visceral fat",
+      "apple pear shape"
+    ],
+    "formulaSummary": "Waist Circumference / Hip Circumference"
+  },
+  {
+    "id": "bsa",
+    "name": "Body Surface Area Calculator (BSA)",
+    "shortDesc": "Calculate total external body surface area using the Mosteller and Du Bois mathematical formulas.",
+    "category": "Body & Weight",
+    "categorySlug": "body-weight",
+    "path": "/health-fitness-calculators/bsa",
+    "badge": "Metric Area",
+    "icon": "space_dashboard",
+    "keywords": [
+      "bsa",
+      "body surface area",
+      "mosteller",
+      "du bois",
+      "surface area"
+    ],
+    "formulaSummary": "Mosteller: √[(Height cm × Weight kg) / 3600]"
+  },
+  {
+    "id": "absi",
+    "name": "A Body Shape Index (ABSI)",
+    "shortDesc": "Calculate ABSI to explore research-derived risk context adjusting BMI for waist circumference.",
+    "category": "Body & Weight",
+    "categorySlug": "body-weight",
+    "path": "/health-fitness-calculators/absi",
+    "badge": "Research Index",
+    "icon": "scatter_plot",
+    "keywords": [
+      "absi",
+      "a body shape index",
+      "krakauer",
+      "waist adjustment",
+      "body shape"
+    ],
+    "formulaSummary": "Waist / (BMI^(2/3) × Height^(1/2))"
+  },
+  {
+    "id": "tdee",
+    "name": "TDEE Calculator (Total Daily Energy Expenditure)",
+    "shortDesc": "Estimate total daily calorie requirements factoring in basal metabolism and chosen daily physical activity levels.",
+    "category": "Calories & Nutrition",
+    "categorySlug": "nutrition",
+    "path": "/health-fitness-calculators/tdee",
+    "badge": "Energy Balance",
+    "icon": "local_fire_department",
+    "keywords": [
+      "tdee",
+      "total daily energy expenditure",
+      "maintenance calories",
+      "daily calories",
+      "energy expenditure"
+    ],
+    "formulaSummary": "BMR × Physical Activity Level (PAL)"
+  },
+  {
+    "id": "bmr",
+    "name": "BMR Calculator (Basal Metabolic Rate)",
+    "shortDesc": "Calculate estimated calories burned at complete physical rest using the Mifflin-St Jeor and Harris-Benedict formulas.",
+    "category": "Calories & Nutrition",
+    "categorySlug": "nutrition",
+    "path": "/health-fitness-calculators/bmr",
+    "badge": "Resting Energy",
+    "icon": "speed",
+    "keywords": [
+      "bmr",
+      "basal metabolic rate",
+      "resting calories",
+      "mifflin st jeor",
+      "harris benedict"
+    ],
+    "formulaSummary": "Mifflin-St Jeor resting energy expenditure equation"
+  },
+  {
+    "id": "deficit",
+    "name": "Calorie Deficit & Surplus Planner",
+    "shortDesc": "Model steady weight loss deficits or lean surplus trajectories with weekly adjustment intervals.",
+    "category": "Calories & Nutrition",
+    "categorySlug": "nutrition",
+    "path": "/health-fitness-calculators/deficit",
+    "badge": "Planning",
+    "icon": "trending_down",
+    "keywords": [
+      "calorie deficit",
+      "calorie surplus",
+      "weight loss planner",
+      "fat loss",
+      "cutting",
+      "bulking"
+    ],
+    "formulaSummary": "TDEE ± Desired Energy Adjustment (kcal/day)"
+  },
+  {
+    "id": "macro-split",
+    "name": "Macronutrient Split Calculator",
+    "shortDesc": "Break down daily calorie goals into grams of protein, carbohydrates, and dietary fats using standard caloric densities.",
+    "category": "Calories & Nutrition",
+    "categorySlug": "nutrition",
+    "path": "/health-fitness-calculators/macro-split",
+    "badge": "Macros",
+    "icon": "donut_small",
+    "keywords": [
+      "macros",
+      "macronutrient calculator",
+      "protein carbs fat",
+      "macro split",
+      "flexible dieting"
+    ],
+    "formulaSummary": "Calories allocated via 4 kcal/g (protein/carb) and 9 kcal/g (fat)"
+  },
+  {
+    "id": "protein-rda",
+    "name": "Daily Protein Calculator",
+    "shortDesc": "Estimate daily protein targets comparing baseline health guidelines with sports nutrition recommendations.",
+    "category": "Calories & Nutrition",
+    "categorySlug": "nutrition",
+    "path": "/health-fitness-calculators/protein-rda",
+    "badge": "Target Intake",
+    "icon": "egg_alt",
+    "keywords": [
+      "protein",
+      "protein intake",
+      "protein rda",
+      "grams protein",
+      "muscle protein synthesis"
+    ],
+    "formulaSummary": "0.8 g/kg (baseline) to 1.6–2.2 g/kg (training targets)"
+  },
+  {
+    "id": "water-matrix",
+    "name": "Daily Water Intake Calculator",
+    "shortDesc": "Calculate recommended baseline fluid intake factoring body weight, exercise duration, and climate conditions.",
+    "category": "Calories & Nutrition",
+    "categorySlug": "nutrition",
+    "path": "/health-fitness-calculators/water-matrix",
+    "badge": "Hydration",
+    "icon": "water_drop",
+    "keywords": [
+      "water intake",
+      "hydration",
+      "fluid intake",
+      "liters water",
+      "water calculator"
+    ],
+    "formulaSummary": "Baseline body weight fluid factor + exercise sweat offset"
+  },
+  {
+    "id": "carb-cycling",
+    "name": "Carb Cycling Calculator",
+    "shortDesc": "Plan high-carbohydrate training days and low-carbohydrate rest days while keeping average weekly energy balanced.",
+    "category": "Calories & Nutrition",
+    "categorySlug": "nutrition",
+    "path": "/health-fitness-calculators/carb-cycling",
+    "badge": "Cycle Planning",
+    "icon": "calendar_month",
+    "keywords": [
+      "carb cycling",
+      "high carb low carb",
+      "refeed",
+      "glycogen",
+      "macro cycling"
+    ],
+    "formulaSummary": "Weighted 7-day caloric and carbohydrate distribution"
+  },
+  {
+    "id": "keto",
+    "name": "Keto Macro Calculator",
+    "shortDesc": "Calculate macronutrient ratios for a standard ketogenic approach emphasizing healthy fats and low net carbohydrates.",
+    "category": "Calories & Nutrition",
+    "categorySlug": "nutrition",
+    "path": "/health-fitness-calculators/keto",
+    "badge": "Low-Carb",
+    "icon": "restaurant",
+    "keywords": [
+      "keto",
+      "ketogenic",
+      "net carbs",
+      "keto macros",
+      "low carb"
+    ],
+    "formulaSummary": "70–75% fat, 20–25% protein, 5–10% net carbs by calorie"
+  },
+  {
+    "id": "velocity",
+    "name": "Weight Loss Velocity Calculator",
+    "shortDesc": "Model realistic timeframes for body weight changes based on conservative, moderate, or aggressive energy deficits.",
+    "category": "Calories & Nutrition",
+    "categorySlug": "nutrition",
+    "path": "/health-fitness-calculators/velocity",
+    "badge": "Projection",
+    "icon": "timeline",
+    "keywords": [
+      "weight loss velocity",
+      "fat loss speed",
+      "timeline",
+      "realistic weight loss"
+    ],
+    "formulaSummary": "Cumulative energy deficit over projected time"
+  },
+  {
+    "id": "running-pace",
+    "name": "Running Pace Calculator",
+    "shortDesc": "Calculate pace per mile or kilometer and project finish times for 5K, 10K, half marathon, and marathon distances.",
+    "category": "Fitness & Training",
+    "categorySlug": "fitness",
+    "path": "/health-fitness-calculators/running-pace",
+    "badge": "Pace & Splits",
+    "icon": "directions_run",
+    "keywords": [
+      "running pace",
+      "pace calculator",
+      "5k pace",
+      "marathon pace",
+      "min per mile",
+      "splits"
+    ],
+    "formulaSummary": "Pace = Time / Distance; Riegel formula for projections"
+  },
+  {
+    "id": "1rm",
+    "name": "One-Rep Max Calculator (1RM)",
+    "shortDesc": "Estimate maximum lifting capacity from submaximal repetitions using the Brzycki, Epley, and Lander formulas.",
+    "category": "Fitness & Training",
+    "categorySlug": "fitness",
+    "path": "/health-fitness-calculators/1rm",
+    "badge": "Strength",
+    "icon": "fitness_center",
+    "keywords": [
+      "one rep max",
+      "1rm",
+      "strength",
+      "brzycki formula",
+      "epley formula",
+      "bench press max"
+    ],
+    "formulaSummary": "Brzycki: Weight / [1.0278 - (0.0278 × Reps)]"
+  },
+  {
+    "id": "vo2max",
+    "name": "VO2 Max Estimator (Cooper Test)",
+    "shortDesc": "Estimate maximal oxygen uptake (mL/kg/min) from 12-minute run distance or 1.5-mile field test inputs.",
+    "category": "Fitness & Training",
+    "categorySlug": "fitness",
+    "path": "/health-fitness-calculators/vo2max",
+    "badge": "Cardio Fitness",
+    "icon": "pulmonology",
+    "keywords": [
+      "vo2 max",
+      "aerobic capacity",
+      "cooper test",
+      "cardiovascular fitness",
+      "oxygen uptake"
+    ],
+    "formulaSummary": "Cooper test distance-to-oxygen correlation regression"
+  },
+  {
+    "id": "mets",
+    "name": "METs Calories Burned Calculator",
+    "shortDesc": "Estimate calories burned during physical activities using standard Metabolic Equivalent of Task values.",
+    "category": "Fitness & Training",
+    "categorySlug": "fitness",
+    "path": "/health-fitness-calculators/mets",
+    "badge": "Energy Burn",
+    "icon": "bolt",
+    "keywords": [
+      "mets",
+      "calories burned",
+      "exercise calories",
+      "metabolic equivalent",
+      "workout calories"
+    ],
+    "formulaSummary": "Calories = MET × Weight (kg) × Duration (hours)"
+  },
+  {
+    "id": "ftp",
+    "name": "Cycling FTP & Power Zones Calculator",
+    "shortDesc": "Calculate Functional Threshold Power and Coggan 7-zone training wattages from a standard 20-minute power test.",
+    "category": "Fitness & Training",
+    "categorySlug": "fitness",
+    "path": "/health-fitness-calculators/ftp",
+    "badge": "Cycling Power",
+    "icon": "directions_bike",
+    "keywords": [
+      "ftp",
+      "functional threshold power",
+      "cycling zones",
+      "watts per kg",
+      "coggan power zones"
+    ],
+    "formulaSummary": "FTP = 95% of 20-minute average power output"
+  },
+  {
+    "id": "rucking",
+    "name": "Rucking & Pack Walking Calorie Calculator",
+    "shortDesc": "Estimate energy expenditure for walking with weighted backpacks across terrain using the Pandolf equation.",
+    "category": "Fitness & Training",
+    "categorySlug": "fitness",
+    "path": "/health-fitness-calculators/rucking",
+    "badge": "Load Carriage",
+    "icon": "hiking",
+    "keywords": [
+      "rucking",
+      "backpack walking",
+      "ruck calories",
+      "pandolf equation",
+      "loaded carry"
+    ],
+    "formulaSummary": "Pandolf metabolic load equation factoring grade, pack weight, and speed"
+  },
+  {
+    "id": "thr",
+    "name": "Target Heart Rate Zones Calculator",
+    "shortDesc": "Calculate individualized cardiovascular training zones (Zones 1–5) using the Karvonen heart rate reserve method.",
+    "category": "Heart & Vitals",
+    "categorySlug": "heart-vitals",
+    "path": "/health-fitness-calculators/thr",
+    "badge": "Karvonen Method",
+    "icon": "favorite",
+    "keywords": [
+      "target heart rate",
+      "karvonen",
+      "heart rate zones",
+      "aerobic zone",
+      "training heart rate"
+    ],
+    "formulaSummary": "THR = [(Max HR - Resting HR) × % Intensity] + Resting HR"
+  },
+  {
+    "id": "zone2",
+    "name": "Zone 2 Heart Rate Calculator",
+    "shortDesc": "Determine target heart rate boundaries for sustainable aerobic base endurance training and mitochondrial health.",
+    "category": "Heart & Vitals",
+    "categorySlug": "heart-vitals",
+    "path": "/health-fitness-calculators/zone2",
+    "badge": "Aerobic Base",
+    "icon": "monitor_heart",
+    "keywords": [
+      "zone 2",
+      "aerobic base",
+      "endurance training",
+      "fat burning zone",
+      "mitochondrial"
+    ],
+    "formulaSummary": "60%–70% of Heart Rate Reserve or ~65–75% Max HR"
+  },
+  {
+    "id": "map",
+    "name": "Mean Arterial Pressure Calculator (MAP)",
+    "shortDesc": "Calculate average arterial pressure throughout a single cardiac cycle from resting systolic and diastolic values.",
+    "category": "Heart & Vitals",
+    "categorySlug": "heart-vitals",
+    "path": "/health-fitness-calculators/map",
+    "badge": "Perfusion",
+    "icon": "blood_pressure",
+    "keywords": [
+      "map",
+      "mean arterial pressure",
+      "blood pressure",
+      "diastolic",
+      "systolic",
+      "perfusion"
+    ],
+    "formulaSummary": "MAP = Diastolic BP + [1/3 × (Systolic BP - Diastolic BP)]"
+  },
+  {
+    "id": "pulse-pressure",
+    "name": "Pulse Pressure Calculator",
+    "shortDesc": "Calculate the mathematical difference between systolic and diastolic blood pressure readings.",
+    "category": "Heart & Vitals",
+    "categorySlug": "heart-vitals",
+    "path": "/health-fitness-calculators/pulse-pressure",
+    "badge": "Pressure Delta",
+    "icon": "show_chart",
+    "keywords": [
+      "pulse pressure",
+      "blood pressure difference",
+      "systolic diastolic gap",
+      "vascular stiffness"
+    ],
+    "formulaSummary": "Pulse Pressure = Systolic BP - Diastolic BP"
+  },
+  {
+    "id": "hrr",
+    "name": "Heart Rate Recovery Calculator (HRR)",
+    "shortDesc": "Evaluate post-exercise heart rate drop after 1 and 2 minutes of recovery to monitor autonomic recovery trends.",
+    "category": "Heart & Vitals",
+    "categorySlug": "heart-vitals",
+    "path": "/health-fitness-calculators/hrr",
+    "badge": "Autonomic Trend",
+    "icon": "hourglass_bottom",
+    "keywords": [
+      "heart rate recovery",
+      "hrr",
+      "vagal tone",
+      "cardiac recovery",
+      "post exercise heart rate"
+    ],
+    "formulaSummary": "HR Drop = Peak Exercise HR - HR at 1 or 2 Minutes Post-Exercise"
+  },
+  {
+    "id": "max-hr",
+    "name": "Maximum Heart Rate Calculator (Tanaka)",
+    "shortDesc": "Estimate theoretical peak heart rate comparing the modern Tanaka regression with the traditional 220-age rule.",
+    "category": "Heart & Vitals",
+    "categorySlug": "heart-vitals",
+    "path": "/health-fitness-calculators/max-hr",
+    "badge": "Regression",
+    "icon": "ecg_heart",
+    "keywords": [
+      "max heart rate",
+      "tanaka formula",
+      "hr max",
+      "220 minus age",
+      "peak heart rate"
+    ],
+    "formulaSummary": "Tanaka: 208 - (0.7 × Age)"
+  },
+  {
+    "id": "sleep-wake",
+    "name": "Sleep Cycle & Wake-Time Calculator",
+    "shortDesc": "Explore suggested bedtimes or wake-up times based on typical 90-minute sleep cycle planning assumptions.",
+    "category": "Sleep & Recovery",
+    "categorySlug": "sleep",
+    "path": "/health-fitness-calculators/sleep-wake",
+    "badge": "Timing Model",
+    "icon": "bedtime",
+    "keywords": [
+      "sleep cycle",
+      "sleep calculator",
+      "wake up time",
+      "bedtime",
+      "rem sleep",
+      "sleep timing"
+    ],
+    "formulaSummary": "Target Time ± (N × 90 min cycles) + 15 min sleep latency"
+  },
+  {
+    "id": "sleep-debt",
+    "name": "Sleep Debt Calculator",
+    "shortDesc": "Quantify cumulative differences between personal sleep needs and actual sleep duration over 7 to 14 days.",
+    "category": "Sleep & Recovery",
+    "categorySlug": "sleep",
+    "path": "/health-fitness-calculators/sleep-debt",
+    "badge": "Tracking",
+    "icon": "alarm_off",
+    "keywords": [
+      "sleep debt",
+      "sleep deficit",
+      "sleep tracking",
+      "hours slept",
+      "recovery sleep"
+    ],
+    "formulaSummary": "Sum of [Daily Need - Actual Sleep Duration] over observation period"
+  },
+  {
+    "id": "ess",
+    "name": "Epworth Sleepiness Scale (ESS)",
+    "shortDesc": "Complete the standardized 8-question informational questionnaire reflecting self-reported daytime sleepiness.",
+    "category": "Sleep & Recovery",
+    "categorySlug": "sleep",
+    "path": "/health-fitness-calculators/ess",
+    "badge": "Questionnaire",
+    "icon": "checklist",
+    "keywords": [
+      "epworth sleepiness scale",
+      "ess",
+      "daytime sleepiness",
+      "sleep questionnaire",
+      "somnolence"
+    ],
+    "formulaSummary": "Sum of 8 situational scores (0–3 scale, total 0–24)"
+  },
+  {
+    "id": "due-date",
+    "name": "Pregnancy Due Date Calculator",
+    "shortDesc": "Estimate expected date of delivery using Naegele’s Rule from your last menstrual period or known conception date.",
+    "category": "Pregnancy & Family Planning",
+    "categorySlug": "pregnancy",
+    "path": "/health-fitness-calculators/due-date",
+    "badge": "Naegele’s Rule",
+    "icon": "child_care",
+    "keywords": [
+      "due date calculator",
+      "pregnancy due date",
+      "estimated delivery date",
+      "naegele rule",
+      "conception date"
+    ],
+    "formulaSummary": "LMP + 280 days (adjusted for individual cycle length)"
+  },
+  {
+    "id": "ovulation",
+    "name": "Ovulation & Fertile Window Calculator",
+    "shortDesc": "Estimate the approximate 6-day fertile window based on average cycle duration and typical 14-day luteal phase.",
+    "category": "Pregnancy & Family Planning",
+    "categorySlug": "pregnancy",
+    "path": "/health-fitness-calculators/ovulation",
+    "badge": "Calendar Model",
+    "icon": "event_available",
+    "keywords": [
+      "ovulation calculator",
+      "fertile window",
+      "conception timing",
+      "luteal phase",
+      "cycle calendar"
+    ],
+    "formulaSummary": "Estimated Ovulation = Cycle Length - 14 days from subsequent LMP"
+  },
+  {
+    "id": "hcg",
+    "name": "hCG Doubling Time Calculator",
+    "shortDesc": "Calculate rate of increase and doubling hours between two quantitative blood serum hCG lab results.",
+    "category": "Pregnancy & Family Planning",
+    "categorySlug": "pregnancy",
+    "path": "/health-fitness-calculators/hcg",
+    "badge": "Kinetics",
+    "icon": "biotech",
+    "keywords": [
+      "hcg doubling",
+      "beta hcg",
+      "hcg calculator",
+      "pregnancy hormone",
+      "doubling time"
+    ],
+    "formulaSummary": "Doubling Time = [Elapsed Hours × ln(2)] / ln(hCG2 / hCG1)"
+  }
+]

@@ -30,9 +30,9 @@ export default function FinanceHubClient() {
 
     return FINANCE_CATALOG.filter((tool) => {
       const matchName = tool.name.toLowerCase().includes(q);
-      const matchDesc = tool.description.toLowerCase().includes(q);
+      const matchDesc = tool.description ? tool.description.toLowerCase().includes(q) : false;
       const matchCategory = tool.category.toLowerCase().includes(q);
-      const matchKeywords = tool.keywords.some((k) => k.toLowerCase().includes(q));
+      const matchKeywords = tool.keywords ? tool.keywords.some((k) => k.toLowerCase().includes(q)) : false;
       return matchName || matchDesc || matchCategory || matchKeywords;
     });
   }, [searchQuery]);

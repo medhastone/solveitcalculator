@@ -55,10 +55,66 @@
     border-color: var(--color-outline-variant);
   }
 
+  html {
+    /* Competitor (Inch Calculator) legibility baseline */
+    font-size: 16.5px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (min-width: 768px) {
+    html {
+      font-size: 17px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    html {
+      font-size: 17.5px;
+    }
+  }
+
   body {
     background-color: var(--color-surface);
     color: var(--color-on-surface);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Form controls, labels, and inputs matching competitor standard */
+  label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  input, select, textarea {
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+
+  p {
+    line-height: 1.65;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+    line-height: 1.2;
+    font-weight: 800;
+  }
+
+  h2 {
+    font-size: 1.625rem;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    font-weight: 600;
   }
 }
 
@@ -82,13 +138,28 @@
   --font-data-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  --text-label-caps: 0.75rem;
-  --text-headline-lg: 2.25rem;
-  --text-headline-md: 1.5rem;
-  --text-display-hero: 3rem;
-  --text-numerical-display-mobile: 1.75rem;
-  --text-body-md: 1rem;
-  --text-body-sm: 0.875rem;
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.4rem;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.65rem;
+  --text-lg: 1.2rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.85rem;
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: 2.125rem;
+  --text-3xl: 2.1rem;
+  --text-3xl--line-height: 2.4rem;
+
+  --text-label-caps: 0.8125rem;
+  --text-headline-lg: 2.35rem;
+  --text-headline-md: 1.65rem;
+  --text-display-hero: 3.25rem;
+  --text-numerical-display-mobile: 1.85rem;
+  --text-body-md: 1.0625rem;
+  --text-body-sm: 0.9375rem;
 
   --spacing-gutter-mobile: 1.25rem;
   --spacing-gutter-desktop: 3rem;
@@ -117,38 +188,57 @@
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
   .font-label-caps {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 600;
   }
   .font-headline-lg {
-    font-size: 2.25rem;
-    line-height: 2.5rem;
+    font-size: 2.35rem;
+    line-height: 2.6rem;
     font-weight: 800;
   }
   .font-headline-md {
-    font-size: 1.5rem;
-    line-height: 2rem;
+    font-size: 1.65rem;
+    line-height: 2.15rem;
     font-weight: 700;
   }
   .font-body-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+    font-size: 0.9375rem;
+    line-height: 1.35rem;
   }
   .font-body-md {
-    font-size: 1rem;
-    line-height: 1.5rem;
+    font-size: 1.0625rem;
+    line-height: 1.6rem;
   }
   .font-display-hero {
-    font-size: 3rem;
+    font-size: 3.25rem;
     line-height: 1.15;
     font-weight: 800;
   }
   .font-numerical-display-mobile {
-    font-size: 1.75rem;
-    line-height: 2.25rem;
+    font-size: 1.85rem;
+    line-height: 2.35rem;
   }
+
+  /* Accessibility & Legibility Minimum Floor - prevents microscopic text */
+  .text-\[10px\],
+  .text-\[11px\] {
+    font-size: 0.8125rem !important;
+    line-height: 1.25rem !important;
+  }
+
+  .text-\[12px\],
+  .text-xs {
+    font-size: 0.875rem !important;
+    line-height: 1.35rem !important;
+  }
+
+  .text-\[13px\] {
+    font-size: 0.9375rem !important;
+    line-height: 1.4rem !important;
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }

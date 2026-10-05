@@ -1,19 +1,19 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import CategoryTopicHub from '@/components/CategoryTopicHub';
-import { getCategoryHubConfig } from '@/lib/categoryHubConfigs';
+import BusinessHubClient from './BusinessHubClient';
+import { BUSINESS_CATEGORIES, BUSINESS_FAQS } from './businessCategoryData';
 
 export const metadata: Metadata = {
-  title: 'Business Calculators | Profit Margins, Break-Even & ROI | SolveItCalculator',
+  title: 'Business Calculators | Profit Margins, Break-Even, SaaS Metrics & ROI',
   description:
-    'Free business calculators for profit margins, markups, break-even unit sales, ROI yields, freelance billable hourly rates, and meeting costs. Managerial finance formulas.',
+    'Free, institutional-grade business calculators for profit margins, markups, break-even unit sales, SaaS LTV:CAC ratios, cash runway burn rates, and DuPont ROE analysis.',
   alternates: {
     canonical: 'https://solveitcalculator.com/business',
   },
   openGraph: {
-    title: 'Business Calculators | Profit Margins, Break-Even & ROI | SolveItCalculator',
+    title: 'Business Calculators & Multi-Metric Analytics Hub | SolveItCalculator',
     description:
-      'Managerial cost accounting, margin solvers, break-even analysis, and freelance pricing calculators.',
+      'Managerial finance, gross margin vs markup solvers, SaaS unit economics, startup runway forecasters, and 50+ business calculators.',
     url: 'https://solveitcalculator.com/business',
     type: 'website',
     images: [{ url: 'https://solveitcalculator.com/og-home.png', width: 1200, height: 630 }],
@@ -21,14 +21,14 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Business Calculators | SolveItCalculator',
-    description: 'Calculate profit margins, break-even points, and ROI with free managerial tools.',
+    description: 'Calculate profit margins, break-even points, SaaS LTV:CAC, and cash runway with free financial tools.',
     images: ['https://solveitcalculator.com/og-home.png'],
   },
 };
 
 export default function BusinessPage() {
-  const config = getCategoryHubConfig('business');
-  if (!config) return null;
+  // Flatten all tools across all 8 categories for Schema.org ItemList indexing
+  const allTools = BUSINESS_CATEGORIES.flatMap((c) => c.tools);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -37,8 +37,9 @@ export default function BusinessPage() {
         '@type': 'CollectionPage',
         '@id': 'https://solveitcalculator.com/business#collection',
         url: 'https://solveitcalculator.com/business',
-        name: 'Business Calculators',
-        description: config.intro,
+        name: 'Business Calculators & Live Multi-Metric Analytics Hub',
+        description:
+          'Comprehensive suite of business and managerial finance calculation tools, featuring interactive solvers for profit margin vs markup, break-even CVP analysis, SaaS unit economics, cash runway burn rate, and corporate financial ratios.',
         isPartOf: {
           '@type': 'WebSite',
           '@id': 'https://solveitcalculator.com/#website',
@@ -54,13 +55,26 @@ export default function BusinessPage() {
         ],
       },
       {
+        '@type': 'ItemList',
+        '@id': 'https://solveitcalculator.com/business#itemlist',
+        name: 'Business Calculation Tools Directory',
+        numberOfItems: allTools.length,
+        itemListElement: allTools.map((tool, idx) => ({
+          '@type': 'ListItem',
+          position: idx + 1,
+          name: tool.name,
+          description: tool.description,
+          url: `https://solveitcalculator.com${tool.href}`,
+        })),
+      },
+      {
         '@type': 'FAQPage',
-        mainEntity: config.faqs.map((f) => ({
+        mainEntity: BUSINESS_FAQS.map((faq) => ({
           '@type': 'Question',
-          name: f.question,
+          name: faq.question,
           acceptedAnswer: {
             '@type': 'Answer',
-            text: f.answer,
+            text: faq.answer,
           },
         })),
       },
@@ -73,7 +87,7 @@ export default function BusinessPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <CategoryTopicHub config={config} />
+      <BusinessHubClient />
     </>
   );
 }
