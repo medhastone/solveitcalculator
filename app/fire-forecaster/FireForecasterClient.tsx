@@ -278,7 +278,6 @@ export default function FireForecasterClient() {
       maxProjectedVal,
     };
   }, [
-    mounted,
     nominalReturn,
     taxDrag,
     inflationRate,
@@ -578,11 +577,11 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                     </select>
                   </div>
 
-                  <form className="flex flex-col gap-5" onSubmit={(e) => e.preventDefault()}>
+                  <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
                     {/* Age Duo */}
                     <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1.5" htmlFor="current-age">
+                      <div className="flex flex-col justify-between space-y-2.5">
+                        <label className="block font-label-caps text-label-caps text-on-surface-variant font-semibold" htmlFor="current-age">
                           Current Age
                         </label>
                         <div className="relative flex items-center">
@@ -593,13 +592,26 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                             max="90"
                             value={currentAge}
                             onChange={(e) => setCurrentAge(Number(e.target.value) || 0)}
-                            className="w-full bg-surface-container-low px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                            className="w-full bg-surface px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
                           />
                           <span className="absolute right-3 font-body-sm text-body-sm text-outline">yrs</span>
                         </div>
+                        <input 
+                          type="range"
+                          min="18"
+                          max="75"
+                          step="1"
+                          value={Math.min(75, Math.max(18, currentAge))}
+                          onChange={(e) => setCurrentAge(Number(e.target.value))}
+                          style={{
+                            background: `linear-gradient(to right, var(--primary, #2563eb) 0%, var(--primary, #2563eb) ${((Math.min(75, Math.max(18, currentAge)) - 18) / (75 - 18)) * 100}%, var(--color-surface-container-highest, #cbd5e1) ${((Math.min(75, Math.max(18, currentAge)) - 18) / (75 - 18)) * 100}%, var(--color-surface-container-highest, #cbd5e1) 100%)`
+                          }}
+                          className="thin-slider w-full cursor-pointer my-1"
+                        />
                       </div>
-                      <div>
-                        <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1.5" htmlFor="target-retirement-age">
+
+                      <div className="flex flex-col justify-between space-y-2.5">
+                        <label className="block font-label-caps text-label-caps text-on-surface-variant font-semibold" htmlFor="target-retirement-age">
                           Goal Age (Optional)
                         </label>
                         <div className="relative flex items-center">
@@ -610,23 +622,35 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                             max="95"
                             value={targetAge}
                             onChange={(e) => setTargetAge(Number(e.target.value) || 0)}
-                            className="w-full bg-surface-container-low px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                            className="w-full bg-surface px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
                           />
                           <span className="absolute right-3 font-body-sm text-body-sm text-outline">yrs</span>
                         </div>
+                        <input 
+                          type="range"
+                          min={currentAge + 1}
+                          max="85"
+                          step="1"
+                          value={Math.min(85, Math.max(currentAge + 1, targetAge))}
+                          onChange={(e) => setTargetAge(Number(e.target.value))}
+                          style={{
+                            background: `linear-gradient(to right, var(--primary, #2563eb) 0%, var(--primary, #2563eb) ${((Math.min(85, Math.max(currentAge + 1, targetAge)) - (currentAge + 1)) / Math.max(1, 85 - (currentAge + 1))) * 100}%, var(--color-surface-container-highest, #cbd5e1) ${((Math.min(85, Math.max(currentAge + 1, targetAge)) - (currentAge + 1)) / Math.max(1, 85 - (currentAge + 1))) * 100}%, var(--color-surface-container-highest, #cbd5e1) 100%)`
+                          }}
+                          className="thin-slider w-full cursor-pointer my-1"
+                        />
                       </div>
                     </div>
 
-                    {/* Current Investable Net Worth */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label className="font-label-caps text-label-caps text-on-surface-variant" htmlFor="current-savings">
+                    {/* Current Investable Assets */}
+                    <div className="space-y-2.5 pt-2 border-t border-surface-container">
+                      <div className="flex items-center justify-between">
+                        <label className="font-label-caps text-label-caps text-on-surface-variant font-semibold" htmlFor="current-savings">
                           Current Investable Assets
                         </label>
-                        <span className="font-data-mono text-xs text-primary font-medium">{fmt(currentSavings)}</span>
+                        <span className="font-data-mono text-xs text-primary font-bold">{fmt(currentSavings)}</span>
                       </div>
-                      <div className="relative flex items-center mb-2">
-                        <span className="absolute left-3 font-body-md text-body-md text-outline">{curSym}</span>
+                      <div className="relative flex items-center">
+                        <span className="absolute left-3 font-body-md text-body-md text-outline font-bold">{curSym}</span>
                         <input 
                           id="current-savings"
                           type="number"
@@ -634,7 +658,7 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                           step="1000"
                           value={currentSavings}
                           onChange={(e) => setCurrentSavings(Number(e.target.value) || 0)}
-                          className="w-full bg-surface-container-low pl-8 pr-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                          className="w-full bg-surface pl-8 pr-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
                         />
                       </div>
                       <input 
@@ -642,22 +666,25 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         min="0"
                         max="1000000"
                         step="5000"
-                        value={currentSavings}
+                        value={Math.min(1000000, Math.max(0, currentSavings))}
                         onChange={(e) => setCurrentSavings(Number(e.target.value))}
-                        className="w-full accent-primary cursor-pointer"
+                        style={{
+                          background: `linear-gradient(to right, var(--primary, #2563eb) 0%, var(--primary, #2563eb) ${(Math.min(1000000, Math.max(0, currentSavings)) / 1000000) * 100}%, var(--color-surface-container-highest, #cbd5e1) ${(Math.min(1000000, Math.max(0, currentSavings)) / 1000000) * 100}%, var(--color-surface-container-highest, #cbd5e1) 100%)`
+                        }}
+                        className="thin-slider w-full cursor-pointer my-1"
                       />
                     </div>
 
                     {/* Monthly Contribution */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label className="font-label-caps text-label-caps text-on-surface-variant" htmlFor="monthly-contributions">
+                    <div className="space-y-2.5 pt-2 border-t border-surface-container">
+                      <div className="flex items-center justify-between">
+                        <label className="font-label-caps text-label-caps text-on-surface-variant font-semibold" htmlFor="monthly-contributions">
                           Monthly Contributions
                         </label>
-                        <span className="font-data-mono text-xs text-primary font-medium">{fmt(monthlyContribution)} / mo</span>
+                        <span className="font-data-mono text-xs text-primary font-bold">{fmt(monthlyContribution)} / mo</span>
                       </div>
-                      <div className="relative flex items-center mb-2">
-                        <span className="absolute left-3 font-body-md text-body-md text-outline">{curSym}</span>
+                      <div className="relative flex items-center">
+                        <span className="absolute left-3 font-body-md text-body-md text-outline font-bold">{curSym}</span>
                         <input 
                           id="monthly-contributions"
                           type="number"
@@ -665,36 +692,36 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                           step="50"
                           value={monthlyContribution}
                           onChange={(e) => setMonthlyContribution(Number(e.target.value) || 0)}
-                          className="w-full bg-surface-container-low pl-8 pr-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                          className="w-full bg-surface pl-8 pr-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
                         />
                       </div>
                       {/* Presets */}
-                      <div className="flex flex-wrap gap-1.5 mb-2">
+                      <div className="flex flex-wrap gap-1.5">
                         <button 
                           type="button" 
                           onClick={() => setMonthlyContribution(1500)}
-                          className="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high font-data-mono text-xs text-on-surface-variant cursor-pointer transition-colors"
+                          className="px-2.5 py-1.5 rounded-lg bg-surface hover:bg-surface-container-high font-data-mono text-xs text-on-surface-variant font-semibold cursor-pointer transition-colors min-h-[32px]"
                         >
                           {curSym}1,500
                         </button>
                         <button 
                           type="button" 
                           onClick={() => setMonthlyContribution(3000)}
-                          className="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high font-data-mono text-xs text-on-surface-variant cursor-pointer transition-colors"
+                          className="px-2.5 py-1.5 rounded-lg bg-surface hover:bg-surface-container-high font-data-mono text-xs text-on-surface-variant font-semibold cursor-pointer transition-colors min-h-[32px]"
                         >
                           {curSym}3,000
                         </button>
                         <button 
                           type="button" 
                           onClick={() => setMonthlyContribution(5000)}
-                          className="px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high font-data-mono text-xs text-on-surface-variant cursor-pointer transition-colors"
+                          className="px-2.5 py-1.5 rounded-lg bg-surface hover:bg-surface-container-high font-data-mono text-xs text-on-surface-variant font-semibold cursor-pointer transition-colors min-h-[32px]"
                         >
                           {curSym}5,000
                         </button>
                         <button 
                           type="button" 
                           onClick={() => setMonthlyContribution(1916)}
-                          className="px-2 py-1 rounded bg-primary-fixed hover:bg-primary-fixed-dim font-data-mono text-xs text-on-primary-fixed font-semibold cursor-pointer transition-colors"
+                          className="px-2.5 py-1.5 rounded-lg bg-primary-fixed hover:bg-primary-fixed-dim font-data-mono text-xs text-on-primary-fixed font-bold cursor-pointer transition-colors min-h-[32px]"
                         >
                           Max 401k ({curSym}23k)
                         </button>
@@ -704,22 +731,25 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         min="0"
                         max="15000"
                         step="100"
-                        value={monthlyContribution}
+                        value={Math.min(15000, Math.max(0, monthlyContribution))}
                         onChange={(e) => setMonthlyContribution(Number(e.target.value))}
-                        className="w-full accent-primary cursor-pointer"
+                        style={{
+                          background: `linear-gradient(to right, var(--primary, #2563eb) 0%, var(--primary, #2563eb) ${(Math.min(15000, Math.max(0, monthlyContribution)) / 15000) * 100}%, var(--color-surface-container-highest, #cbd5e1) ${(Math.min(15000, Math.max(0, monthlyContribution)) / 15000) * 100}%, var(--color-surface-container-highest, #cbd5e1) 100%)`
+                        }}
+                        className="thin-slider w-full cursor-pointer my-1"
                       />
                     </div>
 
                     {/* Annual Retirement Expenses */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label className="font-label-caps text-label-caps text-on-surface-variant" htmlFor="annual-expenses">
+                    <div className="space-y-2.5 pt-2 border-t border-surface-container">
+                      <div className="flex items-center justify-between">
+                        <label className="font-label-caps text-label-caps text-on-surface-variant font-semibold" htmlFor="annual-expenses">
                           Annual Living Expenses in Retirement
                         </label>
-                        <span className="font-data-mono text-xs text-on-surface font-semibold">{fmt(annualExpenses / 12)} / mo</span>
+                        <span className="font-data-mono text-xs text-on-surface font-bold">{fmt(annualExpenses / 12)} / mo</span>
                       </div>
-                      <div className="relative flex items-center mb-2">
-                        <span className="absolute left-3 font-body-md text-body-md text-outline">{curSym}</span>
+                      <div className="relative flex items-center">
+                        <span className="absolute left-3 font-body-md text-body-md text-outline font-bold">{curSym}</span>
                         <input 
                           id="annual-expenses"
                           type="number"
@@ -727,7 +757,7 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                           step="1000"
                           value={annualExpenses}
                           onChange={(e) => setAnnualExpenses(Number(e.target.value) || 0)}
-                          className="w-full bg-surface-container-low pl-8 pr-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                          className="w-full bg-surface pl-8 pr-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
                         />
                       </div>
                       <input 
@@ -735,16 +765,19 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         min="20000"
                         max="250000"
                         step="1000"
-                        value={annualExpenses}
+                        value={Math.min(250000, Math.max(20000, annualExpenses))}
                         onChange={(e) => setAnnualExpenses(Number(e.target.value))}
-                        className="w-full accent-primary cursor-pointer"
+                        style={{
+                          background: `linear-gradient(to right, var(--primary, #2563eb) 0%, var(--primary, #2563eb) ${((Math.min(250000, Math.max(20000, annualExpenses)) - 20000) / (250000 - 20000)) * 100}%, var(--color-surface-container-highest, #cbd5e1) ${((Math.min(250000, Math.max(20000, annualExpenses)) - 20000) / (250000 - 20000)) * 100}%, var(--color-surface-container-highest, #cbd5e1) 100%)`
+                        }}
+                        className="thin-slider w-full cursor-pointer my-1"
                       />
                     </div>
 
                     {/* Return & Inflation */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1.5" htmlFor="nominal-return">
+                    <div className="grid grid-cols-2 gap-4 pt-2 border-t border-surface-container">
+                      <div className="space-y-2.5">
+                        <label className="block font-label-caps text-label-caps text-on-surface-variant font-semibold" htmlFor="nominal-return">
                           Nominal Return
                         </label>
                         <div className="relative flex items-center">
@@ -756,14 +789,25 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                             max="20"
                             value={nominalReturn}
                             onChange={(e) => setNominalReturn(Number(e.target.value) || 0)}
-                            className="w-full bg-surface-container-low px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                            className="w-full bg-surface px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
                           />
                           <span className="absolute right-3 font-body-sm text-body-sm text-outline">%</span>
                         </div>
-                        <span className="font-body-sm text-xs text-outline block mt-1">S&amp;P 500 Baseline</span>
+                        <input 
+                          type="range"
+                          min="1"
+                          max="15"
+                          step="0.1"
+                          value={Math.min(15, Math.max(1, nominalReturn))}
+                          onChange={(e) => setNominalReturn(Number(e.target.value))}
+                          style={{
+                            background: `linear-gradient(to right, var(--primary, #2563eb) 0%, var(--primary, #2563eb) ${((Math.min(15, Math.max(1, nominalReturn)) - 1) / (15 - 1)) * 100}%, var(--color-surface-container-highest, #cbd5e1) ${((Math.min(15, Math.max(1, nominalReturn)) - 1) / (15 - 1)) * 100}%, var(--color-surface-container-highest, #cbd5e1) 100%)`
+                          }}
+                          className="thin-slider w-full cursor-pointer my-1"
+                        />
                       </div>
-                      <div>
-                        <label className="block font-label-caps text-label-caps text-on-surface-variant mb-1.5" htmlFor="inflation-rate">
+                      <div className="space-y-2.5">
+                        <label className="block font-label-caps text-label-caps text-on-surface-variant font-semibold" htmlFor="inflation-rate">
                           Inflation Rate
                         </label>
                         <div className="relative flex items-center">
@@ -775,23 +819,35 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                             max="10"
                             value={inflationRate}
                             onChange={(e) => setInflationRate(Number(e.target.value) || 0)}
-                            className="w-full bg-surface-container-low px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                            className="w-full bg-surface px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
                           />
                           <span className="absolute right-3 font-body-sm text-body-sm text-outline">%</span>
                         </div>
-                        <span className="font-body-sm text-xs text-secondary font-semibold block mt-1">
+                        <input 
+                          type="range"
+                          min="0"
+                          max="8"
+                          step="0.1"
+                          value={Math.min(8, Math.max(0, inflationRate))}
+                          onChange={(e) => setInflationRate(Number(e.target.value))}
+                          style={{
+                            background: `linear-gradient(to right, var(--primary, #2563eb) 0%, var(--primary, #2563eb) ${(Math.min(8, Math.max(0, inflationRate)) / 8) * 100}%, var(--color-surface-container-highest, #cbd5e1) ${(Math.min(8, Math.max(0, inflationRate)) / 8) * 100}%, var(--color-surface-container-highest, #cbd5e1) 100%)`
+                          }}
+                          className="thin-slider w-full cursor-pointer my-1"
+                        />
+                        <span className="font-body-sm text-xs text-secondary font-bold block">
                           = {data.realYieldPct.toFixed(1)}% Real Yield
                         </span>
                       </div>
                     </div>
 
                     {/* Safe Withdrawal Rate (SWR) */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label className="font-label-caps text-label-caps text-on-surface-variant">
+                    <div className="space-y-2.5 pt-2 border-t border-surface-container">
+                      <div className="flex items-center justify-between">
+                        <label className="font-label-caps text-label-caps text-on-surface-variant font-semibold">
                           Safe Withdrawal Rate (SWR)
                         </label>
-                        <span className="font-data-mono text-xs font-semibold text-primary">{data.swrMultiplier}x Multiple</span>
+                        <span className="font-data-mono text-xs font-bold text-primary">{data.swrMultiplier}x Multiple</span>
                       </div>
                       <div className="grid grid-cols-4 gap-1.5">
                         {[
@@ -804,10 +860,10 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                             key={btn.val}
                             type="button"
                             onClick={() => setSwr(btn.val)}
-                            className={`py-2 px-1 rounded-lg text-center font-data-mono text-xs transition-colors cursor-pointer ${
+                            className={`py-2 px-1 rounded-lg text-center font-data-mono text-xs transition-colors cursor-pointer min-h-[40px] ${
                               Math.abs(swr - btn.val) < 0.05
-                                ? 'bg-primary text-on-primary font-semibold shadow-sm'
-                                : 'bg-surface-container hover:bg-surface-container-high text-on-surface'
+                                ? 'bg-primary text-on-primary font-bold shadow-sm'
+                                : 'bg-surface hover:bg-surface-container-high text-on-surface font-medium'
                             }`}
                           >
                             <div>{btn.label}</div>
@@ -818,12 +874,12 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                     </div>
 
                     {/* Tax Drag */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <label className="font-label-caps text-label-caps text-on-surface-variant" htmlFor="tax-drag">
+                    <div className="space-y-2.5 pt-2 border-t border-surface-container">
+                      <div className="flex items-center justify-between">
+                        <label className="font-label-caps text-label-caps text-on-surface-variant font-semibold" htmlFor="tax-drag">
                           Annual Tax Drag / Friction (Optional)
                         </label>
-                        <span className="font-data-mono text-xs text-outline">{taxDrag.toFixed(2)}%</span>
+                        <span className="font-data-mono text-xs text-outline font-bold">{taxDrag.toFixed(2)}%</span>
                       </div>
                       <input 
                         id="tax-drag"
@@ -831,9 +887,12 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         min="0"
                         max="2.0"
                         step="0.05"
-                        value={taxDrag}
+                        value={Math.min(2.0, Math.max(0, taxDrag))}
                         onChange={(e) => setTaxDrag(Number(e.target.value))}
-                        className="w-full accent-primary cursor-pointer"
+                        style={{
+                          background: `linear-gradient(to right, var(--primary, #2563eb) 0%, var(--primary, #2563eb) ${(Math.min(2.0, Math.max(0, taxDrag)) / 2.0) * 100}%, var(--color-surface-container-highest, #cbd5e1) ${(Math.min(2.0, Math.max(0, taxDrag)) / 2.0) * 100}%, var(--color-surface-container-highest, #cbd5e1) 100%)`
+                        }}
+                        className="thin-slider w-full cursor-pointer my-1"
                       />
                     </div>
 
@@ -842,7 +901,7 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                       <button 
                         type="button"
                         onClick={handleReset}
-                        className="flex-1 py-3 rounded-lg bg-primary text-on-primary font-semibold font-body-md text-body-md hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
+                        className="flex-1 py-3.5 rounded-xl bg-primary text-on-primary font-bold font-body-md text-body-md hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer min-h-[44px]"
                       >
                         <span className="material-symbols-outlined text-[18px]">bolt</span>
                         Reset &amp; Calibrate Defaults
@@ -1597,6 +1656,14 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
 
               <div className="space-y-3 max-w-4xl">
                 {[
+                  {
+                    q: 'How do I calculate my exact FIRE number?',
+                    a: 'Divide your projected annual retirement spending by your chosen Safe Withdrawal Rate (SWR). At the classic 4.0% rule, your FIRE number is 25× annual expenses ($60,000 × 25 = $1,500,000). For a more conservative 3.5% early-retirement withdrawal rate spanning 45+ years, multiply annual expenses by 28.57× ($60,000 ÷ 0.035 = $1,714,286).'
+                  },
+                  {
+                    q: 'What is sequence of returns risk and how do early retirees mitigate it?',
+                    a: 'Sequence of returns risk is the danger of experiencing a severe stock market crash during the first 5 to 10 years of retirement, forcing you to sell depressed equities to fund living costs. Early retirees mitigate this using a 2-to-3-year cash/Treasury tent, a rising-equity glidepath, or flexible spending guardrails.'
+                  },
                   {
                     q: 'How does health insurance work before Medicare at age 65?',
                     a: 'In early retirement, living expenses come from investments rather than wages. Under the Affordable Care Act (ACA), health insurance subsidies are based entirely on Modified Adjusted Gross Income (MAGI), not net worth. By strategically keeping taxable income between 150% and 250% of the Federal Poverty Level (FPL), early retirees frequently qualify for Silver plans with substantial premium tax credits and cost-sharing reductions.'

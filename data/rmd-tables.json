@@ -1,0 +1,119 @@
+{
+  "tableName": "IRS Uniform Lifetime Table (Table III) & Joint Life Expectancy (Table II)",
+  "purpose": "Used for calculating Required Minimum Distributions (RMD) for original account owners under IRS Publication 590-B (Table III Uniform Lifetime Table and Table II Joint and Last Survivor Expectancy when sole beneficiary spouse is more than 10 years younger).",
+  "sourceUrl": "https://www.irs.gov/publications/p590b",
+  "statutoryReference": "Treas. Reg. § 1.401(a)(9)-9 / IRS Pub 590-B / SECURE 2.0 Act §§ 107, 302",
+  "dateVerified": "2025-01-10",
+  "verifiedBy": "IRS Publication 590-B Appendix B (Tables II & III) and SECURE 2.0 Act",
+  "status": "VERIFIED",
+  "secure2Rules": {
+    "startAgeRules": [
+      {
+        "birthYearMin": 1900,
+        "birthYearMax": 1950,
+        "rmdStartAge": 72,
+        "actReference": "SECURE Act of 2019 (Age 72; 70½ if born before July 1, 1949)"
+      },
+      {
+        "birthYearMin": 1951,
+        "birthYearMax": 1959,
+        "rmdStartAge": 73,
+        "actReference": "SECURE 2.0 Act § 107 (Effective Jan 1, 2023; IRS Notice 2024-35 / Final Regs confirm age 73 for 1959 birth year)"
+      },
+      {
+        "birthYearMin": 1960,
+        "birthYearMax": 2100,
+        "rmdStartAge": 75,
+        "actReference": "SECURE 2.0 Act § 107 (Effective Jan 1, 2033 for birth years 1960 and later)"
+      }
+    ],
+    "deadlines": {
+      "annualDeadline": "December 31 of the distribution calendar year",
+      "firstYearDeferralDeadline": "April 1 of the calendar year following the year you reach your RMD start age (72, 73, or 75)",
+      "firstYearDeferralWarning": "If you delay your first RMD into the following year (between Jan 1 and April 1), you must still take your second RMD by December 31 of that same calendar year—resulting in two taxable RMDs in a single tax year."
+    },
+    "penalties": {
+      "standardExciseTaxRate": 0.25,
+      "timelyCorrectionExciseTaxRate": 0.10,
+      "historicalPre2023Rate": 0.50,
+      "statutoryBasis": "IRC § 4974(a) & (e) as amended by SECURE 2.0 Act § 302 (effective 2023+)",
+      "waiverForm": "IRS Form 5329 (Additional Taxes on Qualified Plans and Other Tax-Favored Accounts)"
+    }
+  },
+  "factors": [
+    { "age": 72, "distributionPeriod": 27.4 },
+    { "age": 73, "distributionPeriod": 26.5 },
+    { "age": 74, "distributionPeriod": 25.5 },
+    { "age": 75, "distributionPeriod": 24.6 },
+    { "age": 76, "distributionPeriod": 23.7 },
+    { "age": 77, "distributionPeriod": 22.9 },
+    { "age": 78, "distributionPeriod": 22.0 },
+    { "age": 79, "distributionPeriod": 21.1 },
+    { "age": 80, "distributionPeriod": 20.2 },
+    { "age": 81, "distributionPeriod": 19.4 },
+    { "age": 82, "distributionPeriod": 18.5 },
+    { "age": 83, "distributionPeriod": 17.7 },
+    { "age": 84, "distributionPeriod": 16.8 },
+    { "age": 85, "distributionPeriod": 16.0 },
+    { "age": 86, "distributionPeriod": 15.2 },
+    { "age": 87, "distributionPeriod": 14.4 },
+    { "age": 88, "distributionPeriod": 13.7 },
+    { "age": 89, "distributionPeriod": 12.9 },
+    { "age": 90, "distributionPeriod": 12.2 },
+    { "age": 91, "distributionPeriod": 11.5 },
+    { "age": 92, "distributionPeriod": 10.8 },
+    { "age": 93, "distributionPeriod": 10.1 },
+    { "age": 94, "distributionPeriod": 9.5 },
+    { "age": 95, "distributionPeriod": 8.9 },
+    { "age": 96, "distributionPeriod": 8.4 },
+    { "age": 97, "distributionPeriod": 7.8 },
+    { "age": 98, "distributionPeriod": 7.3 },
+    { "age": 99, "distributionPeriod": 6.8 },
+    { "age": 100, "distributionPeriod": 6.4 },
+    { "age": 101, "distributionPeriod": 6.0 },
+    { "age": 102, "distributionPeriod": 5.6 },
+    { "age": 103, "distributionPeriod": 5.2 },
+    { "age": 104, "distributionPeriod": 4.9 },
+    { "age": 105, "distributionPeriod": 4.6 },
+    { "age": 106, "distributionPeriod": 4.3 },
+    { "age": 107, "distributionPeriod": 4.1 },
+    { "age": 108, "distributionPeriod": 3.9 },
+    { "age": 109, "distributionPeriod": 3.7 },
+    { "age": 110, "distributionPeriod": 3.5 },
+    { "age": 111, "distributionPeriod": 3.4 },
+    { "age": 112, "distributionPeriod": 3.3 },
+    { "age": 113, "distributionPeriod": 3.1 },
+    { "age": 114, "distributionPeriod": 3.0 },
+    { "age": 115, "distributionPeriod": 2.9 },
+    { "age": 116, "distributionPeriod": 2.8 },
+    { "age": 117, "distributionPeriod": 2.7 },
+    { "age": 118, "distributionPeriod": 2.5 },
+    { "age": 119, "distributionPeriod": 2.3 },
+    { "age": 120, "distributionPeriod": 2.0 }
+  ],
+  "jointLifeTable": {
+    "tableName": "IRS Joint and Last Survivor Expectancy Table (Table II)",
+    "purpose": "Used ONLY when the account owner's sole beneficiary for the entire calendar year is their spouse, and the spouse is more than 10 years younger than the owner.",
+    "exactAnchors": {
+      "72": { "61": 28.0, "60": 28.7, "59": 29.4, "58": 30.1, "57": 30.9, "56": 31.6, "55": 32.4, "54": 33.2, "53": 34.0, "52": 34.9, "50": 36.6, "45": 41.1, "40": 45.7 },
+      "73": { "62": 27.1, "61": 27.8, "60": 28.5, "59": 29.2, "58": 29.9, "57": 30.7, "56": 31.5, "55": 32.3, "54": 33.1, "53": 33.9, "50": 36.5, "45": 41.0, "40": 45.6 },
+      "74": { "63": 26.2, "62": 26.9, "61": 27.6, "60": 28.3, "59": 29.1, "58": 29.8, "57": 30.6, "56": 31.4, "55": 32.2, "54": 33.0, "50": 36.4, "45": 40.9, "40": 45.5 },
+      "75": { "64": 25.3, "63": 26.0, "62": 26.7, "61": 27.4, "60": 28.2, "59": 28.9, "58": 29.7, "57": 30.5, "56": 31.3, "55": 32.1, "50": 36.3, "45": 40.9, "40": 45.5 },
+      "76": { "65": 24.4, "64": 25.1, "63": 25.8, "62": 26.5, "61": 27.3, "60": 28.2, "59": 28.8, "58": 29.6, "57": 30.4, "56": 31.2, "55": 32.0, "50": 36.2, "45": 40.8 },
+      "77": { "66": 23.6, "65": 24.3, "64": 25.0, "63": 25.7, "62": 26.4, "61": 27.2, "60": 28.0, "59": 28.7, "58": 29.5, "57": 30.3, "55": 31.9, "50": 36.1, "45": 40.8 },
+      "78": { "67": 22.7, "66": 23.4, "65": 24.1, "64": 24.8, "63": 25.5, "62": 26.3, "61": 27.0, "60": 27.8, "59": 28.6, "58": 29.4, "55": 31.9, "50": 36.1, "45": 40.7 },
+      "79": { "68": 21.8, "67": 22.5, "66": 23.2, "65": 23.9, "64": 24.6, "63": 25.4, "62": 26.1, "61": 26.9, "60": 27.7, "58": 29.3, "55": 31.8, "50": 36.0, "45": 40.7 },
+      "80": { "69": 21.0, "68": 21.6, "67": 22.3, "66": 23.0, "65": 23.8, "64": 24.5, "63": 25.3, "62": 26.0, "60": 27.6, "58": 29.3, "55": 31.8, "50": 36.0, "45": 40.6 },
+      "81": { "70": 20.1, "69": 20.8, "68": 21.5, "67": 22.2, "66": 22.9, "65": 23.6, "64": 24.4, "62": 25.9, "60": 27.6, "55": 31.7, "50": 36.0 },
+      "82": { "71": 19.3, "70": 20.0, "69": 20.6, "68": 21.3, "67": 22.0, "65": 23.5, "63": 25.1, "60": 27.5, "55": 31.7, "50": 35.9 },
+      "83": { "72": 18.5, "71": 19.1, "70": 19.8, "69": 20.5, "68": 21.2, "65": 23.4, "60": 27.5, "55": 31.6 },
+      "84": { "73": 17.7, "72": 18.3, "71": 19.0, "70": 19.7, "68": 21.1, "65": 23.3, "60": 27.4, "55": 31.6 },
+      "85": { "74": 16.8, "73": 17.5, "72": 18.1, "71": 18.8, "70": 19.5, "65": 23.3, "60": 27.4, "55": 31.6 },
+      "86": { "75": 16.0, "74": 16.7, "73": 17.3, "72": 18.0, "70": 19.4, "65": 23.2, "60": 27.3 },
+      "87": { "76": 15.2, "75": 15.9, "74": 16.5, "72": 17.9, "70": 19.4, "65": 23.2, "60": 27.3 },
+      "88": { "77": 14.5, "76": 15.1, "75": 15.7, "72": 17.8, "70": 19.3, "65": 23.1 },
+      "89": { "78": 13.7, "77": 14.3, "76": 15.0, "75": 15.6, "70": 19.2, "65": 23.1 },
+      "90": { "79": 13.0, "78": 13.6, "77": 14.2, "75": 15.5, "70": 19.2, "65": 23.0 }
+    }
+  }
+}

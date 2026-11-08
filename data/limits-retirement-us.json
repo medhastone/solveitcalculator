@@ -1,0 +1,95 @@
+{
+  "country": "US",
+  "authority": "Internal Revenue Service (IRS)",
+  "statutoryReferences": [
+    "26 U.S.C. § 401(k)",
+    "26 U.S.C. § 402(g)",
+    "26 U.S.C. § 408",
+    "26 U.S.C. § 408A",
+    "26 U.S.C. § 415(c)",
+    "SECURE 2.0 Act of 2022 (Pub. L. 117-328)"
+  ],
+  "limits": {
+    "2025": {
+      "taxYear": 2025,
+      "verifiedBy": "IRS Notice 2024-80 & IRS Publication 590-A",
+      "dateVerified": "2025-01-10",
+      "ira": {
+        "annualContributionLimit": 7000,
+        "catchUpAge50Plus": 1000,
+        "totalLimitAge50Plus": 8000,
+        "rothIraPhaseOutSingle": {
+          "start": 150000,
+          "end": 165000
+        },
+        "rothIraPhaseOutMFJ": {
+          "start": 236000,
+          "end": 246000
+        },
+        "rothIraPhaseOutMFS": {
+          "start": 0,
+          "end": 10000
+        },
+        "traditionalIraDeductionPhaseOutCoveredSingle": {
+          "start": 79000,
+          "end": 89000
+        },
+        "traditionalIraDeductionPhaseOutCoveredMFJ": {
+          "start": 126000,
+          "end": 146000
+        },
+        "traditionalIraDeductionPhaseOutSpouseCoveredMFJ": {
+          "start": 236000,
+          "end": 246000
+        }
+      },
+      "plan401k_403b_457": {
+        "electiveDeferralLimit": 23500,
+        "catchUpAge50Plus": 7500,
+        "catchUpAge60To63Secure2": 11250,
+        "annualAdditionsLimit415c": 70000,
+        "compensationCap401a17": 350000
+      }
+    },
+    "2024": {
+      "taxYear": 2024,
+      "verifiedBy": "IRS Notice 2023-75 & IRS Publication 590-A",
+      "dateVerified": "2024-11-01",
+      "ira": {
+        "annualContributionLimit": 7000,
+        "catchUpAge50Plus": 1000,
+        "totalLimitAge50Plus": 8000,
+        "rothIraPhaseOutSingle": {
+          "start": 146000,
+          "end": 161000
+        },
+        "rothIraPhaseOutMFJ": {
+          "start": 230000,
+          "end": 240000
+        },
+        "rothIraPhaseOutMFS": {
+          "start": 0,
+          "end": 10000
+        },
+        "traditionalIraDeductionPhaseOutCoveredSingle": {
+          "start": 77000,
+          "end": 87000
+        },
+        "traditionalIraDeductionPhaseOutCoveredMFJ": {
+          "start": 123000,
+          "end": 143000
+        },
+        "traditionalIraDeductionPhaseOutSpouseCoveredMFJ": {
+          "start": 230000,
+          "end": 240000
+        }
+      },
+      "plan401k_403b_457": {
+        "electiveDeferralLimit": 23000,
+        "catchUpAge50Plus": 7500,
+        "annualAdditionsLimit415c": 69000,
+        "compensationCap401a17": 345000
+      }
+    }
+  }
+}

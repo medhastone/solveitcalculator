@@ -1,176 +1,78 @@
-import { MetadataRoute } from 'next';
-import { CANONICAL_CATEGORIES, CANONICAL_TOOLS } from '@/lib/registry';
-import { CONVERSION_CATEGORIES } from '@/lib/conversions';
-import { HEALTH_TOOL_CONFIGS } from './health-fitness-calculators/healthToolConfig';
-import { ALL_TIME_TOOLS, TIME_CATEGORIES } from '@/lib/time-date/data';
+import type { MetadataRoute } from 'next';
+import { UNIFIED_SEARCH_INDEX, CATEGORY_HUB_LINKS } from '@/lib/searchIndex';
 
-export const dynamic = 'force-static';
+const BASE_URL = 'https://solveitcalculator.com';
+
+const CORE_STATIC_ROUTES = [
+  '/',
+  '/calculation-workspace',
+  '/construction-project-calculator',
+  '/recipe-converter',
+  '/salary-calculator',
+  '/salary-tax-calculator',
+  '/about',
+  '/calculation-methodology',
+  '/accessibility',
+  '/privacy-policy',
+  '/contact',
+  '/guides',
+  '/articles',
+  '/search',
+  '/math',
+  '/finance',
+  '/finance/business',
+  '/retirement-and-super',
+  '/conversions',
+  '/conversions/length',
+  '/conversions/weight',
+  '/conversions/temperature',
+  '/conversions/cooking',
+  '/conversions/volume',
+  '/conversions/area',
+  '/conversions/speed',
+  '/conversions/digital',
+  '/conversions/energy',
+  '/conversions/fuel-economy',
+  '/conversions/torque',
+  '/unit-conversion',
+  '/date-time',
+  '/home-construction',
+  '/health-fitness',
+  '/science',
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://solveitcalculator.com';
-  const lastModified = new Date();
+  const uniquePaths = new Set<string>(CORE_STATIC_ROUTES);
 
-  const entries: MetadataRoute.Sitemap = [];
-
-  // 1. Homepage
-  entries.push({
-    url: baseUrl,
-    lastModified,
-    changeFrequency: 'daily',
-    priority: 1.0,
-  });
-
-  // 2. Canonical Category Hubs
-  for (const cat of CANONICAL_CATEGORIES) {
-    entries.push({
-      url: `${baseUrl}${cat.path}`,
-      lastModified,
-      changeFrequency: 'daily',
-      priority: 0.95,
-    });
-
-    // Subcategories
-    if (cat.subcategories) {
-      for (const sub of cat.subcategories) {
-        entries.push({
-          url: `${baseUrl}${sub.path}`,
-          lastModified,
-          changeFrequency: 'weekly',
-          priority: 0.9,
-        });
-      }
+  for (const hub of CATEGORY_HUB_LINKS) {
+    if (hub.href && hub.href.startsWith('/')) {
+      uniquePaths.add(hub.href.split('?')[0]);
     }
   }
 
-  // 3. Canonical Calculators
-  for (const tool of CANONICAL_TOOLS) {
-    entries.push({
-      url: `${baseUrl}${tool.canonicalPath}`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.85,
-    });
+  for (const entry of UNIFIED_SEARCH_INDEX) {
+    if (entry.href && entry.href.startsWith('/')) {
+      const cleanPath = entry.href.split('?')[0].split('#')[0];
+      uniquePaths.add(cleanPath);
+    }
   }
 
-  // 3b. Time & Date Ecosystem Hubs & Tools
-  for (const cat of TIME_CATEGORIES) {
-    entries.push({
-      url: `${baseUrl}${cat.path}`,
-      lastModified,
-      changeFrequency: 'daily',
-      priority: 0.9,
-    });
-  }
-  for (const tool of ALL_TIME_TOOLS) {
-    entries.push({
-      url: `${baseUrl}${tool.canonicalPath}`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.85,
-    });
-  }
+  const lastModified = new Date('2026-04-01T00:00:00.000Z');
 
-  // 4. Universal Conversion Categories
-  for (const convCat of CONVERSION_CATEGORIES) {
-    entries.push({
-      url: `${baseUrl}/conversions/${convCat.id}`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.85,
-    });
-  }
+  return Array.from(uniquePaths).map((path) => {
+    const isHome = path === '/';
+    const isFlagshipOrHub =
+      path === '/calculation-workspace' ||
+      path === '/construction-project-calculator' ||
+      path === '/recipe-converter' ||
+      path === '/salary-calculator' ||
+      CATEGORY_HUB_LINKS.some((h) => h.href === path);
 
-  // 5. Popular Unit Conversion Pairs
-  const popularPairs = [
-    'grams-to-tablespoons',
-    'gram-to-milligram',
-    'gram-to-ounce',
-    'gram-to-pound',
-    'gram-to-kilogram',
-    'milligram-to-gram',
-    'liter-to-gram',
-    'gram-to-cup',
-    'gram-to-teaspoon',
-    'grams-to-milligrams',
-    'grams-to-ounces',
-    'grams-to-pounds',
-    'grams-to-kilograms',
-    'grams-to-liters',
-    'grams-to-milliliters',
-    'grams-to-teaspoons',
-  ];
-  for (const pair of popularPairs) {
-    entries.push({
-      url: `${baseUrl}/conversions/${pair}`,
+    return {
+      url: `${BASE_URL}${path === '/' ? '' : path}`,
       lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    });
-  }
-
-  // 6. Health & Physiology Suite
-  entries.push({
-    url: `${baseUrl}/health-fitness-calculators/bmi`,
-    lastModified,
-    changeFrequency: 'weekly',
-    priority: 0.85,
-  });
-  for (const slug of Object.keys(HEALTH_TOOL_CONFIGS)) {
-    entries.push({
-      url: `${baseUrl}/health-fitness-calculators/${slug}`,
-      lastModified,
-      changeFrequency: 'weekly',
-      priority: 0.85,
-    });
-  }
-
-  // 7. Guides & Articles
-  const articles = [
-    'computational-physiology-guide',
-    'fallacy-of-bmi-vs-ffmi',
-    'how-emi-works',
-    'how-to-calculate-bmi',
-    'investment-planning-basics',
-    'science-of-90-minute-sleep-cycles',
-    'understanding-gst',
-    'zone-2-cardio-training',
-  ];
-  entries.push({
-    url: `${baseUrl}/article`,
-    lastModified,
-    changeFrequency: 'weekly',
-    priority: 0.8,
-  });
-  for (const art of articles) {
-    entries.push({
-      url: `${baseUrl}/article/${art}`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: 0.75,
-    });
-  }
-
-  // 8. Editorial & Legal Pages
-  const staticPages = [
-    { path: '/about-us', priority: 0.6 },
-    { path: '/privacy', priority: 0.5 },
-    { path: '/terms-of-use', priority: 0.5 },
-    { path: '/contact', priority: 0.5 },
-  ];
-  for (const p of staticPages) {
-    entries.push({
-      url: `${baseUrl}${p.path}`,
-      lastModified,
-      changeFrequency: 'monthly',
-      priority: p.priority,
-    });
-  }
-
-  // Deduplicate by URL to ensure pristine XML
-  const seen = new Set<string>();
-  return entries.filter((item) => {
-    if (seen.has(item.url)) return false;
-    seen.add(item.url);
-    return true;
+      changeFrequency: isHome ? 'daily' : isFlagshipOrHub ? 'weekly' : 'monthly',
+      priority: isHome ? 1.0 : isFlagshipOrHub ? 0.9 : 0.8,
+    };
   });
 }

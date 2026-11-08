@@ -3,101 +3,43 @@ import './globals.css';
 import AppShell from '@/components/AppShell';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://solveitcalculator.com'),
-  title: {
-    default: 'SolveIt Calculator | Professional Free Online Calculators & Converters',
-    template: '%s | SolveIt Calculator',
-  },
+  title:
+    'SolveItCalculator — Free Online Calculators, Step-by-Step Formulas & Reference Charts',
   description:
-    'Every Calculation. One Place. High-precision computational engines for finance, business, engineering, conversions, health, math, and daily productivity. 100% free, private, client-side execution.',
-  openGraph: {
-    title: 'SolveIt Calculator | Professional Free Online Calculators & Converters',
-    description:
-      'Every Calculation. One Place. High-precision computational engines for finance, business, engineering, conversions, health, math, and daily productivity.',
-    url: 'https://solveitcalculator.com/',
-    siteName: 'SolveItCalculator',
-    images: [
-      {
-        url: '/solveit-1.webp',
-        alt: 'SolveIt Calculator Logo',
-      },
-    ],
-    type: 'website',
+    'Free, fast online calculators with live step-by-step formulas and reference tables across Math, Finance & Salary Tax, Home & Construction, Unit & Recipe Conversion, Date & Time, Health, and Science.',
+  alternates: {
+    canonical: 'https://solveitcalculator.com',
   },
-  icons: {
-    icon: [
-      { url: '/solveit-1.webp', type: 'image/webp' },
-    ],
-    shortcut: '/solveit-1.webp',
-    apple: [
-      { url: '/solveit-1.webp', type: 'image/webp' },
-    ],
+  openGraph: {
+    title:
+      'SolveItCalculator — Free Online Calculators, Step-by-Step Formulas & Reference Charts',
+    description:
+      'Calculate percentages, construction materials, recipe conversions, country take-home salary, loans, mortgages, BMI, and more with 100% transparent formulas.',
+    url: 'https://solveitcalculator.com',
+    siteName: 'SolveItCalculator',
+    type: 'website',
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/solveit-1.webp" type="image/webp" />
-        <link rel="shortcut icon" href="/solveit-1.webp" />
-        <link rel="apple-touch-icon" href="/solveit-1.webp" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var stored = localStorage.getItem('solveit_theme');
-                  var theme = stored || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                  document.documentElement.classList.remove('light', 'dark');
-                  document.documentElement.classList.add(theme);
-                  document.documentElement.setAttribute('data-theme', theme);
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify([
-              {
-                '@context': 'https://schema.org',
-                '@type': 'Organization',
-                name: 'SolveIt Calculator',
-                url: 'https://solveitcalculator.com',
-                logo: 'https://solveitcalculator.com/solveit-1.webp',
-                description:
-                  'Free high-precision computational engines and converters for personal finance, mathematical formulas, physical conversions, health benchmarks, and daily productivity.',
-                sameAs: [],
-              },
-              {
-                '@context': 'https://schema.org',
-                '@type': 'WebSite',
-                name: 'SolveIt Calculator',
-                url: 'https://solveitcalculator.com',
-                potentialAction: {
-                  '@type': 'SearchAction',
-                  target: {
-                    '@type': 'EntryPoint',
-                    urlTemplate: 'https://solveitcalculator.com/?q={search_term_string}',
-                  },
-                  'query-input': 'required name=search_term_string',
-                },
-              },
-            ]),
-          }}
-        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
+          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
         />
       </head>
-      <body className="antialiased bg-surface text-on-surface min-h-screen transition-colors duration-200">
+      <body
+        suppressHydrationWarning
+        className="min-h-screen bg-[#F5F7FA] text-[#152238] antialiased selection:bg-[#2457D6] selection:text-white"
+      >
         <AppShell>{children}</AppShell>
       </body>
     </html>

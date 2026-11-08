@@ -205,11 +205,24 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
       'Paying extra principal in early loan years yields disproportionate interest savings due to the compounding reduction of balance.',
       'The Debt Avalanche method (targeting highest APR first) mathematically minimizes total interest cost compared to the Debt Snowball method.'
     ],
-    primaryToolIds: ['emi-calculator', 'mortgage-calculator', 'compound-interest-calculator'],
+    primaryToolIds: [
+      'loan-refinance-calculator',
+      'car-loan-calculator',
+      'personal-loan-calculator',
+      'debt-payoff-calculator',
+      'loan-prepayment-calculator',
+      'loan-amortization-calculator',
+      'emi-calculator',
+      'mortgage-calculator',
+    ],
     goalTasks: [
-      { task: 'Calculate monthly EMI for personal, car, or student loan', targetUrl: '/finance/emi-calculator', badge: 'EMI Solver' },
-      { task: 'Calculate mortgage principal and interest payment', targetUrl: '/finance/mortgage-calculator', badge: 'Mortgage' },
-      { task: 'Compare loan interest savings with extra monthly payments', targetUrl: '/finance/emi-calculator', badge: 'Payoff Acceleration' }
+      { task: 'Compare loan refinance & balance transfer break-even', targetUrl: '/finance/loan-refinance-calculator', badge: 'Refinance' },
+      { task: 'Calculate car loan payment, sales tax, and 20/4/10 affordability', targetUrl: '/finance/car-loan-calculator', badge: 'Auto Loan' },
+      { task: 'Calculate personal loan EMI and true effective APR with fees', targetUrl: '/finance/personal-loan-calculator', badge: 'Personal Loan' },
+      { task: 'Compare Debt Avalanche vs. Snowball payoff strategies', targetUrl: '/finance/debt-payoff-calculator', badge: 'Debt Avalanche' },
+      { task: 'Calculate interest saved with extra loan prepayments', targetUrl: '/finance/loan-prepayment-calculator', badge: 'Prepayment' },
+      { task: 'Generate monthly & annual loan amortization schedule', targetUrl: '/finance/loan-amortization-calculator', badge: 'Amortization' },
+      { task: 'Calculate monthly EMI for personal, car, or student loan', targetUrl: '/finance/emi-calculator/in', badge: 'EMI Solver' },
     ],
     guides: [
       {
@@ -273,8 +286,19 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
       'A 20% down payment eliminates PMI, saving $100–$300+ per month on conventional financing.',
       'A 15-year fixed mortgage typically offers a 0.50%–0.75% lower interest rate and cuts total interest costs by over 60% compared to a 30-year term.'
     ],
-    primaryToolIds: ['mortgage-calculator', 'emi-calculator', 'compound-interest-calculator'],
+    primaryToolIds: [
+      'mortgage-points-calculator',
+      'ltv-calculator',
+      'mortgage-affordability-calculator',
+      'mortgage-calculator',
+      'loan-refinance-calculator',
+      'loan-prepayment-calculator',
+      'emi-calculator',
+    ],
     goalTasks: [
+      { task: 'Calculate mortgage points break-even & rate reduction savings', targetUrl: '/finance/mortgage-points-calculator', badge: 'Discount Points' },
+      { task: 'Calculate LTV, CLTV, equity, and pay-down needed to cancel PMI', targetUrl: '/finance/ltv-calculator', badge: 'LTV & Equity' },
+      { task: 'Calculate how much house you can afford based on income and DTI', targetUrl: '/finance/mortgage-affordability-calculator', badge: 'Affordability' },
       { task: 'Calculate total monthly PITI payment', targetUrl: '/finance/mortgage-calculator', badge: 'PITI Calculator' },
       { task: 'Determine down payment needed to avoid PMI', targetUrl: '/finance/mortgage-calculator', badge: 'PMI Sizer' },
       { task: 'Compare 15-year vs. 30-year mortgage lifetime interest', targetUrl: '/finance/mortgage-calculator', badge: 'Term Comparison' }
@@ -326,9 +350,9 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     ],
     primaryToolIds: ['compound-interest-calculator', 'investment-calculator', 'fire-forecaster'],
     goalTasks: [
-      { task: 'Forecast future portfolio balance with monthly deposits', targetUrl: '/finance/compound-interest-calculator', badge: 'Compound Growth' },
-      { task: 'Calculate Compound Annual Growth Rate (CAGR)', targetUrl: '/finance/compound-interest-calculator', badge: 'CAGR Engine' },
-      { task: 'Model systematic investment plan (SIP) returns', targetUrl: '/finance/investment-calculator', badge: 'SIP Forecaster' }
+      { task: 'Forecast future portfolio balance with monthly deposits', targetUrl: '/finance/compound-interest', badge: 'Compound Growth' },
+      { task: 'Calculate Compound Annual Growth Rate (CAGR)', targetUrl: '/finance/compound-interest', badge: 'CAGR Engine' },
+      { task: 'Model systematic investment plan (SIP) returns', targetUrl: '/finance/investment-calculator/in', badge: 'SIP Forecaster' }
     ],
     guides: [
       {
@@ -377,9 +401,9 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     ],
     primaryToolIds: ['compound-interest-calculator', 'investment-calculator', 'fire-forecaster'],
     goalTasks: [
-      { task: 'Simulate compound growth with periodic monthly contributions', targetUrl: '/finance/compound-interest-calculator', badge: 'Compound Sim' },
-      { task: 'Calculate Rule of 72 investment doubling timeline', targetUrl: '/finance/compound-interest-calculator', badge: 'Doubling Rule' },
-      { task: 'Convert APR nominal rate to APY effective annual yield', targetUrl: '/finance/compound-interest-calculator', badge: 'APR vs APY' }
+      { task: 'Simulate compound growth with periodic monthly contributions', targetUrl: '/finance/compound-interest', badge: 'Compound Sim' },
+      { task: 'Calculate Rule of 72 investment doubling timeline', targetUrl: '/finance/compound-interest', badge: 'Doubling Rule' },
+      { task: 'Convert APR nominal rate to APY effective annual yield', targetUrl: '/finance/compound-interest', badge: 'APR vs APY' }
     ],
     guides: [
       {
@@ -444,9 +468,9 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     ],
     primaryToolIds: ['compound-interest-calculator', 'investment-calculator', 'fire-forecaster'],
     goalTasks: [
-      { task: 'Calculate monthly savings needed to reach a financial goal', targetUrl: '/finance/compound-interest-calculator', badge: 'Goal Accumulator' },
+      { task: 'Calculate monthly savings needed to reach a financial goal', targetUrl: '/finance/compound-interest', badge: 'Goal Accumulator' },
       { task: 'Determine 3-month and 6-month emergency fund targets', targetUrl: '/finance/savings', badge: 'Emergency Fund' },
-      { task: 'Calculate High-Yield Savings Account (HYSA) interest earnings', targetUrl: '/finance/compound-interest-calculator', badge: 'HYSA APY' }
+      { task: 'Calculate High-Yield Savings Account (HYSA) interest earnings', targetUrl: '/finance/compound-interest', badge: 'HYSA APY' }
     ],
     guides: [
       {
@@ -495,8 +519,8 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     primaryToolIds: ['fire-forecaster', 'compound-interest-calculator', 'retirement-countdown'],
     goalTasks: [
       { task: 'Calculate retirement nest egg needed for target income', targetUrl: '/finance/fire-forecaster', badge: 'Nest Egg Sizer' },
-      { task: 'Project 401(k) and IRA growth with employer match', targetUrl: '/finance/compound-interest-calculator', badge: '401(k) Forecaster' },
-      { task: 'Count exact remaining workdays and shifts to retirement', targetUrl: '/time-date/retirement-countdown', badge: 'Workday Countdown' }
+      { task: 'Project 401(k) and IRA growth with employer match', targetUrl: '/finance/compound-interest', badge: '401(k) Forecaster' },
+      { task: 'Count exact remaining workdays and shifts to retirement', targetUrl: '/finance/retirement', badge: 'Workday Countdown' }
     ],
     guides: [
       {
@@ -594,7 +618,7 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     ],
     primaryToolIds: ['emi-calculator', 'compound-interest-calculator', 'mortgage-calculator'],
     goalTasks: [
-      { task: 'Calculate months to pay off credit card balance with fixed payments', targetUrl: '/finance/emi-calculator', badge: 'Payoff Planner' },
+      { task: 'Calculate months to pay off credit card balance with fixed payments', targetUrl: '/finance/emi-calculator/in', badge: 'Payoff Planner' },
       { task: 'Calculate true cost of paying only the minimum payment', targetUrl: '/finance/credit-cards', badge: 'Minimum Trap' },
       { task: 'Estimate balance transfer fee vs. interest savings', targetUrl: '/finance/credit-cards', badge: 'Balance Transfer' }
     ],
@@ -646,13 +670,32 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
       'Your marginal tax rate is the tax paid on your last dollar of income; your effective tax rate is total tax paid divided by total gross income (always lower than marginal rate).',
       'Pre-tax retirement contributions (401k, Traditional IRA, Pension, Superannuation) reduce taxable income in your highest marginal bracket.'
     ],
-    primaryToolIds: ['global-tax-calculator', 'mortgage-calculator', 'compound-interest-calculator'],
+    primaryToolIds: [
+      'us-federal-income-tax-calculator',
+      'us-state-take-home-calculator',
+      'self-employment-tax-calculator',
+      'capital-gains-tax-calculator',
+      'india-capital-gains-tax-calculator',
+      '1099-vs-w2-calculator',
+      'uk-paye-calculator',
+      'canada-income-tax-calculator',
+      'india-income-tax-calculator',
+      'hra-exemption-calculator',
+      'germany-income-tax-calculator',
+      'france-income-tax-calculator',
+      'uae-income-tax-calculator',
+      'singapore-income-tax-calculator',
+    ],
     goalTasks: [
-      { task: 'Calculate US Federal & State income tax with FICA', targetUrl: '/finance/taxes/us', badge: 'US Tax' },
-      { task: 'Calculate UK HMRC Income Tax & National Insurance', targetUrl: '/finance/taxes/uk', badge: 'UK Tax' },
-      { task: 'Calculate Canadian CRA Federal & Provincial Tax', targetUrl: '/finance/taxes/canada', badge: 'Canada Tax' },
-      { task: 'Calculate Australian ATO Income Tax & Medicare Levy', targetUrl: '/finance/taxes/australia', badge: 'Australia Tax' },
-      { task: 'Compare India New vs. Old Tax Regime', targetUrl: '/finance/taxes/india', badge: 'India Tax' }
+      { task: 'Calculate US Federal Income Tax brackets, AGI & refund/owed', targetUrl: '/finance/us-federal-income-tax-calculator', badge: 'US Federal' },
+      { task: 'Calculate US State Take-Home Paycheck across 50 states', targetUrl: '/finance/us-state-take-home-calculator', badge: 'State Paycheck' },
+      { task: 'Calculate IRS Schedule SE Self-Employment Tax & quarterly dates', targetUrl: '/finance/self-employment-tax-calculator', badge: 'Schedule SE' },
+      { task: 'Calculate US Short-Term & Long-Term Capital Gains + 3.8% NIIT', targetUrl: '/finance/capital-gains-tax-calculator', badge: 'US Capital Gains' },
+      { task: 'Compare 1099 Contractor vs W-2 Employee break-even rate', targetUrl: '/finance/1099-vs-w2-calculator', badge: '1099 vs W-2' },
+      { task: 'Calculate UK HMRC PAYE Income Tax, NI & Scotland bands', targetUrl: '/finance/uk-paye-calculator', badge: 'UK PAYE' },
+      { task: 'Calculate Canadian CRA Federal & Provincial Tax (ON, BC, AB)', targetUrl: '/finance/canada-income-tax-calculator', badge: 'Canada Tax' },
+      { task: 'Compare India FY 2025-26 New vs. Old Tax Regime', targetUrl: '/finance/india-income-tax-calculator', badge: 'India Tax' },
+      { task: 'Calculate India Section 10(13A) HRA Exemption', targetUrl: '/finance/hra-exemption-calculator', badge: 'HRA Exemption' },
     ],
     guides: [
       {
@@ -700,11 +743,21 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
       'Converting hourly rates to salary: Multiply hourly wage by 2,000 for a quick estimate ($30/hr ≈ $60,000/year).',
       'Capturing your full employer 401(k) or pension match provides an immediate 50% to 100% guaranteed return on contributed capital.'
     ],
-    primaryToolIds: ['work-hours', 'emi-calculator', 'compound-interest-calculator'],
+    primaryToolIds: [
+      'salary-to-hourly-calculator',
+      'take-home-pay-calculator',
+      'in-hand-salary-calculator',
+      'overtime-pay-calculator',
+      'pay-raise-calculator',
+      'bonus-tax-calculator',
+    ],
     goalTasks: [
-      { task: 'Convert hourly rate to annual salary and monthly paycheck', targetUrl: '/finance/salary', badge: 'Salary Converter' },
-      { task: 'Calculate weekly shift timesheet hours with FLSA overtime', targetUrl: '/time-date/work-hours', badge: 'Timesheet Solver' },
-      { task: 'Estimate net take-home paycheck after taxes', targetUrl: '/finance/taxes', badge: 'Take-Home Pay' }
+      { task: 'Convert annual salary to hourly, daily, bi-weekly & monthly pay', targetUrl: '/finance/salary-to-hourly-calculator', badge: 'Salary to Hourly' },
+      { task: 'Calculate US Take-Home Paycheck after Federal, State & FICA', targetUrl: '/finance/take-home-pay-calculator', badge: 'US Take-Home' },
+      { task: 'Convert India CTC to monthly In-Hand Salary after EPF, PT & TDS', targetUrl: '/finance/in-hand-salary-calculator', badge: 'India In-Hand' },
+      { task: 'Calculate 1.5x and 2.0x Overtime Pay under FLSA & CA rules', targetUrl: '/finance/overtime-pay-calculator', badge: 'Overtime Pay' },
+      { task: 'Calculate Pay Raise % and real inflation-adjusted raise', targetUrl: '/finance/pay-raise-calculator', badge: 'Pay Raise' },
+      { task: 'Calculate Bonus Tax withholding (22% flat vs aggregate)', targetUrl: '/finance/bonus-tax-calculator', badge: 'Bonus Tax' },
     ],
     guides: [
       {
@@ -751,11 +804,19 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
       'Margin is calculated on selling price; Markup is calculated on cost. A 50% markup equals a 33.3% gross profit margin.',
       'Operating leverage magnifies profit gains as sales volume exceeds the break-even point.'
     ],
-    primaryToolIds: ['compound-interest-calculator', 'emi-calculator', 'investment-calculator'],
+    primaryToolIds: [
+      'margin-calculator',
+      'markup-calculator',
+      'break-even-calculator',
+      'profit-margin-calculator',
+      'roi-calculator',
+      'cagr-calculator',
+    ],
     goalTasks: [
-      { task: 'Calculate Break-Even unit and revenue volume', targetUrl: '/finance/business', badge: 'Break-Even' },
-      { task: 'Convert Cost Markup to Gross Profit Margin percentage', targetUrl: '/finance/business', badge: 'Margin vs Markup' },
-      { task: 'Forecast commercial equipment loan amortization', targetUrl: '/finance/emi-calculator', badge: 'Commercial Debt' }
+      { task: 'Solve Gross Margin %, Revenue, or Cost (Any 2 of 3)', targetUrl: '/finance/margin-calculator', badge: 'Margin Solver' },
+      { task: 'Calculate Selling Price & Margin from Cost and Markup %', targetUrl: '/finance/markup-calculator', badge: 'Markup Solver' },
+      { task: 'Calculate Break-Even unit volume, target profit & margin of safety', targetUrl: '/finance/break-even-calculator', badge: 'Break-Even' },
+      { task: 'Analyze Gross, EBITDA, Operating & Net Margin + Damodaran benchmarks', targetUrl: '/finance/profit-margin-calculator', badge: 'Profit Margin' },
     ],
     guides: [
       {

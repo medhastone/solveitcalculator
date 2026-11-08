@@ -1,146 +1,130 @@
-# Science Calculators & Interactive Multi-Discipline Science Workbench Hub (`/science`)
+# Human-First Editorial Rewrite & Structural Diversification Plan
 
-A comprehensive, research-grade scientific computation hub featuring an interactive Multi-Discipline Science Workbench, real-time kinematics and projectile solvers, thermodynamics and Ideal Gas Law calculators, interactive periodic table molar mass lookup, orbital velocity and celestial gravity engines, quantum photon wave mechanics, and 50+ specialized scientific tools across 7 core disciplines.
+This plan eliminates programmatic template footprints and robotic AI prose across SolveItCalculator by replacing the uniform page skeleton with **six category-specific layout archetypes**, **topic-native section headings**, and **conversational practitioner-grade writing** grounded in real-world edge cases.
 
 ---
 
 ## User Review & Critical Decisions
 
 > [!IMPORTANT]
-> The following product design and architectural choices have been confirmed for the Science Hub (`/science`):
+> The following architectural and editorial decisions incorporate your confirmed choices and govern how every calculator, converter, and guide page will be restructured and rewritten.
 
-- **Confirmed Scope**: Comprehensive scientific suite covering Classical Mechanics & Physics, Chemistry & Stoichiometry, Thermodynamics & Fluid Dynamics, Astronomy & Space Physics, Quantum & Nuclear Physics, Electromagnetism & Optics, and Biology & Environmental Science (7 domains, 50+ specialized tools).
-- **Confirmed Primary Workbench**: Live Multi-Discipline Science Workbench positioned at the top of `/science` with 5 interactive solver modes:
-  1. **Kinematics & 2D Projectile Solver**: Real-time initial velocity, launch angle, launch height, gravitational acceleration ($g$), trajectory range, apex height, flight time, and impact velocity.
-  2. **Thermodynamics & Ideal Gas Law ($PV = nRT$) Engine**: Bi-directional calculation solving for Pressure ($P$), Volume ($V$), Amount of Substance ($n$), or Temperature ($T$) using universal gas constant ($R = 8.314462\text{ J/(mol}\cdot\text{K)}$).
-  3. **Interactive Periodic Table & Molar Mass Quick Solver**: Quick search/selection across standard elements (H through Og) with atomic weights, group/period classifications, valence electrons, and multi-element chemical formula molar mass calculator (e.g. $\text{H}_2\text{SO}_4$, $\text{C}_6\text{H}_{12}\text{O}_6$).
-  4. **Astronomy, Orbital Velocity & Escape Velocity Solver**: Celestial body presets (Earth, Moon, Mars, Jupiter, Sun, ISS LEO, Geostationary) with orbital altitude, gravitational parameter ($GM$), circular orbital speed, orbital period, and escape velocity.
-  5. **Quantum Photon Energy & Electromagnetic Spectrum Solver**: Convert between wavelength ($\lambda$), frequency ($f$), photon energy ($E = h\nu$ in Joules and eV), with spectral band mapping (Radio, Microwave, IR, Visible, UV, X-Ray, Gamma).
-- **Confirmed Auxiliary Reference Tables & Scientific Standards**:
-  - **CODATA Fundamental Physical Constants Table**: Speed of light ($c$), Gravitational constant ($G$), Planck constant ($h, \hbar$), Boltzmann constant ($k_B$), Avogadro constant ($N_A$), Elementary charge ($e$), Electron mass ($m_e$), Permittivity ($\varepsilon_0$).
-  - **Electromagnetic Spectrum & Wavelength Reference Chart**: Frequency bands, photon energies, atmospheric transmission, and representative applications.
-  - **Standard SI Metric Prefixes Scale**: Comprehensive decade scale from quecto ($10^{-30}$) and atto ($10^{-18}$) to exa ($10^{18}$) and quetta ($10^{30}$).
-  - **6 Curated Academic & Laboratory Workbenches**: Physics Students & Researchers, Analytical Chemists & Lab Techs, Aerospace Engineers & Astronomers, Mechanical & Materials Engineers, Biophysics & Genomics Specialists, and Environmental Scientists.
-  - **15 In-Depth Scientific FAQs** with complete Schema.org `FAQPage` structured data.
-- **Theme & Aesthetic Standards**: Clinical lab precision standard from `references/8_science_space_biotech.md`, hairline borders, laser cyan and cobalt telemetry accents, and strict `font-mono tabular-nums` for scientific notation and significant figures.
+- **Confirmed Decision 1 — Distinct Layout Archetypes per Category & Intent**: Instead of rendering the same vertical sequence (`Formula -> Example -> How to Use -> How It Works -> Understanding Your Result -> Generic 0.5x/2.0x Sensitivity Table -> FAQ`) on every URL, each category will use its own structural archetype, DOM section order, and topic-specific `<h2>` headings.
+- **Confirmed Decision 2 — Conversational Plain-English Voice + Practitioner Field Notes**: All robotic filler phrases, repetitive sentence lengths, and generic restatements will be replaced with high-burstiness human prose (mixing short punchy statements with detailed walk-throughs) and domain-specific **Field Notes & Common Edge Cases** (e.g., nominal vs. actual lumber dimensions, packed vs. scooped flour weight, marginal tax bracket myths, leap-year day counts).
+- **Confirmed Decision 3 — Systematic Rollout by Traffic Priority**: We will execute the transformation systematically across all tool families, starting with the highest-traffic pages (Unit Converters, Construction/Flooring, Recipe, Percentage, Loan/Mortgage, Salary/Tax) and continuing through Math, Business, Retirement, Health/BMI, Date/Time, Science, and Guides—while keeping the 5-language header translation catalog synchronized.
 
 ---
 
 ## 1. Overview & Core Concept
 
-- **What It Does**: `/science` serves as an empirical computation and reference workbench for scientists, engineering students, educators, and laboratory researchers. It enables instant physical modeling, stoichiometry validation, orbital flight planning, and unit-calibrated scientific problem-solving.
-- **Target Audience / Persona**:
-  - **Physics & Mechanics Students**: Solving kinematics, harmonic motion, conservation of momentum, and rotational dynamics.
-  - **Chemistry & Laboratory Researchers**: Formulating molar solutions, calculating buffer pH, balancing gas laws, and finding molecular weights.
-  - **Aerospace & Astronomy Enthusiasts**: Calculating orbital velocities, Keplerian periods, and gravitational escape thresholds.
-  - **Quantum & Photonics Engineers**: Computing laser wavelengths, photon energy flux, and de Broglie wavelengths.
-- **Key Value**: Provides zero-latency scientific calculations with explicit formula derivations, standard SI units, and verified empirical constants (NIST/CODATA).
+- **What It Does**: Transforms SolveItCalculator from a uniform template-driven calculator site into an authentic, human-edited reference publication where each tool category has a distinct visual and structural layout, unique section headings, genuine domain benchmark tables, and practical real-world advice.
+- **Target Audience / Persona**: Everyday problem-solvers, homeowners, cooks, students, contractors, and financial planners—as well as search engine quality evaluators looking for genuine **Information Gain** and **E-E-A-T** (Experience, Expertise, Authoritativeness, and Trustworthiness).
+- **Key Value**:
+  1. **Eliminates Programmatic Doorway Signals**: Removes identical H2 boilerplate (`How to use this calculator`, `Understanding your result`) and the synthetic `0.5x / 0.9x / 1.0x / 1.1x / 2.0x` filler table that currently repeats across tools.
+  2. **Natural Human Burstiness & Perplexity**: Replaces predictable, uniform 20-word AI sentences with natural rhythm—short direct answers followed by concrete trade examples, historical or practical context, and candid "watch out for this mistake" advice.
+  3. **True Information Gain per URL**: Every page provides unique domain data (trade standards, tax thresholds, physical constants, kitchen density comparisons, or mathematical proofs) that cannot be generated by swapping keywords into a template.
 
 ---
 
-## 2. User Experience & Visual Design
+## 2. User Experience, Structural Archetypes & Visual Design
 
-### Key User Flows
-1. **Interactive Workbench Exploration**:
-   - User accesses the top workbench and chooses between **Kinematics**, **Ideal Gas Law**, **Periodic Table**, **Orbital Velocity**, and **Photon Energy**.
-   - Scrubbing sliders or entering numeric values recalculates parameters in real time ($<1\text{ms}$).
-   - Step-by-step mathematical breakdowns show standard physical formulas with substituted values.
-   - 1-click clipboard copy for results, scientific notation values, and derived equations.
-2. **Directory Search & Scientific Discipline Filtering**:
-   - Real-time search across 50+ scientific calculators matching tool names, descriptions, and formulas.
-   - Domain filter pills (*All, Physics, Chemistry, Thermodynamics, Astronomy, Quantum, Electromagnetism, Biology*).
-3. **Reference Matrix & Constants Exploration**:
-   - CODATA Physical Constants table with search and quick copy.
-   - Interactive Electromagnetic Spectrum breakdown.
-   - SI Prefix conversion ruler.
-4. **Role Collections & FAQs**:
-   - 6 specialized academic and industry tool bundles.
-   - 15 accordion-expandable FAQs covering classical mechanics, quantum theory, and chemistry formulas.
+### A. Six Category-Specific Layout Archetypes (Breaking the Uniform Skeleton)
 
-### Visual Identity & Theme (Scientific Instrument Constitution)
-- **Aesthetic Direction**: High-precision laboratory console adhering to `references/8_science_space_biotech.md`.
-- **Color Palette**:
-  - Light: Clinical white background (`bg-slate-50`), pristine instrument panels (`bg-white`), hairline dividers (`border-slate-200`), dark slate typography (`text-slate-900`), and laser cyan/cobalt accents (`text-cyan-600`, `text-blue-600`).
-  - Dark: Deep space obsidian canvas (`dark:bg-slate-950`), elevated instrument cards (`dark:bg-slate-900`), subtle border dividers (`dark:border-slate-800`), luminous phosphor indicators (`dark:text-cyan-400`, `dark:text-emerald-400`).
-- **Typography & Numerals**:
-  - Crisp neo-grotesque hierarchy.
-  - Monospace tabular numbers (`font-mono tabular-nums`) for all values, coordinates, powers of ten, and physical units ($\text{m/s}^2$, $\text{J/(mol}\cdot\text{K)}$, $\text{eV}$, $\text{kg/m}^3$).
+Rather than forcing every tool into one shared layout order, pages are routed into **six distinct structural archetypes** based on user intent and category:
 
----
+1. **Archetype A — Metrology & Unit Lookup Layout (Unit Converters)**
+   - *Section Flow*: Interactive Converter Workbench + Direct 1-Line Answer Banner $\rightarrow$ Click-to-Load Popular Pair Grid $\rightarrow$ Multi-Column Benchmark Lookup Table $\rightarrow$ Side-by-Side Unit Comparison & Trade Pitfalls $\rightarrow$ Worked Math Proof $\rightarrow$ Targeted Q&A.
+   - *Distinctive Element*: Leads immediately with clickable benchmark values and unit-system comparisons (e.g., US Customary vs. Imperial vs. SI Metric) instead of generic "How to use" instructions.
+2. **Archetype B — Financial & Tax Decision Layout (Loans, Mortgages, Salary, Tax, Retirement)**
+   - *Section Flow*: Interactive Financial Workbench $\rightarrow$ Key Assumptions & Statutory Rules Callout $\rightarrow$ Scenario Comparison Matrix (e.g., 15-Year vs. 30-Year, Old vs. New Tax Regime, W-2 vs. 1099) $\rightarrow$ Step-by-Step Dollar Walkthrough $\rightarrow$ Practitioner Tax/Planning Pitfalls $\rightarrow$ Taxpayer FAQ.
+   - *Distinctive Element*: Replaces abstract formula boxes at the top of the article with a **Real-World Scenario Comparison Matrix** and **Statutory Rule Guardrails** (IRS, HMRC, CRA, Income Tax India).
+3. **Archetype C — Job-Site & Trade Estimator Layout (Construction, Flooring, Home Projects)**
+   - *Section Flow*: Guided Multi-Step Estimator $\rightarrow$ Material Shopping & Waste Allowance Breakdown $\rightarrow$ Contractor Field Notes (e.g., subfloor prep, diagonal cut waste, bag-mix yield losses) $\rightarrow$ Coverage Reference Chart $\rightarrow$ On-Site Estimation FAQ.
+   - *Distinctive Element*: Structured like a contractor's takeoff sheet with a **Material Waste & Packaging Guide** and **On-Site Field Notes**.
+4. **Archetype D — Culinary & Kitchen Bench Layout (Recipe Converters & Cooking Tools)**
+   - *Section Flow*: Visual Category Hero & Quick Ingredient Search $\rightarrow$ Popular Kitchen Tool Cards $\rightarrow$ Visual Density Comparison ("Why 1 Cup of Flour $\neq$ 1 Cup of Sugar") $\rightarrow$ Interactive Multi-Ingredient Scaler $\rightarrow$ Verified Gram/Ounce Chart & Oven-to-Air-Fryer Rules $\rightarrow$ Baker's FAQ.
+   - *Distinctive Element*: Visual ingredient density comparisons and kitchen-tested measuring technique notes (spooned-and-leveled vs. dipped-and-packed).
+5. **Archetype E — Interactive Whiteboard & Proof Layout (Math, Percentage, Fractions, Algebra, Science)**
+   - *Section Flow*: Live Solver Workbench $\rightarrow$ Visual Equation & Worked Proof Card $\rightarrow$ Common Classroom & Lab Mistakes ("Where People Trip Up") $\rightarrow$ Mental Math Shortcut / Rule-of-Thumb Box $\rightarrow$ Reference Values Table $\rightarrow$ Concept Q&A.
+   - *Distinctive Element*: Includes a **Mental Math Shortcut** and a **"Where People Trip Up" (Common Mistakes)** comparison instead of generic prose.
+6. **Archetype F — Personal Benchmark & Timeline Layout (BMI/Health, Age, Date & Time)**
+   - *Section Flow*: Personal Input Workbench $\rightarrow$ Classification / Timeline Breakdown $\rightarrow$ Clinical or Calendar Context & Limitations ("What This Number Actually Means—and What It Misses") $\rightarrow$ Reference Ranges Table $\rightarrow$ Practical FAQ.
+   - *Distinctive Element*: Candidly explains biological or calendar nuances (e.g., why BMI misses muscle mass in athletes; how month-end rollover works in leap years).
 
-## 3. Key Product Decisions & Trade-Offs
+### B. Visual Identity, Anti-Slop Discipline & Typography
 
-- **Decision 1: Client-Side Deterministic Mathematical Engine**:
-  - *Chosen Approach*: Pure TypeScript scientific solver algorithms calibrated against NIST CODATA constants.
-  - *Why*: Delivers instantaneous interactive slider feedback without server roundtrips.
-- **Decision 2: Comprehensive 7-Domain Taxonomy**:
-  - *Chosen Approach*: Organize 50+ specialized scientific calculators across physics, chemistry, thermodynamics, astronomy, quantum mechanics, electromagnetism, and biophysics.
-  - *Why*: Provides complete curriculum and laboratory coverage from high school AP Physics/Chemistry to university and professional engineering levels.
-- **Decision 3: Complete Schema.org JSON-LD Graph**:
-  - *Chosen Approach*: Embed structured data for `CollectionPage`, `BreadcrumbList`, `ItemList` (all 50+ tools), and `FAQPage` (15 FAQs).
-  - *Why*: Ensures maximum search engine visibility and rich snippet eligibility.
+- **Color Palette & Surface Hierarchy**:
+  - *60% Neutral Canvas*: Crisp light slate (`#F5F7FA`) with clean white (`#FFFFFF`) structural surfaces and subtle `1px solid #E2E8F0` borders (paired with complete dark-mode counterparts).
+  - *30% Deep Navy Ink & Structural Surfaces*: Primary typography in `#152238`, body prose in `#334155` and `#475569` at comfortable 65–75ch reading measure.
+  - *10% Focused Accents*: Primary brand blue (`#2457D6`) for interactive affordances and emerald green (`#16856B`) for verified calculation outputs.
+- **Anti-Slop & Restraint Rules**:
+  - **Zero Pulsing Dots on Static Text**: Remove decorative pulsing green dots (`animate-pulse`) from static result headers.
+  - **Zero Thick Left Accent Bars**: Replace cliché `border-l-4` callout strips with clean all-around hairline cards (`border border-slate-200`) and subtle surface tinting.
+  - **Tabular Numerals Everywhere**: Enforce `tabular-nums` across all reference tables, equations, and financial outputs.
 
 ---
 
-## 4. Technical Architecture & System Layout
+## 3. Key Product Decisions & Editorial Rules
+
+### Decision 1: Replacing Generic Headings with Topic-Specific H2s
+- **Chosen Approach**: Every calculator page will use H2 headings that name the specific subject, units, or financial concept (e.g., *"How Monthly Principal and Interest Are Calculated"* or *"Why 10% Flooring Waste Isn't Always Enough"* instead of repeating *"How the calculation works"* and *"Understanding your result"* across 70+ pages).
+- **Why**: Search engines parse H2/H3 outlines to judge whether a site is publishing templated doorway pages or bespoke topical guides. Unique headings paired with per-page section ordering give every URL a distinct document outline.
+
+### Decision 2: Eradicating the Synthetic `0.5x / 0.9x / 1.1x / 2.0x` Fallback Table
+- **Chosen Approach**: Remove the automatic multiplier table (`Half Scale 0.50x`, `Reduced Scale -10%`, `Increased Scale +10%`, `Double Scale 2.00x`) from the shared shell and replace it with **domain-authentic reference benchmarks** tailored to each tool (or omit the table when a scenario comparison matrix is more useful).
+- **Why**: Multiplying any arbitrary result by `0.5x` and `2.0x` adds zero real-world value (e.g., half of a square root or 110% of a date difference is meaningless) and is a strong signal of automated template padding.
+
+### Decision 3: Human Editorial Voice & Anti-AI Phrase Ban List
+- **Chosen Approach**: Rewrite all descriptions, explanations, worked examples, and FAQs using a strict human-editorial style guide:
+  - **Banned AI Clichés**: Eliminate *"Whether you're a...", "In today's fast-paced world", "delve into", "crucial", "paramount", "seamlessly", "unlock", "comprehensive guide", "it is important to note that", "moreover", "furthermore",* and *"look no further"*.
+  - **Sentence Rhythm (Burstiness)**: Alternate concise 6–10 word declarative sentences with longer 22–30 word explanatory sentences containing concrete numbers, dates, and parenthetical asides.
+  - **Practitioner Field Notes**: Include specific, experience-backed observations on each page (e.g., why credit card APR compounds daily while mortgages compound monthly; why UK Imperial gallons are 20% larger than US gallons; why diagonal tile layouts need 15% waste instead of 10%).
+
+---
+
+## 4. Technical Architecture & Data Strategy *(Technical Reference)*
+
+### Architecture & Component Diagram
 
 ```
-┌────────────────────────────────────────────────────────────────────────┐
-│                         /app/science/page.tsx                          │
-│   (Server Component: Metadata, OpenGraph, Canonical, Schema.org Graph) │
-└───────────────────────────────────┬────────────────────────────────────┘
-                                    │
-┌───────────────────────────────────▼────────────────────────────────────┐
-│                    ScienceHubClient.tsx (Client Hub)                   │
-│  - Hero Header & Scientific Metrics                                    │
-│  - Directory Search & Discipline Filter Pills                          │
-│  - CODATA Physical Constants Reference Table                           │
-│  - Electromagnetic Spectrum & SI Metric Prefix Scale                   │
-│  - 6 Curated Academic & Laboratory Workbenches                         │
-│  - 15 Comprehensive FAQs with Accordion State                          │
-└───────────────────────────────────┬────────────────────────────────────┘
-                                    │
-┌───────────────────────────────────▼────────────────────────────────────┐
-│          InteractiveScienceWorkbench.tsx (Interactive Engine)          │
-│  ┌─────────────────────────┬─────────────────────────┬──────────────┐  │
-│  │ 1. Kinematics & 2D Mot. │ 2. Ideal Gas (PV=nRT)   │ 3. Chemistry │  │
-│  ├─────────────────────────┼─────────────────────────┼──────────────┤  │
-│  │ 4. Orbital Mechanics    │ 5. Quantum Photon Wave  │ Quick Copy   │  │
-│  └─────────────────────────┴─────────────────────────┴──────────────┘  │
-└───────────────────────────────────┬────────────────────────────────────┘
-                                    │
-┌───────────────────────────────────▼────────────────────────────────────┐
-│                  scienceCategoryData.ts (Data Store)                   │
-│  - 7 Scientific Domains & 50+ Precision Tools                          │
-│  - Periodic Table Element Dataset (H to Og with atomic weights)        │
-│  - CODATA Fundamental Physical Constants                               │
-│  - Electromagnetic Spectrum Wavelength Bands                           │
-│  - 6 Role-Based Collections & 15 In-Depth Scientific FAQs              │
-└────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                     SolveItCalculator Content & Data Layer                   │
+│                                                                              │
+│  ┌────────────────────────────┐      ┌────────────────────────────────────┐  │
+│  │ Domain Content Catalogs    │      │ Layout Archetype Configuration     │  │
+│  │ • Unit & Metrology Data    │─────▶│ • Archetype A: Metrology Lookup    │  │
+│  │ • Finance, Tax & Business  │      │ • Archetype B: Financial Scenario  │  │
+│  │ • Math, Science & Health   │      │ • Archetype C: Trade & Job-Site    │  │
+│  │ • Practitioner Field Notes │      │ • Archetype D: Culinary & Density  │  │
+│  │ • Custom H2s & Benchmarks  │      │ • Archetype E: Proof & Shortcuts   │  │
+│  └────────────────────────────┘      │ • Archetype F: Personal Timeline   │  │
+│                 │                    └────────────────────────────────────┘  │
+└─────────────────┼──────────────────────────────────────┬─────────────────────┘
+                  ▼                                      ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                  Polymorphic Calculator & Guide Page Renderer                │
+│                                                                              │
+│  ┌──────────────────────┐  ┌──────────────────────┐  ┌────────────────────┐  │
+│  │ Dynamic Section      │  │ Topic-Specific H2s   │  │ Practitioner Field │  │
+│  │ Sequencer (Varies    │  │ & Custom Benchmark   │  │ Notes & Common     │  │
+│  │ DOM Order by Intent) │  │ Tables (No 0.5x/2x)  │  │ Mistake Callouts   │  │
+│  └──────────────────────┘  └──────────────────────┘  └────────────────────┘  │
+└────────────────────────────────────────┬─────────────────────────────────────┘
+                                         ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│           5-Language Header Localization Engine (EN / ES / FR / DE / HI)     │
+│      • Syncs rewritten human-tone headings, field notes, and domain terms    │
+└──────────────────────────────────────────────────────────────────────────────┘
 ```
 
----
+### Data Model & Polymorphic Shell Strategy
+- **Archetype-Driven Page Shell**: Upgrade the calculator page shell and data schema so each tool specifies:
+  - `layoutArchetype`: `'metrology' | 'financial-scenario' | 'trade-estimator' | 'culinary' | 'math-proof' | 'personal-benchmark'` (controls section order, grid split, and which specialized blocks render).
+  - `customHeadings`: Topic-specific `<h2>` titles for the formula proof, real-world walkthrough, practitioner field note, and benchmark table—never falling back to identical generic strings.
+  - `fieldNote`: A dedicated practitioner callout containing a real-world edge case, rule of thumb, or common mistake to avoid.
+  - `benchmarkRows`: Genuine domain reference rows (with custom column headers matching the tool's domain) instead of synthetic percentage scaling.
 
-## Implementation Checklist
-
-1. **`scienceCategoryData.ts`**:
-   - 7 Category definitions with icons, descriptions, and 50+ tools with real routing paths.
-   - Comprehensive Periodic Table element database with molar weights.
-   - CODATA physical constants table with symbols, values, and SI units.
-   - Electromagnetic spectrum wavelength data and SI metric prefix scales.
-   - 6 Academic and laboratory workbench configurations.
-   - 15 Detailed FAQs covering physics, chemistry, thermodynamics, astronomy, and quantum mechanics.
-2. **`InteractiveScienceWorkbench.tsx`**:
-   - 5 solver modes with fine-tuned sliders, preset selectors, step-by-step formula derivations, and copy-to-clipboard.
-   - Tabular figures (`font-mono tabular-nums`), responsive Light/Dark theme support.
-3. **`ScienceHubClient.tsx`**:
-   - Hero header with breadcrumb navigation.
-   - Integrated live workbench.
-   - Instant search and category filter.
-   - Directory grid with 50+ tool cards.
-   - CODATA physical constants table, EM spectrum guide, and SI prefix chart.
-   - Role-based collections and FAQ accordion.
-4. **`page.tsx`**:
-   - Server Component with metadata, OpenGraph, Twitter card, canonical URL, and Schema.org JSON-LD (`CollectionPage`, `BreadcrumbList`, `ItemList`, `FAQPage`).
-5. **Quality Verification**:
-   - Run ESLint, TypeScript check (`tsc --noEmit`), and dev server verification for zero errors.
+### Interactive Component & State Mapping
+- **Dynamic Jump-Link Bar**: Automatically adapts its anchor pills to match the active page's unique `layoutArchetype` and custom section order.
+- **Interactive Benchmark & Scenario Rows**: Clicking a benchmark row or popular pair loads those values into the live calculator and scrolls smoothly to the workbench.
+- **Multilingual Synchronization**: Updates the exact and phrase translation catalogs so the newly written human-tone headings and field notes translate cleanly across **English**, **Español**, **Français**, **Deutsch**, and **हिन्दी**.

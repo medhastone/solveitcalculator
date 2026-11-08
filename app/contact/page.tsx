@@ -1,54 +1,17 @@
-import React from 'react';
 import type { Metadata } from 'next';
-import ContactClient from './ContactClient';
+import ContactErrorReportClient from '@/components/contact/ContactErrorReportClient';
 
 export const metadata: Metadata = {
-  title: 'Contact Us | SolveItCalculator – Support, Feature Requests & Feedback',
+  title: 'Contact Us & Report a Calculation Error | SolveItCalculator',
   description:
-    'Get in touch with the SolveItCalculator team. Submit calculator feature requests, report calculation issues, partner with us, or share feedback. Fast response within 24-48 hours.',
-  alternates: {
-    canonical: 'https://solveitcalculator.com/contact',
-  },
+    'Share general feedback, suggest a new calculator, or report a calculation error on SolveItCalculator.com with clear reproduction fields and transparent privacy.',
   openGraph: {
-    title: 'Contact Us | SolveItCalculator',
+    title: 'How can we help? — Contact & Report a Calculation Error | SolveItCalculator',
     description:
-      'Have questions, feedback, or a tool request? Reach out to the SolveItCalculator engineering and editorial team.',
-    url: 'https://solveitcalculator.com/contact',
-    siteName: 'SolveItCalculator',
-    type: 'website',
+      'Share feedback, suggest a new calculator, or report a calculation error to help improve SolveItCalculator for everyone.',
   },
 };
 
 export default function ContactPage() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'ContactPage',
-    name: 'Contact SolveItCalculator',
-    url: 'https://solveitcalculator.com/contact',
-    description:
-      'Contact SolveItCalculator for tool requests, formula verification, bug reports, and general feedback.',
-    mainEntity: {
-      '@type': 'Organization',
-      name: 'SolveItCalculator',
-      url: 'https://solveitcalculator.com',
-      contactPoint: {
-        '@type': 'ContactPoint',
-        email: 'info@solveitcalculator.com',
-        contactType: 'customer support',
-        availableLanguage: ['English'],
-      },
-    },
-  };
-
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <div className="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col justify-between">
-        <ContactClient />
-      </div>
-    </>
-  );
+  return <ContactErrorReportClient />;
 }

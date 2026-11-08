@@ -1,235 +1,239 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import {
   Calculator,
   ShieldCheck,
-  Sun,
-  Moon,
-  Sparkles,
+  Lock,
+  BookOpen,
+  ArrowUpRight,
 } from 'lucide-react';
-import { getCurrentTheme, toggleTheme } from '../lib/theme';
-import SolveItLogo from './SolveItLogo';
+
+const FOOTER_CATEGORY_LINKS = [
+  { label: 'Math Calculators', href: '/math' },
+  { label: 'Finance & Tax', href: '/finance' },
+  { label: 'Business & Margin', href: '/finance/business' },
+  { label: 'Unit Conversions', href: '/conversions' },
+  { label: 'Home & Construction', href: '/home-construction' },
+  { label: 'Health & Fitness', href: '/health-fitness' },
+  { label: 'Date & Time', href: '/date-time' },
+  { label: 'Science & Lab', href: '/science' },
+];
+
+const FOOTER_POPULAR_TOOLS = [
+  { label: 'Percentage Calculator', href: '/math/percentage-calculator' },
+  { label: 'Global Salary & Take-Home Pay', href: '/salary-calculator' },
+  { label: 'US Federal Income Tax', href: '/finance/us-federal-income-tax-calculator' },
+  { label: 'Mortgage Payment Calculator', href: '/mortgage-calculator' },
+  { label: 'FIRE Retirement Forecaster', href: '/fire-forecaster' },
+  { label: 'Concrete & Cubic Yards', href: '/construction-project-calculator' },
+  { label: 'Flooring & Box Estimator', href: '/flooring-calculator' },
+  { label: 'Recipe & Baking Converter', href: '/recipe-converter' },
+];
+
+const FOOTER_RESOURCE_LINKS = [
+  { label: 'All Calculators Directory (A–Z)', href: '/calculators' },
+  { label: 'Multi-Step Calculation Workspace', href: '/calculation-workspace' },
+  { label: 'Formula Guides & Tutorials', href: '/guides' },
+  { label: 'Calculation Methodology', href: '/calculation-methodology' },
+  { label: 'About SolveItCalculator', href: '/about' },
+  { label: 'Contact & Report an Issue', href: '/contact' },
+  { label: 'Accessibility Statement', href: '/accessibility' },
+  { label: 'Privacy Policy', href: '/privacy-policy' },
+];
 
 export default function Footer() {
-  const [isDark, setIsDark] = useState<boolean>(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsDark(getCurrentTheme() === 'dark');
-    }, 0);
-    const handleThemeChange = (e: Event) => {
-      const customEvent = e as CustomEvent<string>;
-      if (customEvent.detail) {
-        setIsDark(customEvent.detail === 'dark');
-      } else {
-        setIsDark(getCurrentTheme() === 'dark');
-      }
-    };
-    window.addEventListener('solveit-theme-change', handleThemeChange);
-    window.addEventListener('storage', handleThemeChange);
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('solveit-theme-change', handleThemeChange);
-      window.removeEventListener('storage', handleThemeChange);
-    };
-  }, []);
-
-  const handleToggle = () => {
-    const next = toggleTheme();
-    setIsDark(next === 'dark');
-  };
-
   return (
-    <footer className="w-full bg-surface-container-lowest border-t border-outline-variant/30 text-on-surface-variant py-12 sm:py-16 px-4 sm:px-6 lg:px-8 mt-16 transition-colors">
-      <div className="max-w-7xl mx-auto space-y-10">
-        {/* Top 5-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {/* Col 1 & 2: Brand Lockup & Engine Mission */}
-          <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 flex items-center justify-center group-hover:scale-105 transition-transform duration-200 shrink-0">
-                <SolveItLogo className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" />
-              </div>
-              <span className="font-extrabold text-lg sm:text-2xl lg:text-3xl tracking-tight text-on-surface leading-none">
-                SolveIt<span className="text-primary font-bold ml-0.5">Calculator</span>
+    <footer
+      aria-label="Site footer"
+      className="bg-white border-t border-[#E2E8F0] text-[#152238] mt-auto"
+    >
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8">
+        {/* Main Structured Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-9 border-b border-[#E2E8F0]">
+          {/* Column 1: Brand Identity, Mission & Verification Standards (4 cols) */}
+          <div className="lg:col-span-4 space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="w-10 h-10 rounded-xl bg-[#2457D6] flex items-center justify-center text-white shrink-0 shadow-2xs">
+                <Calculator className="w-5 h-5" aria-hidden="true" />
               </span>
-            </Link>
+              <div>
+                <Link
+                  href="/"
+                  data-no-translate="true"
+                  className="text-xl font-extrabold tracking-tight text-[#152238] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-xs"
+                >
+                  SolveIt<span className="text-[#2457D6]">Calculator</span>
+                </Link>
+                <p className="text-xs font-medium text-[#64748B]">
+                  Verified Formulas &amp; Decision Tools
+                </p>
+              </div>
+            </div>
 
-            <p className="text-xs sm:text-sm text-on-surface-variant leading-relaxed max-w-md">
-              Free, easy-to-use calculators to help you with everyday math. Quickly figure out loan payments, check your health numbers, count days, or convert measurements. Everything runs safely right on your device—we never collect, store, or sell your personal details.
+            <p className="text-xs sm:text-[13px] text-[#475569] leading-relaxed max-w-sm">
+              Free, fast online calculators built with transparent step-by-step formulas,
+              practitioner field notes, and authoritative reference tables across math, personal
+              finance, construction, conversions, health, and science.
             </p>
 
-            <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-on-surface-variant">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/40">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                In-Browser Processing
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/40">
-                <ShieldCheck className="w-3.5 h-3.5 text-primary" />
-                Private &amp; Secure
-              </span>
+            {/* Clean Trust & Standards Highlights */}
+            <ul className="space-y-2 pt-1 text-xs text-[#475569]">
+              <li className="flex items-center gap-2">
+                <ShieldCheck
+                  className="w-4 h-4 text-[#16856B] shrink-0"
+                  aria-hidden="true"
+                />
+                <span>Benchmarked against NIST SP 811 &amp; statutory tax tables</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Lock
+                  className="w-4 h-4 text-[#2457D6] shrink-0"
+                  aria-hidden="true"
+                />
+                <span>100% browser-private — inputs never leave your device</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <BookOpen
+                  className="w-4 h-4 text-[#D97706] shrink-0"
+                  aria-hidden="true"
+                />
+                <span>Every result includes the underlying formula &amp; worked steps</span>
+              </li>
+            </ul>
+
+            {/* Direct Quick Actions */}
+            <div className="pt-2 flex flex-wrap items-center gap-2.5">
+              <Link
+                href="/calculators"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#2457D6] hover:bg-[#1D47B0] text-white text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+              >
+                <span>Browse All Calculators</span>
+                <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+              </Link>
+              <Link
+                href="/calculation-workspace"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#F8FAFC] hover:bg-[#EFF6FF] text-[#152238] hover:text-[#2457D6] border border-[#E2E8F0] text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+              >
+                <span>Calculation Workspace</span>
+              </Link>
             </div>
           </div>
 
-          {/* Col 3: Finance & Business */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-bold text-on-surface uppercase tracking-wider">
-              Finance &amp; Loans
-            </h3>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <Link href="/finance/mortgage-calculator" className="hover:text-primary transition-colors">
-                  Mortgage &amp; Amortization
-                </Link>
-              </li>
-              <li>
-                <Link href="/finance/emi-calculator" className="hover:text-primary transition-colors">
-                  EMI &amp; Loan Payoff
-                </Link>
-              </li>
-              <li>
-                <Link href="/finance/compound-interest-calculator" className="hover:text-primary transition-colors">
-                  Compound Interest &amp; SIP
-                </Link>
-              </li>
-              <li>
-                <Link href="/finance/salary" className="hover:text-primary transition-colors">
-                  Salary &amp; Payroll Breakdown
-                </Link>
-              </li>
-              <li>
-                <Link href="/finance/taxes" className="hover:text-primary transition-colors">
-                  Global Tax &amp; GST Estimators
-                </Link>
-              </li>
-              <li>
-                <Link href="/finance/fire-forecaster" className="hover:text-primary transition-colors">
-                  FIRE &amp; Retirement Planner
-                </Link>
-              </li>
+          {/* Column 2: Calculator Categories (2 cols) */}
+          <nav
+            aria-label="Calculator categories"
+            className="lg:col-span-2 space-y-3"
+          >
+            <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#152238]">
+              Categories
+            </h2>
+            <ul className="space-y-2 text-xs sm:text-[13px] font-medium text-[#475569]">
+              {FOOTER_CATEGORY_LINKS.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="hover:text-[#2457D6] transition-colors inline-block py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-xs"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
-          </div>
-
-          {/* Col 4: Time, Health & Math */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-bold text-on-surface uppercase tracking-wider">
-              Time, Health &amp; Math
-            </h3>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <Link href="/time-date/date-difference-calculator" className="hover:text-primary transition-colors">
-                  Date Difference Calculator
-                </Link>
-              </li>
-              <li>
-                <Link href="/time-date/add-subtract-time-calculator" className="hover:text-primary transition-colors">
-                  Add / Subtract Time Tools
-                </Link>
-              </li>
-              <li>
-                <Link href="/health-fitness/bmi-calculator" className="hover:text-primary transition-colors">
-                  BMI &amp; Healthy Body Weight
-                </Link>
-              </li>
-              <li>
-                <Link href="/math/scientific-calculator" className="hover:text-primary transition-colors">
-                  Scientific Solver Workbench
-                </Link>
-              </li>
-              <li>
-                <Link href="/math/percentage-calculator" className="hover:text-primary transition-colors">
-                  Percentage Calculator Suite
-                </Link>
-              </li>
-              <li>
-                <Link href="/time-date/work-hours" className="hover:text-primary transition-colors">
-                  Work Hours &amp; Timesheets
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 5: Unit Converters */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-bold text-on-surface uppercase tracking-wider">
-              Unit Converters
-            </h3>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <Link href="/conversions" className="hover:text-primary transition-colors">
-                  Universal Unit Directory
-                </Link>
-              </li>
-              <li>
-                <Link href="/conversions/length" className="hover:text-primary transition-colors">
-                  Length &amp; Distance Units
-                </Link>
-              </li>
-              <li>
-                <Link href="/conversions/mass" className="hover:text-primary transition-colors">
-                  Weight &amp; Mass Converter
-                </Link>
-              </li>
-              <li>
-                <Link href="/conversions/temperature" className="hover:text-primary transition-colors">
-                  Temperature Converter
-                </Link>
-              </li>
-              <li>
-                <Link href="/conversions/volume" className="hover:text-primary transition-colors">
-                  Volume &amp; Capacity Units
-                </Link>
-              </li>
-              <li>
-                <Link href="/sitemap" className="hover:text-primary transition-colors font-semibold text-primary inline-flex items-center gap-1">
-                  <span>Explore All Tools</span>
-                  <span>→</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Bar: Copyright, Legal Links, Mode Toggle & Trust Note */}
-        <div className="pt-6 border-t border-outline-variant/30 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant">
-          {/* Left: Copyright & Theme Toggle */}
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
-            <p>© {new Date().getFullYear()} SolveItCalculator.com</p>
-            <button
-              type="button"
-              onClick={handleToggle}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface hover:text-primary transition-colors cursor-pointer"
-              title="Toggle Dark / Light Theme"
-            >
-              {isDark ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-primary" />}
-              <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>
-            </button>
-          </div>
-
-          {/* Center: Legal & Site Links (About, Contact Us, Privacy Policy, Terms of Use, Sitemap) */}
-          <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-medium" aria-label="Footer Legal and Sitemap Navigation">
-            <Link href="/about-us" className="hover:text-primary transition-colors">
-              About
-            </Link>
-            <Link href="/contact" className="hover:text-primary transition-colors">
-              Contact Us
-            </Link>
-            <Link href="/privacy" className="hover:text-primary transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms-of-use" className="hover:text-primary transition-colors">
-              Terms of Use
-            </Link>
-            <Link href="/sitemap" className="hover:text-primary transition-colors">
-              Sitemap
-            </Link>
           </nav>
 
-          {/* Right: Reassuring Trust Note */}
-          <div className="text-xs text-on-surface-variant text-center lg:text-right">
-            100% Free &amp; Private · In-Browser Calculations
+          {/* Column 3: Popular Calculators (3 cols) */}
+          <nav
+            aria-label="Popular calculators"
+            className="lg:col-span-3 space-y-3"
+          >
+            <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#152238]">
+              Popular Calculators
+            </h2>
+            <ul className="space-y-2 text-xs sm:text-[13px] font-medium text-[#475569]">
+              {FOOTER_POPULAR_TOOLS.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="hover:text-[#2457D6] transition-colors inline-block py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-xs"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Column 4: Resources, Standards & Company (3 cols) */}
+          <nav
+            aria-label="Resources and legal information"
+            className="lg:col-span-3 space-y-3"
+          >
+            <h2 className="text-xs font-extrabold uppercase tracking-wider text-[#152238]">
+              Resources &amp; Standards
+            </h2>
+            <ul className="space-y-2 text-xs sm:text-[13px] font-medium text-[#475569]">
+              {FOOTER_RESOURCE_LINKS.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="hover:text-[#2457D6] transition-colors inline-block py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-xs"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+
+        {/* Bottom Bar: Copyright, Disclaimer & Legal Quick Links */}
+        <div className="pt-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 text-xs text-[#64748B]">
+          <div className="space-y-1">
+            <p className="text-[#475569]">
+              © {new Date().getFullYear()}{' '}
+              <strong className="font-bold text-[#152238]">
+                SolveItCalculator.com
+              </strong>
+              . All rights reserved.
+            </p>
+            <p className="text-[11.5px] text-[#64748B] max-w-2xl leading-relaxed">
+              Calculators and reference guides are provided for informational and educational
+              purposes only and do not constitute formal financial, tax, medical, or engineering
+              advice.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-semibold text-[#475569]">
+            <Link
+              href="/calculation-methodology"
+              className="hover:text-[#2457D6] transition-colors"
+            >
+              Methodology
+            </Link>
+            <Link
+              href="/privacy-policy"
+              className="hover:text-[#2457D6] transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms-of-service"
+              className="hover:text-[#2457D6] transition-colors"
+            >
+              Terms of Service
+            </Link>
+            <Link
+              href="/accessibility"
+              className="hover:text-[#2457D6] transition-colors"
+            >
+              Accessibility
+            </Link>
+            <Link
+              href="/contact"
+              className="hover:text-[#2457D6] transition-colors"
+            >
+              Contact
+            </Link>
           </div>
         </div>
       </div>

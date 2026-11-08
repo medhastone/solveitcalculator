@@ -1,6 +1,6 @@
 {
-  "summary":  "Implementation plan for the comprehensive Science Calculators & Interactive Multi-Discipline Science Workbench Hub (/science), featuring 7 scientific categories, 50+ precision tools across Physics, Chemistry, Astronomy, Biology, and Mechanics, an interactive 5-mode Science Workbench (Kinematics, Ideal Gas Law, Periodic Table Molar Mass, Orbital Velocity, and Quantum Photon Energy), CODATA fundamental physical constants reference tables, Electromagnetic Spectrum chart, SI metric prefix scale, 6 curated academic/industry workbenches, and full Light/Dark mode compliance.",
-  "updatedAt":  "2026-10-05T08:30:32.020035736Z",
-  "requestFeedback":  true,
-  "userFacing":  true
+  "summary": "Architectural and editorial plan to eliminate repetitive template footprints across SolveItCalculator by introducing 6 category-specific layout archetypes, topic-specific H2 headings, real domain benchmark tables, and human-written practitioner prose with varied sentence burstiness and real-world edge-case field notes.",
+  "updatedAt": "2026-11-06T03:09:38.133287553Z",
+  "requestFeedback": true,
+  "userFacing": true
 }

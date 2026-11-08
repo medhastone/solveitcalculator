@@ -92,8 +92,9 @@ export default function PopularFinanceCalculators() {
       {/* Tools Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {displayedTools.map((tool) => (
-          <div
+          <Link
             key={tool.id}
+            href={tool.path}
             className="group p-4 rounded-2xl bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/30 hover:border-primary/40 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
           >
             <div>
@@ -115,21 +116,18 @@ export default function PopularFinanceCalculators() {
               <h3 className="font-bold text-base text-on-surface group-hover:text-primary transition-colors">
                 {tool.name}
               </h3>
-              <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed line-clamp-3">
+              <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed line-clamp-2">
                 {tool.description}
               </p>
             </div>
 
             <div className="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between">
-              <Link
-                href={tool.path}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform"
-              >
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform">
                 <span>Calculate</span>
                 <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-              </Link>
+              </span>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>

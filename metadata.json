@@ -1,6 +1,8 @@
 {
   "name": "SolveIt Calculator",
-  "description": "Every Calculation. One Place. High-precision algorithms delivered through an Apple-inspired SaaS aesthetic.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "description": "Financial, retirement, 401(k), tax, and conversion calculators to solve everyday math and financial planning problems.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

@@ -1,396 +1,314 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { allUniqueTools } from "../lib/searchData";
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import {
+  Search,
+  X,
+  ArrowRight,
+  Calculator,
+  BookOpen,
+  LayoutGrid,
+} from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import {
+  searchInventory,
+  getRelatedCategoriesForQuery,
+} from '@/lib/searchIndex';
 
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const POPULAR_SHORTCUTS = [
-  { label: "Mortgage", query: "mortgage" },
-  { label: "BMI & Body Fat", query: "bmi" },
-  { label: "SIP & Growth", query: "investing" },
-  { label: "Percentage", query: "percentage" },
-  { label: "Exact Age", query: "age" },
-  { label: "Add & Subtract Time", query: "add subtract time" },
-  { label: "Unix Timestamp", query: "unix timestamp" },
-  { label: "Salary & Pay", query: "salary" },
-  { label: "FIRE Retirement", query: "fire" },
-  { label: "Scientific Solver", query: "scientific" },
-  { label: "Concrete & Construction", query: "concrete" },
-  { label: "GST & Tax", query: "tax" },
-  { label: "Unit Conversions", query: "conversion" },
-  { label: "Engine RPM", query: "rpm" },
-  { label: "Wire Sizing (AWG)", query: "electrical" },
-];
-
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const router = useRouter();
-  const [query, setQuery] = useState("");
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [query, setQuery] = useState('');
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
   const inputRef = useRef<HTMLInputElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
 
-  // Focus input and reset query on open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
-      const timer = setTimeout(() => {
-        inputRef.current?.focus();
-      }, 50);
-      return () => {
-        clearTimeout(timer);
-      };
-    } else {
-      document.body.style.overflow = "";
-      setQuery("");
-      setSelectedIndex(0);
+      const timer = setTimeout(() => inputRef.current?.focus(), 50);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
-  // Ranked search algorithm matching titles, names, keywords, category, and descriptions
-  const searchResults = useMemo(() => {
-    const trimmed = query.trim().toLowerCase();
-    if (!trimmed) return [];
-
-    const searchTerms = trimmed.split(/\s+/).filter(Boolean);
-
-    const scored = allUniqueTools.map((tool) => {
-      let score = 0;
-      const title = (tool.title || "").toLowerCase();
-      const name = (tool.name || "").toLowerCase();
-      const desc = (tool.desc || "").toLowerCase();
-      const label = (tool.label || "").toLowerCase();
-      const keywords = (tool.keywords || []).map((k: string) => k.toLowerCase());
-
-      // Check if all search terms match at least somewhere
-      const allTermsMatch = searchTerms.every((term) => {
-        return (
-          title.includes(term) ||
-          name.includes(term) ||
-          desc.includes(term) ||
-          label.includes(term) ||
-          keywords.some((k: string) => k.includes(term))
-        );
-      });
-
-      if (!allTermsMatch) return { tool, score: -1 };
-
-      // Exact title match gets top priority
-      if (title === trimmed || name === trimmed) score += 100;
-      else if (title.startsWith(trimmed)) score += 60;
-      else if (title.includes(trimmed)) score += 40;
-
-      // Keyword matches
-      keywords.forEach((k: string) => {
-        if (k === trimmed) score += 50;
-        else if (k.startsWith(trimmed)) score += 30;
-        else if (k.includes(trimmed)) score += 15;
-      });
-
-      // Individual term matches in title
-      searchTerms.forEach((term) => {
-        if (title.includes(term)) score += 20;
-        if (name.includes(term)) score += 15;
-        if (keywords.some((k: string) => k.includes(term))) score += 10;
-        if (label.includes(term)) score += 8;
-        if (desc.includes(term)) score += 5;
-      });
-
-      return { tool, score };
-    });
-
-    return scored
-      .filter((item) => item.score >= 0)
-      .sort((a, b) => b.score - a.score)
-      .map((item) => item.tool)
-      .slice(0, 10);
+  const results = useMemo(() => {
+    const trimmed = query.trim();
+    if (!trimmed) {
+      return searchInventory('', 'Calculator', 8);
+    }
+    return searchInventory(trimmed, 'All', 8);
   }, [query]);
 
-  // Reset selected index when results change
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, [searchResults]);
+  const relatedCategories = useMemo(
+    () => getRelatedCategoriesForQuery(query),
+    [query]
+  );
 
-  // Keyboard navigation inside modal
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
-      e.preventDefault();
-      onClose();
-    } else if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setSelectedIndex((prev) =>
-        searchResults.length > 0 ? (prev + 1) % searchResults.length : 0
-      );
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setSelectedIndex((prev) =>
-        searchResults.length > 0
-          ? (prev - 1 + searchResults.length) % searchResults.length
-          : 0
-      );
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (searchResults.length > 0 && searchResults[selectedIndex]) {
-        const target = searchResults[selectedIndex];
-        onClose();
-        router.push(target.link);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (isOpen) {
+          onClose();
+        }
       }
-    }
-  };
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (results.length > 0) {
+          setActiveIndex((prev) => (prev < results.length - 1 ? prev + 1 : 0));
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (results.length > 0) {
+          setActiveIndex((prev) => (prev > 0 ? prev - 1 : results.length - 1));
+        }
+      } else if (e.key === 'Enter' && activeIndex >= 0 && results[activeIndex]) {
+        e.preventDefault();
+        const target = results[activeIndex];
+        onClose();
+        router.push(target.href);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose, results, activeIndex, router]);
 
   if (!isOpen) return null;
 
+  const handleClearQuery = () => {
+    setQuery('');
+    setActiveIndex(-1);
+    inputRef.current?.focus();
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (activeIndex >= 0 && results[activeIndex]) {
+      onClose();
+      router.push(results[activeIndex].href);
+      return;
+    }
+    const trimmed = query.trim();
+    onClose();
+    router.push(
+      trimmed ? `/search?q=${encodeURIComponent(trimmed)}` : '/search'
+    );
+  };
+
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-start justify-center pt-16 sm:pt-24 px-3 sm:px-4"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-14 sm:pt-20 px-4"
       role="dialog"
       aria-modal="true"
-      aria-label="Quick Search Tools"
+      aria-labelledby="search-modal-title"
     >
-      {/* Dimmed Backdrop */}
+      {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 bg-[#152238]/60 backdrop-blur-xs transition-opacity"
         onClick={onClose}
+        aria-hidden="true"
       />
 
-      {/* Modal Container */}
-      <div
-        className="relative w-full max-w-2xl bg-surface-container-lowest text-on-surface rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/40 animate-in fade-in zoom-in-95 duration-200 z-10 flex flex-col max-h-[85vh]"
-        onKeyDown={handleKeyDown}
-      >
-        {/* Search Header Bar */}
-        <div className="relative flex items-center px-4 py-3.5 border-b border-outline-variant/30 bg-surface-container-low/50">
-          <span className="material-symbols-outlined text-primary text-[24px] mr-3 shrink-0">
-            search
-          </span>
+      {/* Modal Content */}
+      <div className="relative w-full max-w-2xl bg-white dark:bg-[#131E32] rounded-2xl shadow-xl border border-[#E2E8F0] dark:border-[#263859] overflow-hidden z-10">
+        <h2 id="search-modal-title" className="sr-only">
+          Search Calculators
+        </h2>
+
+        <form
+          onSubmit={handleFormSubmit}
+          role="search"
+          aria-label="Quick calculator search"
+          className="flex items-center px-4 py-3 border-b border-[#E2E8F0] dark:border-[#263859]"
+        >
+          <Search
+            className="w-5 h-5 text-[#2457D6] dark:text-[#60A5FA] mr-3 shrink-0"
+            aria-hidden="true"
+          />
+          <label htmlFor="modal-calculator-search" className="sr-only">
+            Search calculators by name, alias, or topic
+          </label>
           <input
             ref={inputRef}
+            id="modal-calculator-search"
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search calculators and converters by name, keyword or formula..."
-            className="w-full bg-transparent font-body-lg text-body-lg text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none"
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setActiveIndex(-1);
+            }}
+            placeholder="Search calculators (e.g., percentage, flooring, workspace, loan, BMI)..."
             aria-autocomplete="list"
+            aria-controls="modal-search-results-list"
+            aria-activedescendant={
+              activeIndex >= 0 && results[activeIndex]
+                ? `modal-result-${results[activeIndex].id}`
+                : undefined
+            }
+            className="w-full bg-transparent text-[#152238] dark:text-[#F8FAFC] placeholder:text-[#64748B] dark:placeholder:text-[#94A3B8] focus:outline-none text-base"
           />
-          {query ? (
+
+          {query.length > 0 && (
             <button
               type="button"
-              onClick={() => {
-                setQuery("");
-                inputRef.current?.focus();
-              }}
-              aria-label="Clear search input"
-              className="p-1 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors mr-1"
+              data-compact="true"
+              onClick={handleClearQuery}
+              aria-label="Clear search query"
+              title="Clear search query"
+              className="compact-control p-1.5 mr-1 rounded-full text-[#64748B] hover:text-[#152238] hover:bg-[#F1F5F9] dark:hover:bg-[#1E293B] transition-colors cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[18px]">close</span>
+              <X className="w-4 h-4" aria-hidden="true" />
             </button>
-          ) : null}
+          )}
+
           <button
             type="button"
+            data-compact="true"
             onClick={onClose}
             aria-label="Close search dialog"
-            className="hidden sm:flex items-center gap-1 font-data-mono text-[11px] bg-surface-container text-on-surface-variant px-2 py-1 rounded-lg border border-outline-variant/30 hover:bg-surface-container-high transition-colors"
+            className="compact-control px-2.5 py-1 text-xs font-semibold text-[#475569] dark:text-[#CBD5E1] bg-[#F1F5F9] dark:bg-[#1E293B] hover:bg-[#E2E8F0] rounded-md transition-colors cursor-pointer shrink-0"
           >
-            <span>ESC</span>
+            Esc
           </button>
-        </div>
+        </form>
 
-        {/* Results / Default View Area */}
-        <div
-          ref={listRef}
-          className="flex-1 overflow-y-auto overscroll-contain p-2 sm:p-3 divide-y divide-outline-variant/10"
-        >
-          {query.trim() === "" ? (
-            <div className="py-4 px-2">
-              <div className="flex items-center gap-2 mb-3 px-1 text-xs font-label-caps uppercase tracking-wider text-on-surface-variant/70 font-semibold">
-                <span className="material-symbols-outlined text-[16px] text-primary">
-                  trending_up
+        <div className="max-h-[65vh] overflow-y-auto p-3">
+          {results.length > 0 ? (
+            <div>
+              <div className="px-3 py-1.5 flex items-center justify-between">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#64748B] dark:text-[#94A3B8]">
+                  {query.trim() === ''
+                    ? 'Popular & Featured Calculators'
+                    : `Matching Tools (${results.length})`}
                 </span>
-                <span>Popular &amp; Recommended Searches</span>
+                <span className="hidden sm:inline text-[11px] text-[#64748B] dark:text-[#94A3B8]">
+                  Use ↑↓ arrows and Enter to open
+                </span>
               </div>
-              <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-6">
-                {POPULAR_SHORTCUTS.map((sc) => (
-                  <button
-                    key={sc.label}
-                    type="button"
-                    onClick={() => {
-                      setQuery(sc.query);
-                      inputRef.current?.focus();
-                    }}
-                    className="px-3 py-1.5 rounded-xl bg-surface-container-low hover:bg-surface-container-high border border-outline-variant/30 text-on-surface hover:text-primary transition-all text-body-sm font-body-sm flex items-center gap-1.5"
-                  >
-                    <span className="material-symbols-outlined text-[15px] text-primary">
-                      search
-                    </span>
-                    <span>{sc.label}</span>
-                  </button>
-                ))}
-              </div>
+              <ul
+                id="modal-search-results-list"
+                role="listbox"
+                aria-label="Calculator suggestions"
+                className="space-y-1 mt-1"
+              >
+                {results.map((item, idx) => {
+                  const isSelected = idx === activeIndex;
+                  const TypeIcon =
+                    item.type === 'Guide'
+                      ? BookOpen
+                      : item.type === 'Category'
+                      ? LayoutGrid
+                      : Calculator;
 
-              <div className="flex items-center gap-2 mb-3 px-1 text-xs font-label-caps uppercase tracking-wider text-on-surface-variant/70 font-semibold">
-                <span className="material-symbols-outlined text-[16px] text-secondary">
-                  grid_view
-                </span>
-                <span>Featured Precision Categories</span>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {[
-                  { name: "Finance & Loans", href: "/finance", icon: "payments" },
-                  { name: "Health & Fitness", href: "/health", icon: "vital_signs" },
-                  { name: "Math & Scientific", href: "/math", icon: "calculate" },
-                  { name: "Universal Units", href: "/conversions", icon: "sync_alt" },
-                  { name: "Time & Date", href: "/time-date", icon: "schedule" },
-                  { name: "Construction & DIY", href: "/home-construction", icon: "construction" },
-                ].map((cat) => (
+                  return (
+                    <li
+                      key={item.id}
+                      id={`modal-result-${item.id}`}
+                      role="option"
+                      aria-selected={isSelected}
+                    >
+                      <Link
+                        href={item.href}
+                        onClick={onClose}
+                        onMouseEnter={() => setActiveIndex(idx)}
+                        className={`flex items-center justify-between px-3.5 py-3 rounded-xl transition-colors group ${
+                          isSelected
+                            ? 'bg-[#EEF4FF] dark:bg-[#1E3A8A]/50 text-[#2457D6] dark:text-[#93C5FD]'
+                            : 'hover:bg-[#F5F7FA] dark:hover:bg-[#192742]'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3 min-w-0 pr-3">
+                          <div className="w-9 h-9 rounded-lg bg-[#EBF2FF] dark:bg-[#1E3A8A] text-[#2457D6] dark:text-[#93C5FD] flex items-center justify-center shrink-0 mt-0.5">
+                            <TypeIcon className="w-4 h-4" aria-hidden="true" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-sm font-bold text-[#152238] dark:text-[#F8FAFC] group-hover:text-[#2457D6]">
+                                {item.title}
+                              </span>
+                              <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-[#F1F5F9] dark:bg-[#1E293B] text-[#475569] dark:text-[#CBD5E1]">
+                                {item.category}
+                              </span>
+                            </div>
+                            <p className="text-xs text-[#475569] dark:text-[#CBD5E1] mt-0.5 line-clamp-1">
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
+                        <ArrowRight
+                          className="w-4 h-4 text-[#64748B] group-hover:text-[#2457D6] shrink-0 transition-transform group-hover:translate-x-0.5"
+                          aria-hidden="true"
+                        />
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : (
+            <div
+              role="status"
+              aria-live="polite"
+              className="py-6 px-4 text-center"
+            >
+              <p className="text-base font-bold text-[#152238] dark:text-[#F8FAFC]">
+                No exact calculator found for &ldquo;{query}&rdquo;
+              </p>
+              <p className="mt-1 text-xs sm:text-sm text-[#475569] dark:text-[#CBD5E1]">
+                Try a simpler keyword or browse one of these related categories:
+              </p>
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-left">
+                {relatedCategories.map((cat) => (
                   <Link
-                    key={cat.name}
+                    key={cat.href}
                     href={cat.href}
                     onClick={onClose}
-                    className="p-2.5 rounded-xl bg-surface-container-low/70 hover:bg-surface-container-high border border-outline-variant/20 flex items-center gap-2.5 transition-colors group"
+                    className="flex items-center justify-between p-3 rounded-xl border border-[#E2E8F0] dark:border-[#263859] bg-[#F8FAFC] dark:bg-[#192742] hover:border-[#2457D6] transition-colors"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors shrink-0">
-                      <span className="material-symbols-outlined text-[18px]">
-                        {cat.icon}
+                    <div className="min-w-0 pr-2">
+                      <span className="block text-xs font-bold text-[#152238] dark:text-[#F8FAFC]">
+                        {cat.name}
+                      </span>
+                      <span className="block text-[11px] text-[#475569] dark:text-[#CBD5E1] truncate">
+                        {cat.subtitle}
                       </span>
                     </div>
-                    <span className="text-body-sm font-body-sm font-medium text-on-surface truncate group-hover:text-primary transition-colors">
-                      {cat.name}
-                    </span>
+                    <ArrowRight
+                      className="w-3.5 h-3.5 text-[#2457D6] shrink-0"
+                      aria-hidden="true"
+                    />
                   </Link>
                 ))}
               </div>
             </div>
-          ) : searchResults.length > 0 ? (
-            <div className="space-y-1">
-              <div className="px-3 py-1.5 text-xs font-label-caps tracking-wider uppercase text-on-surface-variant/70 font-semibold flex items-center justify-between">
-                <span>
-                  Calculators ({searchResults.length} Match{searchResults.length > 1 ? "es" : ""})
-                </span>
-                <span className="text-[11px] font-normal normal-case text-on-surface-variant/60">
-                  Use ↑↓ to navigate, Enter to open
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                {searchResults.map((tool, idx) => {
-                  const isSelected = idx === selectedIndex;
-                  return (
-                    <Link
-                      key={`${tool.id}-${idx}`}
-                      href={tool.link}
-                      onClick={onClose}
-                      onMouseEnter={() => setSelectedIndex(idx)}
-                      className={`flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all group ${
-                        isSelected
-                          ? "bg-primary/10 border border-primary/30"
-                          : "hover:bg-surface-container-low border border-transparent"
-                      }`}
-                    >
-                      <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isSelected
-                            ? "bg-primary text-on-primary"
-                            : "bg-surface-container text-on-surface-variant group-hover:text-primary group-hover:bg-surface-container-high"
-                        }`}
-                      >
-                        <span className="material-symbols-outlined text-[20px]">
-                          calculate
-                        </span>
-                      </div>
-
-                      <div className="flex flex-col flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className={`text-body-md font-body-md font-semibold truncate ${
-                              isSelected ? "text-primary" : "text-on-surface"
-                            }`}
-                          >
-                            {tool.title || tool.name}
-                          </span>
-                          {tool.label && (
-                            <span
-                              className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded-md shrink-0 ${
-                                tool.badgeClass ||
-                                "bg-surface-container-high text-on-surface-variant"
-                              }`}
-                            >
-                              {tool.label}
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-body-sm font-body-sm text-on-surface-variant/80 truncate mt-0.5">
-                          {tool.desc}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center gap-2 shrink-0">
-                        {isSelected && (
-                          <span className="hidden sm:inline-block font-data-mono text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded border border-primary/30">
-                            ↵ Enter
-                          </span>
-                        )}
-                        <span
-                          className={`material-symbols-outlined text-[20px] transition-transform duration-150 ${
-                            isSelected
-                              ? "text-primary translate-x-0.5"
-                              : "text-on-surface-variant/40 group-hover:text-on-surface"
-                          }`}
-                        >
-                          arrow_forward
-                        </span>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          ) : (
-            <div className="p-8 text-center text-on-surface-variant">
-              <span className="material-symbols-outlined text-[44px] text-on-surface-variant/40 mb-2 block">
-                search_off
-              </span>
-              <p className="font-body-md text-on-surface font-medium">
-                No calculators found for &ldquo;{query}&rdquo;
-              </p>
-              <p className="font-body-sm text-on-surface-variant/70 mt-1">
-                Try searching for general keywords like &ldquo;mortgage&rdquo;, &ldquo;loan&rdquo;, &ldquo;percentage&rdquo;, &ldquo;age&rdquo;, or &ldquo;weight&rdquo;.
-              </p>
-            </div>
           )}
         </div>
 
-        {/* Footer Shortcut Legend */}
-        <div className="px-4 py-2.5 bg-surface-container-low/60 border-t border-outline-variant/30 flex items-center justify-between text-xs text-on-surface-variant/70 font-data-mono">
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1">
-              <kbd className="bg-surface-container-highest px-1.5 py-0.5 rounded border border-outline-variant/40 text-[10px]">
-                ↑
-              </kbd>
-              <kbd className="bg-surface-container-highest px-1.5 py-0.5 rounded border border-outline-variant/40 text-[10px]">
-                ↓
-              </kbd>
-              <span>Navigate</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <kbd className="bg-surface-container-highest px-1.5 py-0.5 rounded border border-outline-variant/40 text-[10px]">
-                ↵
-              </kbd>
-              <span>Select</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <kbd className="bg-surface-container-highest px-1.5 py-0.5 rounded border border-outline-variant/40 text-[10px]">
-                ESC
-              </kbd>
-              <span>Close</span>
-            </span>
-          </div>
-          <span className="font-body-sm text-[11px] text-primary font-medium">
-            SolveIt Calculator Precision Search
+        <div className="px-4 py-2.5 bg-[#F8FAFC] dark:bg-[#0F172A] border-t border-[#E2E8F0] dark:border-[#263859] flex items-center justify-between text-xs text-[#475569] dark:text-[#CBD5E1]">
+          <span>
+            Press <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#1E293B] border border-[#CBD5E1] font-mono text-[11px]">↑</kbd>{' '}
+            <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#1E293B] border border-[#CBD5E1] font-mono text-[11px]">↓</kbd> to navigate,{' '}
+            <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-[#1E293B] border border-[#CBD5E1] font-mono text-[11px]">Enter</kbd> to open
           </span>
+          <Link
+            href={
+              query.trim()
+                ? `/search?q=${encodeURIComponent(query.trim())}`
+                : '/calculators'
+            }
+            onClick={onClose}
+            className="font-semibold text-[#2457D6] dark:text-[#60A5FA] hover:underline"
+          >
+            {query.trim() ? 'View all search results →' : 'Browse All Calculators →'}
+          </Link>
         </div>
       </div>
     </div>
