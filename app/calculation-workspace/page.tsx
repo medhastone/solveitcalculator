@@ -15,6 +15,11 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com/calculation-workspace',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Calculation Workspace — Multi-Step Expression & History Calculator | SolveItCalculator',
+    description: 'Calculate, review previous steps, and reuse results without starting over. Free online calculation workspace with live expression preview, running totals, named subtotals, and local history export.',
+  },
 };
 
 export default function CalculationWorkspacePage() {

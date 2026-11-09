@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/self-employment-tax-calculator',
   },
+  openGraph: {
+    title: 'Self-Employment Tax Calculator (2025 IRS Schedule SE & 1040-ES) | SolveItCalculator',
+    description:
+      'Calculate 2025 US Self-Employment Tax (15.3% Social Security & Medicare on 92.35% of net profit), the 50% above-the-line SE tax deduction, W-2 wage base coordination ($176,100 cap), and quarterly 1040-ES estimated payment dates.',
+    url: 'https://solveitcalculator.com/finance/self-employment-tax-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Self-Employment Tax Calculator (2025 IRS Schedule SE & 1040-ES) | SolveItCalculator',
+    description:
+      'Calculate 2025 US Self-Employment Tax (15.3% Social Security & Medicare on 92.35% of net profit), the 50% above-the-line SE tax deduction, W-2 wage base coordination ($176,100 cap), and quarterly 1040-ES estimated payment dates.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +36,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/self-employment-tax-calculator',
   shortAnswer:
     'Calculate your 2025 IRS Schedule SE self-employment tax (12.4% Social Security + 2.9% Medicare on 92.35% of net business profit), your 50% above-the-line tax deduction, W-2 Social Security cap coordination, and quarterly Form 1040-ES estimated tax payments.',
@@ -88,7 +101,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   relatedToolIds: ['us-federal-income-tax-calculator', 'us-state-take-home-calculator'],
   relatedConversionPaths: [
     { label: '1099 vs W-2 Calculator', path: '/finance/1099-vs-w2-calculator' },
-    { label: 'Freelance Hourly Rate Calculator', path: '/freelance-hourly-rate-calculator' },
+    { label: 'Freelance Hourly Rate Calculator', path: '/finance/salary-to-hourly-calculator' },
     { label: 'US Federal Income Tax Calculator', path: '/finance/us-federal-income-tax-calculator' },
   ],
   relatedGuidePaths: [

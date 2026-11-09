@@ -258,7 +258,7 @@ export default function SelfEmploymentTaxClient() {
           },
           {
             title: 'Freelance Hourly Rate Calculator',
-            path: '/freelance-hourly-rate-calculator',
+            path: '/finance/salary-to-hourly-calculator',
             desc: 'Back out unbillable administrative hours, overhead, and self-employment taxes.',
           },
           {

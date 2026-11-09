@@ -1,12 +1,12 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import MissingFinanceCalculatorsClient, {
   MissingFinanceSlug,
 } from '@/components/calculators/MissingFinanceCalculatorsClient';
 
-const FINANCE_FALLBACK_SLUGS: Record<
-  MissingFinanceSlug,
+const FINANCE_CANONICAL_SLUGS: Record<
+  Exclude<MissingFinanceSlug, 'margin-and-markup-calculator'>,
   { title: string; description: string }
 > = {
   'safe-withdrawal-rate-calculator': {
@@ -39,15 +39,10 @@ const FINANCE_FALLBACK_SLUGS: Record<
     description:
       'Compare the long-term net cost of renting versus buying a home including appreciation, maintenance, and equity.',
   },
-  'margin-and-markup-calculator': {
-    title: 'Margin & Markup Calculator — Gross Profit & Selling Price | SolveItCalculator',
-    description:
-      'Compute gross profit margin, markup percentage, revenue, and unit profit side by side.',
-  },
 };
 
 export async function generateStaticParams() {
-  return Object.keys(FINANCE_FALLBACK_SLUGS).map((slug) => ({ slug }));
+  return Object.keys(FINANCE_CANONICAL_SLUGS).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -56,17 +51,40 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const meta = FINANCE_FALLBACK_SLUGS[slug as MissingFinanceSlug];
+  if (slug === 'margin-and-markup-calculator') {
+    return {
+      title: 'Gross Margin Calculator | SolveItCalculator',
+      alternates: {
+        canonical: 'https://solveitcalculator.com/finance/margin-calculator',
+      },
+    };
+  }
+  const meta =
+    FINANCE_CANONICAL_SLUGS[
+      slug as Exclude<MissingFinanceSlug, 'margin-and-markup-calculator'>
+    ];
   if (!meta) {
     return {
       title: 'Finance Calculator | SolveItCalculator',
     };
   }
+  const canonicalUrl = `https://solveitcalculator.com/finance/${slug}`;
   return {
     title: meta.title,
     description: meta.description,
     alternates: {
-      canonical: `https://solveitcalculator.com/finance/${slug}`,
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: canonicalUrl,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: meta.title,
+      description: meta.description,
     },
   };
 }
@@ -77,7 +95,10 @@ export default async function MissingFinanceToolPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  if (!(slug in FINANCE_FALLBACK_SLUGS)) {
+  if (slug === 'margin-and-markup-calculator') {
+    permanentRedirect('/finance/margin-calculator');
+  }
+  if (!(slug in FINANCE_CANONICAL_SLUGS)) {
     notFound();
   }
   return <MissingFinanceCalculatorsClient slug={slug as MissingFinanceSlug} />;

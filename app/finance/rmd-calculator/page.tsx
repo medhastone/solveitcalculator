@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/rmd-calculator',
   },
+  openGraph: {
+    title: 'RMD Calculator: Required Minimum Distribution (IRS Pub 590-B & SECURE 2.0) | SolveItCalculator',
+    description: 'Calculate your Required Minimum Distribution (RMD), percentage of prior year-end balance, mandatory deadline, and SECURE 2.0 start age (73 or 75) using verified IRS Uniform Lifetime (Table III) and Joint Life (Table II) tables.',
+    url: 'https://solveitcalculator.com/finance/rmd-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'RMD Calculator: Required Minimum Distribution (IRS Pub 590-B & SECURE 2.0) | SolveItCalculator',
+    description: 'Calculate your Required Minimum Distribution (RMD), percentage of prior year-end balance, mandatory deadline, and SECURE 2.0 start age (73 or 75) using verified IRS Uniform Lifetime (Table III) and Joint Life (Table II) tables.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

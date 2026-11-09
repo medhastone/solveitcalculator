@@ -355,12 +355,12 @@ export default function CapitalGainsClient() {
           },
           {
             title: 'ROI Calculator',
-            path: '/finance/roi-calculator',
+            path: '/finance/investment-growth-calculator',
             desc: 'Calculate total and annualized return on investment across multi-year holdings.',
           },
           {
             title: 'CAGR Calculator',
-            path: '/finance/cagr-calculator',
+            path: '/finance/investment-growth-calculator',
             desc: 'Compute Compound Annual Growth Rate and volatility drag.',
           },
         ]}

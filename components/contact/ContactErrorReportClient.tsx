@@ -31,8 +31,8 @@ const CALCULATOR_OPTIONS: CalculatorOption[] = [
     url: 'https://solveitcalculator.com/math/percentage-change-calculator',
   },
   {
-    name: 'Percentage Difference Calculator',
-    url: 'https://solveitcalculator.com/math/percentage-difference-calculator',
+    name: 'Proportion Calculator',
+    url: 'https://solveitcalculator.com/math/proportion-calculator',
   },
   {
     name: 'Discount Calculator',
@@ -71,8 +71,8 @@ const CALCULATOR_OPTIONS: CalculatorOption[] = [
     url: 'https://solveitcalculator.com/compound-interest-calculator',
   },
   {
-    name: 'Margin & Markup Calculator',
-    url: 'https://solveitcalculator.com/finance/margin-and-markup-calculator',
+    name: 'Gross Margin Calculator',
+    url: 'https://solveitcalculator.com/finance/margin-calculator',
   },
   {
     name: '401(k) Retirement Calculator',
@@ -84,7 +84,7 @@ const CALCULATOR_OPTIONS: CalculatorOption[] = [
   },
   {
     name: 'Unit Conversion Calculator',
-    url: 'https://solveitcalculator.com/unit-converter',
+    url: 'https://solveitcalculator.com/conversions',
   },
   {
     name: 'Age Calculator',

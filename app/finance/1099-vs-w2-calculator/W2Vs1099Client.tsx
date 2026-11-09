@@ -520,7 +520,7 @@ export default function W2Vs1099Client() {
           },
           {
             title: 'Freelance Hourly Rate Calculator',
-            path: '/freelance-hourly-rate-calculator',
+            path: '/finance/salary-to-hourly-calculator',
             desc: 'Model billable utilization, overhead, and target freelance income.',
           },
           {

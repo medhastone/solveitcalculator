@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/bonus-tax-calculator',
   },
+  openGraph: {
+    title: 'Bonus Tax Calculator (2025 IRS 22% Flat Supplemental vs Aggregate Method) | SolveItCalculator',
+    description:
+      'Calculate your net bonus paycheck after the 22% IRS flat supplemental withholding rate (37% over $1M), FICA ($176,100 Social Security cap), and state supplemental tax. Compares paycheck withholding vs actual tax liability.',
+    url: 'https://solveitcalculator.com/finance/bonus-tax-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Bonus Tax Calculator (2025 IRS 22% Flat Supplemental vs Aggregate Method) | SolveItCalculator',
+    description:
+      'Calculate your net bonus paycheck after the 22% IRS flat supplemental withholding rate (37% over $1M), FICA ($176,100 Social Security cap), and state supplemental tax. Compares paycheck withholding vs actual tax liability.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

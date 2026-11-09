@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/canada-income-tax-calculator',
   },
+  openGraph: {
+    title: 'Canada Income Tax Calculator (2025 CRA — Ontario, BC & Alberta) | SolveItCalculator',
+    description: 'Calculate 2025 Canadian federal and provincial income tax for Ontario, British Columbia, and Alberta. Includes RRSP deductions, Basic Personal Amount credits, CPP1 ($71,300 YMPE), CPP2 ($81,200 YAMPE), and EI.',
+    url: 'https://solveitcalculator.com/finance/canada-income-tax-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Canada Income Tax Calculator (2025 CRA — Ontario, BC & Alberta) | SolveItCalculator',
+    description: 'Calculate 2025 Canadian federal and provincial income tax for Ontario, British Columbia, and Alberta. Includes RRSP deductions, Basic Personal Amount credits, CPP1 ($71,300 YMPE), CPP2 ($81,200 YAMPE), and EI.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +34,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/canada-income-tax-calculator',
   shortAnswer:
     'Calculate your 2025 Canadian net take-home pay, combined marginal and average tax rates, RRSP tax savings, and mandatory CPP, second-tier CPP2, and Employment Insurance (EI) contributions across Ontario, British Columbia, and Alberta.',
@@ -82,7 +93,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   relatedToolIds: ['salary-to-hourly-calculator', 'savings-goal-calculator', 'us-state-take-home-calculator'],
   relatedConversionPaths: [
     { label: 'Salary to Hourly Calculator', path: '/finance/salary-to-hourly-calculator' },
-    { label: 'Savings Goal Calculator', path: '/finance/savings-goal-calculator' },
+    { label: 'Savings Goal Calculator', path: '/compound-interest-calculator' },
     { label: 'US State Take-Home Calculator', path: '/finance/us-state-take-home-calculator' },
   ],
   relatedGuidePaths: [

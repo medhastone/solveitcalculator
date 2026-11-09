@@ -1,17 +1,5 @@
-import type { Metadata } from 'next';
-import { MATH_CALCULATORS } from '@/lib/mathCalculatorsData';
-import MathToolDetailClient from '@/components/math/MathToolDetailClient';
+import { permanentRedirect } from 'next/navigation';
 
-export const metadata: Metadata = {
-  title: 'Percentage Calculator | SolveItCalculator.com',
-  description:
-    'Calculate the percentage of a number, find percentage increase or decrease, and get clear results with step-by-step explanation.',
-};
-
-export default function PercentageCalculatorRootPage() {
-  const tool =
-    MATH_CALCULATORS.find((item) => item.slug === 'percentage-calculator') ||
-    MATH_CALCULATORS[0];
-
-  return <MathToolDetailClient tool={tool} />;
+export default function PercentageCalculatorRedirectPage() {
+  permanentRedirect('/math/percentage-calculator');
 }

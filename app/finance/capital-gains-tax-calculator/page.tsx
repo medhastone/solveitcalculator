@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/capital-gains-tax-calculator',
   },
+  openGraph: {
+    title: 'Capital Gains Tax Calculator (US 2025) — Short-Term vs Long-Term & 3.8% NIIT | SolveItCalculator',
+    description: 'Calculate 2025 US short-term and long-term capital gains tax (0%, 15%, 20% brackets), 3.8% Net Investment Income Tax (NIIT), holding period in days, net proceeds, and $3,000 capital loss offset.',
+    url: 'https://solveitcalculator.com/finance/capital-gains-tax-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Capital Gains Tax Calculator (US 2025) — Short-Term vs Long-Term & 3.8% NIIT | SolveItCalculator',
+    description: 'Calculate 2025 US short-term and long-term capital gains tax (0%, 15%, 20% brackets), 3.8% Net Investment Income Tax (NIIT), holding period in days, net proceeds, and $3,000 capital loss offset.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +34,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/capital-gains-tax-calculator',
   shortAnswer:
     'Calculate your US federal capital gains tax on stocks, crypto, real estate, or collectibles. Automatically determines short-term vs long-term holding periods (> 365 days), stacks gains across the 0% / 15% / 20% 2025 IRS brackets, adds the 3.8% Net Investment Income Tax (NIIT), and models the $3,000 annual capital loss deduction.',
@@ -86,10 +97,10 @@ const SYSTEM_DATA: CalculatorSystemData = {
   relatedConversionPaths: [
     { label: 'India Capital Gains Tax Calculator', path: '/finance/india-capital-gains-tax-calculator' },
     { label: 'US Federal Income Tax Calculator', path: '/finance/us-federal-income-tax-calculator' },
-    { label: 'ROI Calculator', path: '/finance/roi-calculator' },
+    { label: 'ROI Calculator', path: '/finance/investment-growth-calculator' },
   ],
   relatedGuidePaths: [
-    { title: 'CAGR Calculator', path: '/finance/cagr-calculator' },
+    { title: 'CAGR Calculator', path: '/finance/investment-growth-calculator' },
   ],
   faqs: [
     {

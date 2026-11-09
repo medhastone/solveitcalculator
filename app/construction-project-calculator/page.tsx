@@ -16,6 +16,11 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com/construction-project-calculator',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Concrete Slab, Cubic Yard & Fence Post Calculator | SolveIt',
+    description: 'Estimate cubic yards of concrete for slabs (including 1,000 sq ft slabs), gravel cubic yard to ton conversions, fence post holes, and flooring materials.',
+  },
 };
 
 export default function ConstructionProjectCalculatorPage() {

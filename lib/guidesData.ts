@@ -297,8 +297,8 @@ export const GUIDES_DATA: GuideArticleData[] = [
         },
         { name: 'Discount Calculator', href: '/math/discount-calculator' },
         {
-          name: 'Percentage Difference Calculator',
-          href: '/math/percentage-difference-calculator',
+          name: 'Proportion Calculator',
+          href: '/math/proportion-calculator',
         },
         {
           name: 'Percentage to Decimal',
@@ -456,8 +456,8 @@ export const GUIDES_DATA: GuideArticleData[] = [
       ],
       closingText:
         'Compare any two independent values side by side using the',
-      ctaLinkText: 'Percentage Difference Calculator',
-      ctaLinkHref: '/math/percentage-difference-calculator',
+      ctaLinkText: 'Percentage Change Calculator',
+      ctaLinkHref: '/math/percentage-change-calculator',
     },
     section6: {
       heading: '6. Examples',
@@ -489,13 +489,13 @@ export const GUIDES_DATA: GuideArticleData[] = [
       relatedCalculators: [
         { name: 'Percentage Calculator', href: '/math/percentage-calculator' },
         {
-          name: 'Percentage Difference Calculator',
-          href: '/math/percentage-difference-calculator',
+          name: 'Proportion Calculator',
+          href: '/math/proportion-calculator',
         },
         { name: 'Discount Calculator', href: '/math/discount-calculator' },
         {
-          name: 'Margin & Markup Calculator',
-          href: '/finance/margin-and-markup-calculator',
+          name: 'Gross Margin Calculator',
+          href: '/finance/margin-calculator',
         },
         { name: 'Ratio Calculator', href: '/math/ratio-calculator' },
       ],
@@ -1410,8 +1410,8 @@ export const GUIDES_DATA: GuideArticleData[] = [
         'A 50% markup on cost produces a 33.3% gross profit margin',
       ],
       closingText: 'Price your products accurately with our',
-      ctaLinkText: 'Margin & Markup Calculator',
-      ctaLinkHref: '/finance/margin-and-markup-calculator',
+      ctaLinkText: 'Gross Margin Calculator',
+      ctaLinkHref: '/finance/margin-calculator',
     },
     section6: {
       heading: '6. Examples',
@@ -1443,8 +1443,8 @@ export const GUIDES_DATA: GuideArticleData[] = [
       relatedCalculators: [
         { name: 'Discount Calculator', href: '/math/discount-calculator' },
         {
-          name: 'Margin & Markup Calculator',
-          href: '/finance/margin-and-markup-calculator',
+          name: 'Gross Margin Calculator',
+          href: '/finance/margin-calculator',
         },
         { name: 'Percentage Calculator', href: '/math/percentage-calculator' },
         {
@@ -1604,7 +1604,7 @@ export const GUIDES_DATA: GuideArticleData[] = [
       closingText:
         'Convert between metres, feet, inches, and square units using the',
       ctaLinkText: 'Unit Conversion Calculator',
-      ctaLinkHref: '/unit-converter',
+      ctaLinkHref: '/conversions/area',
     },
     section6: {
       heading: '6. Examples',
@@ -1638,7 +1638,7 @@ export const GUIDES_DATA: GuideArticleData[] = [
           name: 'Flooring Project Calculator',
           href: '/home-construction/flooring-calculator',
         },
-        { name: 'Unit Conversion Calculator', href: '/unit-converter' },
+        { name: 'Unit Conversion Calculator', href: '/conversions/area' },
         { name: 'Percentage Calculator', href: '/math/percentage-calculator' },
         { name: 'Discount Calculator', href: '/math/discount-calculator' },
         { name: 'Ratio Calculator', href: '/math/ratio-calculator' },
@@ -1777,7 +1777,7 @@ export const GUIDES_DATA: GuideArticleData[] = [
       closingText:
         'Convert length, weight, temperature, and volume instantly with the',
       ctaLinkText: 'Unit Conversion Calculator',
-      ctaLinkHref: '/unit-converter',
+      ctaLinkHref: '/conversions',
     },
     section5: {
       heading: '5. Moving decimal points across metric prefixes',
@@ -1821,9 +1821,9 @@ export const GUIDES_DATA: GuideArticleData[] = [
       ctaDescription:
         'Convert length, weight, temperature, volume, and area accurately.',
       ctaButtonLabel: 'Open Unit Converter',
-      ctaHref: '/unit-converter',
+      ctaHref: '/conversions',
       relatedCalculators: [
-        { name: 'Unit Conversion Calculator', href: '/unit-converter' },
+        { name: 'Unit Conversion Calculator', href: '/conversions' },
         {
           name: 'Flooring Project Calculator',
           href: '/home-construction/flooring-calculator',
@@ -1840,7 +1840,7 @@ export const GUIDES_DATA: GuideArticleData[] = [
       ],
       exploreDescription: 'Browse all unit and measurement conversion tools.',
       exploreButtonLabel: 'View Unit Converters',
-      exploreHref: '/unit-conversion',
+      exploreHref: '/conversions',
       faqs: [
         {
           question: 'Why does 1 square metre equal 10.76 square feet instead of 3.28?',
@@ -2015,7 +2015,7 @@ export const GUIDES_DATA: GuideArticleData[] = [
       relatedCalculators: [
         { name: 'BMI Calculator', href: '/bmi-calculator' },
         { name: 'Age Calculator', href: '/age-calculator' },
-        { name: 'Unit Conversion Calculator', href: '/unit-converter' },
+        { name: 'Unit Conversion Calculator', href: '/conversions/weight' },
         { name: 'Percentage Calculator', href: '/math/percentage-calculator' },
         { name: 'Average Calculator', href: '/math/average-calculator' },
       ],
@@ -2599,8 +2599,8 @@ export const GUIDES_DATA: GuideArticleData[] = [
         { name: 'Percentage Calculator', href: '/math/percentage-calculator' },
         { name: 'Discount Calculator', href: '/math/discount-calculator' },
         {
-          name: 'Margin & Markup Calculator',
-          href: '/finance/margin-and-markup-calculator',
+          name: 'Gross Margin Calculator',
+          href: '/finance/margin-calculator',
         },
       ],
       keyTakeaways: [

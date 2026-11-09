@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: 'Search Calculators | SolveItCalculator',
   description:
     'Search percentage, math, finance, unit conversion, date & time, and health calculators on SolveItCalculator.com.',
+  alternates: {
+    canonical: 'https://solveitcalculator.com/search',
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function SearchPage() {

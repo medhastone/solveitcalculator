@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/margin-calculator',
   },
+  openGraph: {
+    title: 'Margin Calculator (Gross Margin %, Profit, Selling Price & Markup Table) | SolveItCalculator',
+    description: 'Solve for Gross Margin %, Selling Price, or Cost from any two inputs. Includes Gross Profit, equivalent Markup %, and a Margin vs. Markup conversion table.',
+    url: 'https://solveitcalculator.com/finance/margin-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Margin Calculator (Gross Margin %, Profit, Selling Price & Markup Table) | SolveItCalculator',
+    description: 'Solve for Gross Margin %, Selling Price, or Cost from any two inputs. Includes Gross Profit, equivalent Markup %, and a Margin vs. Markup conversion table.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

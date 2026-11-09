@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/profit-margin-calculator',
   },
+  openGraph: {
+    title: 'Profit Margin Calculator (Gross, EBITDA, Operating & Net Margin + Damodaran Benchmarks) | SolveItCalculator',
+    description: 'Calculate Gross Margin, EBITDA Margin, Operating (EBIT) Margin, and Net Profit Margin with an interactive P&L waterfall and cited NYU Stern (Damodaran) sector benchmarks.',
+    url: 'https://solveitcalculator.com/finance/profit-margin-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Profit Margin Calculator (Gross, EBITDA, Operating & Net Margin + Damodaran Benchmarks) | SolveItCalculator',
+    description: 'Calculate Gross Margin, EBITDA Margin, Operating (EBIT) Margin, and Net Profit Margin with an interactive P&L waterfall and cited NYU Stern (Damodaran) sector benchmarks.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

@@ -35,13 +35,13 @@ const SCIENCE_RELATED_LINKS: RelatedCalculatorLink[] = [
   {
     name: 'SI & Metric Unit Converter',
     description: 'Convert mass, volume, temperature, speed, and energy.',
-    href: '/unit-converter',
+    href: '/conversions',
     iconVariant: 'arrows-blue',
   },
   {
     name: 'Quadratic & Projectile Solver',
     description: 'Solve second-degree kinematics and equilibrium equations.',
-    href: '/math/quadratic-equation-solver',
+    href: '/math/quadratic-equation-calculator',
     iconVariant: 'fraction-purple',
   },
 ];

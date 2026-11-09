@@ -295,7 +295,7 @@ export default function HraExemptionClient() {
           },
           {
             title: 'Rent vs Buy / Mortgage Calculator',
-            path: '/finance/mortgage-calculator',
+            path: '/mortgage-calculator',
             desc: 'Model monthly home loan payments vs renting.',
           },
         ]}

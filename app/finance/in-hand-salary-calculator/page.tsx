@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/in-hand-salary-calculator',
   },
+  openGraph: {
+    title: 'In-Hand Salary Calculator India (CTC to Monthly Take-Home FY 2025-26) | SolveItCalculator',
+    description: 'Convert your Indian annual CTC into exact monthly in-hand salary. Includes Basic %, HRA, Special Allowance, 12% EPF (full Basic vs ₹15,000 ceiling toggle), Gratuity, State Professional Tax, and FY 2025-26 TDS.',
+    url: 'https://solveitcalculator.com/finance/in-hand-salary-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'In-Hand Salary Calculator India (CTC to Monthly Take-Home FY 2025-26) | SolveItCalculator',
+    description: 'Convert your Indian annual CTC into exact monthly in-hand salary. Includes Basic %, HRA, Special Allowance, 12% EPF (full Basic vs ₹15,000 ceiling toggle), Gratuity, State Professional Tax, and FY 2025-26 TDS.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -65,7 +76,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
     { label: 'HRA Exemption Calculator', path: '/finance/hra-exemption-calculator' },
     { label: 'Take-Home Pay Calculator (US)', path: '/finance/take-home-pay-calculator' },
   ],
-  relatedGuidePaths: [{ title: 'SIP Calculator', path: '/finance/sip-calculator' }],
+  relatedGuidePaths: [{ title: 'SIP Calculator', path: '/compound-interest-calculator' }],
   faqs: [
     {
       question: 'Is Employee PF mandatory at 12% of full Basic Salary or capped at ₹1,800/month?',

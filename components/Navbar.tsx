@@ -45,7 +45,7 @@ const COMMUNITY_LINKS = [
   { name: 'Finance & Tax Calculators', href: '/finance' },
   { name: 'Business & Margin Calculators', href: '/finance/business' },
   { name: 'Retirement & Super Calculators', href: '/retirement-and-super' },
-  { name: 'Unit & Measurement Converters', href: '/unit-conversion' },
+  { name: 'Unit & Measurement Converters', href: '/conversions' },
   { name: 'Date & Time Calculators', href: '/date-time' },
   { name: 'Home & Construction Calculators', href: '/home-construction' },
   { name: 'Health & Fitness Calculators', href: '/health-fitness' },

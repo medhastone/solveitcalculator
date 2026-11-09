@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/take-home-pay-calculator',
   },
+  openGraph: {
+    title: 'Take-Home Pay Calculator (US Paycheck & India CTC to In-Hand) | SolveItCalculator',
+    description: 'Calculate your monthly and bi-weekly take-home pay after taxes, FICA/EPF, and retirement deductions. Supports both US State Paycheck mode and India CTC-to-In-Hand mode.',
+    url: 'https://solveitcalculator.com/finance/take-home-pay-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Take-Home Pay Calculator (US Paycheck & India CTC to In-Hand) | SolveItCalculator',
+    description: 'Calculate your monthly and bi-weekly take-home pay after taxes, FICA/EPF, and retirement deductions. Supports both US State Paycheck mode and India CTC-to-In-Hand mode.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

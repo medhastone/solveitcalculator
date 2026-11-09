@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/us-state-take-home-calculator',
   },
+  openGraph: {
+    title: 'US State Take-Home Paycheck Calculator (2025) — CA, NY, TX, FL, WA & All States | SolveItCalculator',
+    description:
+      'Calculate your exact US net take-home paycheck by state. Includes 2025 IRS federal income tax brackets, FICA Social Security ($176,100 cap), Medicare, state income tax, and state payroll items (CA SDI 1.2%, NY PFL, WA Cares).',
+    url: 'https://solveitcalculator.com/finance/us-state-take-home-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'US State Take-Home Paycheck Calculator (2025) — CA, NY, TX, FL, WA & All States | SolveItCalculator',
+    description:
+      'Calculate your exact US net take-home paycheck by state. Includes 2025 IRS federal income tax brackets, FICA Social Security ($176,100 cap), Medicare, state income tax, and state payroll items (CA SDI 1.2%, NY PFL, WA Cares).',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +36,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/us-state-take-home-calculator',
   shortAnswer:
     'Calculate your net take-home pay per year, month, bi-weekly paycheck, and hour across California, New York, Texas, Florida, Washington, and US states using verified 2025 IRS, FICA, and state payroll schedules.',

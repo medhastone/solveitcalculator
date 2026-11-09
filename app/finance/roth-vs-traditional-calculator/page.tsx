@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/roth-vs-traditional-calculator',
   },
+  openGraph: {
+    title: 'Roth vs Traditional Calculator: Pre-Tax vs After-Tax & Break-Even Rate | SolveItCalculator',
+    description: 'Compare Roth vs. Traditional IRA and 401(k) accounts on an equal after-tax outlay basis. Calculate both after-tax end values, net difference, break-even retirement tax rate, RMDs, and verified IRS income phase-outs.',
+    url: 'https://solveitcalculator.com/finance/roth-vs-traditional-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Roth vs Traditional Calculator: Pre-Tax vs After-Tax & Break-Even Rate | SolveItCalculator',
+    description: 'Compare Roth vs. Traditional IRA and 401(k) accounts on an equal after-tax outlay basis. Calculate both after-tax end values, net difference, break-even retirement tax rate, RMDs, and verified IRS income phase-outs.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

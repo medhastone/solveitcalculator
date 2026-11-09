@@ -918,14 +918,14 @@ export function CapitalGainsTaxClient() {
             href: '/finance/us-federal-income-tax-calculator',
           },
           {
-            title: 'ROI Calculator',
+            title: 'Investment Growth & ROI Calculator',
             description: 'Compute total return on investment and annualized return before and after taxes.',
-            href: '/finance/roi-calculator',
+            href: '/finance/investment-growth-calculator',
           },
           {
-            title: 'CAGR Calculator',
-            description: 'Measure compound annual growth rate over multi-year holding periods.',
-            href: '/finance/cagr-calculator',
+            title: 'Real Rate of Return Calculator',
+            description: 'Measure inflation-adjusted and after-tax real investment yield.',
+            href: '/finance/real-rate-of-return-calculator',
           },
         ]}
       />
@@ -1081,9 +1081,9 @@ export function IndiaCapitalGainsTaxClient() {
             href: '/finance/capital-gains-tax-calculator',
           },
           {
-            title: 'SIP Calculator',
+            title: 'Compound Interest & SIP Calculator',
             description: 'Project long-term mutual fund accumulation and wealth creation.',
-            href: '/finance/sip-calculator',
+            href: '/compound-interest-calculator',
           },
         ]}
       />

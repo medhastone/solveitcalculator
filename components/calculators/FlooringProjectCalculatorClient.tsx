@@ -408,7 +408,7 @@ export default function FlooringProjectCalculatorClient() {
               Finance
             </Link>
             <Link
-              href="/unit-conversion"
+              href="/conversions"
               className="hover:text-[#2457D6] transition-colors py-1"
             >
               Unit Conversion
@@ -420,7 +420,7 @@ export default function FlooringProjectCalculatorClient() {
               Date and Time
             </Link>
             <Link
-              href="/all-calculators"
+              href="/calculators"
               className="inline-flex items-center gap-1 hover:text-[#2457D6] transition-colors py-1"
             >
               <span>All Calculators</span>

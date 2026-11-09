@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/break-even-calculator',
   },
+  openGraph: {
+    title: 'Break-Even Calculator (BEP Units, Revenue, Contribution Margin & Margin of Safety) | SolveItCalculator',
+    description: 'Calculate your Break-Even Point (BEP) in units and revenue, contribution margin ratio, units required for target profit, margin of safety, and ±10% price sensitivity.',
+    url: 'https://solveitcalculator.com/finance/break-even-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Break-Even Calculator (BEP Units, Revenue, Contribution Margin & Margin of Safety) | SolveItCalculator',
+    description: 'Calculate your Break-Even Point (BEP) in units and revenue, contribution margin ratio, units required for target profit, margin of safety, and ±10% price sensitivity.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

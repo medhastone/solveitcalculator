@@ -23,7 +23,7 @@ const MORTGAGE_RELATED_LINKS: RelatedCalculatorLink[] = [
   {
     name: 'Salary & Tax Calculator',
     description: 'Calculate net monthly take-home pay to budget for housing.',
-    href: '/salary-tax-calculator',
+    href: '/finance/take-home-pay-calculator',
     iconVariant: 'tag-amber',
   },
   {
@@ -35,7 +35,7 @@ const MORTGAGE_RELATED_LINKS: RelatedCalculatorLink[] = [
   {
     name: 'Area & Land Converter',
     description: 'Convert square feet, square meters, and acres for property lots.',
-    href: '/unit-converter',
+    href: '/conversions/area',
     iconVariant: 'arrows-blue',
   },
 ];

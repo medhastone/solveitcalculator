@@ -1751,21 +1751,21 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                   </div>
                   <span className="text-[11px] text-outline mt-2">Principal vs Interest</span>
                 </Link>
-                <Link className="p-3.5 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/20 transition-all flex flex-col justify-between" href="/finance">
+                <Link className="p-3.5 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/20 transition-all flex flex-col justify-between" href="/finance/401k-calculator">
                   <div>
                     <span className="material-symbols-outlined text-primary text-[22px] mb-2">account_balance_wallet</span>
                     <div className="font-body-sm text-body-sm font-semibold text-on-surface">401(k) Retirement</div>
                   </div>
                   <span className="text-[11px] text-outline mt-2">Employer Match Track</span>
                 </Link>
-                <Link className="p-3.5 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/20 transition-all flex flex-col justify-between" href="/time-date/birthday-tracker">
+                <Link className="p-3.5 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/20 transition-all flex flex-col justify-between" href="/date-difference-calculator">
                   <div>
                     <span className="material-symbols-outlined text-primary text-[22px] mb-2">cake</span>
-                    <div className="font-body-sm text-body-sm font-semibold text-on-surface">Birthday Tracker</div>
+                    <div className="font-body-sm text-body-sm font-semibold text-on-surface">Date Difference &amp; Countdown</div>
                   </div>
-                  <span className="text-[11px] text-outline mt-2">Solar Orbit &amp; Countdown</span>
+                  <span className="text-[11px] text-outline mt-2">Target Date &amp; Workdays</span>
                 </Link>
-                <Link className="p-3.5 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/20 transition-all flex flex-col justify-between" href="/time-date/age-calculator">
+                <Link className="p-3.5 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/20 transition-all flex flex-col justify-between" href="/age-calculator">
                   <div>
                     <span className="material-symbols-outlined text-primary text-[22px] mb-2">schedule</span>
                     <div className="font-body-sm text-body-sm font-semibold text-on-surface">Exact Age Chronometer</div>

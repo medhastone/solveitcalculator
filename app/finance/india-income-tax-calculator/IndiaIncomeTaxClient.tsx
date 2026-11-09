@@ -364,7 +364,7 @@ export default function IndiaIncomeTaxClient() {
           },
           {
             title: 'SIP Calculator',
-            path: '/finance/sip-calculator',
+            path: '/compound-interest-calculator',
             desc: 'Model systematic mutual fund investments and ELSS 80C wealth creation.',
           },
         ]}

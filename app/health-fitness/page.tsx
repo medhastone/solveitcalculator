@@ -19,6 +19,11 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com/health-fitness',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Health & Fitness Calculators — BMI, BMR, TDEE Daily Calories & Ideal Weight | SolveItCalculator',
+    description: 'Free health and fitness calculators using WHO BMI standards and Mifflin-St Jeor BMR/TDEE equations. Estimate daily calorie needs, healthy weight ranges, and target heart rate zones.',
+  },
 };
 
 const HEALTH_FITNESS_CONFIG: CategoryHubConfig = {
@@ -148,7 +153,7 @@ const HEALTH_FITNESS_CONFIG: CategoryHubConfig = {
       name: 'Body Weight & Height Unit Converter (kg/lb & cm/ft)',
       description:
         'Convert body weight between kilograms, pounds, and stones, or height between feet/inches and centimeters.',
-      href: '/unit-converter?category=weight',
+      href: '/conversions/weight',
       category: 'Fitness & Pace',
       displayBadge: 'Measurements',
       iconName: 'arrow-left-right',
@@ -159,7 +164,7 @@ const HEALTH_FITNESS_CONFIG: CategoryHubConfig = {
   relatedCategories: [
     {
       name: 'Unit Conversion',
-      href: '/unit-conversion',
+      href: '/conversions',
       iconName: 'arrow-left-right',
       iconBg: 'bg-[#EBF2FF]',
       iconColor: 'text-[#2457D6]',

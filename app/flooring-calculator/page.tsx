@@ -1,12 +1,5 @@
-import type { Metadata } from 'next';
-import FlooringProjectCalculatorClient from '@/components/calculators/FlooringProjectCalculatorClient';
+import { permanentRedirect } from 'next/navigation';
 
-export const metadata: Metadata = {
-  title: 'Estimate Your Flooring Project — Flooring Calculator | SolveItCalculator',
-  description:
-    'Calculate room area, estimate flooring quantity with waste allowance, and get an estimated material cost in a simple three-step guided workflow.',
-};
-
-export default function DirectFlooringCalculatorPage() {
-  return <FlooringProjectCalculatorClient />;
+export default function FlooringCalculatorRedirectPage() {
+  permanentRedirect('/home-construction/flooring-calculator');
 }

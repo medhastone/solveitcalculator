@@ -15,6 +15,11 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com/recipe-converter',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ingredient Measurement & Recipe Converter (Cups to Grams) | SolveIt',
+    description: 'Convert recipe ingredients between cups, tablespoons, gallons, grams, and pounds using verified USDA densities. Includes gallon of milk weight (8.6 lbs) and oven to air fryer tables.',
+  },
 };
 
 export default function RecipeConverterPage() {
@@ -43,7 +48,7 @@ export default function RecipeConverterPage() {
             '@type': 'ListItem',
             position: 2,
             name: 'Unit Conversion',
-            item: 'https://solveitcalculator.com/unit-conversion',
+            item: 'https://solveitcalculator.com/conversions',
           },
           {
             '@type': 'ListItem',

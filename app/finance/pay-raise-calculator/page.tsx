@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/pay-raise-calculator',
   },
+  openGraph: {
+    title: 'Pay Raise Calculator (Percentage Increase, New Pay & Real Inflation Gain) | SolveItCalculator',
+    description: 'Calculate your new salary, monthly, bi-weekly, and hourly pay after a raise. Computes Fisher equation real purchasing power gain after inflation and multi-year salary compounding.',
+    url: 'https://solveitcalculator.com/finance/pay-raise-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pay Raise Calculator (Percentage Increase, New Pay & Real Inflation Gain) | SolveItCalculator',
+    description: 'Calculate your new salary, monthly, bi-weekly, and hourly pay after a raise. Computes Fisher equation real purchasing power gain after inflation and multi-year salary compounding.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -68,7 +79,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   },
   relatedToolIds: ['inflation-calculator', 'salary-to-hourly-calculator', 'take-home-pay-calculator'],
   relatedConversionPaths: [
-    { label: 'Inflation Calculator', path: '/finance/inflation-calculator' },
+    { label: 'Inflation Calculator', path: '/finance/real-rate-of-return-calculator' },
     { label: 'Salary to Hourly Calculator', path: '/finance/salary-to-hourly-calculator' },
     { label: 'Take-Home Pay Calculator', path: '/finance/take-home-pay-calculator' },
   ],

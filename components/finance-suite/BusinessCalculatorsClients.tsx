@@ -815,9 +815,9 @@ export function BreakEvenCalculatorClient() {
             href: '/finance/markup-calculator',
           },
           {
-            title: 'ROI Calculator',
+            title: 'Investment Growth & ROI Calculator',
             description: 'Evaluate total return on capital invested in your business.',
-            href: '/finance/roi-calculator',
+            href: '/finance/investment-growth-calculator',
           },
         ]}
       />

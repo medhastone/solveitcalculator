@@ -18,6 +18,11 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com/calculators',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'All Calculators Directory — Math, Finance, Construction, Conversion & Health Tools | SolveItCalculator',
+    description: 'Browse 100+ free online calculators with instant live results, step-by-step formulas, and quick-reference charts across Math, Finance & Tax, Home & Construction, Unit Conversion, Date & Time, Health, and Science.',
+  },
 };
 
 export default function AllCalculatorsPage() {

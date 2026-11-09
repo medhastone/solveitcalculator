@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/germany-income-tax-calculator',
   },
+  openGraph: {
+    title: 'Germany Income Tax Calculator (2025 BMF § 32a EStG & Social Security) | SolveItCalculator',
+    description: 'Calculate 2025 German net salary after Einkommensteuer (§ 32a EStG), Grundfreibetrag (€12,096), Ehegattensplitting, Kirchensteuer, and statutory social security contributions (RV, KV, AV, PV).',
+    url: 'https://solveitcalculator.com/finance/germany-income-tax-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Germany Income Tax Calculator (2025 BMF § 32a EStG & Social Security) | SolveItCalculator',
+    description: 'Calculate 2025 German net salary after Einkommensteuer (§ 32a EStG), Grundfreibetrag (€12,096), Ehegattensplitting, Kirchensteuer, and statutory social security contributions (RV, KV, AV, PV).',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +34,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/germany-income-tax-calculator',
   shortAnswer:
     'Calculate your 2025 German net take-home salary after Einkommensteuer (§ 32a EStG), the €12,096 Grundfreibetrag, employee social security contributions (Pension, Health, Unemployment, Care), and optional Church Tax.',

@@ -53,9 +53,9 @@ const RELATED_TOOLS = [
     href: '/math/scientific-calculator',
   },
   {
-    name: 'Order of Operations (PEMDAS) Calculator',
-    description: 'See step-by-step BODMAS / PEMDAS evaluation trees for nested expressions.',
-    href: '/math/order-of-operations-calculator',
+    name: 'Algebraic Equation Solver',
+    description: 'Solve linear and quadratic equations step by step.',
+    href: '/math/equation-solver',
   },
   {
     name: 'Percentage Calculator',
@@ -75,7 +75,7 @@ const RELATED_TOOLS = [
   {
     name: 'All-in-One Unit Converter',
     description: 'Convert length, weight, temperature, volume, area, speed, digital, and energy units.',
-    href: '/unit-converter',
+    href: '/conversions',
   },
 ];
 

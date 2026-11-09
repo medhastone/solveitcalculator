@@ -21,8 +21,10 @@ import {
   Star,
   ArrowUpDown,
   ClipboardList,
+  BookOpen,
   X,
 } from 'lucide-react';
+import { GUIDES_DATA } from '@/lib/guidesData';
 
 export interface DirectoryCalculatorItem {
   id: string;
@@ -49,7 +51,8 @@ export interface DirectoryCategoryGroup {
     | 'home'
     | 'business'
     | 'science'
-    | 'retirement';
+    | 'retirement'
+    | 'guides';
   layout: 'list' | 'compact-grid';
   calculators: DirectoryCalculatorItem[];
 }
@@ -178,20 +181,6 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         description: 'Solve for the unknown variable X in two equal fractions (A/B = C/X).',
         href: '/math/proportion-calculator',
         keywords: ['proportion', 'cross multiply', 'equivalent ratio'],
-      },
-      {
-        id: 'gcf-lcm-calculator',
-        name: 'Greatest Common Factor (GCF) & LCM Calculator',
-        description: 'Find the GCF and LCM of whole numbers using prime factorization.',
-        href: '/math/gcf-lcm-calculator',
-        keywords: ['gcf', 'greatest common factor', 'lcm'],
-      },
-      {
-        id: 'exponent-root-calculator',
-        name: 'Exponent & Square Root Calculator',
-        description: 'Calculate positive, negative, or fractional exponents and nth roots.',
-        href: '/math/exponent-root-calculator',
-        keywords: ['exponent root', 'cube root', 'powers'],
       },
       {
         id: 'quadratic-equation-calculator',
@@ -372,11 +361,25 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         keywords: ['take home pay', 'net salary', 'paycheck'],
       },
       {
-        id: 'salary-tax-calculator',
-        name: 'Salary & Income Tax Breakdown Calculator',
-        description: 'Estimate gross-to-net salary breakdown, effective tax rate, and deductions.',
-        href: '/salary-tax-calculator',
-        keywords: ['salary tax', 'gross to net', 'income tax'],
+        id: 'investment-growth-calculator',
+        name: 'Investment Growth, ROI & CAGR Calculator',
+        description: 'Project long-term portfolio growth, ROI, and Compound Annual Growth Rate (CAGR).',
+        href: '/finance/investment-growth-calculator',
+        keywords: ['investment growth', 'roi', 'cagr', 'portfolio growth'],
+      },
+      {
+        id: 'real-rate-of-return-calculator',
+        name: 'Real Rate of Return & Inflation-Adjusted Yield Calculator',
+        description: 'Calculate purchasing-power investment yield after inflation and taxes using the Fisher equation.',
+        href: '/finance/real-rate-of-return-calculator',
+        keywords: ['real rate of return', 'inflation', 'fisher equation', 'purchasing power'],
+      },
+      {
+        id: 'rent-vs-buy-calculator',
+        name: 'Rent vs. Buy Home Comparison Calculator',
+        description: 'Compare 5-to-30 year net cost and equity build of buying a home versus renting and investing.',
+        href: '/finance/rent-vs-buy-calculator',
+        keywords: ['rent vs buy', 'homeownership', 'home equity'],
       },
       {
         id: 'pay-raise-calculator',
@@ -475,7 +478,7 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
     id: 'unit-conversion',
     title: 'Unit Conversion Calculators',
     subtitle: 'Convert length, weight, volume, area, temperature, speed and digital storage.',
-    href: '/unit-conversion',
+    href: '/conversions',
     headerBg: 'bg-[#F3EEFF]',
     iconBg: 'bg-[#7C3AED]',
     iconColor: 'text-white',
@@ -493,70 +496,77 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         id: 'length-conversion',
         name: 'Length & Distance Conversion',
         description: 'Convert meters, kilometers, feet, inches, yards, and miles.',
-        href: '/unit-converter?category=length',
+        href: '/conversions/length',
         keywords: ['length', 'meters', 'feet', 'inches', 'kilometers', 'miles'],
       },
       {
         id: 'weight-conversion',
         name: 'Weight & Mass Conversion',
         description: 'Convert kilograms, pounds, grams, ounces, stones, and metric tons.',
-        href: '/unit-converter?category=weight',
+        href: '/conversions/weight',
         keywords: ['weight', 'mass', 'kilograms', 'pounds', 'grams', 'ounces'],
       },
       {
         id: 'area-conversion',
         name: 'Area & Land Conversion',
         description: 'Convert square meters, square feet, acres, hectares, and square yards.',
-        href: '/unit-converter?category=area',
+        href: '/conversions/area',
         keywords: ['area', 'square meters', 'square feet', 'acres', 'hectares'],
       },
       {
         id: 'volume-conversion',
         name: 'Volume & Liquid Conversion',
         description: 'Convert liters, milliliters, US gallons, quarts, cups, and cubic meters.',
-        href: '/unit-converter?category=volume',
+        href: '/conversions/volume',
         keywords: ['volume', 'liters', 'gallons', 'milliliters', 'cubic'],
       },
       {
         id: 'temperature-conversion',
         name: 'Temperature Conversion (Celsius, Fahrenheit & Kelvin)',
         description: 'Convert temperatures between Celsius (°C), Fahrenheit (°F), and Kelvin (K).',
-        href: '/unit-converter?category=temperature',
+        href: '/conversions/temperature',
         keywords: ['temperature', 'celsius', 'fahrenheit', 'kelvin'],
       },
       {
         id: 'speed-velocity-converter',
         name: 'Speed & Velocity Converter',
         description: 'Convert miles per hour (mph), kilometers per hour (km/h), m/s, and knots.',
-        href: '/unit-converter?category=speed',
+        href: '/conversions/speed',
         keywords: ['speed', 'velocity', 'mph', 'kmh', 'knots'],
       },
       {
         id: 'cooking-measurement-converter',
         name: 'Kitchen & Cooking Unit Converter',
         description: 'Convert tablespoons, teaspoons, cups, milliliters, and fluid ounces.',
-        href: '/unit-converter?category=volume',
+        href: '/conversions/cooking',
         keywords: ['cooking', 'kitchen', 'cups', 'tablespoons', 'teaspoons', 'ml'],
       },
       {
-        id: 'height-feet-cm-converter',
-        name: 'Height Converter (Feet & Inches to Centimeters)',
-        description: 'Convert human height or room dimensions between feet/inches and cm.',
-        href: '/unit-converter?category=length',
-        keywords: ['height converter', 'feet to cm', 'inches to cm'],
+        id: 'fuel-economy-converter',
+        name: 'Fuel Economy Converter (L/100km, MPG & km/L)',
+        description: 'Convert liters per 100 km, US/UK miles per gallon (MPG), and km/L.',
+        href: '/conversions/fuel-economy',
+        keywords: ['fuel economy', 'mpg', 'l/100km', 'km/l'],
+      },
+      {
+        id: 'torque-converter',
+        name: 'Torque Converter (Newton-Meters to Foot-Pounds & Inch-Pounds)',
+        description: 'Convert N·m, ft-lb, and in-lb for automotive and mechanical fasteners.',
+        href: '/conversions/torque',
+        keywords: ['torque', 'nm to ft lbs', 'inch pounds'],
       },
       {
         id: 'digital-storage-converter',
         name: 'Digital Data & Storage Converter',
         description: 'Convert bytes, kilobytes (KB), megabytes (MB), gigabytes (GB), and TB.',
-        href: '/unit-converter?category=digital',
+        href: '/conversions/digital',
         keywords: ['digital storage', 'bytes', 'mb', 'gb', 'tb', 'data'],
       },
       {
         id: 'energy-power-converter',
         name: 'Energy & Work Unit Converter',
         description: 'Convert joules, kilojoules, calories, kilocalories, watt-hours, and kWh.',
-        href: '/unit-converter?category=energy',
+        href: '/conversions/energy',
         keywords: ['energy', 'joules', 'calories', 'kwh', 'btu'],
       },
     ],
@@ -708,7 +718,7 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         id: 'body-weight-unit-converter',
         name: 'Body Weight & Height Unit Converter (kg/lb & cm/ft)',
         description: 'Convert body weight between kg, lbs, and stones, or height between ft and cm.',
-        href: '/unit-converter?category=weight',
+        href: '/conversions/weight',
         keywords: ['kg to lbs', 'cm to feet', 'body weight converter'],
       },
     ],
@@ -759,28 +769,28 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         id: 'area-calculator',
         name: 'Square Footage & Room Area Calculator',
         description: 'Calculate and convert room area between sq ft, sq meters, and acres.',
-        href: '/unit-converter?category=area',
+        href: '/conversions/area',
         keywords: ['area', 'square footage', 'room size', 'flooring'],
       },
       {
         id: 'volume-calculator',
         name: 'Cubic Volume Calculator',
         description: 'Find the volume of a space or slab in cubic feet, cubic yards, or meters.',
-        href: '/unit-converter?category=volume',
+        href: '/conversions/volume',
         keywords: ['volume', 'cubic feet', 'cubic meters', 'capacity'],
       },
       {
         id: 'concrete-calculator',
         name: 'Concrete & Cubic Yards Volume Calculator',
         description: 'Estimate concrete quantity in cubic yards and bags for slabs and footings.',
-        href: '/unit-converter?category=volume',
+        href: '/construction-project-calculator',
         keywords: ['concrete', 'slab', 'cement', 'bags', 'construction'],
       },
       {
         id: 'paint-calculator',
         name: 'Wall Area & Paint Coverage Calculator',
         description: 'Calculate wall surface area and gallons or liters of paint needed.',
-        href: '/unit-converter?category=area',
+        href: '/conversions/area',
         keywords: ['paint', 'gallons', 'wall coverage', 'renovation'],
       },
       {
@@ -815,7 +825,7 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         id: 'lumber-length-dimension-converter',
         name: 'Construction Length & Dimension Converter',
         description: 'Convert blueprint dimensions between inches, feet, yards, mm, cm, and meters.',
-        href: '/unit-converter?category=length',
+        href: '/conversions/length',
         keywords: ['lumber', 'blueprint', 'inches to feet', 'mm to inches'],
       },
       {
@@ -868,16 +878,16 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
       },
       {
         id: 'sales-tax-calculator',
-        name: 'Sales Tax & VAT Calculator',
-        description: 'Calculate sales tax, VAT, and gross-to-net purchase totals.',
-        href: '/salary-tax-calculator',
-        keywords: ['sales tax', 'vat', 'purchase tax', 'retail'],
+        name: 'Payroll & Net Take-Home Pay Calculator',
+        description: 'Calculate gross-to-net salary, payroll withholding, and deductions.',
+        href: '/finance/take-home-pay-calculator',
+        keywords: ['payroll', 'take home pay', 'net pay', 'business'],
       },
       {
         id: 'roi-calculator',
-        name: 'ROI & Compound Return Calculator',
-        description: 'Calculate return on investment (ROI) and annualized compound growth.',
-        href: '/compound-interest-calculator',
+        name: 'ROI & Investment Growth Calculator',
+        description: 'Calculate return on investment (ROI) and annualized compound growth (CAGR).',
+        href: '/finance/investment-growth-calculator',
         keywords: ['roi', 'return on investment', 'business return', 'cagr'],
       },
       {
@@ -939,14 +949,14 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         id: 'speed-calculator',
         name: 'Speed & Velocity Calculator',
         description: 'Calculate and convert speed, distance, and time across metric and imperial.',
-        href: '/unit-converter?category=speed',
+        href: '/conversions/speed',
         keywords: ['speed', 'velocity', 'distance', 'time', 'physics'],
       },
       {
         id: 'energy-calculator',
         name: 'Energy & Work Calculator',
         description: 'Calculate and convert kinetic, thermal, and electrical energy in Joules and kWh.',
-        href: '/unit-converter?category=energy',
+        href: '/conversions/energy',
         keywords: ['energy', 'kinetic', 'potential', 'joules', 'physics'],
       },
       {
@@ -1009,14 +1019,14 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         id: 'science-si-unit-converter',
         name: 'SI & Metric Unit Converter (Kelvin, Joules, kg, m)',
         description: 'Convert SI base and derived units for physics and chemistry equations.',
-        href: '/unit-converter',
+        href: '/conversions',
         keywords: ['si units', 'kelvin', 'metric converter', 'physics units'],
       },
       {
         id: 'science-quadratic-kinematics',
         name: 'Quadratic Equation & Projectile Trajectory Solver',
         description: 'Solve second-degree kinematics and chemical equilibrium equations.',
-        href: '/math/quadratic-equation-solver',
+        href: '/math/quadratic-equation-calculator',
         keywords: ['projectile motion', 'kinematics', 'quadratic equilibrium'],
       },
       {
@@ -1071,7 +1081,7 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         id: 'ret-safe-withdrawal-rate',
         name: 'Safe Withdrawal Rate (4% Rule) Calculator',
         description: 'Simulate retirement portfolio longevity with inflation-adjusted withdrawals.',
-        href: '/fire-forecaster',
+        href: '/finance/safe-withdrawal-rate-calculator',
         keywords: ['safe withdrawal rate', '4% rule', 'trinity study', 'swr'],
       },
       {
@@ -1096,6 +1106,24 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         keywords: ['pre tax 401k', 'agi reduction', 'tax deferred'],
       },
     ],
+  },
+  {
+    id: 'guides',
+    title: 'Formula Guides & Tutorials',
+    subtitle: 'Step-by-step math, finance, home, and conversion guides with worked examples.',
+    href: '/guides',
+    headerBg: 'bg-[#EEF4FF]',
+    iconBg: 'bg-[#2457D6]',
+    iconColor: 'text-white',
+    iconName: 'guides',
+    layout: 'list',
+    calculators: GUIDES_DATA.map((guide) => ({
+      id: `guide-${guide.slug}`,
+      name: guide.title,
+      description: guide.heroIntro,
+      href: `/guides/${guide.slug}`,
+      keywords: guide.keywords,
+    })),
   },
 ];
 
@@ -1123,7 +1151,7 @@ const POPULAR_SHORTCUTS = [
   },
   {
     name: 'Unit Conversion Calculator',
-    href: '/unit-converter',
+    href: '/conversions',
     icon: ArrowLeftRight,
     iconBg: 'bg-[#F3EEFF]',
     iconColor: 'text-[#7C3AED]',
@@ -1186,6 +1214,8 @@ function CategoryHeaderIcon({
       return <FlaskConical className={className} aria-hidden="true" />;
     case 'retirement':
       return <PiggyBank className={className} aria-hidden="true" />;
+    case 'guides':
+      return <BookOpen className={className} aria-hidden="true" />;
   }
 }
 

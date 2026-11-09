@@ -19,6 +19,11 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com/date-time',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Date & Time Calculators — Exact Age, Days Between Dates & Work Hours | SolveItCalculator',
+    description: 'Free date and time calculators with leap-year accuracy: calculate exact chronological age in years, months, and days, count days between calendar dates, and sum hours and minutes.',
+  },
 };
 
 const DATE_TIME_CONFIG: CategoryHubConfig = {
@@ -160,7 +165,7 @@ const DATE_TIME_CONFIG: CategoryHubConfig = {
     },
     {
       name: 'Unit Conversion',
-      href: '/unit-conversion',
+      href: '/conversions',
       iconName: 'arrow-left-right',
       iconBg: 'bg-[#EBF2FF]',
       iconColor: 'text-[#2457D6]',

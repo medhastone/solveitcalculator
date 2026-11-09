@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/india-income-tax-calculator',
   },
+  openGraph: {
+    title: 'India Income Tax Calculator (FY 2025-26 & 2024-25 New vs Old Regime) | SolveItCalculator',
+    description: 'Compare India Income Tax under New Regime (Section 115BAC with ₹75,000 standard deduction and ₹12L Section 87A rebate) vs Old Regime (80C, 80D, HRA, 24b). Computes exact deductions required for Old Regime to win.',
+    url: 'https://solveitcalculator.com/finance/india-income-tax-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'India Income Tax Calculator (FY 2025-26 & 2024-25 New vs Old Regime) | SolveItCalculator',
+    description: 'Compare India Income Tax under New Regime (Section 115BAC with ₹75,000 standard deduction and ₹12L Section 87A rebate) vs Old Regime (80C, 80D, HRA, 24b). Computes exact deductions required for Old Regime to win.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +34,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/india-income-tax-calculator',
   shortAnswer:
     'Compare your Indian income tax liability side-by-side under the Section 115BAC New Tax Regime and the Old Tax Regime for FY 2025–26 (AY 2026–27) and FY 2024–25. Includes Section 87A rebate, marginal relief, 4% Health & Education Cess, and solves for the exact deduction amount needed for the Old Regime to break even.',
@@ -84,7 +95,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   relatedConversionPaths: [
     { label: 'HRA Exemption Calculator', path: '/finance/hra-exemption-calculator' },
     { label: 'In-Hand Salary Calculator (CTC)', path: '/finance/in-hand-salary-calculator' },
-    { label: 'SIP Calculator', path: '/finance/sip-calculator' },
+    { label: 'SIP Calculator', path: '/compound-interest-calculator' },
   ],
   relatedGuidePaths: [
     { title: 'India Capital Gains Tax Calculator', path: '/finance/india-capital-gains-tax-calculator' },

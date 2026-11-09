@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/india-capital-gains-tax-calculator',
   },
+  openGraph: {
+    title: 'India Capital Gains Tax Calculator (Sec 112A LTCG 12.5% & Sec 111A STCG 20%) | SolveItCalculator',
+    description: 'Calculate India LTCG and STCG tax on listed equity shares, mutual funds, real estate, and gold under Finance (No. 2) Act 2024. Includes ₹1,25,000 Section 112A exemption, 12.5% LTCG, 20% STCG, and 4% cess.',
+    url: 'https://solveitcalculator.com/finance/india-capital-gains-tax-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'India Capital Gains Tax Calculator (Sec 112A LTCG 12.5% & Sec 111A STCG 20%) | SolveItCalculator',
+    description: 'Calculate India LTCG and STCG tax on listed equity shares, mutual funds, real estate, and gold under Finance (No. 2) Act 2024. Includes ₹1,25,000 Section 112A exemption, 12.5% LTCG, 20% STCG, and 4% cess.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +34,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/india-capital-gains-tax-calculator',
   shortAnswer:
     'Compute your Indian short-term and long-term capital gains tax on listed equity shares, equity mutual funds, real estate, and debt funds using the updated Finance (No. 2) Act, 2024 rates (12.5% LTCG above ₹1,25,000 u/s 112A; 20% STCG u/s 111A).',
@@ -81,7 +92,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   relatedToolIds: ['capital-gains-tax-calculator', 'sip-calculator', 'roi-calculator'],
   relatedConversionPaths: [
     { label: 'India Income Tax Calculator', path: '/finance/india-income-tax-calculator' },
-    { label: 'SIP Calculator', path: '/finance/sip-calculator' },
+    { label: 'SIP Calculator', path: '/compound-interest-calculator' },
     { label: 'US Capital Gains Calculator', path: '/finance/capital-gains-tax-calculator' },
   ],
   relatedGuidePaths: [

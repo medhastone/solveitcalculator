@@ -303,7 +303,7 @@ export default function BreakEvenClient() {
           },
           {
             title: 'ROI Calculator',
-            path: '/finance/roi-calculator',
+            path: '/finance/investment-growth-calculator',
             desc: 'Calculate return on capital invested in equipment or product launches.',
           },
         ]}

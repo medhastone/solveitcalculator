@@ -292,7 +292,7 @@ export default function OvertimePayClient() {
           },
           {
             title: 'Work Hours & Payroll Calculator',
-            path: '/work-hours-payroll-calculator',
+            path: '/time-duration-calculator',
             desc: 'Track daily clock-in/out timesheets and break deductions.',
           },
           {

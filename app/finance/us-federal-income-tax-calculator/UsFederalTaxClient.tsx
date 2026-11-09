@@ -891,7 +891,7 @@ export default function UsFederalTaxClient() {
       {/* Related Tax & Retirement Tools */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2">
         <Link
-          href="/salary-and-payroll"
+          href="/finance/us-state-take-home-calculator"
           className="p-3.5 rounded-xl bg-surface-container border border-outline-variant/60 hover:border-primary transition-all group flex items-center justify-between"
         >
           <div>
@@ -904,7 +904,7 @@ export default function UsFederalTaxClient() {
         </Link>
 
         <Link
-          href="/finance/taxes/us"
+          href="/finance/self-employment-tax-calculator"
           className="p-3.5 rounded-xl bg-surface-container border border-outline-variant/60 hover:border-primary transition-all group flex items-center justify-between"
         >
           <div>
@@ -917,7 +917,7 @@ export default function UsFederalTaxClient() {
         </Link>
 
         <Link
-          href="/finance/appreciation-calculator"
+          href="/finance/capital-gains-tax-calculator"
           className="p-3.5 rounded-xl bg-surface-container border border-outline-variant/60 hover:border-primary transition-all group flex items-center justify-between"
         >
           <div>

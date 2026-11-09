@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/1099-vs-w2-calculator',
   },
+  openGraph: {
+    title: '1099 vs W-2 Calculator (2025 Break-Even Hourly & Annual Solver) | SolveItCalculator',
+    description: 'Compare 1099 contractor income vs W-2 salary side-by-side. Computes Self-Employment tax, QBI 20% deduction, employer health and 401(k) match value, and solves for the exact break-even 1099 hourly rate.',
+    url: 'https://solveitcalculator.com/finance/1099-vs-w2-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '1099 vs W-2 Calculator (2025 Break-Even Hourly & Annual Solver) | SolveItCalculator',
+    description: 'Compare 1099 contractor income vs W-2 salary side-by-side. Computes Self-Employment tax, QBI 20% deduction, employer health and 401(k) match value, and solves for the exact break-even 1099 hourly rate.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +34,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/1099-vs-w2-calculator',
   shortAnswer:
     'Compare a W-2 employee salary and benefits package against a 1099 independent contractor rate. Uses a 50-iteration numerical bisection solver to compute the exact 1099 gross revenue and hourly rate required to match your W-2 after-tax total compensation.',
@@ -84,7 +95,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   relatedToolIds: ['self-employment-tax-calculator', 'us-state-take-home-calculator', 'salary-to-hourly-calculator'],
   relatedConversionPaths: [
     { label: 'Self-Employment Tax Calculator', path: '/finance/self-employment-tax-calculator' },
-    { label: 'Freelance Hourly Rate Calculator', path: '/freelance-hourly-rate-calculator' },
+    { label: 'Freelance Hourly Rate Calculator', path: '/finance/salary-to-hourly-calculator' },
     { label: 'Take-Home Pay Calculator', path: '/finance/take-home-pay-calculator' },
   ],
   relatedGuidePaths: [

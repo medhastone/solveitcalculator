@@ -1244,7 +1244,7 @@ export default function SalaryCalculatorClient() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link
-              href="/salary-tax-calculator"
+              href="/finance/us-state-take-home-calculator"
               className="group p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 transition-colors"
             >
               <p className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
@@ -1256,11 +1256,11 @@ export default function SalaryCalculatorClient() {
             </Link>
 
             <Link
-              href="/finance/uk-income-tax-calculator"
+              href="/finance/uk-paye-calculator"
               className="group p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 transition-colors"
             >
               <p className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                UK Income Tax Calculator
+                UK PAYE Income Tax Calculator
               </p>
               <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
                 Dedicated HMRC tax band and National Insurance estimator.
@@ -1292,14 +1292,14 @@ export default function SalaryCalculatorClient() {
             </Link>
 
             <Link
-              href="/finance/australia-income-tax-calculator"
+              href="/retirement-and-super"
               className="group p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 transition-colors"
             >
               <p className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
-                Australia Income Tax Calculator
+                Retirement & Super Calculators
               </p>
               <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
-                Australian resident tax bands and Medicare levy breakdown.
+                Explore 401(k), Superannuation, RMD, and FIRE retirement projections.
               </p>
             </Link>
 

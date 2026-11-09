@@ -25,10 +25,22 @@ export async function generateMetadata({
     };
   }
 
+  const canonicalUrl = `https://solveitcalculator.com/guides/${guide.slug}`;
+
   return {
     title: `${guide.title} — Step-by-Step Guide & Formula | SolveItCalculator`,
     description: guide.heroIntro,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
+      title: `${guide.title} | SolveItCalculator`,
+      description: guide.heroIntro,
+      url: canonicalUrl,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
       title: `${guide.title} | SolveItCalculator`,
       description: guide.heroIntro,
     },

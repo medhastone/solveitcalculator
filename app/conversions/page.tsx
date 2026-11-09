@@ -17,6 +17,11 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com/conversions',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Unit Conversion Calculators (mm to in, kg to lbs, °C to °F) | SolveIt',
+    description: 'Convert length (mm to inches, cm to in), weight (kg to lbs, grams to oz), temperature (°C to °F), cooking volume (tbsp to cups), fuel economy, and torque.',
+  },
 };
 
 export const CONVERSIONS_HUB_CONFIG: CategoryHubConfig = {

@@ -47,11 +47,23 @@ export async function generateMetadata({
       title: 'Science Calculator | SolveItCalculator',
     };
   }
+  const canonicalUrl = `https://solveitcalculator.com/science/${slug}`;
   return {
     title: meta.title,
     description: meta.description,
     alternates: {
-      canonical: `https://solveitcalculator.com/science/${slug}`,
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: canonicalUrl,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: meta.title,
+      description: meta.description,
     },
   };
 }

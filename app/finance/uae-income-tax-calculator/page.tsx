@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/uae-income-tax-calculator',
   },
+  openGraph: {
+    title: 'UAE Salary & Income Tax Calculator (2025 0% Tax & GPSSA Pension) | SolveItCalculator',
+    description: 'Calculate 2025 UAE (Dubai & Abu Dhabi) net take-home salary under the 0% Personal Income Tax regime for expatriates and 5% GPSSA social pension rules for UAE Nationals.',
+    url: 'https://solveitcalculator.com/finance/uae-income-tax-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'UAE Salary & Income Tax Calculator (2025 0% Tax & GPSSA Pension) | SolveItCalculator',
+    description: 'Calculate 2025 UAE (Dubai & Abu Dhabi) net take-home salary under the 0% Personal Income Tax regime for expatriates and 5% GPSSA social pension rules for UAE Nationals.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +34,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/uae-income-tax-calculator',
   shortAnswer:
     'Calculate your 2025 United Arab Emirates (Dubai / Abu Dhabi) take-home salary in AED. Verifies the 0% Personal Income Tax schedule under UAE Federal Decree-Law No. 47 of 2022 and optional 5% GPSSA pension deductions for UAE Nationals.',

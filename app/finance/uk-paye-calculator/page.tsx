@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/uk-paye-calculator',
   },
+  openGraph: {
+    title: 'UK PAYE Tax Calculator (2025/26 & 2024/25 HMRC Income Tax & NI) | SolveItCalculator',
+    description: 'Calculate UK take-home pay per year, month, and week under HMRC 2025/26 & 2024/25 rules. Includes £12,570 Personal Allowance taper above £100,000, Scottish vs rUK tax bands, Class 1 National Insurance (8%/2%), pension sacrifice, and Student Loan Plans 1, 2, 4, 5 & Postgrad.',
+    url: 'https://solveitcalculator.com/finance/uk-paye-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'UK PAYE Tax Calculator (2025/26 & 2024/25 HMRC Income Tax & NI) | SolveItCalculator',
+    description: 'Calculate UK take-home pay per year, month, and week under HMRC 2025/26 & 2024/25 rules. Includes £12,570 Personal Allowance taper above £100,000, Scottish vs rUK tax bands, Class 1 National Insurance (8%/2%), pension sacrifice, and Student Loan Plans 1, 2, 4, 5 & Postgrad.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +34,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/uk-paye-calculator',
   shortAnswer:
     'Calculate your UK PAYE net take-home salary per year, month, and week using official GOV.UK / HMRC schedules. Supports England/Wales/NI and Scottish tax bands, the £100,000 Personal Allowance taper, Class 1 National Insurance (8% / 2%), pension relief methods, and Student Loan plans.',

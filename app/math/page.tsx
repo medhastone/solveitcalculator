@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/math',
   },
+  openGraph: {
+    title: 'Math Calculators — Percentages, Fractions, Ratios & Algebra | SolveItCalculator',
+    description: 'Calculate everyday percentages, percentage increases and decreases, fractions, ratios, averages, and algebraic equations with clear step-by-step explanations.',
+    url: 'https://solveitcalculator.com/math',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Math Calculators — Percentages, Fractions, Ratios & Algebra | SolveItCalculator',
+    description: 'Calculate everyday percentages, percentage increases and decreases, fractions, ratios, averages, and algebraic equations with clear step-by-step explanations.',
+  },
 };
 
 export default function MathCategoryPage() {

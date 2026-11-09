@@ -9,6 +9,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/terms-of-service',
   },
+  openGraph: {
+    title: 'Terms of Service & Educational Disclaimer | SolveItCalculator',
+    description: 'Read the Terms of Service, acceptable use guidelines, and educational disclaimer for using calculators, formulas, and reference tables on SolveItCalculator.com.',
+    url: 'https://solveitcalculator.com/terms-of-service',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Terms of Service & Educational Disclaimer | SolveItCalculator',
+    description: 'Read the Terms of Service, acceptable use guidelines, and educational disclaimer for using calculators, formulas, and reference tables on SolveItCalculator.com.',
+  },
 };
 
 export default function TermsOfServicePage() {

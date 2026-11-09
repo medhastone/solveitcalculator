@@ -1104,9 +1104,9 @@ export function PayRaiseClient() {
       <RelatedCalculatorsGrid
         items={[
           {
-            title: 'Inflation Calculator',
+            title: 'Real Rate of Return & Inflation Calculator',
             description: 'Measure how CPI inflation erodes purchasing power over time.',
-            href: '/finance/inflation-calculator',
+            href: '/finance/real-rate-of-return-calculator',
           },
           {
             title: 'Salary to Hourly Calculator',

@@ -185,7 +185,7 @@ const SIDEBAR_RELATED_CATEGORIES = [
   },
   {
     name: 'Unit Conversion',
-    href: '/unit-conversion',
+    href: '/conversions',
     icon: ArrowLeftRight,
     iconBg: 'bg-[#EBF2FF]',
     iconColor: 'text-[#2457D6]',

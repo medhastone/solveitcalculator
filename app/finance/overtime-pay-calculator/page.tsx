@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/overtime-pay-calculator',
   },
+  openGraph: {
+    title: 'Overtime Pay Calculator (1.5x Time-and-a-Half & 2x Double Time) | SolveItCalculator',
+    description: 'Calculate weekly, bi-weekly, monthly, and annual overtime pay, blended effective hourly rate, and 1.5x / 2.0x multipliers under US FLSA (40-hour), California daily overtime, and India Factories Act rules.',
+    url: 'https://solveitcalculator.com/finance/overtime-pay-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Overtime Pay Calculator (1.5x Time-and-a-Half & 2x Double Time) | SolveItCalculator',
+    description: 'Calculate weekly, bi-weekly, monthly, and annual overtime pay, blended effective hourly rate, and 1.5x / 2.0x multipliers under US FLSA (40-hour), California daily overtime, and India Factories Act rules.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

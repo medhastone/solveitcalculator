@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/singapore-income-tax-calculator',
   },
+  openGraph: {
+    title: 'Singapore Income Tax & CPF Calculator (YA 2025 IRAS Resident Rates) | SolveItCalculator',
+    description: 'Calculate YA 2025 Singapore net salary after IRAS progressive resident income tax brackets (0% to 24%), Earned Income Relief, and mandatory 20% CPF employee contributions.',
+    url: 'https://solveitcalculator.com/finance/singapore-income-tax-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Singapore Income Tax & CPF Calculator (YA 2025 IRAS Resident Rates) | SolveItCalculator',
+    description: 'Calculate YA 2025 Singapore net salary after IRAS progressive resident income tax brackets (0% to 24%), Earned Income Relief, and mandatory 20% CPF employee contributions.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +34,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/singapore-income-tax-calculator',
   shortAnswer:
     'Calculate your Singapore net take-home pay in SGD using official YA 2025 Inland Revenue Authority of Singapore (IRAS) resident progressive tax brackets (0% up to S$20,000; top rate 24% above S$1M) and Central Provident Fund (CPF) 20% employee contributions.',

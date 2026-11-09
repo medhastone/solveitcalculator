@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/us-federal-income-tax-calculator',
   },
+  openGraph: {
+    title: 'US Federal Income Tax Calculator (2024 & 2025 IRS Brackets) | SolveItCalculator',
+    description: 'Calculate your US federal income tax, taxable income, effective and marginal tax rates, refund or amount owed, and per-bracket breakdown using verified IRS tax brackets and standard deductions.',
+    url: 'https://solveitcalculator.com/finance/us-federal-income-tax-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'US Federal Income Tax Calculator (2024 & 2025 IRS Brackets) | SolveItCalculator',
+    description: 'Calculate your US federal income tax, taxable income, effective and marginal tax rates, refund or amount owed, and per-bracket breakdown using verified IRS tax brackets and standard deductions.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

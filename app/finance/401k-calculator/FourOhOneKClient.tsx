@@ -1509,12 +1509,12 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/401k-cal
           <h4 className="text-xs font-bold text-on-surface uppercase tracking-wider">Related Retirement Planning Calculators</h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Link
-              href="/finance/coast-fire-calculator"
+              href="/fire-forecaster"
               className="p-4 rounded-2xl bg-surface-container border border-outline-variant/60 hover:border-primary transition-all group flex items-center justify-between"
             >
               <div className="space-y-1">
                 <span className="text-xs font-bold text-on-surface group-hover:text-primary transition-colors block">
-                  Coast FIRE Calculator
+                  FIRE &amp; Coast FIRE Forecaster
                 </span>
                 <p className="text-[11px] text-on-surface-variant">
                   Forecast if your investments will compound to your nest egg with zero additional savings.

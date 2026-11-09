@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/hra-exemption-calculator',
   },
+  openGraph: {
+    title: 'HRA Exemption Calculator (Section 10(13A) & Rule 2A Metro vs Non-Metro) | SolveItCalculator',
+    description: 'Calculate tax-exempt and taxable House Rent Allowance (HRA) under Section 10(13A) and Income Tax Rule 2A. Shows yearly and monthly breakdown and highlights which of the three statutory limits applied.',
+    url: 'https://solveitcalculator.com/finance/hra-exemption-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'HRA Exemption Calculator (Section 10(13A) & Rule 2A Metro vs Non-Metro) | SolveItCalculator',
+    description: 'Calculate tax-exempt and taxable House Rent Allowance (HRA) under Section 10(13A) and Income Tax Rule 2A. Shows yearly and monthly breakdown and highlights which of the three statutory limits applied.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +34,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/hra-exemption-calculator',
   shortAnswer:
     'Calculate your tax-exempt and taxable House Rent Allowance (HRA) per month and year under Section 10(13A) and Rule 2A of the Indian Income Tax Rules (Old Tax Regime). Automatically identifies which of the three statutory limits governs your exemption.',

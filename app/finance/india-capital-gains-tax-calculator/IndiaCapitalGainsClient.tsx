@@ -252,7 +252,7 @@ export default function IndiaCapitalGainsClient() {
           },
           {
             title: 'SIP Calculator',
-            path: '/finance/sip-calculator',
+            path: '/compound-interest-calculator',
             desc: 'Model systematic equity mutual fund compounding and step-up returns.',
           },
           {

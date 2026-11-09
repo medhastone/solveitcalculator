@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/france-income-tax-calculator',
   },
+  openGraph: {
+    title: 'France Income Tax Calculator (2025 DGFiP Barème & Cotisations Sociales) | SolveItCalculator',
+    description: 'Calculate 2025 French net salary after Cotisations Sociales (~22%), the 10% Abattement pour frais professionnels, Quotient Familial splitting, and DGFiP progressive Impôt sur le Revenu brackets.',
+    url: 'https://solveitcalculator.com/finance/france-income-tax-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'France Income Tax Calculator (2025 DGFiP Barème & Cotisations Sociales) | SolveItCalculator',
+    description: 'Calculate 2025 French net salary after Cotisations Sociales (~22%), the 10% Abattement pour frais professionnels, Quotient Familial splitting, and DGFiP progressive Impôt sur le Revenu brackets.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {
@@ -23,7 +34,7 @@ const SYSTEM_DATA: CalculatorSystemData = {
   categoryPath: '/finance',
   subcategory: 'taxes',
   subcategoryName: 'Taxes & Statutory Withholdings',
-  subcategoryPath: '/finance/taxes',
+  subcategoryPath: '/finance',
   canonicalUrl: 'https://solveitcalculator.com/finance/france-income-tax-calculator',
   shortAnswer:
     'Calculate your 2025 French net salary after employee social contributions (Cotisations Sociales, CSG/CRDS), the 10% professional expense deduction, Quotient Familial parts, and DGFiP progressive income tax bands (0%, 11%, 30%, 41%, 45%).',

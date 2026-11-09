@@ -101,7 +101,7 @@ export const FINANCE_CATALOG = [
         description: 'Calculate your required monthly deposit to reach any savings goal, or solve how long it will take with compound growth, seed savings, optional inflation, and custom goal presets.',
         category: 'Savings & Liquidity',
         categorySlug: 'savings',
-        path: '/finance/savings-goal-calculator',
+        path: '/compound-interest-calculator',
         keywords: [
             'savings goal calculator',
             'savings calculator',
@@ -214,7 +214,7 @@ export const FINANCE_CATALOG = [
         description: 'Calculate your Coast FIRE milestone number, years to retirement compounding, surplus or deficit gap, age-by-age growth trajectory, and savings bridge plan without saving another dollar.',
         category: 'Retirement & FIRE',
         categorySlug: 'retirement',
-        path: '/finance/coast-fire-calculator',
+        path: '/fire-forecaster',
         keywords: [
             'coast fire calculator',
             'coast fire',
@@ -366,7 +366,7 @@ export const FINANCE_CATALOG = [
         description: 'Calculate future cost of goods, purchasing power erosion of cash, and exact Fisher equation real investment returns with sourced benchmark rates.',
         category: 'Investing & Growth',
         categorySlug: 'investing',
-        path: '/finance/inflation-calculator',
+        path: '/finance/real-rate-of-return-calculator',
         keywords: [
             'inflation calculator',
             'purchasing power calculator',
@@ -387,7 +387,7 @@ export const FINANCE_CATALOG = [
         description: 'Calculate Return on Investment (ROI), annualized ROI, net gain with costs and dividends, compare up to 3 investments, and audit when ROI misleads.',
         category: 'Investing & Growth',
         categorySlug: 'investing',
-        path: '/finance/roi-calculator',
+        path: '/finance/investment-growth-calculator',
         keywords: [
             'roi calculator',
             'return on investment',
@@ -406,7 +406,7 @@ export const FINANCE_CATALOG = [
         description: 'Calculate Compound Annual Growth Rate (CAGR), ending portfolio value, or time required with exact calendar dates, volatility drag simulation, and XIRR comparison.',
         category: 'Investing & Growth',
         categorySlug: 'investing',
-        path: '/finance/cagr-calculator',
+        path: '/finance/investment-growth-calculator',
         keywords: [
             'cagr calculator',
             'cagr',
@@ -444,7 +444,7 @@ export const FINANCE_CATALOG = [
         description: 'Calculate mutual fund SIP returns, annual step-up growth, inflation-adjusted real purchasing power, cost of waiting, and target goal planning.',
         category: 'Investing & Growth',
         categorySlug: 'investing',
-        path: '/finance/sip-calculator',
+        path: '/compound-interest-calculator',
         keywords: [
             'sip calculator',
             'sip',
@@ -500,7 +500,7 @@ export const FINANCE_CATALOG = [
         description: 'Calculate monthly principal & interest (P&I), property taxes, home insurance, PMI, and amortization schedules.',
         category: 'Mortgages & Real Estate',
         categorySlug: 'mortgages',
-        path: '/finance/mortgage-calculator',
+        path: '/mortgage-calculator',
         keywords: [
             'mortgage',
             'home loan',
@@ -741,7 +741,7 @@ export const FINANCE_CATALOG = [
         description: 'Model compounding growth over time with initial deposit, regular contributions, interest rates, and compounding frequencies.',
         category: 'Investing & Growth',
         categorySlug: 'investing',
-        path: '/finance/compound-interest',
+        path: '/compound-interest-calculator',
         keywords: [
             'compound interest',
             'apy',
@@ -813,7 +813,7 @@ export const FINANCE_CATALOG = [
         description: 'Explore progressive income tax brackets, marginal vs. effective tax rates, and standard deductions by jurisdiction.',
         category: 'Taxes',
         categorySlug: 'taxes',
-        path: '/finance/taxes',
+        path: '/finance',
         keywords: [
             'tax',
             'income tax',
@@ -919,7 +919,7 @@ export const FINANCE_CATALOG = [
         description: 'Calculate sustainable billable hourly rates covering taxes, health benefits, operating expenses, and target profit.',
         category: 'Business Finance',
         categorySlug: 'business',
-        path: '/freelance-hourly-rate-calculator',
+        path: '/finance/salary-to-hourly-calculator',
         keywords: [
             'freelance rate',
             'hourly rate',
@@ -967,7 +967,7 @@ export const FINANCE_CATALOG = [
         description: 'Track daily clock-in/out hours, lunch breaks, overtime multipliers, and gross paycheck totals.',
         category: 'Salary & Budgeting',
         categorySlug: 'work-hours-payroll-calculator',
-        path: '/work-hours-payroll-calculator',
+        path: '/time-duration-calculator',
         keywords: [
             'work hours',
             'timesheet',
@@ -1261,7 +1261,7 @@ export const FINANCE_GOALS = [
         tools: [
             {
                 name: 'Mortgage Calculator',
-                path: '/finance/mortgage-calculator',
+                path: '/mortgage-calculator',
                 desc: 'Monthly principal, interest, taxes, and insurance (PITI)'
             },
             {
@@ -1307,7 +1307,7 @@ export const FINANCE_GOALS = [
         tools: [
             {
                 name: 'Compound Interest Calculator',
-                path: '/finance/compound-interest',
+                path: '/compound-interest-calculator',
                 desc: 'Visual growth curve across frequencies and deposits'
             },
             {
@@ -1345,7 +1345,7 @@ export const FINANCE_GOALS = [
             },
             {
                 name: 'Coast FIRE Calculator',
-                path: '/finance/coast-fire-calculator',
+                path: '/fire-forecaster',
                 desc: 'Coast FIRE number, gap/surplus, and portfolio growth projection'
             },
             {
@@ -1388,7 +1388,7 @@ export const FINANCE_GOALS = [
             },
             {
                 name: 'Compound Interest Growth',
-                path: '/finance/compound-interest',
+                path: '/compound-interest-calculator',
                 desc: 'Future value projections with regular monthly savings'
             }
         ]
@@ -1411,7 +1411,7 @@ export const FINANCE_GOALS = [
             },
             {
                 name: 'Income Tax Calculator',
-                path: '/finance/taxes',
+                path: '/finance',
                 desc: 'Marginal vs. effective tax brackets and withholdings'
             }
         ]
@@ -1424,7 +1424,7 @@ export const FINANCE_GOALS = [
         tools: [
             {
                 name: 'Freelance Rate Calculator',
-                path: '/freelance-hourly-rate-calculator',
+                path: '/finance/salary-to-hourly-calculator',
                 desc: 'Determine billable rates covering taxes and overhead'
             },
             {
@@ -1479,7 +1479,7 @@ export const FINANCIAL_QUESTIONS = [
     {
         question: 'How much could my regular investments grow over 10 or 20 years?',
         toolName: 'Compound Interest Calculator',
-        path: '/finance/compound-interest',
+        path: '/compound-interest-calculator',
         hint: 'See how consistent monthly contributions compound with annual returns.',
         icon: 'trending_up'
     },
@@ -1493,7 +1493,7 @@ export const FINANCIAL_QUESTIONS = [
     {
         question: 'How much house can I afford each month?',
         toolName: 'Mortgage Calculator',
-        path: '/finance/mortgage-calculator',
+        path: '/mortgage-calculator',
         hint: 'Model P&I, property taxes, homeowners insurance, and down payment sizes.',
         icon: 'home'
     },
@@ -1514,7 +1514,7 @@ export const FINANCIAL_QUESTIONS = [
     {
         question: 'How much income tax might I owe across brackets?',
         toolName: 'Income Tax Calculator',
-        path: '/finance/taxes',
+        path: '/finance',
         hint: 'Review marginal vs. effective tax rates and standard deductions.',
         icon: 'receipt_long'
     },
@@ -1528,7 +1528,7 @@ export const FINANCIAL_QUESTIONS = [
     {
         question: 'What billable hourly rate covers business taxes and expenses?',
         toolName: 'Freelance Rate Calculator',
-        path: '/freelance-hourly-rate-calculator',
+        path: '/finance/salary-to-hourly-calculator',
         hint: 'Back out unbillable administrative hours, self-employment tax, and profit.',
         icon: 'work'
     }
@@ -1564,7 +1564,7 @@ export const FINANCE_CATEGORIES = [
         popularTools: [
             {
                 name: 'Mortgage Calculator (PITI)',
-                path: '/finance/mortgage-calculator'
+                path: '/mortgage-calculator'
             },
             {
                 name: 'Mortgages & Real Estate Debt',
@@ -1589,15 +1589,15 @@ export const FINANCE_CATEGORIES = [
             },
             {
                 name: 'Inflation Calculator',
-                path: '/finance/inflation-calculator'
+                path: '/finance/real-rate-of-return-calculator'
             },
             {
                 name: 'ROI Calculator',
-                path: '/finance/roi-calculator'
+                path: '/finance/investment-growth-calculator'
             },
             {
                 name: 'CAGR Calculator',
-                path: '/finance/cagr-calculator'
+                path: '/finance/investment-growth-calculator'
             },
             {
                 name: 'Lumpsum Calculator',
@@ -1605,7 +1605,7 @@ export const FINANCE_CATEGORIES = [
             },
             {
                 name: 'SIP Calculator (with Step-Up)',
-                path: '/finance/sip-calculator'
+                path: '/compound-interest-calculator'
             }
         ]
     },
@@ -1651,7 +1651,7 @@ export const FINANCE_CATEGORIES = [
         popularTools: [
             {
                 name: 'Savings Goal Calculator',
-                path: '/finance/savings-goal-calculator'
+                path: '/compound-interest-calculator'
             },
             {
                 name: 'Emergency Fund Calculator',
@@ -1726,7 +1726,7 @@ export const FINANCE_CATEGORIES = [
         name: 'Taxes & Statutory Withholdings',
         description: 'Model progressive income tax brackets, calculate marginal vs. effective tax rates, and estimate standard deductions.',
         icon: 'receipt_long',
-        categoryLink: '/finance/taxes',
+        categoryLink: '/finance',
         popularTools: [
             {
                 name: 'US Federal Income Tax Calculator',
@@ -1820,7 +1820,7 @@ export const FINANCE_CATEGORIES = [
             },
             {
                 name: 'Freelance Rate Calculator',
-                path: '/freelance-hourly-rate-calculator'
+                path: '/finance/salary-to-hourly-calculator'
             }
         ]
     }
@@ -1833,11 +1833,11 @@ export const REGIONAL_HUBS = [
         links: [
             {
                 name: 'US Income Tax Brackets',
-                path: '/finance/taxes/us'
+                path: '/finance/us-federal-income-tax-calculator'
             },
             {
                 name: 'US Mortgage (P&I + Taxes)',
-                path: '/finance/mortgage-calculator'
+                path: '/mortgage-calculator'
             },
             {
                 name: 'US Loan EMI Calculator',
@@ -1852,7 +1852,7 @@ export const REGIONAL_HUBS = [
         links: [
             {
                 name: 'India Tax Slabs (Sec 115BAC)',
-                path: '/finance/taxes/india'
+                path: '/finance/india-income-tax-calculator'
             },
             {
                 name: 'India Home Loan EMI',
@@ -1871,7 +1871,7 @@ export const REGIONAL_HUBS = [
         links: [
             {
                 name: 'UK PAYE Income Tax',
-                path: '/finance/taxes/uk'
+                path: '/finance/uk-paye-calculator'
             },
             {
                 name: 'UK Loan & Mortgage EMI',
@@ -1890,7 +1890,7 @@ export const REGIONAL_HUBS = [
         links: [
             {
                 name: 'Canada Income Tax Brackets',
-                path: '/finance/taxes/canada'
+                path: '/finance/canada-income-tax-calculator'
             },
             {
                 name: 'Canada Loan EMI Calculator',
@@ -1909,7 +1909,7 @@ export const REGIONAL_HUBS = [
         links: [
             {
                 name: 'Australia Stage 3 Tax Rates',
-                path: '/finance/taxes/australia'
+                path: '/retirement-and-super'
             },
             {
                 name: 'Australia Loan EMI Calculator',
@@ -1962,7 +1962,7 @@ export const TAX_TRUST_DATA = [
 export const RECENTLY_UPDATED_TOOLS = [
     {
         name: 'Income Tax Calculator',
-        path: '/finance/taxes',
+        path: '/finance',
         description: 'Indexed standard deductions, federal tax brackets, and marginal rate thresholds for the 2025/2026 tax periods.',
         lastUpdated: 'February 2025'
     },
@@ -1974,13 +1974,13 @@ export const RECENTLY_UPDATED_TOOLS = [
     },
     {
         name: 'Compound Interest Calculator',
-        path: '/finance/compound-interest',
+        path: '/compound-interest-calculator',
         description: 'Added support for continuous, daily, monthly, and quarterly compounding frequencies with regular deposits.',
         lastUpdated: 'February 2025'
     },
     {
         name: 'Mortgage Calculator (P&I)',
-        path: '/finance/mortgage-calculator',
+        path: '/mortgage-calculator',
         description: 'Updated property tax estimations, homeowners insurance averages, and PMI threshold calculations.',
         lastUpdated: 'February 2025'
     }

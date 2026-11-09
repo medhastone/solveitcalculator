@@ -250,7 +250,7 @@ export default function CanadaTaxClient() {
           },
           {
             title: 'Savings Goal Calculator',
-            path: '/finance/savings-goal-calculator',
+            path: '/compound-interest-calculator',
             desc: 'Plan monthly contributions and compound growth toward your savings target.',
           },
           {

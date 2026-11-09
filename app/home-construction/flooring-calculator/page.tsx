@@ -15,6 +15,11 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com/home-construction/flooring-calculator',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Flooring & Vinyl Plank Calculator (sq ft & Boxes) | SolveIt',
+    description: 'Estimate room square footage, vinyl plank or hardwood box counts, linear feet to square feet coverage, waste allowance, and material cost in 3 steps.',
+  },
 };
 
 export default function FlooringCalculatorPage() {

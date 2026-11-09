@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/markup-calculator',
   },
+  openGraph: {
+    title: 'Markup Calculator (Cost to Selling Price, Margin %, Discount & Tax) | SolveItCalculator',
+    description: 'Calculate selling price, gross profit, and equivalent gross margin % from cost and markup percentage. Includes promotional discount and sales tax / GST / VAT options.',
+    url: 'https://solveitcalculator.com/finance/markup-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Markup Calculator (Cost to Selling Price, Margin %, Discount & Tax) | SolveItCalculator',
+    description: 'Calculate selling price, gross profit, and equivalent gross margin % from cost and markup percentage. Includes promotional discount and sales tax / GST / VAT options.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

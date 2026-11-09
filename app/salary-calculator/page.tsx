@@ -17,6 +17,11 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com/salary-calculator',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Salary & Take-Home Pay Calculator (US, UK, Canada, Australia, India) | SolveIt Calculator',
+    description: 'Estimate your net take-home pay across the United States, United Kingdom, Canada, Australia, and India using official tax brackets, statutory deductions, and transparent assumptions.',
+  },
 };
 
 export default function SalaryCalculatorPage() {

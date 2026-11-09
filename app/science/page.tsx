@@ -19,6 +19,11 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com/science',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Science & Engineering Calculators — Physics, Chemistry, Molarity & Ohm’s Law | SolveItCalculator',
+    description: 'Free science, physics, and chemistry calculators for molarity, solution dilution, Ohm’s law, kinematics, percent error, logarithms, and SI laboratory unit conversions.',
+  },
 };
 
 const SCIENCE_CONFIG: CategoryHubConfig = {
@@ -102,7 +107,7 @@ const SCIENCE_CONFIG: CategoryHubConfig = {
       name: 'SI & Metric Unit Converter (Mass, Temperature, Energy)',
       description:
         'Convert Kelvin, Celsius, Joules, Pascals, meters, kilograms, and liters for physics and chemistry problems.',
-      href: '/unit-converter',
+      href: '/conversions',
       category: 'SI Unit Conversion',
       displayBadge: 'SI Units',
       iconName: 'arrow-left-right',
@@ -171,7 +176,7 @@ const SCIENCE_CONFIG: CategoryHubConfig = {
       name: 'Quadratic Equation & Projectile Trajectory Solver',
       description:
         'Solve second-degree equations (ax² + bx + c = 0) commonly used in projectile motion and chemical equilibrium.',
-      href: '/math/quadratic-equation-solver',
+      href: '/math/quadratic-equation-calculator',
       category: 'Physics & Motion',
       displayBadge: 'Physics & Motion',
       iconName: 'atom',
@@ -217,7 +222,7 @@ const SCIENCE_CONFIG: CategoryHubConfig = {
     },
     {
       name: 'Unit Conversion',
-      href: '/unit-conversion',
+      href: '/conversions',
       iconName: 'arrow-left-right',
       iconBg: 'bg-[#EBF2FF]',
       iconColor: 'text-[#2457D6]',

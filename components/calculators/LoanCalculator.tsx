@@ -23,7 +23,7 @@ const LOAN_RELATED_LINKS: RelatedCalculatorLink[] = [
   {
     name: 'Salary & Tax Calculator',
     description: 'Estimate net paycheck after federal, state, and FICA taxes.',
-    href: '/salary-tax-calculator',
+    href: '/finance/take-home-pay-calculator',
     iconVariant: 'tag-amber',
   },
   {

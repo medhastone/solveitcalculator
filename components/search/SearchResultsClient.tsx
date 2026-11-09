@@ -57,7 +57,7 @@ const RELATED_CATEGORIES = [
   },
   {
     name: 'Unit Conversion',
-    href: '/unit-conversion',
+    href: '/conversions',
     icon: ArrowLeftRight,
     iconBg: 'bg-[#F3EEFF]',
     iconColor: 'text-[#7C3AED]',

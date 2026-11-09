@@ -19,6 +19,11 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com/home-construction',
     type: 'website',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Home & Construction Calculators — Concrete Yards, Flooring Area, Waste & Material Cost | SolveItCalculator',
+    description: 'Free construction and home improvement calculators for concrete slabs (cubic yards & bags), cylindrical post holes, square footage, flooring waste allowance, paint coverage, and mortgage payments.',
+  },
 };
 
 const HOME_CONSTRUCTION_CONFIG: CategoryHubConfig = {
@@ -98,7 +103,7 @@ const HOME_CONSTRUCTION_CONFIG: CategoryHubConfig = {
       name: 'Wall Area & Paint Volume Estimator',
       description:
         'Calculate wall surface area and convert paint quantities between gallons, quarts, and liters.',
-      href: '/unit-converter',
+      href: '/conversions/area',
       category: 'Walls & Paint',
       displayBadge: 'Walls & Paint',
       iconName: 'paint-bucket',
@@ -162,7 +167,7 @@ const HOME_CONSTRUCTION_CONFIG: CategoryHubConfig = {
       name: 'Construction Length & Dimension Converter',
       description:
         'Convert blueprint dimensions between inches, feet, yards, millimeters, centimeters, and meters.',
-      href: '/unit-converter',
+      href: '/conversions/length',
       category: 'Measurements',
       displayBadge: 'Measurements',
       iconName: 'ruler',
@@ -185,7 +190,7 @@ const HOME_CONSTRUCTION_CONFIG: CategoryHubConfig = {
   relatedCategories: [
     {
       name: 'Unit Conversion',
-      href: '/unit-conversion',
+      href: '/conversions',
       iconName: 'arrow-left-right',
       iconBg: 'bg-[#EBF2FF]',
       iconColor: 'text-[#2457D6]',

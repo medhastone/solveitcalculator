@@ -1443,12 +1443,12 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/roth-vs-
             </Link>
 
             <Link
-              href="/finance/taxes/us"
+              href="/finance/us-federal-income-tax-calculator"
               className="p-4 rounded-2xl bg-surface-container border border-outline-variant/60 hover:border-primary transition-all group flex items-center justify-between"
             >
               <div className="space-y-1">
                 <span className="text-xs font-bold text-on-surface group-hover:text-primary transition-colors block">
-                  US Income Tax Calculator
+                  US Federal Income Tax Calculator
                 </span>
                 <p className="text-[11px] text-on-surface-variant">
                   Find your exact federal marginal tax bracket, effective tax rate, and standard deduction.

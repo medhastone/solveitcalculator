@@ -440,9 +440,9 @@ export function CanadaIncomeTaxClient() {
             href: '/finance/salary-to-hourly-calculator',
           },
           {
-            title: 'Savings Goal Calculator',
+            title: 'Compound Interest & Savings Calculator',
             description: 'Plan monthly contributions to reach your TFSA, FHSA, or RRSP target balance.',
-            href: '/finance/savings-goal-calculator',
+            href: '/compound-interest-calculator',
           },
           {
             title: 'Pay Raise Calculator',
@@ -757,9 +757,9 @@ export function IndiaIncomeTaxClient() {
             href: '/finance/in-hand-salary-calculator',
           },
           {
-            title: 'SIP Calculator',
+            title: 'Compound Interest & SIP Calculator',
             description: 'Model systematic mutual fund and ELSS tax-saving investments.',
-            href: '/finance/sip-calculator',
+            href: '/compound-interest-calculator',
           },
         ]}
       />

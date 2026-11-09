@@ -26,7 +26,7 @@ const FOOTER_POPULAR_TOOLS = [
   { label: 'Mortgage Payment Calculator', href: '/mortgage-calculator' },
   { label: 'FIRE Retirement Forecaster', href: '/fire-forecaster' },
   { label: 'Concrete & Cubic Yards', href: '/construction-project-calculator' },
-  { label: 'Flooring & Box Estimator', href: '/flooring-calculator' },
+  { label: 'Flooring & Box Estimator', href: '/home-construction/flooring-calculator' },
   { label: 'Recipe & Baking Converter', href: '/recipe-converter' },
 ];
 

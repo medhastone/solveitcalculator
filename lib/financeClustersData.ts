@@ -299,9 +299,9 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
       { task: 'Calculate mortgage points break-even & rate reduction savings', targetUrl: '/finance/mortgage-points-calculator', badge: 'Discount Points' },
       { task: 'Calculate LTV, CLTV, equity, and pay-down needed to cancel PMI', targetUrl: '/finance/ltv-calculator', badge: 'LTV & Equity' },
       { task: 'Calculate how much house you can afford based on income and DTI', targetUrl: '/finance/mortgage-affordability-calculator', badge: 'Affordability' },
-      { task: 'Calculate total monthly PITI payment', targetUrl: '/finance/mortgage-calculator', badge: 'PITI Calculator' },
-      { task: 'Determine down payment needed to avoid PMI', targetUrl: '/finance/mortgage-calculator', badge: 'PMI Sizer' },
-      { task: 'Compare 15-year vs. 30-year mortgage lifetime interest', targetUrl: '/finance/mortgage-calculator', badge: 'Term Comparison' }
+      { task: 'Calculate total monthly PITI payment', targetUrl: '/mortgage-calculator', badge: 'PITI Calculator' },
+      { task: 'Determine down payment needed to avoid PMI', targetUrl: '/mortgage-calculator', badge: 'PMI Sizer' },
+      { task: 'Compare 15-year vs. 30-year mortgage lifetime interest', targetUrl: '/mortgage-calculator', badge: 'Term Comparison' }
     ],
     guides: [
       {
@@ -350,8 +350,8 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     ],
     primaryToolIds: ['compound-interest-calculator', 'investment-calculator', 'fire-forecaster'],
     goalTasks: [
-      { task: 'Forecast future portfolio balance with monthly deposits', targetUrl: '/finance/compound-interest', badge: 'Compound Growth' },
-      { task: 'Calculate Compound Annual Growth Rate (CAGR)', targetUrl: '/finance/compound-interest', badge: 'CAGR Engine' },
+      { task: 'Forecast future portfolio balance with monthly deposits', targetUrl: '/compound-interest-calculator', badge: 'Compound Growth' },
+      { task: 'Calculate Compound Annual Growth Rate (CAGR)', targetUrl: '/compound-interest-calculator', badge: 'CAGR Engine' },
       { task: 'Model systematic investment plan (SIP) returns', targetUrl: '/finance/investment-calculator/in', badge: 'SIP Forecaster' }
     ],
     guides: [
@@ -385,7 +385,7 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     slug: 'compound-interest',
     title: 'Compound Interest',
     h1: 'Compound Interest & Exponential Growth Calculators',
-    canonicalPath: '/finance/compound-interest',
+    canonicalPath: '/compound-interest-calculator',
     description: 'Calculate exponential interest growth, daily/monthly/annual compounding frequency effects, Rule of 72 doubling times, and principal-versus-interest balance schedules.',
     calculatorMathOverview: 'Future Value A = P(1 + r/n)^(nt) + PMT × [((1 + r/n)^(nt) - 1) / (r/n)]. Doubling time rule: Years ≈ 72 ÷ Interest Rate (%).',
     modelAssumptions: [
@@ -401,9 +401,9 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     ],
     primaryToolIds: ['compound-interest-calculator', 'investment-calculator', 'fire-forecaster'],
     goalTasks: [
-      { task: 'Simulate compound growth with periodic monthly contributions', targetUrl: '/finance/compound-interest', badge: 'Compound Sim' },
-      { task: 'Calculate Rule of 72 investment doubling timeline', targetUrl: '/finance/compound-interest', badge: 'Doubling Rule' },
-      { task: 'Convert APR nominal rate to APY effective annual yield', targetUrl: '/finance/compound-interest', badge: 'APR vs APY' }
+      { task: 'Simulate compound growth with periodic monthly contributions', targetUrl: '/compound-interest-calculator', badge: 'Compound Sim' },
+      { task: 'Calculate Rule of 72 investment doubling timeline', targetUrl: '/compound-interest-calculator', badge: 'Doubling Rule' },
+      { task: 'Convert APR nominal rate to APY effective annual yield', targetUrl: '/compound-interest-calculator', badge: 'APR vs APY' }
     ],
     guides: [
       {
@@ -468,9 +468,9 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     ],
     primaryToolIds: ['compound-interest-calculator', 'investment-calculator', 'fire-forecaster'],
     goalTasks: [
-      { task: 'Calculate monthly savings needed to reach a financial goal', targetUrl: '/finance/compound-interest', badge: 'Goal Accumulator' },
+      { task: 'Calculate monthly savings needed to reach a financial goal', targetUrl: '/compound-interest-calculator', badge: 'Goal Accumulator' },
       { task: 'Determine 3-month and 6-month emergency fund targets', targetUrl: '/finance/savings', badge: 'Emergency Fund' },
-      { task: 'Calculate High-Yield Savings Account (HYSA) interest earnings', targetUrl: '/finance/compound-interest', badge: 'HYSA APY' }
+      { task: 'Calculate High-Yield Savings Account (HYSA) interest earnings', targetUrl: '/compound-interest-calculator', badge: 'HYSA APY' }
     ],
     guides: [
       {
@@ -519,7 +519,7 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     primaryToolIds: ['fire-forecaster', 'compound-interest-calculator', 'retirement-countdown'],
     goalTasks: [
       { task: 'Calculate retirement nest egg needed for target income', targetUrl: '/finance/fire-forecaster', badge: 'Nest Egg Sizer' },
-      { task: 'Project 401(k) and IRA growth with employer match', targetUrl: '/finance/compound-interest', badge: '401(k) Forecaster' },
+      { task: 'Project 401(k) and IRA growth with employer match', targetUrl: '/compound-interest-calculator', badge: '401(k) Forecaster' },
       { task: 'Count exact remaining workdays and shifts to retirement', targetUrl: '/finance/retirement', badge: 'Workday Countdown' }
     ],
     guides: [
@@ -652,7 +652,7 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     slug: 'taxes',
     title: 'Taxes & Statutory Deductions',
     h1: 'Income Tax, Marginal Brackets & Statutory Deductions',
-    canonicalPath: '/finance/taxes',
+    canonicalPath: '/finance',
     description: 'Calculate income tax liabilities, progressive marginal brackets, standard allowances, FICA payroll contributions, GST, and VAT across the US, UK, Canada, Australia, and India.',
     calculatorMathOverview: 'Progressive tax liability = Σ [ (min(TaxableIncome, BracketMax_i) - BracketMin_i) × Rate_i ] for all applicable tiers above standard deductions/allowances.',
     modelAssumptions: [
@@ -883,7 +883,7 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     goalTasks: [
       { task: 'Calculate Net Operating Income (NOI) and Capitalization Rate (Cap Rate)', targetUrl: '/finance/real-estate', badge: 'Cap Rate' },
       { task: 'Calculate Cash-on-Cash Return on rental down payment', targetUrl: '/finance/real-estate', badge: 'Cash-on-Cash' },
-      { task: 'Model complete residential mortgage PITI schedule', targetUrl: '/finance/mortgage-calculator', badge: 'Mortgage P&I' }
+      { task: 'Model complete residential mortgage PITI schedule', targetUrl: '/mortgage-calculator', badge: 'Mortgage P&I' }
     ],
     guides: [
       {

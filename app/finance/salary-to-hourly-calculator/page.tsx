@@ -11,6 +11,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/salary-to-hourly-calculator',
   },
+  openGraph: {
+    title: 'Salary to Hourly Calculator (2,080 Hours & All Pay Periods) | SolveItCalculator',
+    description: 'Convert annual salary to hourly wage (or hourly to annual) across daily, weekly, bi-weekly, semi-monthly, and monthly pay periods. Includes unpaid leave and paid holiday adjustments.',
+    url: 'https://solveitcalculator.com/finance/salary-to-hourly-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Salary to Hourly Calculator (2,080 Hours & All Pay Periods) | SolveItCalculator',
+    description: 'Convert annual salary to hourly wage (or hourly to annual) across daily, weekly, bi-weekly, semi-monthly, and monthly pay periods. Includes unpaid leave and paid holiday adjustments.',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

@@ -295,7 +295,7 @@ export default function PayRaiseClient() {
         links={[
           {
             title: 'Inflation Calculator',
-            path: '/finance/inflation-calculator',
+            path: '/finance/real-rate-of-return-calculator',
             desc: 'Model purchasing power erosion and real Fisher equation returns.',
           },
           {

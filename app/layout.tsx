@@ -3,13 +3,11 @@ import './globals.css';
 import AppShell from '@/components/AppShell';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://solveitcalculator.com'),
   title:
     'SolveItCalculator — Free Online Calculators, Step-by-Step Formulas & Reference Charts',
   description:
     'Free, fast online calculators with live step-by-step formulas and reference tables across Math, Finance & Salary Tax, Home & Construction, Unit & Recipe Conversion, Date & Time, Health, and Science.',
-  alternates: {
-    canonical: 'https://solveitcalculator.com',
-  },
   openGraph: {
     title:
       'SolveItCalculator — Free Online Calculators, Step-by-Step Formulas & Reference Charts',
@@ -18,6 +16,13 @@ export const metadata: Metadata = {
     url: 'https://solveitcalculator.com',
     siteName: 'SolveItCalculator',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title:
+      'SolveItCalculator — Free Online Calculators, Step-by-Step Formulas & Reference Charts',
+    description:
+      'Calculate percentages, construction materials, recipe conversions, country take-home salary, loans, mortgages, BMI, and more with 100% transparent formulas.',
   },
 };
 

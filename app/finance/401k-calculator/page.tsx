@@ -11,6 +11,19 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/401k-calculator',
   },
+  openGraph: {
+    title: '401(k) Calculator — Employer Match, IRS Limits & Retirement Growth | SolveItCalculator',
+    description:
+      'Calculate your 401(k) balance at retirement, employer match optimization, IRS Section 402(g) elective deferral limits ($23,500), age 50+ catch-up ($7,500), and SECURE 2.0 Super Catch-Up ($11,250 for ages 60–63).',
+    url: 'https://solveitcalculator.com/finance/401k-calculator',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '401(k) Calculator — Employer Match, IRS Limits & Retirement Growth | SolveItCalculator',
+    description:
+      'Calculate your 401(k) balance at retirement, employer match optimization, IRS Section 402(g) elective deferral limits ($23,500), age 50+ catch-up ($7,500), and SECURE 2.0 Super Catch-Up ($11,250 for ages 60–63).',
+  },
 };
 
 const SYSTEM_DATA: CalculatorSystemData = {

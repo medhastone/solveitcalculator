@@ -5,9 +5,6 @@ export const metadata: Metadata = {
     'Finance, Tax & Salary Calculators — Mortgage, Loans, Take-Home Pay & Retirement | SolveItCalculator',
   description:
     'Free financial, tax, and retirement calculators: estimate country-specific salary and take-home pay (US, UK, Canada, Australia, India), mortgage payments, loan amortization, compound interest, 401(k)/RMD, and profit margins.',
-  alternates: {
-    canonical: 'https://solveitcalculator.com/finance',
-  },
   openGraph: {
     title:
       'Finance, Tax & Salary Calculators — Net Pay, Mortgage, Loans & Investing | SolveItCalculator',
