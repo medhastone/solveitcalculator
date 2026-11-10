@@ -51,6 +51,12 @@ const HOME_JSON_LD = {
       '@id': 'https://solveitcalculator.com/#organization',
       name: 'SolveItCalculator',
       url: 'https://solveitcalculator.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://solveitcalculator.com/apple-icon',
+        width: 180,
+        height: 180,
+      },
     },
   ],
 };

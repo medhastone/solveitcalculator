@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <!-- Vibrant Royal Blue matching site theme (#2457D6) -->
+    <linearGradient id="calc_bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="45%" stop-color="#2457D6" />
+      <stop offset="100%" stop-color="#1A44B8" />
+    </linearGradient>
+
+    <!-- Radiant Emerald Solved Key (#10B981) -->
+    <linearGradient id="calc_emerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+
+    <!-- Bezel Highlight Rim -->
+    <linearGradient id="calc_rim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#93C5FD" stop-opacity="0.2" />
+    </linearGradient>
+  </defs>
+
+  <!-- Squircle Base (Signature Shape) -->
+  <rect x="2" y="2" width="44" height="44" rx="12" fill="url(#calc_bg)" />
+  <rect x="2.6" y="2.6" width="42.8" height="42.8" rx="11.4" stroke="url(#calc_rim)" stroke-width="1.2" />
+
+  <!-- Top Display Bar: High-Contrast Pure White Screen -->
+  <rect x="8" y="8" width="32" height="10.5" rx="3.5" fill="#FFFFFF" />
+  <!-- Display Formula / Result Accent: Sleek Blue Calculation Bar & Emerald Verified Node -->
+  <rect x="12" y="12.2" width="10" height="2.2" rx="1.1" fill="#2457D6" />
+  <circle cx="34" cy="13.3" r="2.2" fill="#10B981" />
+
+  <!-- 4 Bold Operator Keycaps (Clear, High-Contrast, Zero Clutter) -->
+  <!-- Key 1: Top-Left (+) -->
+  <rect x="8" y="21.5" width="14.5" height="10" rx="3.2" fill="#FFFFFF" fill-opacity="0.95" />
+  <path d="M 15.25 24 L 15.25 29 M 12.75 26.5 L 17.75 26.5" stroke="#2457D6" stroke-width="2.2" stroke-linecap="round" />
+
+  <!-- Key 2: Top-Right (−) -->
+  <rect x="25.5" y="21.5" width="14.5" height="10" rx="3.2" fill="#FFFFFF" fill-opacity="0.95" />
+  <line x1="29.75" y1="26.5" x2="35.75" y2="26.5" stroke="#2457D6" stroke-width="2.2" stroke-linecap="round" />
+
+  <!-- Key 3: Bottom-Left (×) -->
+  <rect x="8" y="33.5" width="14.5" height="10" rx="3.2" fill="#FFFFFF" fill-opacity="0.95" />
+  <path d="M 13.25 36.5 L 17.25 40.5 M 17.25 36.5 L 13.25 40.5" stroke="#2457D6" stroke-width="2.2" stroke-linecap="round" />
+
+  <!-- Key 4: Bottom-Right Signature Emerald (=) SOLVED Key -->
+  <rect x="25.5" y="33.5" width="14.5" height="10" rx="3.2" fill="url(#calc_emerald)" />
+  <line x1="29.5" y1="37" x2="36" y2="37" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" />
+  <line x1="29.5" y1="40" x2="36" y2="40" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" />
+</svg>

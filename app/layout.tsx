@@ -8,6 +8,15 @@ export const metadata: Metadata = {
     'SolveItCalculator — Free Online Calculators, Step-by-Step Formulas & Reference Charts',
   description:
     'Free, fast online calculators with live step-by-step formulas and reference tables across Math, Finance & Salary Tax, Home & Construction, Unit & Recipe Conversion, Date & Time, Health, and Science.',
+  manifest: '/manifest.webmanifest',
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/icon', type: 'image/png', sizes: '64x64' },
+    ],
+    shortcut: ['/favicon.svg'],
+    apple: [{ url: '/apple-icon', type: 'image/png', sizes: '180x180' }],
+  },
   openGraph: {
     title:
       'SolveItCalculator — Free Online Calculators, Step-by-Step Formulas & Reference Charts',
@@ -34,6 +43,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="alternate icon" href="/icon" type="image/png" />
+        <link rel="apple-touch-icon" href="/apple-icon" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

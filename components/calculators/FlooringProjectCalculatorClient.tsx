@@ -22,6 +22,7 @@ import {
   FileCheck2,
   HelpCircle,
 } from 'lucide-react';
+import BrandLogo from '@/components/BrandLogo';
 
 type LengthUnit = 'm' | 'cm' | 'ft' | 'in';
 type AreaDisplayUnit = 'm2' | 'sqft';
@@ -379,17 +380,7 @@ export default function FlooringProjectCalculatorClient() {
       {/* Top Website Header */}
       <header className="bg-white border-b border-[#DCE3EE] sticky top-0 z-30">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-lg"
-          >
-            <div className="w-9 h-9 rounded-lg bg-[#2457D6] flex items-center justify-center text-white shadow-xs">
-              <Calculator className="w-5 h-5" />
-            </div>
-            <span className="text-[21px] tracking-tight font-extrabold text-[#152238]">
-              SolveIt<span className="text-[#2457D6] font-bold">Calculator</span>
-            </span>
-          </Link>
+          <BrandLogo variant="compact" />
 
           <nav
             aria-label="Main Navigation"

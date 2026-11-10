@@ -19,6 +19,7 @@ import {
   RefreshCw,
   ArrowLeftRight,
 } from 'lucide-react';
+import BrandLogo from './BrandLogo';
 import SearchModal from './SearchModal';
 import { SUPPORTED_LANGUAGES, useLanguage } from '@/lib/i18n';
 import {
@@ -201,21 +202,8 @@ export default function Navbar() {
       <header className="sticky top-0 z-40 w-full bg-white border-b border-[#E2E8F0] shadow-2xs">
         <div className="max-w-[1360px] mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-2 sm:gap-4 h-14 sm:h-16">
-            {/* Left: SolveItCalculator Wordmark (responsive sizing so it never overflows mobile viewports) */}
-            <Link
-              href="/"
-              className="flex items-center gap-2 sm:gap-2.5 whitespace-nowrap shrink-0 min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-lg"
-            >
-              <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#2457D6] flex items-center justify-center text-white shadow-xs shrink-0">
-                <Calculator className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
-              </span>
-              <span
-                data-no-translate="true"
-                className="text-[17px] sm:text-[22px] font-extrabold tracking-tight text-[#152238]"
-              >
-                SolveIt<span className="text-[#2457D6]">Calculator</span>
-              </span>
-            </Link>
+            {/* Left: Official SolveItCalculator Brand Identity Lockup */}
+            <BrandLogo variant="navbar" />
 
             {/* Desktop Primary Navigation (lg and up) */}
             <nav

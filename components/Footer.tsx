@@ -1,12 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  Calculator,
   ShieldCheck,
   Lock,
   BookOpen,
   ArrowUpRight,
 } from 'lucide-react';
+import BrandLogo from './BrandLogo';
 
 const FOOTER_CATEGORY_LINKS = [
   { label: 'Math Calculators', href: '/math' },
@@ -52,23 +52,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-9 border-b border-[#E2E8F0]">
           {/* Column 1: Brand Identity, Mission & Verification Standards (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-xl bg-[#2457D6] flex items-center justify-center text-white shrink-0 shadow-2xs">
-                <Calculator className="w-5 h-5" aria-hidden="true" />
-              </span>
-              <div>
-                <Link
-                  href="/"
-                  data-no-translate="true"
-                  className="text-xl font-extrabold tracking-tight text-[#152238] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-xs"
-                >
-                  SolveIt<span className="text-[#2457D6]">Calculator</span>
-                </Link>
-                <p className="text-xs font-medium text-[#64748B]">
-                  Verified Formulas &amp; Decision Tools
-                </p>
-              </div>
-            </div>
+            <BrandLogo variant="footer" />
 
             <p className="text-xs sm:text-[13px] text-[#475569] leading-relaxed max-w-sm">
               Free, fast online calculators built with transparent step-by-step formulas,
