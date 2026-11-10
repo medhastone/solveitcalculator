@@ -325,21 +325,21 @@ export default function Navbar() {
                   aria-expanded={currencyMenuOpen}
                   aria-label="Select display currency (USD, EUR, GBP, INR)"
                   title={`Active Currency: ${currency} (${currencySymbol}) — Live Rate: 1 USD = ${currencySymbol}${formatExchangeRate(currency, currencyRates[currency] ?? 1.0)}`}
-                  className="compact-control inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#EEF3FF] hover:bg-[#DCE7FF] text-xs sm:text-sm font-extrabold text-[#2457D6] border border-[#BFDBFE] transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                  className="compact-control inline-flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg bg-[#EEF3FF] hover:bg-[#DCE7FF] text-[11px] sm:text-xs md:text-sm font-extrabold text-[#2457D6] border border-[#BFDBFE] transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
                 >
                   <span
-                    className={`w-2 h-2 rounded-full ${
+                    className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
                       isLiveRates ? 'bg-emerald-500' : 'bg-blue-500'
                     }`}
                     aria-hidden="true"
                   />
-                  <Coins className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
+                  <Coins className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#2457D6] hidden xs:inline" aria-hidden="true" />
                   <span>{currency}</span>
-                  <span className="font-mono text-[11px] bg-white px-1 rounded text-[#152238]">
+                  <span className="font-mono text-[10px] sm:text-[11px] bg-white px-1 rounded text-[#152238]">
                     {currencySymbol}
                   </span>
                   <ChevronDown
-                    className="w-3 h-3 text-[#2457D6]"
+                    className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#2457D6]"
                     aria-hidden="true"
                   />
                 </button>
@@ -499,9 +499,9 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Language Selector */}
+              {/* Language Selector (Hidden on mobile < md to prevent header crowding; available in mobile drawer) */}
               <div
-                className="relative"
+                className="relative hidden md:block"
                 ref={langRef}
                 data-no-translate="true"
               >
@@ -548,11 +548,11 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Compact Theme Switcher Pill (Moon / Sun) */}
+              {/* Compact Theme Switcher Pill (Moon / Sun) (Hidden on mobile < sm; available in mobile drawer) */}
               <div
                 role="group"
                 aria-label="Toggle Dark or Light theme"
-                className="inline-flex items-center h-7 p-0.5 rounded-full bg-[#0A58ED] border border-[#0A58ED] shadow-2xs shrink-0"
+                className="hidden sm:inline-flex items-center h-7 p-0.5 rounded-full bg-[#0A58ED] border border-[#0A58ED] shadow-2xs shrink-0"
               >
                 <button
                   type="button"
@@ -593,9 +593,9 @@ export default function Navbar() {
                 onClick={() => setSearchOpen(true)}
                 aria-label="Quick search calculators (Ctrl+K)"
                 title="Quick search calculators (Ctrl+K)"
-                className="compact-control w-8 h-8 rounded-full bg-[#EEF3FF] hover:bg-[#DCE7FF] text-[#152238] flex items-center justify-center transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                className="compact-control w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#EEF3FF] hover:bg-[#DCE7FF] text-[#152238] flex items-center justify-center transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
               >
-                <Search className="w-4 h-4" aria-hidden="true" />
+                <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2457D6]" aria-hidden="true" />
               </button>
 
               {/* Mobile & Tablet Menu Toggle Button (< lg) */}
@@ -603,18 +603,18 @@ export default function Navbar() {
                 type="button"
                 data-compact="true"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="compact-control lg:hidden inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#EEF3FF] hover:bg-[#DCE7FF] text-[#152238] border border-[#CBD5E1] text-xs font-extrabold transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                className="compact-control lg:hidden inline-flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg bg-[#EEF3FF] hover:bg-[#DCE7FF] text-[#152238] border border-[#CBD5E1] text-[11px] sm:text-xs font-extrabold transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
                 aria-expanded={mobileMenuOpen}
                 aria-label="Toggle navigation menu"
               >
                 {mobileMenuOpen ? (
                   <>
-                    <X className="w-4 h-4 text-[#2457D6]" aria-hidden="true" />
-                    <span>Close</span>
+                    <X className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
+                    <span className="hidden xs:inline">Close</span>
                   </>
                 ) : (
                   <>
-                    <Menu className="w-4 h-4 text-[#2457D6]" aria-hidden="true" />
+                    <Menu className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
                     <span>Menu</span>
                   </>
                 )}
@@ -734,6 +734,46 @@ export default function Navbar() {
                     {c.flag} {c.code} ({c.symbol})
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Mobile Appearance / Theme Selector */}
+            <div className="pt-3 border-t border-[#E2E8F0] flex items-center justify-between gap-2 px-2">
+              <span className="text-xs font-bold text-[#64748B] flex items-center gap-1.5">
+                {isDark ? (
+                  <Moon className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
+                ) : (
+                  <Sun className="w-3.5 h-3.5 text-amber-500" aria-hidden="true" />
+                )}
+                Appearance:
+              </span>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  data-compact="true"
+                  onClick={() => toggleTheme(false)}
+                  className={`compact-control px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer inline-flex items-center gap-1.5 ${
+                    !isDark
+                      ? 'bg-[#2457D6] text-white shadow-2xs'
+                      : 'bg-[#F8FAFC] text-[#152238] border border-[#E2E8F0]'
+                  }`}
+                >
+                  <Sun className="w-3 h-3" />
+                  <span>Light</span>
+                </button>
+                <button
+                  type="button"
+                  data-compact="true"
+                  onClick={() => toggleTheme(true)}
+                  className={`compact-control px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer inline-flex items-center gap-1.5 ${
+                    isDark
+                      ? 'bg-[#2457D6] text-white shadow-2xs'
+                      : 'bg-[#F8FAFC] text-[#152238] border border-[#E2E8F0]'
+                  }`}
+                >
+                  <Moon className="w-3 h-3" />
+                  <span>Dark</span>
+                </button>
               </div>
             </div>
 

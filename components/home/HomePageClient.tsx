@@ -497,41 +497,43 @@ export default function HomePageClient() {
             </div>
           </div>
 
-          {/* 3 Value Pillars inside Hero */}
-          <div className="mt-6 pt-5 border-t border-blue-200/50 max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-            <div className="flex items-center justify-center sm:justify-start gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#DCF4EC] text-[#16856B] flex items-center justify-center shrink-0">
-                <Zap className="w-4 h-4 fill-current" aria-hidden="true" />
+          {/* 3 Value Pillars inside Hero - Compact & structured on mobile & desktop */}
+          <div className="mt-5 pt-4 border-t border-blue-200/50 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3.5">
+              <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl bg-white/90 border border-blue-100/90 shadow-2xs hover:border-blue-200 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-[#DCF4EC] text-[#16856B] flex items-center justify-center shrink-0">
+                  <Zap className="w-4 h-4 fill-current" aria-hidden="true" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <p className="text-xs sm:text-sm font-bold text-[#152238] leading-tight">100% Free</p>
+                  <p className="text-[11px] sm:text-xs text-slate-600 leading-normal truncate">No signup or paywall</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-bold text-[#152238]">100% Free</p>
-                <p className="text-xs text-slate-600">No signup or paywall</p>
-              </div>
-            </div>
 
-            <div className="flex items-center justify-center sm:justify-start gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#DCF4EC] text-[#16856B] flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-4 h-4" aria-hidden="true" />
+              <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl bg-white/90 border border-blue-100/90 shadow-2xs hover:border-blue-200 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-[#DCF4EC] text-[#16856B] flex items-center justify-center shrink-0">
+                  <ShieldCheck className="w-4 h-4" aria-hidden="true" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <p className="text-xs sm:text-sm font-bold text-[#152238] leading-tight">Transparent Math</p>
+                  <p className="text-[11px] sm:text-xs text-slate-600 leading-normal truncate">
+                    Explicit formulas &amp; assumptions
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-bold text-[#152238]">Transparent Math</p>
-                <p className="text-xs text-slate-600">
-                  Explicit formulas &amp; assumptions
-                </p>
-              </div>
-            </div>
 
-            <div className="flex items-center justify-center sm:justify-start gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#DCF4EC] text-[#16856B] flex items-center justify-center shrink-0">
-                <Users className="w-4 h-4" aria-hidden="true" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-[#152238]">
-                  Built for Everyday Use
-                </p>
-                <p className="text-xs text-slate-600">
-                  Mobile, desktop &amp; keyboard ready
-                </p>
+              <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-xl bg-white/90 border border-blue-100/90 shadow-2xs hover:border-blue-200 transition-colors">
+                <div className="w-8 h-8 rounded-lg bg-[#DCF4EC] text-[#16856B] flex items-center justify-center shrink-0">
+                  <Users className="w-4 h-4" aria-hidden="true" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <p className="text-xs sm:text-sm font-bold text-[#152238] leading-tight">
+                    Built for Everyday Use
+                  </p>
+                  <p className="text-[11px] sm:text-xs text-slate-600 leading-normal truncate">
+                    Mobile, desktop &amp; keyboard ready
+                  </p>
+                </div>
               </div>
             </div>
           </div>

@@ -250,12 +250,12 @@ export default function BrandLogo({
     <Link
       href={href}
       aria-label="SolveItCalculator Home"
-      className={`group flex items-center gap-2.5 sm:gap-3 whitespace-nowrap shrink-0 min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-xl ${className}`}
+      className={`group flex items-center gap-2 sm:gap-2.5 whitespace-nowrap shrink-0 min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-xl ${className}`}
     >
-      <BrandMark size="md" />
+      <BrandMark size="md" className="w-[30px] h-[30px] sm:w-[36px] sm:h-[36px]" />
       <span
         data-no-translate="true"
-        className="text-[18px] sm:text-[22px] font-extrabold tracking-[-0.035em] text-[#152238]"
+        className="text-[17px] sm:text-[21px] font-extrabold tracking-[-0.035em] text-[#152238]"
       >
         SolveIt<span className="text-[#2457D6]">Calculator</span>
       </span>
