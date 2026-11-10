@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import GlobalFinanceCurrencyBar from '@/components/finance-suite/GlobalFinanceCurrencyBar';
 
 export const metadata: Metadata = {
   title:
@@ -20,5 +21,10 @@ export default function FinanceLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <GlobalFinanceCurrencyBar />
+      {children}
+    </>
+  );
 }

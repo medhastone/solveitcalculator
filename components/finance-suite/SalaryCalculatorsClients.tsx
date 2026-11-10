@@ -23,11 +23,13 @@ import {
   VerifiedAuthorityBanner,
   RelatedCalculatorsGrid,
 } from '@/components/calculator/FinanceSuitePrimitives';
+import { useCurrency } from '@/lib/currency';
 
 // ============================================================================
 // #40: SALARY TO HOURLY CALCULATOR
 // ============================================================================
 export function SalaryToHourlyClient() {
+  useCurrency();
   const [inputMode, setInputMode] = useState<'annual' | 'hourly'>('annual');
   const [amount, setAmount] = useState<number>(95000);
   const [hoursPerWeek, setHoursPerWeek] = useState<number>(40);
@@ -323,6 +325,7 @@ export function TakeHomeInHandSalaryClient({
 }: {
   defaultRegion?: 'US' | 'INDIA';
 }) {
+  useCurrency();
   const [regionMode, setRegionMode] = useState<'US' | 'INDIA'>(defaultRegion);
 
   // India CTC State
@@ -706,6 +709,7 @@ export function TakeHomeInHandSalaryClient({
 // #42: OVERTIME PAY CALCULATOR
 // ============================================================================
 export function OvertimePayClient() {
+  useCurrency();
   const [payMode, setPayMode] = useState<'hourly' | 'annual_salary'>('hourly');
   const [baseRateOrSalary, setBaseRateOrSalary] = useState<number>(32);
   const [regularHoursPerWeek, setRegularHoursPerWeek] = useState<number>(40);
@@ -928,6 +932,7 @@ export function OvertimePayClient() {
 // #43: PAY RAISE CALCULATOR
 // ============================================================================
 export function PayRaiseClient() {
+  useCurrency();
   const [payPeriod, setPayPeriod] = useState<'hourly' | 'monthly' | 'annual'>('annual');
   const [currentPay, setCurrentPay] = useState<number>(85000);
   const [raiseMode, setRaiseMode] = useState<'percentage' | 'new_amount'>('percentage');
@@ -1128,6 +1133,7 @@ export function PayRaiseClient() {
 // #44: BONUS TAX CALCULATOR (FLAT SUPPLEMENTAL 22% VS AGGREGATE)
 // ============================================================================
 export function BonusTaxClient() {
+  useCurrency();
   const [bonusAmount, setBonusAmount] = useState<number>(20000);
   const [annualSalary, setAnnualSalary] = useState<number>(125000);
   const [filingStatus, setFilingStatus] = useState<UsFilingStatus>('single');

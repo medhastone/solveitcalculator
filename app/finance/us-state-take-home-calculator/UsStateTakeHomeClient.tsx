@@ -16,8 +16,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Wallet, MapPin, Layers, ShieldAlert } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function UsStateTakeHomeClient() {
+  useCurrency();
   const [stateCode, setStateCode] = useState<string>('CA');
   const [annualSalary, setAnnualSalary] = useState<number>(115000);
   const [payFrequency, setPayFrequency] = useState<'weekly' | 'biweekly' | 'semimonthly' | 'monthly' | 'annual'>('biweekly');

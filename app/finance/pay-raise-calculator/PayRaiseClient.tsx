@@ -9,8 +9,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, TrendingUp } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function PayRaiseClient() {
+  useCurrency();
   const [payPeriod, setPayPeriod] = useState<'hourly' | 'monthly' | 'annual'>('annual');
   const [currentPay, setCurrentPay] = useState<number>(85000);
   const [raiseMode, setRaiseMode] = useState<'percentage' | 'new_amount'>('percentage');

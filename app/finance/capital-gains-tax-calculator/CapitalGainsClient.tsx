@@ -12,8 +12,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, TrendingUp, Calendar, ArrowUpRight, AlertCircle } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function CapitalGainsClient() {
+  useCurrency();
   const [assetType, setAssetType] = useState<'stocks_crypto' | 'real_estate' | 'collectibles'>('stocks_crypto');
   const [purchasePrice, setPurchasePrice] = useState<number>(40000);
   const [salePrice, setSalePrice] = useState<number>(95000);

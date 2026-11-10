@@ -12,8 +12,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Calendar, ShieldCheck, Briefcase, Info } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function SelfEmploymentTaxClient() {
+  useCurrency();
   const [netBusinessProfit, setNetBusinessProfit] = useState<number>(95000);
   const [filingStatus, setFilingStatus] = useState<UsFilingStatus>('single');
   const [otherW2Wages, setOtherW2Wages] = useState<number>(0);

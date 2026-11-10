@@ -11,8 +11,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Landmark, Info } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function CanadaTaxClient() {
+  useCurrency();
   const [province, setProvince] = useState<'ON' | 'BC' | 'AB'>('ON');
   const [grossIncome, setGrossIncome] = useState<number>(95000);
   const [rrspDeduction, setRrspDeduction] = useState<number>(5000);

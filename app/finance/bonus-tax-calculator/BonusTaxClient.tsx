@@ -12,8 +12,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Sparkles, Info } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function BonusTaxClient() {
+  useCurrency();
   const [bonusAmount, setBonusAmount] = useState<number>(20000);
   const [annualSalary, setAnnualSalary] = useState<number>(115000);
   const [filingStatus, setFilingStatus] = useState<UsFilingStatus>('single');

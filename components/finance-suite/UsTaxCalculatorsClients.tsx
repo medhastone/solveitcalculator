@@ -35,11 +35,13 @@ import {
   VerifiedAuthorityBanner,
   RelatedCalculatorsGrid,
 } from '@/components/calculator/FinanceSuitePrimitives';
+import { useCurrency } from '@/lib/currency';
 
 // ============================================================================
 // #31: US STATE TAKE-HOME CALCULATOR ("PAYCHECK CALCULATOR")
 // ============================================================================
 export function UsStateTakeHomeClient() {
+  useCurrency();
   const [stateCode, setStateCode] = useState<string>('CA');
   const [annualSalary, setAnnualSalary] = useState<number>(115000);
   const [payFrequency, setPayFrequency] = useState<'weekly' | 'biweekly' | 'semimonthly' | 'monthly' | 'annual'>('biweekly');
@@ -652,6 +654,7 @@ export function SelfEmploymentTaxClient() {
 // #33: US CAPITAL GAINS TAX CALCULATOR
 // ============================================================================
 export function CapitalGainsTaxClient() {
+  useCurrency();
   const [assetType, setAssetType] = useState<'stocks_crypto' | 'real_estate' | 'collectibles'>('stocks_crypto');
   const [purchasePrice, setPurchasePrice] = useState<number>(40000);
   const [salePrice, setSalePrice] = useState<number>(95000);
@@ -937,6 +940,7 @@ export function CapitalGainsTaxClient() {
 // #33B: INDIA CAPITAL GAINS TAX CALCULATOR (SEPARATE REGIONAL PAGE)
 // ============================================================================
 export function IndiaCapitalGainsTaxClient() {
+  useCurrency();
   const [assetCategory, setAssetCategory] = useState<'listed_equity_mf' | 'unlisted_real_estate_gold' | 'debt_mf'>('listed_equity_mf');
   const [purchasePrice, setPurchasePrice] = useState<number>(500000);
   const [salePrice, setSalePrice] = useState<number>(950000);
@@ -1095,6 +1099,7 @@ export function IndiaCapitalGainsTaxClient() {
 // #34: 1099 VS W-2 CALCULATOR (WITH MOBILE TABS & BISECTION SOLVER)
 // ============================================================================
 export function W2Vs1099Client() {
+  useCurrency();
   const [mobileTab, setMobileTab] = useState<'w2' | '1099'>('w2');
   const [w2Salary, setW2Salary] = useState<number>(110000);
   const [w2EmployerHealthBenefit, setW2EmployerHealthBenefit] = useState<number>(7200);

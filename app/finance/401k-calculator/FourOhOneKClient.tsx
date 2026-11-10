@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import {
   TrendingUp,
@@ -39,6 +39,12 @@ import {
   IRS_401K_LIMITS,
 } from '@/lib/finance-core/401k';
 import { WORLD_CURRENCIES } from '../financeData';
+import {
+  useCurrency,
+  formatWithGlobalCurrency,
+  formatCompactWithGlobalCurrency,
+  type GlobalCurrencyCode,
+} from '@/lib/currency';
 
 type CalculationMode = 'accumulator' | 'match_optimizer';
 
@@ -115,8 +121,9 @@ export default function FourOhOneKClient() {
   // Mode selection
   const [mode, setMode] = useState<CalculationMode>('accumulator');
 
-  // Currency selection
-  const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
+  // Global Currency selection
+  const { currency: selectedCurrency, setCurrency: setGlobalCurrency } =
+    useCurrency();
 
   // Input States
   const [currentSalary, setCurrentSalary] = useState<number>(85000);
@@ -154,85 +161,24 @@ export default function FourOhOneKClient() {
     return WORLD_CURRENCIES.find((c) => c.code === selectedCurrency) || WORLD_CURRENCIES[0];
   }, [selectedCurrency]);
 
-  // Sync with global currency events and localStorage
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('solveit_currency_symbol');
-      if (stored) {
-        const match = WORLD_CURRENCIES.find((c) => c.symbol === stored);
-        if (match) setSelectedCurrency(match.code);
-      }
-    } catch {
-      // Ignore
-    }
-
-    const handleExternalCurrency = (e: Event) => {
-      const customEvent = e as CustomEvent<{ symbol?: string }>;
-      if (customEvent?.detail?.symbol) {
-        const match = WORLD_CURRENCIES.find((c) => c.symbol === customEvent.detail.symbol);
-        if (match) setSelectedCurrency(match.code);
-      }
-    };
-    window.addEventListener('solveit_currency_change', handleExternalCurrency);
-    return () => {
-      window.removeEventListener('solveit_currency_change', handleExternalCurrency);
-    };
-  }, []);
-
   const handleCurrencyChange = (newCode: string) => {
-    setSelectedCurrency(newCode);
-    const curr = WORLD_CURRENCIES.find((c) => c.code === newCode);
-    if (curr) {
-      try {
-        localStorage.setItem('solveit_currency_symbol', curr.symbol);
-        window.dispatchEvent(
-          new CustomEvent('solveit_currency_change', { detail: { symbol: curr.symbol } })
-        );
-      } catch {
-        // Ignore
-      }
-    }
+    setGlobalCurrency(newCode as GlobalCurrencyCode);
   };
 
-  // Compact Formatter
+  // Compact Formatter with Exchange Rate Conversion
   const formatCompact = (val: number) => {
     if (!isFinite(val)) return 'N/A';
-    const sym = currencyObj.symbol;
-    const absVal = Math.abs(val);
-
-    if (selectedCurrency === 'INR') {
-      if (absVal >= 10000000) {
-        return `${sym}${(val / 10000000).toFixed(2)} Cr`;
-      }
-      if (absVal >= 100000) {
-        return `${sym}${(val / 100000).toFixed(2)} L`;
-      }
-      if (absVal >= 1000) {
-        return `${sym}${(val / 1000).toFixed(1)} k`;
-      }
-      return `${sym}${Math.round(val).toLocaleString('en-IN')}`;
-    }
-
-    if (absVal >= 1000000000) {
-      return `${sym}${(val / 1000000000).toFixed(2)}B`;
-    }
-    if (absVal >= 1000000) {
-      return `${sym}${(val / 1000000).toFixed(2)}M`;
-    }
-    if (absVal >= 1000) {
-      return `${sym}${(val / 1000).toFixed(1)}k`;
-    }
-    return `${sym}${Math.round(val).toLocaleString('en-US')}`;
+    return formatCompactWithGlobalCurrency(val, {
+      fromCurrency: 'USD',
+    });
   };
 
   const formatMoney = (val: number) => {
     if (!isFinite(val)) return 'N/A';
-    const sym = currencyObj.symbol;
-    const rounded = Math.round(val);
-    if (selectedCurrency === 'INR') {
-      return `${sym}${rounded.toLocaleString('en-IN')}`;
-    }
-    return `${sym}${rounded.toLocaleString('en-US')}`;
+    return formatWithGlobalCurrency(val, {
+      fromCurrency: 'USD',
+      decimals: 0,
+    });
   };
 
   // Primary Calculation Result

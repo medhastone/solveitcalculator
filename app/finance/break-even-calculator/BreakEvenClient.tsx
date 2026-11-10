@@ -9,8 +9,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Target, TrendingUp } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function BreakEvenClient() {
+  useCurrency();
   const [fixedCosts, setFixedCosts] = useState<number>(24000);
   const [variableCostPerUnit, setVariableCostPerUnit] = useState<number>(35);
   const [pricePerUnit, setPricePerUnit] = useState<number>(85);

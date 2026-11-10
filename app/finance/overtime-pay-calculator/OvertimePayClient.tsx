@@ -9,8 +9,10 @@ import {
   formatMoney,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Clock, ExternalLink, ShieldCheck } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function OvertimePayClient() {
+  useCurrency();
   const [payMode, setPayMode] = useState<'hourly' | 'annual_salary'>('hourly');
   const [baseRateOrSalary, setBaseRateOrSalary] = useState<number>(32);
   const [regularHoursPerWeek, setRegularHoursPerWeek] = useState<number>(40);

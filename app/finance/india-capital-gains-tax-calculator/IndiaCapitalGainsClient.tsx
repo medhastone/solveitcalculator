@@ -11,8 +11,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, TrendingUp, ArrowUpRight } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function IndiaCapitalGainsClient() {
+  useCurrency();
   const [assetCategory, setAssetCategory] = useState<'listed_equity_mf' | 'unlisted_real_estate_gold' | 'debt_mf'>(
     'listed_equity_mf'
   );

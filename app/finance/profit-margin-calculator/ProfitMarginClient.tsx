@@ -11,8 +11,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, BarChart3, Layers } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function ProfitMarginClient() {
+  useCurrency();
   const [revenue, setRevenue] = useState<number>(500000);
   const [cogs, setCogs] = useState<number>(180000);
   const [operatingExpenses, setOperatingExpenses] = useState<number>(170000);

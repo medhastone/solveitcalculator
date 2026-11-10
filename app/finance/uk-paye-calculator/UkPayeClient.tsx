@@ -11,8 +11,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Landmark, AlertTriangle } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function UkPayeClient() {
+  useCurrency();
   const [taxYear, setTaxYear] = useState<'2025/26' | '2024/25'>('2025/26');
   const [grossSalary, setGrossSalary] = useState<number>(55000);
   const [pensionPct, setPensionPct] = useState<number>(5);

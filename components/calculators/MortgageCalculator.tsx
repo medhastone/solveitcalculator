@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { Calculator, RotateCcw } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
+import { useCurrency } from '@/lib/currency';
 import SingleCalculatorPageShell, {
   RelatedCalculatorLink,
 } from '@/components/calculator-page/SingleCalculatorPageShell';
@@ -41,6 +42,7 @@ const MORTGAGE_RELATED_LINKS: RelatedCalculatorLink[] = [
 ];
 
 export default function MortgageCalculator() {
+  const { symbol } = useCurrency();
   const [homePrice, setHomePrice] = useState<number>(400000);
   const [downPaymentPct, setDownPaymentPct] = useState<number>(20);
   const [loanTermYears, setLoanTermYears] = useState<number>(30);
@@ -109,7 +111,7 @@ export default function MortgageCalculator() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
           <label htmlFor="mtg-price" className="block text-sm font-extrabold text-[#152238] mb-2">
-            Home Price ($) <span className="text-[#E11D48]">*</span>
+            Home Price ({symbol}) <span className="text-[#E11D48]">*</span>
           </label>
           <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15">
             <input
@@ -122,7 +124,7 @@ export default function MortgageCalculator() {
               className="w-full px-4 py-3 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
             />
             <span className="px-3.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
-              $
+              {symbol}
             </span>
           </div>
           <p className="text-xs text-[#64748B] mt-1.5">Purchase price (e.g. 400000)</p>
@@ -198,7 +200,7 @@ export default function MortgageCalculator() {
 
         <div>
           <label htmlFor="mtg-tax" className="block text-sm font-extrabold text-[#152238] mb-2">
-            Annual Property Tax ($)
+            Annual Property Tax ({symbol})
           </label>
           <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15">
             <input
@@ -211,14 +213,14 @@ export default function MortgageCalculator() {
               className="w-full px-4 py-3 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
             />
             <span className="px-3.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
-              $/yr
+              {symbol}/yr
             </span>
           </div>
         </div>
 
         <div>
           <label htmlFor="mtg-ins" className="block text-sm font-extrabold text-[#152238] mb-2">
-            Annual Home Insurance ($)
+            Annual Home Insurance ({symbol})
           </label>
           <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15">
             <input
@@ -231,7 +233,7 @@ export default function MortgageCalculator() {
               className="w-full px-4 py-3 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
             />
             <span className="px-3.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
-              $/yr
+              {symbol}/yr
             </span>
           </div>
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import {
   Scale,
@@ -32,6 +32,12 @@ import {
   type ContributionFrequencyMode,
 } from '@/lib/finance-core/roth-vs-traditional';
 import { WORLD_CURRENCIES } from '../financeData';
+import {
+  useCurrency,
+  formatWithGlobalCurrency,
+  formatCompactWithGlobalCurrency,
+  type GlobalCurrencyCode,
+} from '@/lib/currency';
 
 function PrecisionSlider({
   min,
@@ -117,8 +123,9 @@ export default function RothVsTraditionalClient() {
   // Mode: Single contribution C(1+r)^n (default) vs Annual recurring contribution
   const [contributionMode, setContributionMode] = useState<ContributionFrequencyMode>('single');
 
-  // Currency support
-  const [selectedCurrency, setSelectedCurrency] = useState<string>('USD');
+  // Global Currency support
+  const { currency: selectedCurrency, setCurrency: setGlobalCurrency } =
+    useCurrency();
 
   // UI state
   const [activeTab, setActiveTab] = useState<'factors' | 'sensitivity' | 'schedule' | 'cap_nuance'>('factors');
@@ -130,74 +137,23 @@ export default function RothVsTraditionalClient() {
     return WORLD_CURRENCIES.find((c) => c.code === selectedCurrency) || WORLD_CURRENCIES[0];
   }, [selectedCurrency]);
 
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('solveit_currency_symbol');
-      if (stored) {
-        const match = WORLD_CURRENCIES.find((c) => c.symbol === stored);
-        if (match) setSelectedCurrency(match.code);
-      }
-    } catch {
-      // Ignore
-    }
-
-    const handleExternalCurrency = (e: Event) => {
-      const customEvent = e as CustomEvent<{ symbol?: string }>;
-      if (customEvent?.detail?.symbol) {
-        const match = WORLD_CURRENCIES.find((c) => c.symbol === customEvent.detail.symbol);
-        if (match) setSelectedCurrency(match.code);
-      }
-    };
-    window.addEventListener('solveit_currency_change', handleExternalCurrency);
-    return () => {
-      window.removeEventListener('solveit_currency_change', handleExternalCurrency);
-    };
-  }, []);
-
   const handleCurrencyChange = (newCode: string) => {
-    setSelectedCurrency(newCode);
-    const curr = WORLD_CURRENCIES.find((c) => c.code === newCode);
-    if (curr) {
-      try {
-        localStorage.setItem('solveit_currency_symbol', curr.symbol);
-        window.dispatchEvent(
-          new CustomEvent('solveit_currency_change', { detail: { symbol: curr.symbol } })
-        );
-      } catch {
-        // Ignore
-      }
-    }
+    setGlobalCurrency(newCode as GlobalCurrencyCode);
   };
 
   const formatMoney = (val: number, decimals = 0) => {
     if (!isFinite(val)) return 'N/A';
-    const sym = currencyObj.symbol;
-    const absVal = Math.abs(val);
-    const sign = val < 0 ? '-' : '';
-    const locale = selectedCurrency === 'INR' ? 'en-IN' : 'en-US';
-    return `${sign}${sym}${absVal.toLocaleString(locale, {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals,
-    })}`;
+    return formatWithGlobalCurrency(val, {
+      fromCurrency: 'USD',
+      decimals,
+    });
   };
 
   const formatCompact = (val: number) => {
     if (!isFinite(val)) return 'N/A';
-    const sym = currencyObj.symbol;
-    const absVal = Math.abs(val);
-    const sign = val < 0 ? '-' : '';
-
-    if (selectedCurrency === 'INR') {
-      if (absVal >= 10000000) return `${sign}${sym}${(absVal / 10000000).toFixed(2)} Cr`;
-      if (absVal >= 100000) return `${sign}${sym}${(absVal / 100000).toFixed(2)} L`;
-      if (absVal >= 1000) return `${sign}${sym}${(absVal / 1000).toFixed(1)}k`;
-      return `${sign}${sym}${Math.round(absVal).toLocaleString('en-IN')}`;
-    }
-
-    if (absVal >= 1000000000) return `${sign}${sym}${(absVal / 1000000000).toFixed(2)}B`;
-    if (absVal >= 1000000) return `${sign}${sym}${(absVal / 1000000).toFixed(2)}M`;
-    if (absVal >= 1000) return `${sign}${sym}${(absVal / 1000).toFixed(1)}k`;
-    return `${sign}${sym}${Math.round(absVal).toLocaleString('en-US')}`;
+    return formatCompactWithGlobalCurrency(val, {
+      fromCurrency: 'USD',
+    });
   };
 
   const result: RothVsTraditionalResult = useMemo(() => {

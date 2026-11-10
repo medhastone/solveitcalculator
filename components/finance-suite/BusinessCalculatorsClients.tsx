@@ -15,11 +15,13 @@ import {
   VerifiedAuthorityBanner,
   RelatedCalculatorsGrid,
 } from '@/components/calculator/FinanceSuitePrimitives';
+import { useCurrency } from '@/lib/currency';
 
 // ============================================================================
 // #45: MARGIN CALCULATOR ("GROSS MARGIN CALCULATOR")
 // ============================================================================
 export function MarginCalculatorClient() {
+  useCurrency();
   const [mode, setMode] = useState<'cost_and_price' | 'cost_and_margin' | 'revenue_and_margin'>('cost_and_price');
   const [cost, setCost] = useState<number>(100);
   const [priceOrRevenue, setPriceOrRevenue] = useState<number>(120);
@@ -241,6 +243,7 @@ interface BulkSkuRow {
 }
 
 export function MarkupCalculatorClient() {
+  useCurrency();
   const [mode, setMode] = useState<'cost_and_markup' | 'cost_and_price'>('cost_and_markup');
   const [cost, setCost] = useState<number>(80);
   const [markupPct, setMarkupPct] = useState<number>(50);
@@ -545,6 +548,7 @@ export function MarkupCalculatorClient() {
 // #47: BREAK-EVEN CALCULATOR
 // ============================================================================
 export function BreakEvenCalculatorClient() {
+  useCurrency();
   const [fixedCosts, setFixedCosts] = useState<number>(45000);
   const [variableCostPerUnit, setVariableCostPerUnit] = useState<number>(35);
   const [pricePerUnit, setPricePerUnit] = useState<number>(80);
@@ -829,6 +833,7 @@ export function BreakEvenCalculatorClient() {
 // #48: PROFIT MARGIN CALCULATOR (WATERFALL + DAMODARAN SECTOR BENCHMARKS)
 // ============================================================================
 export function ProfitMarginCalculatorClient() {
+  useCurrency();
   const [revenue, setRevenue] = useState<number>(1000000);
   const [cogs, setCogs] = useState<number>(420000);
   const [operatingExpenses, setOperatingExpenses] = useState<number>(330000);

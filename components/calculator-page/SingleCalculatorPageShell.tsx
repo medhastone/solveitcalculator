@@ -37,6 +37,8 @@ import {
   resolveHumanEditorialProfile,
   ensureMinimumSearchFaqs,
 } from '@/lib/humanEditorialCatalog';
+import { useCurrency, formatExchangeRate } from '@/lib/currency';
+import GlobalFinanceCurrencyBar from '@/components/finance-suite/GlobalFinanceCurrencyBar';
 
 export type SidebarIconVariant =
   | 'chart-green'
@@ -224,9 +226,25 @@ export default function SingleCalculatorPageShell({
   belowWorkbenchContent,
 }: SingleCalculatorShellProps) {
   const pathname = usePathname();
+  const { currency, symbol: globalCurrencySymbol, rates, applyExchangeRate } =
+    useCurrency();
   const [copied, setCopied] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  const isFinanceCalculator =
+    categoryHref.startsWith('/finance') ||
+    categoryName.toLowerCase().includes('finance') ||
+    Boolean(pathname?.startsWith('/finance'));
+
+  const isOutsideFinanceLayout =
+    isFinanceCalculator && !pathname?.startsWith('/finance');
+
+  const displayHeroSymbol =
+    isFinanceCalculator &&
+    ['$', '£', '€', '₹', 'CA$', 'S$', 'A$', 'AED'].includes(heroSymbol.trim())
+      ? globalCurrencySymbol
+      : heroSymbol;
 
   const fullTitle = titleHighlight ? `${title} ${titleHighlight}` : title;
 
@@ -551,10 +569,21 @@ export default function SingleCalculatorPageShell({
             : 'bg-white border-[#E2E8F0]'
         }`}
       >
-        <div className="text-xs font-bold text-[#152238]">
-          {hasValidResult
-            ? 'Formula & Live Calculation:'
-            : 'Active Calculation Formula:'}
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="text-xs font-bold text-[#152238]">
+            {hasValidResult
+              ? 'Formula & Live Calculation:'
+              : 'Active Calculation Formula:'}
+          </div>
+          {isFinanceCalculator && (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#EEF3FF] text-[#2457D6] text-[11px] font-bold font-mono">
+              <Coins className="w-3 h-3" />
+              {currency} ({globalCurrencySymbol}) ·{' '}
+              {applyExchangeRate
+                ? `1 USD = ${globalCurrencySymbol}${formatExchangeRate(currency, rates[currency] ?? 1.0)}`
+                : '1:1 Nominal'}
+            </span>
+          )}
         </div>
         <div className="text-sm sm:text-base font-extrabold text-[#152238] tracking-wide tabular-nums">
           {hasValidResult && resultCard
@@ -980,6 +1009,7 @@ export default function SingleCalculatorPageShell({
 
   return (
     <div className="min-h-screen bg-[#F5F7FA] text-[#152238] relative overflow-hidden">
+      {isOutsideFinanceLayout && <GlobalFinanceCurrencyBar />}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph) }}
@@ -1035,7 +1065,7 @@ export default function SingleCalculatorPageShell({
               aria-hidden="true"
               className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl ${heroBadgeBg} ${heroBadgeColor} border border-white shadow-xs flex items-center justify-center shrink-0 text-2xl sm:text-3xl font-extrabold select-none`}
             >
-              {heroSymbol}
+              {displayHeroSymbol}
             </div>
 
             <div className="space-y-2">
@@ -1079,7 +1109,7 @@ export default function SingleCalculatorPageShell({
             </div>
 
             <div className="relative z-30 -ml-2 -mt-4 w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FF6B6B] to-[#E11D48] text-white shadow-md border border-white/40 rotate-6 flex items-center justify-center font-extrabold text-xl">
-              {heroSymbol}
+              {displayHeroSymbol}
             </div>
           </div>
         </header>

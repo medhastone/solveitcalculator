@@ -9,8 +9,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Percent } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function MarginClient() {
+  useCurrency();
   const [mode, setMode] = useState<'cost_and_price' | 'cost_and_margin' | 'revenue_and_margin'>('cost_and_price');
   const [cost, setCost] = useState<number>(60);
   const [priceOrRevenue, setPriceOrRevenue] = useState<number>(100);

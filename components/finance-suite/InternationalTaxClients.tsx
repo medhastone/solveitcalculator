@@ -20,11 +20,13 @@ import {
   VerifiedAuthorityBanner,
   RelatedCalculatorsGrid,
 } from '@/components/calculator/FinanceSuitePrimitives';
+import { useCurrency } from '@/lib/currency';
 
 // ============================================================================
 // #35: UK PAYE CALCULATOR (HMRC 2024/25 & 2025/26)
 // ============================================================================
 export function UkPayeClient() {
+  useCurrency();
   const [grossSalary, setGrossSalary] = useState<number>(58000);
   const [pensionPct, setPensionPct] = useState<number>(5);
   const [pensionMethod, setPensionMethod] = useState<'salary_sacrifice' | 'net_pay' | 'relief_at_source'>('salary_sacrifice');
@@ -271,6 +273,7 @@ export function UkPayeClient() {
 // #36: CANADA INCOME TAX CALCULATOR (CRA 2025: ONTARIO, BC, ALBERTA)
 // ============================================================================
 export function CanadaIncomeTaxClient() {
+  useCurrency();
   const [province, setProvince] = useState<'ON' | 'BC' | 'AB'>('ON');
   const [grossIncome, setGrossIncome] = useState<number>(95000);
   const [rrspDeduction, setRrspDeduction] = useState<number>(5000);
@@ -459,6 +462,7 @@ export function CanadaIncomeTaxClient() {
 // #37: INDIA INCOME TAX CALCULATOR (NEW VS OLD REGIME)
 // ============================================================================
 export function IndiaIncomeTaxClient() {
+  useCurrency();
   const [financialYear, setFinancialYear] = useState<'2025-26' | '2024-25'>('2025-26');
   const [ageBand, setAgeBand] = useState<'under60' | 'senior60to79' | 'superSenior80Plus'>('under60');
   const [grossSalary, setGrossSalary] = useState<number>(1500000);
@@ -771,6 +775,7 @@ export function IndiaIncomeTaxClient() {
 // #38: HRA EXEMPTION CALCULATOR (SECTION 10(13A) RULE 2A)
 // ============================================================================
 export function HraExemptionClient() {
+  useCurrency();
   const [basicSalaryAnnual, setBasicSalaryAnnual] = useState<number>(720000);
   const [dearnessAllowanceAnnual, setDearnessAllowanceAnnual] = useState<number>(0);
   const [hraReceivedAnnual, setHraReceivedAnnual] = useState<number>(360000);
@@ -989,6 +994,7 @@ export function CountryTaxTemplateClient({
 }: {
   initialCountrySlug?: 'germany' | 'france' | 'uae' | 'singapore';
 }) {
+  useCurrency();
   const [countrySlug, setCountrySlug] = useState<'germany' | 'france' | 'uae' | 'singapore'>(initialCountrySlug);
   const [grossIncome, setGrossIncome] = useState<number>(85000);
   const [isMarriedSplitting, setIsMarriedSplitting] = useState<boolean>(false);

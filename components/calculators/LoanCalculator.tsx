@@ -3,6 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { Calculator, RotateCcw } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
+import { useCurrency } from '@/lib/currency';
 import SingleCalculatorPageShell, {
   RelatedCalculatorLink,
 } from '@/components/calculator-page/SingleCalculatorPageShell';
@@ -41,6 +42,7 @@ const LOAN_RELATED_LINKS: RelatedCalculatorLink[] = [
 ];
 
 export default function LoanCalculator() {
+  const { symbol } = useCurrency();
   const [loanAmount, setLoanAmount] = useState<number>(25000);
   const [interestRate, setInterestRate] = useState<number>(6.5);
   const [loanTermMonths, setLoanTermMonths] = useState<number>(60);
@@ -97,7 +99,7 @@ export default function LoanCalculator() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
         <div>
           <label htmlFor="loan-amt" className="block text-sm font-extrabold text-[#152238] mb-2">
-            Loan Amount ($) <span className="text-[#E11D48]">*</span>
+            Loan Amount ({symbol}) <span className="text-[#E11D48]">*</span>
           </label>
           <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15">
             <input
@@ -110,7 +112,7 @@ export default function LoanCalculator() {
               className="w-full px-4 py-3 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
             />
             <span className="px-3.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
-              $
+              {symbol}
             </span>
           </div>
           <p className="text-xs text-[#64748B] mt-1.5">Enter principal (e.g. 25000)</p>

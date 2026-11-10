@@ -35,6 +35,12 @@ export interface FinancialQuestion {
   icon: string;
 }
 
+import {
+  formatWithGlobalCurrency,
+  getGlobalCurrencySnapshot,
+  type GlobalCurrencyCode,
+} from '@/lib/currency';
+
 export const WORLD_CURRENCIES = [
     {
         code: 'USD',
@@ -46,53 +52,34 @@ export const WORLD_CURRENCIES = [
     {
         code: 'EUR',
         symbol: '€',
-        rate: 0.92,
+        rate: 0.8924,
         flag: '🇪🇺',
         name: 'EUR (€)'
     },
     {
         code: 'GBP',
         symbol: '£',
-        rate: 0.78,
+        rate: 0.7447,
         flag: '🇬🇧',
         name: 'GBP (£)'
     },
     {
-        code: 'CAD',
-        symbol: 'CA$',
-        rate: 1.36,
-        flag: '🇨🇦',
-        name: 'CAD ($)'
-    },
-    {
-        code: 'AUD',
-        symbol: 'AU$',
-        rate: 1.52,
-        flag: '🇦🇺',
-        name: 'AUD ($)'
-    },
-    {
         code: 'INR',
         symbol: '₹',
-        rate: 83.5,
+        rate: 93.93,
         flag: '🇮🇳',
         name: 'INR (₹)'
-    },
-    {
-        code: 'SGD',
-        symbol: 'SG$',
-        rate: 1.34,
-        flag: '🇸🇬',
-        name: 'SGD ($)'
     }
 ];
-export function formatCurrencyAmount(amountUSD, currencyCode) {
-    const curr = WORLD_CURRENCIES.find((c)=>c.code === currencyCode) || WORLD_CURRENCIES[0];
-    const converted = amountUSD * curr.rate;
-    if (currencyCode === 'INR') {
-        return `${curr.symbol}${Math.round(converted).toLocaleString('en-IN')}`;
-    }
-    return `${curr.symbol}${Math.round(converted).toLocaleString('en-US')}`;
+export function formatCurrencyAmount(amountUSD: number, currencyCode: string) {
+    const validCode = (['USD', 'EUR', 'GBP', 'INR'].includes(currencyCode)
+      ? currencyCode
+      : getGlobalCurrencySnapshot().currency) as GlobalCurrencyCode;
+    return formatWithGlobalCurrency(amountUSD, {
+      fromCurrency: 'USD',
+      overrideCurrency: validCode,
+      decimals: 0,
+    });
 }
 export const FINANCE_CATALOG = [
     {

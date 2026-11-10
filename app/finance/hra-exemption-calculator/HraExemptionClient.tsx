@@ -9,8 +9,10 @@ import {
   formatMoney,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Home, CheckCircle2, Info } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function HraExemptionClient() {
+  useCurrency();
   const [basicSalaryAnnual, setBasicSalaryAnnual] = useState<number>(720000);
   const [dearnessAllowanceAnnual, setDearnessAllowanceAnnual] = useState<number>(0);
   const [hraReceivedAnnual, setHraReceivedAnnual] = useState<number>(360000);

@@ -2,26 +2,15 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-
-interface CurrencyConfig {
-  symbol: string;
-  code: string;
-}
-
-const CURRENCIES: Record<string, CurrencyConfig> = {
-  '$': { symbol: '$', code: 'USD' },
-  '€': { symbol: '€', code: 'EUR' },
-  '£': { symbol: '£', code: 'GBP' },
-  'C$': { symbol: 'C$', code: 'CAD' },
-  'A$': { symbol: 'A$', code: 'AUD' },
-  '¥': { symbol: '¥', code: 'JPY' },
-};
+import { useCurrency, formatWithGlobalCurrency } from '@/lib/currency';
+import GlobalFinanceCurrencyBar from '@/components/finance-suite/GlobalFinanceCurrencyBar';
 
 export default function FireForecasterClient() {
   const [mounted, setMounted] = useState(false);
+  const { symbol: globalSymbol, currency: globalCurrency, rates, applyExchangeRate } =
+    useCurrency();
 
   // Core Parameters
-  const [currency, setCurrency] = useState('$');
   const [currentAge, setCurrentAge] = useState<number>(30);
   const [targetAge, setTargetAge] = useState<number>(48);
   const [currentSavings, setCurrentSavings] = useState<number>(185000);
@@ -43,15 +32,18 @@ export default function FireForecasterClient() {
     setMounted(true);
   }, []);
 
-  const curSym = currency;
+  const curSym = globalSymbol;
 
-  const fmt = useCallback((val: number, decimals: number = 0): string => {
-    if (isNaN(val) || !isFinite(val)) return `${curSym}0`;
-    if (decimals === 0) {
-      return `${curSym}${Math.round(val).toLocaleString('en-US')}`;
-    }
-    return `${curSym}${val.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`;
-  }, [curSym]);
+  const fmt = useCallback(
+    (val: number, decimals: number = 0): string => {
+      if (isNaN(val) || !isFinite(val)) return `${curSym}0`;
+      return formatWithGlobalCurrency(val, {
+        fromCurrency: 'USD',
+        decimals,
+      });
+    },
+    [curSym, globalCurrency, rates, applyExchangeRate]
+  );
 
   // Main Actuarial & Wealth Computation Engine
   const data = useMemo(() => {
@@ -415,7 +407,7 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
 
   return (
     <div className="bg-surface font-body-md text-body-md text-on-surface min-h-screen flex flex-col">
-      
+      <GlobalFinanceCurrencyBar />
       <main className="w-full pt-0 bg-surface flex-1">
         <div className="flex flex-col w-full">
           

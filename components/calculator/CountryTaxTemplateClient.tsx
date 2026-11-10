@@ -10,6 +10,7 @@ import {
   RelatedCalculatorsStrip,
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
+import { formatWithGlobalCurrency, useCurrency } from '@/lib/currency';
 import { RotateCcw, Globe, Calendar, ExternalLink, AlertCircle, UserCheck } from 'lucide-react';
 
 export default function CountryTaxTemplateClient({
@@ -17,6 +18,7 @@ export default function CountryTaxTemplateClient({
 }: {
   initialCountry: 'germany' | 'france' | 'uae' | 'singapore';
 }) {
+  const { symbol: globalSymbol } = useCurrency();
   const [countrySlug, setCountrySlug] = useState<'germany' | 'france' | 'uae' | 'singapore'>(initialCountry);
   const [grossIncome, setGrossIncome] = useState<number>(
     initialCountry === 'uae' ? 360000 : initialCountry === 'singapore' ? 120000 : 75000
@@ -39,8 +41,12 @@ export default function CountryTaxTemplateClient({
     [countrySlug, grossIncome, isMarriedSplitting, optionalDeductions, includeChurchOrNationalPension]
   );
 
-  const sym = result.profile.currencySymbol;
-  const fmt = (val: number) => `${sym}${Math.round(val).toLocaleString('en-US')}`;
+  const sym = globalSymbol || result.profile.currencySymbol;
+  const fmt = (val: number) =>
+    formatWithGlobalCurrency(val, {
+      fromCurrency: result.profile.currencySymbol,
+      decimals: 0,
+    });
 
   return (
     <div className="space-y-6">

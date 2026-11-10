@@ -29,27 +29,23 @@ import {
   UsTaxYear,
   UsFilingStatus,
 } from '@/lib/finance-core/us-federal-tax';
+import {
+  formatWithGlobalCurrency,
+  formatCompactWithGlobalCurrency,
+  useCurrency,
+} from '@/lib/currency';
 
 function formatCurrency(val: number, decimals = 0): string {
-  if (!Number.isFinite(val)) return '$0';
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals,
-  }).format(val);
+  return formatWithGlobalCurrency(val, {
+    fromCurrency: 'USD',
+    decimals,
+  });
 }
 
 function formatCompactCurrency(val: number): string {
-  if (!Number.isFinite(val)) return '$0';
-  const abs = Math.abs(val);
-  if (abs >= 1_000_000) {
-    return `${val < 0 ? '-' : ''}$${(abs / 1_000_000).toFixed(2)}M`;
-  }
-  if (abs >= 1_000) {
-    return `${val < 0 ? '-' : ''}$${(abs / 1_000).toFixed(0)}k`;
-  }
-  return formatCurrency(val, 0);
+  return formatCompactWithGlobalCurrency(val, {
+    fromCurrency: 'USD',
+  });
 }
 
 // Clean unboxed slider matching the user's design directive (no container boxes around sliders)
@@ -113,6 +109,7 @@ function CleanSlider({
 }
 
 export default function UsFederalTaxClient() {
+  useCurrency();
   // Core Inputs
   const [taxYear, setTaxYear] = useState<UsTaxYear>('2025');
   const [filingStatus, setFilingStatus] = useState<UsFilingStatus>('single');

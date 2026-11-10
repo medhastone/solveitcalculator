@@ -17,8 +17,10 @@ import {
   formatMoney,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Wallet, Building2 } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function TakeHomeInHandClient({ initialMode }: { initialMode: 'us' | 'india' }) {
+  useCurrency();
   const [mode, setMode] = useState<'us' | 'india'>(initialMode);
 
   // India CTC-to-In-Hand Inputs

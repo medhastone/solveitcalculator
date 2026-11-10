@@ -12,12 +12,21 @@ import {
   BookOpen,
   Users,
   Globe,
+  Coins,
   ChevronDown,
   Moon,
   Sun,
+  RefreshCw,
+  ArrowLeftRight,
 } from 'lucide-react';
 import SearchModal from './SearchModal';
 import { SUPPORTED_LANGUAGES, useLanguage } from '@/lib/i18n';
+import {
+  GLOBAL_CURRENCIES,
+  formatExchangeRate,
+  useCurrency,
+  type GlobalCurrencyCode,
+} from '@/lib/currency';
 
 const STORAGE_KEY = 'solveit_a11y_prefs';
 
@@ -55,13 +64,28 @@ const COMMUNITY_LINKS = [
 export default function Navbar() {
   const pathname = usePathname();
   const { lang, currentLanguage, setLang } = useLanguage();
+  const {
+    currency,
+    symbol: currencySymbol,
+    rates: currencyRates,
+    isLiveRates,
+    isLoadingRates,
+    lastUpdatedUtc,
+    setCurrency,
+    refreshLiveRates,
+    convertBetween,
+  } = useCurrency();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [currencyMenuOpen, setCurrencyMenuOpen] = useState(false);
+  const [quickConvertAmt, setQuickConvertAmt] = useState<number>(1000);
+  const [quickFromCode, setQuickFromCode] = useState<GlobalCurrencyCode>('USD');
   const [communityMenuOpen, setCommunityMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
   const langRef = useRef<HTMLDivElement>(null);
+  const currRef = useRef<HTMLDivElement>(null);
   const commRef = useRef<HTMLDivElement>(null);
 
   // Apply theme to <html> element
@@ -136,6 +160,9 @@ export default function Navbar() {
     const handleClickOutside = (e: MouseEvent) => {
       if (langRef.current && !langRef.current.contains(e.target as Node)) {
         setLangMenuOpen(false);
+      }
+      if (currRef.current && !currRef.current.contains(e.target as Node)) {
+        setCurrencyMenuOpen(false);
       }
       if (commRef.current && !commRef.current.contains(e.target as Node)) {
         setCommunityMenuOpen(false);
@@ -295,8 +322,195 @@ export default function Navbar() {
               </div>
             </nav>
 
-            {/* Right: Language Selector + Compact Theme Toggle + Search Button + Mobile Menu Button */}
-            <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            {/* Right: Currency Switcher + Language Selector + Compact Theme Toggle + Search Button + Mobile Menu Button */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+              {/* Global Finance Currency Switcher (USD, EUR, GBP, INR) */}
+              <div
+                className="relative"
+                ref={currRef}
+                data-no-translate="true"
+              >
+                <button
+                  type="button"
+                  data-compact="true"
+                  onClick={() => setCurrencyMenuOpen(!currencyMenuOpen)}
+                  aria-expanded={currencyMenuOpen}
+                  aria-label="Select display currency (USD, EUR, GBP, INR)"
+                  title={`Active Currency: ${currency} (${currencySymbol}) — Live Rate: 1 USD = ${currencySymbol}${formatExchangeRate(currency, currencyRates[currency] ?? 1.0)}`}
+                  className="compact-control inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#EEF3FF] hover:bg-[#DCE7FF] text-xs sm:text-sm font-extrabold text-[#2457D6] border border-[#BFDBFE] transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                >
+                  <span
+                    className={`w-2 h-2 rounded-full ${
+                      isLiveRates ? 'bg-emerald-500' : 'bg-blue-500'
+                    }`}
+                    aria-hidden="true"
+                  />
+                  <Coins className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
+                  <span>{currency}</span>
+                  <span className="font-mono text-[11px] bg-white px-1 rounded text-[#152238]">
+                    {currencySymbol}
+                  </span>
+                  <ChevronDown
+                    className="w-3 h-3 text-[#2457D6]"
+                    aria-hidden="true"
+                  />
+                </button>
+
+                {currencyMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-80 rounded-2xl bg-white border border-[#E2E8F0] shadow-xl py-2.5 z-50">
+                    <div className="px-3.5 pb-2 mb-1 border-b border-[#F1F5F9] flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className={`w-2 h-2 rounded-full ${
+                            isLiveRates
+                              ? 'bg-emerald-500 animate-pulse'
+                              : 'bg-blue-500'
+                          }`}
+                        />
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#152238]">
+                          Live FX Rates &amp; Currency Changer
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        data-compact="true"
+                        onClick={() => refreshLiveRates()}
+                        disabled={isLoadingRates}
+                        title={
+                          lastUpdatedUtc
+                            ? `Updated: ${lastUpdatedUtc}`
+                            : 'Refresh live FX rates'
+                        }
+                        className="compact-control inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0] text-[10px] font-bold hover:bg-[#D1FAE5] cursor-pointer"
+                      >
+                        <RefreshCw
+                          className={`w-2.5 h-2.5 ${
+                            isLoadingRates ? 'animate-spin' : ''
+                          }`}
+                        />
+                        <span>{isLoadingRates ? 'Syncing' : 'Live Sync'}</span>
+                      </button>
+                    </div>
+
+                    {GLOBAL_CURRENCIES.map((c) => {
+                      const rateVal = currencyRates[c.code] ?? 1.0;
+                      const isSelected = currency === c.code;
+                      return (
+                        <button
+                          key={c.code}
+                          type="button"
+                          data-compact="true"
+                          onClick={() => {
+                            setCurrency(c.code);
+                            setCurrencyMenuOpen(false);
+                          }}
+                          className={`compact-control w-full text-left px-3.5 py-2 text-xs font-medium cursor-pointer flex items-center justify-between ${
+                            isSelected
+                              ? 'bg-[#EEF3FF] text-[#2457D6] font-bold'
+                              : 'text-[#152238] hover:bg-[#F5F7FA]'
+                          }`}
+                        >
+                          <span className="flex items-center gap-2">
+                            <span>{c.flag}</span>
+                            <span>
+                              {c.code} ({c.symbol})
+                            </span>
+                          </span>
+                          <span className="text-[11px] font-mono text-[#475569]">
+                            1 USD = {c.symbol}
+                            {formatExchangeRate(c.code, rateVal)}
+                          </span>
+                        </button>
+                      );
+                    })}
+
+                    {/* Inline Quick Live Currency Changer */}
+                    <div className="mt-2 pt-2.5 px-3.5 border-t border-[#F1F5F9] space-y-2">
+                      <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-[#64748B]">
+                        <span className="inline-flex items-center gap-1">
+                          <ArrowLeftRight className="w-3 h-3 text-[#2457D6]" />
+                          Quick Live Currency Changer
+                        </span>
+                        {lastUpdatedUtc && (
+                          <span className="font-mono text-[9px] text-emerald-700">
+                            Live Mid-Market
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <input
+                          type="number"
+                          min={0}
+                          step="any"
+                          aria-label="Quick currency converter amount"
+                          value={quickConvertAmt}
+                          onChange={(e) =>
+                            setQuickConvertAmt(
+                              Math.max(0, Number(e.target.value))
+                            )
+                          }
+                          className="w-full px-2.5 py-1.5 rounded-lg border border-[#CBD5E1] text-xs font-mono font-bold text-[#152238]"
+                        />
+                        <select
+                          aria-label="Quick currency converter source"
+                          value={quickFromCode}
+                          onChange={(e) =>
+                            setQuickFromCode(
+                              e.target.value as GlobalCurrencyCode
+                            )
+                          }
+                          className="px-2 py-1.5 rounded-lg border border-[#CBD5E1] bg-[#F8FAFC] text-xs font-bold text-[#152238]"
+                        >
+                          {GLOBAL_CURRENCIES.map((c) => (
+                            <option key={c.code} value={c.code}>
+                              {c.code}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="grid grid-cols-2 gap-1.5 pt-0.5">
+                        {GLOBAL_CURRENCIES.map((c) => {
+                          const val = convertBetween(
+                            quickConvertAmt,
+                            quickFromCode,
+                            c.code
+                          );
+                          return (
+                            <button
+                              key={c.code}
+                              type="button"
+                              data-compact="true"
+                              onClick={() => {
+                                setCurrency(c.code);
+                                setCurrencyMenuOpen(false);
+                              }}
+                              className={`compact-control px-2 py-1.5 rounded-lg border text-left text-[11px] cursor-pointer ${
+                                currency === c.code
+                                  ? 'bg-[#2457D6] text-white border-[#2457D6] font-bold'
+                                  : 'bg-[#F8FAFC] text-[#152238] border-[#E2E8F0] hover:border-[#2457D6]'
+                              }`}
+                            >
+                              <div className="text-[9px] opacity-80">
+                                {c.flag} {c.code}
+                              </div>
+                              <div className="font-mono font-bold truncate">
+                                {c.symbol}
+                                {val.toLocaleString(
+                                  c.code === 'INR' ? 'en-IN' : 'en-US',
+                                  {
+                                    maximumFractionDigits: val < 100 ? 2 : 0,
+                                  }
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Language Selector */}
               <div
                 className="relative"
@@ -503,6 +717,34 @@ export default function Navbar() {
                   >
                     {item.name}
                   </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile Global Currency Selector */}
+            <div className="pt-3 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-2 px-2">
+              <span className="text-xs font-bold text-[#64748B] flex items-center gap-1.5">
+                <Coins className="w-3.5 h-3.5" aria-hidden="true" />
+                Currency:
+              </span>
+              <div
+                className="flex flex-wrap items-center gap-1.5"
+                data-no-translate="true"
+              >
+                {GLOBAL_CURRENCIES.map((c) => (
+                  <button
+                    key={c.code}
+                    type="button"
+                    data-compact="true"
+                    onClick={() => setCurrency(c.code)}
+                    className={`compact-control px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer ${
+                      currency === c.code
+                        ? 'bg-[#2457D6] text-white'
+                        : 'bg-[#F8FAFC] text-[#152238] border border-[#E2E8F0]'
+                    }`}
+                  >
+                    {c.flag} {c.code} ({c.symbol})
+                  </button>
                 ))}
               </div>
             </div>

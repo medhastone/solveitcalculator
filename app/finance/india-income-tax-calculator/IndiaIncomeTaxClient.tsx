@@ -9,8 +9,10 @@ import {
   formatMoney,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Scale, CheckCircle2, XCircle } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function IndiaIncomeTaxClient() {
+  useCurrency();
   const [financialYear, setFinancialYear] = useState<'2025-26' | '2024-25'>('2025-26');
   const [ageBand, setAgeBand] = useState<'under60' | 'senior60to79' | 'superSenior80Plus'>('under60');
   const [grossSalary, setGrossSalary] = useState<number>(1600000);

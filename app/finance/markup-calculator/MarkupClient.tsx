@@ -9,8 +9,10 @@ import {
   formatPct,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Tag } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function MarkupClient() {
+  useCurrency();
   const [mode, setMode] = useState<'cost_and_markup' | 'cost_and_price'>('cost_and_markup');
   const [cost, setCost] = useState<number>(80);
   const [markupPct, setMarkupPct] = useState<number>(50);

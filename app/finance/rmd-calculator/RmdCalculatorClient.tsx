@@ -6,29 +6,25 @@ import { Calendar, Percent, Scale, TrendingUp, AlertTriangle, Download, Copy, Ch
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { calculateRmd } from '@/lib/finance-core/rmd';
 import rmdTablesData from '@/data/rmd-tables.json';
-function formatCurrency(val, decimals = 0) {
-    if (!Number.isFinite(val))
-        return '$0';
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: decimals,
-        maximumFractionDigits: decimals
-    }).format(val);
+import {
+  formatWithGlobalCurrency,
+  formatCompactWithGlobalCurrency,
+  useCurrency,
+} from '@/lib/currency';
+
+function formatCurrency(val: number, decimals = 0) {
+  return formatWithGlobalCurrency(val, {
+    fromCurrency: 'USD',
+    decimals,
+  });
 }
-function formatCompactCurrency(val) {
-    if (!Number.isFinite(val))
-        return '$0';
-    const abs = Math.abs(val);
-    if (abs >= 1000000) {
-        return `${val < 0 ? '-' : ''}$${(abs / 1000000).toFixed(2)}M`;
-    }
-    if (abs >= 1000) {
-        return `${val < 0 ? '-' : ''}$${(abs / 1000).toFixed(0)}k`;
-    }
-    return formatCurrency(val, 0);
+function formatCompactCurrency(val: number) {
+  return formatCompactWithGlobalCurrency(val, {
+    fromCurrency: 'USD',
+  });
 }
 export default function RmdCalculatorClient() {
+    useCurrency();
     // Primary Inputs
     const [distributionYear, setDistributionYear] = useState(2026);
     const [birthYear, setBirthYear] = useState(1953); // Age 73 in 2026

@@ -8,8 +8,10 @@ import {
   formatMoney,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Clock, Copy, Check } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function SalaryToHourlyClient() {
+  useCurrency();
   const [inputMode, setInputMode] = useState<'annual' | 'hourly'>('annual');
   const [amount, setAmount] = useState<number>(85000);
   const [hoursPerWeek, setHoursPerWeek] = useState<number>(40);

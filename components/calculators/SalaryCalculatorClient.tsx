@@ -34,10 +34,13 @@ import {
 } from '@/lib/salaryTaxData';
 import {
   calculateSalaryTakeHome,
-  formatCurrencyAmount,
+  formatCurrencyAmount as baseFormatCurrencyAmount,
 } from '@/lib/salaryTaxEngine';
+import { useCurrency, formatWithGlobalCurrency } from '@/lib/currency';
+import GlobalFinanceCurrencyBar from '@/components/finance-suite/GlobalFinanceCurrencyBar';
 
 export default function SalaryCalculatorClient() {
+  const { currency: globalCurrency, applyExchangeRate } = useCurrency();
   const [jurisdictionId, setJurisdictionId] = useState<JurisdictionId>('us');
   const [taxYearId, setTaxYearId] = useState<string>(
     JURISDICTION_MODULES.us.defaultTaxYearId
@@ -156,9 +159,27 @@ export default function SalaryCalculatorClient() {
     ? result.periodBreakdowns[displayFrequency]
     : null;
 
+  const formatCurrencyAmount = (
+    amount: number,
+    jurId: JurisdictionId,
+    options?: { maximumFractionDigits?: number }
+  ) => {
+    const mod = JURISDICTION_MODULES[jurId];
+    if (!applyExchangeRate && mod.currencyCode === globalCurrency) {
+      return baseFormatCurrencyAmount(amount, jurId, options);
+    }
+    const maxDecimals =
+      options?.maximumFractionDigits ?? (globalCurrency === 'INR' ? 0 : 0);
+    return formatWithGlobalCurrency(amount, {
+      fromCurrency: mod.currencyCode,
+      decimals: maxDecimals,
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 pb-8">
+      <GlobalFinanceCurrencyBar />
+      <div className="max-w-7xl mx-auto space-y-8 pt-6 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb Navigation */}
         <nav
           aria-label="Breadcrumb"

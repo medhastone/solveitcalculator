@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { Calculator, RotateCcw } from 'lucide-react';
+import { formatWithGlobalCurrency, useCurrency } from '@/lib/currency';
 import SingleCalculatorPageShell, {
   RelatedCalculatorLink,
   FaqItem,
@@ -50,14 +51,10 @@ const FINANCE_RELATED_LINKS: RelatedCalculatorLink[] = [
 ];
 
 function fmtUSD(n: number, decimals = 0): string {
-  if (!Number.isFinite(n)) return '$0';
-  return (
-    '$' +
-    n.toLocaleString('en-US', {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals,
-    })
-  );
+  return formatWithGlobalCurrency(n, {
+    fromCurrency: 'USD',
+    decimals,
+  });
 }
 
 export default function MissingFinanceCalculatorsClient({
@@ -65,6 +62,7 @@ export default function MissingFinanceCalculatorsClient({
 }: {
   slug: MissingFinanceSlug;
 }) {
+  const { currency, symbol, rateFromUSD, applyExchangeRate } = useCurrency();
   // 1. Safe Withdrawal Rate (4% Rule)
   const [swrPortfolio, setSwrPortfolio] = useState<number>(1_000_000);
   const [swrRatePct, setSwrRatePct] = useState<number>(4.0);
@@ -312,6 +310,10 @@ export default function MissingFinanceCalculatorsClient({
     rvbStayYears,
     mmCost,
     mmPrice,
+    currency,
+    symbol,
+    rateFromUSD,
+    applyExchangeRate,
   ]);
 
   const handleReset = () => {
@@ -700,7 +702,7 @@ export default function MissingFinanceCalculatorsClient({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label htmlFor="swr-port" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Starting Retirement Portfolio ($)
+              Starting Retirement Portfolio ({symbol})
             </label>
             <input
               id="swr-port"
@@ -760,7 +762,7 @@ export default function MissingFinanceCalculatorsClient({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label htmlFor="inv-init" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Initial Investment ($)
+              Initial Investment ({symbol})
             </label>
             <input
               id="inv-init"
@@ -774,7 +776,7 @@ export default function MissingFinanceCalculatorsClient({
           </div>
           <div>
             <label htmlFor="inv-mo" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Monthly Contribution ($)
+              Monthly Contribution ({symbol})
             </label>
             <input
               id="inv-mo"
@@ -861,7 +863,7 @@ export default function MissingFinanceCalculatorsClient({
           </div>
           <div>
             <label htmlFor="rr-prin" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Starting Principal ($)
+              Starting Principal ({symbol})
             </label>
             <input
               id="rr-prin"
@@ -894,7 +896,7 @@ export default function MissingFinanceCalculatorsClient({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label htmlFor="ha-inc" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Annual Gross Income ($)
+              Annual Gross Income ({symbol})
             </label>
             <input
               id="ha-inc"
@@ -908,7 +910,7 @@ export default function MissingFinanceCalculatorsClient({
           </div>
           <div>
             <label htmlFor="ha-debt" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Monthly Debt Payments ($)
+              Monthly Debt Payments ({symbol})
             </label>
             <input
               id="ha-debt"
@@ -922,7 +924,7 @@ export default function MissingFinanceCalculatorsClient({
           </div>
           <div>
             <label htmlFor="ha-down" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Down Payment ($)
+              Down Payment ({symbol})
             </label>
             <input
               id="ha-down"
@@ -951,7 +953,7 @@ export default function MissingFinanceCalculatorsClient({
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="ha-tax" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Monthly Property Tax & Home Insurance ($)
+              Monthly Property Tax & Home Insurance ({symbol})
             </label>
             <input
               id="ha-tax"
@@ -970,7 +972,7 @@ export default function MissingFinanceCalculatorsClient({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label htmlFor="ref-bal" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Remaining Loan Balance ($)
+              Remaining Loan Balance ({symbol})
             </label>
             <input
               id="ref-bal"
@@ -1010,7 +1012,7 @@ export default function MissingFinanceCalculatorsClient({
           </div>
           <div>
             <label htmlFor="ref-cost" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Refinance Closing Costs ($)
+              Refinance Closing Costs ({symbol})
             </label>
             <input
               id="ref-cost"
@@ -1029,7 +1031,7 @@ export default function MissingFinanceCalculatorsClient({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label htmlFor="rvb-price" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Home Purchase Price ($)
+              Home Purchase Price ({symbol})
             </label>
             <input
               id="rvb-price"
@@ -1058,7 +1060,7 @@ export default function MissingFinanceCalculatorsClient({
           </div>
           <div>
             <label htmlFor="rvb-rent" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Comparable Monthly Rent ($)
+              Comparable Monthly Rent ({symbol})
             </label>
             <input
               id="rvb-rent"
@@ -1091,7 +1093,7 @@ export default function MissingFinanceCalculatorsClient({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label htmlFor="mm-cost" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Unit Cost ($)
+              Unit Cost ({symbol})
             </label>
             <input
               id="mm-cost"
@@ -1105,7 +1107,7 @@ export default function MissingFinanceCalculatorsClient({
           </div>
           <div>
             <label htmlFor="mm-price" className="block text-sm font-extrabold text-[#152238] mb-2">
-              Selling Price ($)
+              Selling Price ({symbol})
             </label>
             <input
               id="mm-price"

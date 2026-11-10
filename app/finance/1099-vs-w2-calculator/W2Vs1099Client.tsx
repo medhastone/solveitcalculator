@@ -11,8 +11,10 @@ import {
   formatMoney,
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, Scale, Briefcase, Building2 } from 'lucide-react';
+import { useCurrency } from '@/lib/currency';
 
 export default function W2Vs1099Client() {
+  useCurrency();
   const [mobileTab, setMobileTab] = useState<'w2' | '1099'>('w2');
   const [filingStatus, setFilingStatus] = useState<UsFilingStatus>('single');
 
