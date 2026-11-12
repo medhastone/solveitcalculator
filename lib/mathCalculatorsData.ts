@@ -391,29 +391,6 @@ export const MATH_CALCULATORS: MathCalculatorItem[] = [
     },
   },
   {
-    id: 'proportion-calculator',
-    slug: 'proportion-calculator',
-    name: 'Proportion & Cross-Multiplication Calculator',
-    category: 'Ratios',
-    displayBadge: 'Ratios',
-    symbolType: 'ratio-nodes',
-    iconName: 'scale',
-    description:
-      'Solve for the unknown variable X in two equal fractions (A/B = C/X) using step-by-step cross-multiplication.',
-    commonUseCase: 'Map distances, dosage scaling, and currency or unit estimates',
-    examplePrompt: 'If 3 items cost $12, then 7 items cost $28',
-    formulaPreview: 'A / B = C / X  ⇒  X = (B × C) ÷ A',
-    showInDirectory: true,
-    defaultInputs: {
-      labelA: 'Known Quantity A',
-      valueA: 3,
-      labelB: 'Known Cost / Result B',
-      valueB: 12,
-      labelC: 'Target Quantity C',
-      valueC: 7,
-    },
-  },
-  {
     id: 'quadratic-equation-calculator',
     slug: 'quadratic-equation-calculator',
     name: 'Quadratic Equation Solver',
@@ -520,29 +497,6 @@ export const MATH_CALCULATORS: MathCalculatorItem[] = [
       valueA: 1000,
       labelB: 'Logarithm Base (b)',
       valueB: 10,
-    },
-  },
-  {
-    id: 'mean-median-mode-calculator',
-    slug: 'mean-median-mode-calculator',
-    name: 'Mean, Median, Mode & Range Calculator',
-    category: 'Basic Math',
-    displayBadge: 'Statistics',
-    symbolType: 'sigma',
-    iconName: 'bar-chart',
-    description:
-      'Analyze datasets and laboratory trials by finding the arithmetic mean, median, mode, sum, and spread.',
-    commonUseCase: 'Statistics homework, test scores, and experimental data analysis',
-    examplePrompt: 'Mean of 78, 84, 93 is 85',
-    formulaPreview: 'Mean = Sum of Values ÷ Count of Values',
-    showInDirectory: true,
-    defaultInputs: {
-      labelA: 'First Value',
-      valueA: 78,
-      labelB: 'Second Value',
-      valueB: 84,
-      labelC: 'Third Value',
-      valueC: 93,
     },
   },
 ];
@@ -855,13 +809,13 @@ export const RELATED_CATEGORIES = [
   },
   {
     name: 'Date & Time Calculators',
-    path: '/date-difference-calculator',
-    description: 'Exact age, days between dates, and time duration calculators.',
+    path: '/date-time',
+    description: 'Exact age, days between dates, business days, and time duration calculators.',
   },
   {
     name: 'Health & Fitness Calculators',
-    path: '/bmi-calculator',
-    description: 'Body mass index (BMI), daily calorie needs, and health ranges.',
+    path: '/health-fitness',
+    description: 'Body mass index (BMI), TDEE daily calories, BMR, and healthy weight ranges.',
   },
   {
     name: 'Business Calculators',
@@ -870,33 +824,35 @@ export const RELATED_CATEGORIES = [
   },
   {
     name: 'Science Calculators',
-    path: '/math/scientific-calculator',
-    description: 'Trigonometry, logarithms, exponents, and scientific notation.',
+    path: '/science',
+    description: 'Force, Ohm’s law, molarity, density, and laboratory percent error.',
   },
 ];
 
 export const MATH_CHOOSE_STEPS = [
   {
     step: 1,
-    title: 'Identify your calculation',
+    title: 'Percentage Calculator vs. Percentage Change vs. Percent Error',
     description:
-      'Choose the type of math problem you want to solve (e.g., percentage, fraction, ratio, algebra).',
+      'Use the Percentage Calculator when you know the percent and want the share of a number (like 15% of 250). Use Percentage Change when comparing an old value to a new value over time (((New − Old) ÷ Old) × 100). Use Percent Error when comparing a lab measurement against a theoretical true value.',
   },
   {
     step: 2,
-    title: 'Enter your values',
-    description: 'Input the required numbers and click calculate.',
+    title: 'Fraction Calculator vs. Ratio Calculator',
+    description:
+      'Use the Fraction Calculator to add, subtract, multiply, or simplify part-to-whole fractions (like 3/4 + 1/2) or convert fractions to decimals. Use the Ratio Calculator when scaling two linked quantities proportionally (like solving A : B = C : X).',
   },
   {
     step: 3,
-    title: 'Open the calculator',
-    description: 'Click on the calculator from the list above.',
+    title: 'Average Calculator vs. GCD & LCM Calculator',
+    description:
+      'Use the Average Calculator to summarize a dataset with its arithmetic mean, median, and range. Use the GCD & LCM Calculator when finding the greatest common divisor to reduce fractions or the least common multiple for repeating intervals.',
   },
   {
     step: 4,
-    title: 'Review the result',
+    title: 'Scientific Calculator vs. Quadratic & Equation Solvers',
     description:
-      'See the answer with a clear explanation and formula (where available).',
+      'Use the Scientific Calculator, Exponent Calculator, or Logarithm Calculator to evaluate powers, roots, logs, and trig functions. Use the Quadratic Equation Solver when solving ax² + bx + c = 0 for real or complex roots and the parabola vertex.',
   },
 ];
 
@@ -936,24 +892,24 @@ export const MATH_CHOOSE_GUIDE = [
 
 export const MATH_FAQS = [
   {
-    question: 'What is a percentage calculator?',
+    question: 'How do I calculate a percentage of a number?',
     answer:
-      'A percentage calculator finds a given percent of a number, determines what percentage one number is of another, or calculates the percentage increase or decrease between two values. For example, 15% of 240 is (15 ÷ 100) × 240 = 36.',
+      'Multiply the number by the percentage and divide by 100: Result = (Percentage × Number) ÷ 100. For example, 15% of 240 is (15 × 240) ÷ 100 = 36.',
   },
   {
     question: 'How do I calculate percentage increase or decrease between two numbers?',
     answer:
-      'Subtract the original number from the new number, divide that difference by the original number, and multiply by 100: ((New − Old) ÷ Old) × 100. For example, going from 80 to 100 is ((100 − 80) ÷ 80) × 100 = +25% increase.',
+      'Subtract the original number from the new number, divide that difference by the original number, and multiply by 100: ((New − Old) ÷ Old) × 100. Going from 80 to 100 is ((100 − 80) ÷ 80) × 100 = +25% increase.',
   },
   {
     question: 'How do I convert a fraction to a decimal and a percentage?',
     answer:
-      'Divide the top number (numerator) by the bottom number (denominator). For example, to convert 3/8 to a decimal, divide 3 by 8 to get 0.375. Multiply that decimal by 100 to get the percentage (37.5%).',
+      'Divide the top number (numerator) by the bottom number (denominator). To convert 3/8 to a decimal, divide 3 by 8 to get 0.375, then multiply by 100 to get 37.5%.',
   },
   {
     question: 'What is the difference between GCD and LCM?',
     answer:
-      'The Greatest Common Divisor (GCD) is the largest whole number that divides two or more numbers without a remainder (for 12 and 18, the GCD is 6). The Least Common Multiple (LCM) is the smallest positive number that is a multiple of both numbers (for 12 and 18, the LCM is 36).',
+      'The Greatest Common Divisor (GCD) is the largest whole number that divides two or more numbers without a remainder (for 12 and 18, GCD = 6). The Least Common Multiple (LCM) is the smallest positive number divisible by both numbers (for 12 and 18, LCM = 36).',
   },
   {
     question: 'How do you solve a ratio or proportion with a missing value (A:B = C:X)?',
@@ -961,19 +917,9 @@ export const MATH_FAQS = [
       'Use cross-multiplication: multiply the diagonal pair of known numbers and divide by the remaining known number. In 2 : 5 = 6 : X, multiply 5 × 6 = 30, then divide by 2 to get X = 15.',
   },
   {
-    question: 'What is the difference between mean, median, and mode?',
+    question: 'What is the difference between mean, median, and range?',
     answer:
-      'The mean is the arithmetic average (sum of values divided by count). The median is the middle value when numbers are sorted in order, which resists extreme outliers. The mode is the value that occurs most frequently in the dataset.',
-  },
-  {
-    question: 'Can I use the scientific calculator for trigonometry and logarithms?',
-    answer:
-      'Yes. The Scientific Calculator supports trigonometric functions (sine, cosine, tangent in both Degrees and Radians), common and natural logarithms (log and ln), powers, roots, factorials, and parentheses with step-by-step formulas.',
-  },
-  {
-    question: 'Are these math calculators free to use for homework and exams?',
-    answer:
-      'Yes. Every calculator on SolveItCalculator.com is 100% free to use, requires no registration or download, and shows the underlying mathematical formula and worked steps on desktop, tablet, and mobile devices.',
+      'The mean is the arithmetic average (sum of values divided by count). The median is the middle value when numbers are sorted in order, which resists extreme outliers. The range is the difference between the largest and smallest values.',
   },
 ];
 

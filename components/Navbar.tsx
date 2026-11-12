@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import SearchModal from './SearchModal';
+import ThemeSwitcher from './ThemeSwitcher';
 import { SUPPORTED_LANGUAGES, useLanguage } from '@/lib/i18n';
 import {
   GLOBAL_CURRENCIES,
@@ -35,6 +36,9 @@ const MOBILE_QUICK_LINKS = [
   { name: 'All Calculators', href: '/calculators' },
   { name: 'Math', href: '/math' },
   { name: 'Finance', href: '/finance' },
+  { name: 'Date & Time', href: '/date-time' },
+  { name: 'Health & Fitness', href: '/health-fitness' },
+  { name: 'Unit Conversions', href: '/conversions' },
   { name: 'Salary & Tax', href: '/salary-calculator' },
   { name: 'Workspace', href: '/calculation-workspace' },
   { name: 'Construction', href: '/construction-project-calculator' },
@@ -173,30 +177,6 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const toggleTheme = (nextDark: boolean) => {
-    setIsDark(nextDark);
-    applyDocumentTheme(nextDark);
-
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      const existing = raw ? JSON.parse(raw) : {};
-      const updated = {
-        textSize: existing.textSize || 'medium',
-        reduceMotion: Boolean(existing.reduceMotion),
-        displayMode: nextDark ? 'dark' : 'default',
-      };
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-    } catch {
-      // Ignore storage write errors
-    }
-
-    window.dispatchEvent(
-      new CustomEvent('solveit-theme-change', {
-        detail: { isDark: nextDark },
-      })
-    );
-  };
-
   return (
     <>
       <header className="sticky top-0 z-40 w-full bg-white border-b border-[#E2E8F0] shadow-2xs">
@@ -208,11 +188,11 @@ export default function Navbar() {
             {/* Desktop Primary Navigation (lg and up) */}
             <nav
               aria-label="Primary navigation"
-              className="hidden lg:flex items-center gap-5 xl:gap-7 text-sm font-semibold text-[#152238] h-full"
+              className="hidden lg:flex items-center gap-3.5 xl:gap-5 text-xs xl:text-sm font-semibold text-[#152238] h-full"
             >
               <Link
                 href="/calculators"
-                className={`relative inline-flex items-center gap-2 h-full whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
+                className={`relative inline-flex items-center gap-1.5 h-full whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
                   pathname === '/calculators' || pathname === '/all-calculators'
                     ? 'text-[#2457D6] font-bold'
                     : ''
@@ -231,7 +211,7 @@ export default function Navbar() {
 
               <Link
                 href="/math"
-                className={`inline-flex items-center gap-1.5 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
+                className={`inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
                   pathname?.startsWith('/math') ? 'text-[#2457D6] font-bold' : ''
                 }`}
               >
@@ -240,7 +220,7 @@ export default function Navbar() {
 
               <Link
                 href="/finance"
-                className={`inline-flex items-center gap-1.5 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
+                className={`inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
                   pathname?.startsWith('/finance') ? 'text-[#2457D6] font-bold' : ''
                 }`}
               >
@@ -248,18 +228,39 @@ export default function Navbar() {
               </Link>
 
               <Link
-                href="/search"
-                className={`inline-flex items-center gap-1.5 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
-                  pathname?.startsWith('/search') ? 'text-[#2457D6] font-bold' : ''
+                href="/date-time"
+                className={`inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
+                  pathname?.startsWith('/date-time') ? 'text-[#2457D6] font-bold' : ''
                 }`}
               >
-                <Search className="w-4 h-4" aria-hidden="true" />
-                <span>Search</span>
+                <span>Date &amp; Time</span>
+              </Link>
+
+              <Link
+                href="/health-fitness"
+                className={`inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
+                  pathname?.startsWith('/health-fitness')
+                    ? 'text-[#2457D6] font-bold'
+                    : ''
+                }`}
+              >
+                <span>Health &amp; Fitness</span>
+              </Link>
+
+              <Link
+                href="/conversions"
+                className={`inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
+                  pathname?.startsWith('/conversions')
+                    ? 'text-[#2457D6] font-bold'
+                    : ''
+                }`}
+              >
+                <span>Unit Conversions</span>
               </Link>
 
               <Link
                 href="/guides"
-                className={`relative inline-flex items-center gap-2 h-full whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
+                className={`relative inline-flex items-center gap-1.5 h-full whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
                   pathname?.startsWith('/guides') ||
                   pathname?.startsWith('/math-guides')
                     ? 'text-[#2457D6] font-bold'
@@ -283,10 +284,10 @@ export default function Navbar() {
                   data-compact="true"
                   onClick={() => setCommunityMenuOpen(!communityMenuOpen)}
                   aria-expanded={communityMenuOpen}
-                  className="compact-control inline-flex items-center gap-1.5 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md"
+                  className="compact-control inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md"
                 >
                   <Users className="w-4 h-4" aria-hidden="true" />
-                  <span>For Communities</span>
+                  <span>More</span>
                   <ChevronDown
                     className="w-3.5 h-3.5 text-[#475569]"
                     aria-hidden="true"
@@ -548,42 +549,10 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Compact Theme Switcher Pill (Moon / Sun) (Hidden on mobile < sm; available in mobile drawer) */}
-              <div
-                role="group"
-                aria-label="Toggle Dark or Light theme"
-                className="hidden sm:inline-flex items-center h-7 p-0.5 rounded-full bg-[#0A58ED] border border-[#0A58ED] shadow-2xs shrink-0"
-              >
-                <button
-                  type="button"
-                  data-compact="true"
-                  onClick={() => toggleTheme(isDark ? false : true)}
-                  aria-pressed={isDark}
-                  aria-label="Switch to Dark theme"
-                  title={isDark ? 'Dark mode active (click for Light mode)' : 'Switch to Dark mode'}
-                  className={`compact-control w-6 h-6 rounded-full flex items-center justify-center transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
-                    isDark
-                      ? 'bg-white text-[#0A58ED] shadow-2xs'
-                      : 'bg-white/95 text-[#152238] hover:bg-white'
-                  }`}
-                >
-                  <Moon className="w-3.5 h-3.5" aria-hidden="true" />
-                </button>
-                <button
-                  type="button"
-                  data-compact="true"
-                  onClick={() => toggleTheme(!isDark ? true : false)}
-                  aria-pressed={!isDark}
-                  aria-label="Switch to Light theme"
-                  title={!isDark ? 'Light mode active (click for Dark mode)' : 'Switch to Light mode'}
-                  className={`compact-control w-6 h-6 rounded-full flex items-center justify-center transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
-                    !isDark
-                      ? 'bg-[#0A58ED] text-white'
-                      : 'text-white/85 hover:text-white'
-                  }`}
-                >
-                  <Sun className="w-3.5 h-3.5" aria-hidden="true" />
-                </button>
+              {/* Premium 3D Neumorphic Theme Switcher (Responsive sm on mobile, md on tablet/desktop) */}
+              <div className="inline-flex items-center shrink-0">
+                <ThemeSwitcher size="sm" className="sm:hidden" />
+                <ThemeSwitcher size="md" className="hidden sm:inline-flex" />
               </div>
 
               {/* Quick Search Modal Button */}
@@ -610,12 +579,12 @@ export default function Navbar() {
                 {mobileMenuOpen ? (
                   <>
                     <X className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
-                    <span className="hidden xs:inline">Close</span>
+                    <span className="hidden sm:inline">Close</span>
                   </>
                 ) : (
                   <>
                     <Menu className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
-                    <span>Menu</span>
+                    <span className="hidden sm:inline">Menu</span>
                   </>
                 )}
               </button>
@@ -737,44 +706,17 @@ export default function Navbar() {
               </div>
             </div>
 
-            {/* Mobile Appearance / Theme Selector */}
-            <div className="pt-3 border-t border-[#E2E8F0] flex items-center justify-between gap-2 px-2">
+            {/* Mobile Appearance / 3D Neumorphic Theme Switcher + System Option */}
+            <div className="pt-3 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-2 px-2">
               <span className="text-xs font-bold text-[#64748B] flex items-center gap-1.5">
                 {isDark ? (
                   <Moon className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
                 ) : (
                   <Sun className="w-3.5 h-3.5 text-amber-500" aria-hidden="true" />
                 )}
-                Appearance:
+                Theme Mode:
               </span>
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  data-compact="true"
-                  onClick={() => toggleTheme(false)}
-                  className={`compact-control px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer inline-flex items-center gap-1.5 ${
-                    !isDark
-                      ? 'bg-[#2457D6] text-white shadow-2xs'
-                      : 'bg-[#F8FAFC] text-[#152238] border border-[#E2E8F0]'
-                  }`}
-                >
-                  <Sun className="w-3 h-3" />
-                  <span>Light</span>
-                </button>
-                <button
-                  type="button"
-                  data-compact="true"
-                  onClick={() => toggleTheme(true)}
-                  className={`compact-control px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer inline-flex items-center gap-1.5 ${
-                    isDark
-                      ? 'bg-[#2457D6] text-white shadow-2xs'
-                      : 'bg-[#F8FAFC] text-[#152238] border border-[#E2E8F0]'
-                  }`}
-                >
-                  <Moon className="w-3 h-3" />
-                  <span>Dark</span>
-                </button>
-              </div>
+              <ThemeSwitcher size="md" showSystemOption={true} />
             </div>
 
             {/* Mobile Language Selector */}

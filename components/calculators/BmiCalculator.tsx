@@ -26,39 +26,51 @@ const ACTIVITY_LEVELS = [
 
 const HEALTH_RELATED_LINKS: RelatedCalculatorLink[] = [
   {
-    name: 'Daily Calorie & TDEE Calculator',
-    description: 'Estimate daily calories needed to maintain, lose, or gain weight.',
-    href: '/bmi-calculator?mode=tdee',
-    iconVariant: 'percent-coral',
-  },
-  {
-    name: 'Basal Metabolic Rate (BMR)',
-    description: 'Calculate resting metabolic rate using the Mifflin-St Jeor formula.',
-    href: '/bmi-calculator?mode=bmr',
-    iconVariant: 'arrows-blue',
-  },
-  {
-    name: 'Ideal Weight Range Calculator',
-    description: 'Compare WHO, Devine, Robinson, and Miller ideal weight formulas.',
-    href: '/bmi-calculator?mode=ideal-weight',
+    name: 'BMI Calculator (Body Mass Index)',
+    description: 'Check your adult BMI score and WHO healthy weight classification.',
+    href: '/bmi-calculator',
     iconVariant: 'scale-teal',
   },
   {
-    name: 'Body Fat Percentage Calculator',
-    description: 'Estimate body fat % and lean body mass using the U.S. Navy method.',
-    href: '/bmi-calculator?mode=body-fat',
-    iconVariant: 'chart-green',
+    name: 'TDEE & Daily Calorie Calculator',
+    description: 'Calculate Total Daily Energy Expenditure for maintenance, fat loss, or muscle gain.',
+    href: '/tdee-calculator',
+    iconVariant: 'percent-coral',
   },
   {
-    name: 'Age Calculator',
-    description: 'Find your exact chronological age in years, months, and days.',
-    href: '/age-calculator',
+    name: 'BMR Calculator (Basal Metabolic Rate)',
+    description: 'Find your daily resting calorie burn via Mifflin-St Jeor and Harris-Benedict formulas.',
+    href: '/bmr-calculator',
     iconVariant: 'clock-indigo',
+  },
+  {
+    name: 'Body Fat Percentage Calculator',
+    description: 'Estimate body fat percentage and lean mass using the U.S. Navy circumference method.',
+    href: '/body-fat-calculator',
+    iconVariant: 'arrows-blue',
+  },
+  {
+    name: 'Ideal Weight Calculator',
+    description: 'Compare healthy target weight ranges using Devine, Robinson, Miller, and WHO formulas.',
+    href: '/ideal-weight-calculator',
+    iconVariant: 'chart-green',
   },
 ];
 
-export default function BmiCalculator() {
-  const [mode, setMode] = useState<HealthCalcMode>('bmi');
+export interface BmiCalculatorProps {
+  initialMode?: HealthCalcMode;
+  customTitle?: string;
+  customSubtitle?: string;
+  customHeroSymbol?: string;
+}
+
+export default function BmiCalculator({
+  initialMode = 'bmi',
+  customTitle,
+  customSubtitle,
+  customHeroSymbol,
+}: BmiCalculatorProps = {}) {
+  const [mode, setMode] = useState<HealthCalcMode>(initialMode);
   const [unitSystem, setUnitSystem] = useState<'metric' | 'imperial'>('metric');
   const [sex, setSex] = useState<'male' | 'female'>('male');
   const [age, setAge] = useState<number>(30);
@@ -81,6 +93,10 @@ export default function BmiCalculator() {
   const [activityFactor, setActivityFactor] = useState<number>(1.55);
 
   useEffect(() => {
+    setMode(initialMode);
+  }, [initialMode]);
+
+  useEffect(() => {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
     const modeParam = params.get('mode') as HealthCalcMode | null;
@@ -91,15 +107,6 @@ export default function BmiCalculator() {
 
   const handleModeChange = (nextMode: HealthCalcMode) => {
     setMode(nextMode);
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href);
-      if (nextMode === 'bmi') {
-        url.searchParams.delete('mode');
-      } else {
-        url.searchParams.set('mode', nextMode);
-      }
-      window.history.replaceState({}, '', url.toString());
-    }
   };
 
   // Standardized metric conversions for shared formulas
@@ -678,7 +685,7 @@ export default function BmiCalculator() {
           All-in-One Health &amp; Metabolic Snapshot
         </h3>
         <span className="text-xs font-bold text-[#16856B] bg-[#ECFDF5] border border-[#A7F3D0] px-2.5 py-0.5 rounded-md">
-          {calculation.category}
+          {calculation.bmiCategory}
         </span>
       </div>
 
@@ -735,16 +742,24 @@ export default function BmiCalculator() {
       breadcrumbs={[
         { label: 'Home', href: '/' },
         { label: 'Health & Fitness', href: '/health-fitness' },
-        { label: HEALTH_MODES.find((m) => m.id === mode)?.label || 'BMI Calculator' },
+        {
+          label:
+            customTitle ||
+            HEALTH_MODES.find((m) => m.id === mode)?.label ||
+            'BMI Calculator',
+        },
       ]}
-      title="BMI, Calorie (TDEE), BMR & Body Composition Calculator"
-      subtitle="Calculate your Body Mass Index (BMI), Daily Calorie Expenditure (TDEE), Basal Metabolic Rate (BMR), Ideal Weight Range, and U.S. Navy Body Fat Percentage."
-      heroSymbol="BMI"
+      title={customTitle || 'BMI Calculator (Body Mass Index)'}
+      subtitle={
+        customSubtitle ||
+        'Calculate your Body Mass Index (BMI) and WHO healthy weight range in Metric (kg/cm) or US Imperial (lbs/in) units.'
+      }
+      heroSymbol={customHeroSymbol || 'BMI'}
       heroBadgeBg="bg-[#FFE4E6]"
       heroBadgeColor="text-[#E11D48]"
       categoryName="Health & Fitness"
       categoryHref="/health-fitness"
-      otherCalculatorsTitle="Other Health & Everyday Calculators"
+      otherCalculatorsTitle="Other Health & Fitness Calculators"
       otherCalculators={HEALTH_RELATED_LINKS}
       relatedCalculators={HEALTH_RELATED_LINKS.slice(0, 4)}
       calculatorCard={calculatorCard}

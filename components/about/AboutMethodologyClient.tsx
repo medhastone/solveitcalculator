@@ -61,7 +61,14 @@ const DEMO_UNIT_OPTIONS: Record<string, UnitOption> = {
   },
 };
 
-export default function AboutMethodologyClient() {
+interface AboutMethodologyClientProps {
+  pageVariant?: 'about' | 'methodology';
+}
+
+export default function AboutMethodologyClient({
+  pageVariant = 'about',
+}: AboutMethodologyClientProps) {
+  const isMethodology = pageVariant === 'methodology';
   const [demoInput, setDemoInput] = useState<string>('100');
   const [demoUnit, setDemoUnit] = useState<string>('Metres (m)');
   const [hasInteracted, setHasInteracted] = useState<boolean>(false);
@@ -105,7 +112,7 @@ export default function AboutMethodologyClient() {
               aria-hidden="true"
             />
             <span className="font-semibold text-[#2457D6]" aria-current="page">
-              About
+              {isMethodology ? 'Calculation Methodology' : 'About'}
             </span>
           </nav>
 
@@ -160,8 +167,18 @@ export default function AboutMethodologyClient() {
             {/* Center Headline & Purpose Statement */}
             <div className="lg:col-span-6 text-center space-y-3.5 max-w-2xl mx-auto">
               <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[#152238] leading-tight">
-                How SolveItCalculator{' '}
-                <span className="text-[#2457D6]">Works</span>
+                {isMethodology ? (
+                  <>
+                    Calculation{' '}
+                    <span className="text-[#2457D6]">Methodology</span> &amp;
+                    Accuracy Standards
+                  </>
+                ) : (
+                  <>
+                    About{' '}
+                    <span className="text-[#2457D6]">SolveItCalculator</span>
+                  </>
+                )}
               </h1>
               <p className="text-base sm:text-lg font-semibold text-[#152238]">
                 Making calculations understandable, accessible and useful for
@@ -737,12 +754,29 @@ export default function AboutMethodologyClient() {
                     className="w-1.5 h-1.5 rounded-full bg-[#0A58ED]"
                   />
                   <Link
+                    href="/about"
+                    className="font-semibold text-[#0A58ED] hover:underline"
+                  >
+                    About SolveItCalculator
+                  </Link>
+                  {!isMethodology && (
+                    <span className="text-[#64748B]">(this page)</span>
+                  )}
+                </li>
+                <li className="flex items-center gap-2">
+                  <span
+                    aria-hidden="true"
+                    className="w-1.5 h-1.5 rounded-full bg-[#0A58ED]"
+                  />
+                  <Link
                     href="/calculation-methodology"
                     className="font-semibold text-[#0A58ED] hover:underline"
                   >
                     Calculation Methodology
                   </Link>
-                  <span className="text-[#64748B]">(this page)</span>
+                  {isMethodology && (
+                    <span className="text-[#64748B]">(this page)</span>
+                  )}
                 </li>
                 <li className="flex items-center gap-2">
                   <span
@@ -754,6 +788,30 @@ export default function AboutMethodologyClient() {
                     className="font-semibold text-[#0A58ED] hover:underline"
                   >
                     Privacy Policy
+                  </Link>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span
+                    aria-hidden="true"
+                    className="w-1.5 h-1.5 rounded-full bg-[#0A58ED]"
+                  />
+                  <Link
+                    href="/terms-of-service"
+                    className="font-semibold text-[#0A58ED] hover:underline"
+                  >
+                    Terms of Service
+                  </Link>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span
+                    aria-hidden="true"
+                    className="w-1.5 h-1.5 rounded-full bg-[#0A58ED]"
+                  />
+                  <Link
+                    href="/accessibility"
+                    className="font-semibold text-[#0A58ED] hover:underline"
+                  >
+                    Accessibility Statement
                   </Link>
                 </li>
                 <li className="flex items-center gap-2">

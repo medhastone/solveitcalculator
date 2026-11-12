@@ -297,14 +297,14 @@ export const GUIDES_DATA: GuideArticleData[] = [
         },
         { name: 'Discount Calculator', href: '/math/discount-calculator' },
         {
-          name: 'Proportion Calculator',
-          href: '/math/proportion-calculator',
+          name: 'Ratio & Proportion Calculator',
+          href: '/math/ratio-calculator',
         },
         {
           name: 'Percentage to Decimal',
           href: '/math/percentage-to-decimal-calculator',
         },
-        { name: 'Percentage to Fraction', href: '/math/fraction-calculator' },
+        { name: 'Percentage to Fraction', href: '/math/percentage-to-fraction-calculator' },
       ],
       keyTakeaways: [
         'A percentage means “out of 100”.',
@@ -489,15 +489,15 @@ export const GUIDES_DATA: GuideArticleData[] = [
       relatedCalculators: [
         { name: 'Percentage Calculator', href: '/math/percentage-calculator' },
         {
-          name: 'Proportion Calculator',
-          href: '/math/proportion-calculator',
+          name: 'Percentage to Decimal Calculator',
+          href: '/math/percentage-to-decimal-calculator',
         },
         { name: 'Discount Calculator', href: '/math/discount-calculator' },
         {
           name: 'Gross Margin Calculator',
           href: '/finance/margin-calculator',
         },
-        { name: 'Ratio Calculator', href: '/math/ratio-calculator' },
+        { name: 'Ratio & Proportion Calculator', href: '/math/ratio-calculator' },
       ],
       keyTakeaways: [
         'Always divide the difference by the original starting value.',

@@ -71,31 +71,32 @@
     --color-inverse-surface: #0F172A;
     --color-inverse-on-surface: #F8FAFC;
 
-    --background: #F5F7FA;
+    --background: #F5F4F0;
     --foreground: #152238;
+    --accent-glow: rgba(251, 191, 36, 0.55);
   }
 
   [data-theme="dark"],
   .dark {
     color-scheme: dark;
     /* Exact Design System Tokens - Dark Mode */
-    --bg: #0B1220;
-    --surface: #131E32;
-    --text: #F8FAFC;
+    --bg: #090A0D;
+    --surface: #15171C;
+    --text: #F5F5F5;
     --muted: #CBD5E1;
     --primary: #60A5FA;
     --result-bg: #182946;
     --success: #34D399;
-    --border: #263859;
+    --border: #292C33;
 
     /* Semantic Compatibility Tokens */
-    --color-surface: #0B1220;
-    --color-surface-container-lowest: #0F172A;
-    --color-surface-container-low: #131E32;
-    --color-surface-container: #192742;
-    --color-surface-container-high: #263859;
-    --color-surface-container-highest: #334155;
-    --color-on-surface: #F8FAFC;
+    --color-surface: #090A0D;
+    --color-surface-container-lowest: #0F1218;
+    --color-surface-container-low: #15171C;
+    --color-surface-container: #1B1E26;
+    --color-surface-container-high: #262A34;
+    --color-surface-container-highest: #333846;
+    --color-on-surface: #F5F5F5;
     --color-on-surface-variant: #CBD5E1;
     --color-primary: #60A5FA;
     --color-on-primary: #FFFFFF;
@@ -110,12 +111,13 @@
     --color-on-tertiary-container: #FEF3C7;
     --color-error: #F87171;
     --color-outline: #64748B;
-    --color-outline-variant: #263859;
+    --color-outline-variant: #292C33;
     --color-inverse-surface: #F8FAFC;
     --color-inverse-on-surface: #0F172A;
 
-    --background: #0B1220;
-    --foreground: #F8FAFC;
+    --background: #090A0D;
+    --foreground: #F5F5F5;
+    --accent-glow: rgba(56, 189, 248, 0.55);
   }
 
   * {
@@ -129,6 +131,39 @@
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
     overflow-x: hidden;
+  }
+
+  /* Smooth 520ms Website-Wide Theme Transition */
+  html.theme-transitioning,
+  html.theme-transitioning body,
+  html.theme-transitioning header,
+  html.theme-transitioning footer,
+  html.theme-transitioning main,
+  html.theme-transitioning section,
+  html.theme-transitioning article,
+  html.theme-transitioning aside,
+  html.theme-transitioning nav,
+  html.theme-transitioning div,
+  html.theme-transitioning span,
+  html.theme-transitioning p,
+  html.theme-transitioning h1,
+  html.theme-transitioning h2,
+  html.theme-transitioning h3,
+  html.theme-transitioning h4,
+  html.theme-transitioning a,
+  html.theme-transitioning button:not(.neu-theme-switch),
+  html.theme-transitioning input,
+  html.theme-transitioning select,
+  html.theme-transitioning textarea,
+  html.theme-transitioning table,
+  html.theme-transitioning th,
+  html.theme-transitioning td {
+    transition:
+      background-color 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-image 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 480ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1) !important;
   }
 
   html[data-a11y-text-size="small"] {
@@ -156,7 +191,7 @@
     line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
-    transition: background-color 0.15s ease, color 0.15s ease;
+    transition: background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   /* Accessible Focus Rings with high contrast */
@@ -1145,3 +1180,468 @@ html[data-theme="dark"] button.bg-\[\#152238\] {
     background: #0d9488 !important;
   }
 }
+
+/* ============================================================================
+   PREMIUM 3D NEUMORPHIC THEME SWITCHER
+   - Sculpted capsule outer track with multi-layered inner & outer 3D shadows
+   - Separate rounded-square (squircle) tactile sliding button
+   - Spring-like sliding motion, morphing Sun/Moon + Stars SVGs
+   - Golden yellow (Light) & Electric Blue (Dark) ambient illumination
+   - Radial particle burst on switch
+============================================================================ */
+
+.neu-theme-switch {
+  --switch-w: 68px;
+  --switch-h: 34px;
+  --switch-pad: 4px;
+  --thumb-size: 26px;
+  --thumb-radius: 9px;
+  --track-radius: 9999px;
+  --icon-size: 16px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: var(--switch-w);
+  height: var(--switch-h);
+  min-height: 0 !important;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  flex-shrink: 0;
+  isolation: isolate;
+}
+
+.neu-theme-switch.neu-switch-sm {
+  --switch-w: 58px;
+  --switch-h: 30px;
+  --switch-pad: 3.5px;
+  --thumb-size: 23px;
+  --thumb-radius: 8px;
+  --icon-size: 14px;
+}
+
+.neu-theme-switch.neu-switch-md {
+  --switch-w: 68px;
+  --switch-h: 34px;
+  --switch-pad: 4px;
+  --thumb-size: 26px;
+  --thumb-radius: 9px;
+  --icon-size: 16px;
+}
+
+.neu-theme-switch.neu-switch-lg {
+  --switch-w: 78px;
+  --switch-h: 38px;
+  --switch-pad: 4.5px;
+  --thumb-size: 29px;
+  --thumb-radius: 10px;
+  --icon-size: 18px;
+}
+
+.neu-theme-switch:focus-visible {
+  outline: 2px solid var(--primary, #2457D6);
+  outline-offset: 4px;
+  border-radius: 9999px;
+}
+
+/* Outer Ambient Lighting Halo around the 3D Control */
+.neu-switch-ambient {
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+  transition:
+    background 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 380ms ease,
+    transform 420ms ease;
+}
+
+.neu-theme-switch.is-light .neu-switch-ambient {
+  background: radial-gradient(
+    circle at 26% 50%,
+    rgba(251, 191, 36, 0.34) 0%,
+    rgba(245, 158, 11, 0.14) 48%,
+    transparent 76%
+  );
+  box-shadow: 0 0 16px rgba(251, 191, 36, 0.24);
+}
+
+.neu-theme-switch.is-dark .neu-switch-ambient {
+  background: radial-gradient(
+    circle at 74% 50%,
+    rgba(56, 189, 248, 0.38) 0%,
+    rgba(37, 99, 235, 0.18) 50%,
+    transparent 78%
+  );
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+}
+
+/* Brief surge in ambient glow intensity during theme switch */
+.neu-theme-switch.is-bursting.is-light .neu-switch-ambient {
+  opacity: 1;
+  transform: scale(1.08);
+  box-shadow: 0 0 26px rgba(251, 191, 36, 0.58);
+}
+
+.neu-theme-switch.is-bursting.is-dark .neu-switch-ambient {
+  opacity: 1;
+  transform: scale(1.08);
+  box-shadow: 0 0 28px rgba(56, 189, 248, 0.65);
+}
+
+/* Recessed 3D Neumorphic Capsule Track */
+.neu-switch-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--track-radius);
+  overflow: hidden;
+  z-index: 1;
+  transition:
+    background 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Light Mode Track: Soft Warm Grey Neumorphic Well */
+.neu-theme-switch.is-light .neu-switch-track {
+  background: linear-gradient(145deg, #E3E2DC 0%, #EFECE6 55%, #F6F5F0 100%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow:
+    inset 3px 3px 6px rgba(166, 164, 156, 0.55),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.92),
+    inset 0 1px 2px rgba(140, 138, 130, 0.3),
+    0 3px 8px rgba(21, 34, 56, 0.08),
+    0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+/* Dark Mode Track: Sculpted Deep Charcoal / Obsidian Well */
+.neu-theme-switch.is-dark .neu-switch-track {
+  background: linear-gradient(145deg, #090B10 0%, #10131B 60%, #161A24 100%);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  box-shadow:
+    inset 3px 4px 7px rgba(0, 0, 0, 0.88),
+    inset -2px -2px 5px rgba(45, 55, 78, 0.35),
+    inset 0 0 10px rgba(56, 189, 248, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.55),
+    0 0 10px rgba(56, 189, 248, 0.14);
+}
+
+/* Subtle Glass-Like Specular Rim Highlight inside Track */
+.neu-switch-glass-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.38) 0%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  opacity: 0.6;
+}
+
+.neu-theme-switch.is-dark .neu-switch-glass-rim {
+  background: linear-gradient(
+    180deg,
+    rgba(148, 163, 184, 0.14) 0%,
+    rgba(15, 23, 42, 0) 40%
+  );
+  opacity: 0.85;
+}
+
+/* Subtle Inactive Etched Icons on Track Ends */
+.neu-track-icon {
+  position: absolute;
+  top: 50%;
+  width: calc(var(--icon-size) * 0.88);
+  height: calc(var(--icon-size) * 0.88);
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition:
+    opacity 400ms ease,
+    transform 450ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 400ms ease;
+}
+
+.neu-track-icon-sun {
+  left: calc(var(--switch-pad) + 5px);
+  color: #64748B;
+}
+
+.neu-track-icon-moon {
+  right: calc(var(--switch-pad) + 5px);
+  color: #94A3B8;
+}
+
+.neu-theme-switch.is-light .neu-track-icon-sun {
+  opacity: 0;
+  transform: translateY(-50%) scale(0.6);
+}
+
+.neu-theme-switch.is-light .neu-track-icon-moon {
+  opacity: 0.42;
+  color: #78756E;
+  transform: translateY(-50%) scale(0.92);
+}
+
+.neu-theme-switch.is-dark .neu-track-icon-sun {
+  opacity: 0.36;
+  color: #64748B;
+  transform: translateY(-50%) scale(0.92);
+}
+
+.neu-theme-switch.is-dark .neu-track-icon-moon {
+  opacity: 0;
+  transform: translateY(-50%) scale(0.6);
+}
+
+/* Separate Rounded-Square (Squircle) 3D Sliding Thumb Button */
+.neu-switch-thumb {
+  position: absolute;
+  top: var(--switch-pad);
+  left: var(--switch-pad);
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: var(--thumb-radius);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  will-change: transform, background, box-shadow;
+  transition:
+    transform 540ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 480ms ease;
+}
+
+/* Light Mode Active Thumb: Crisp Tactile White 3D Button with Warm Golden Rim */
+.neu-theme-switch.is-light .neu-switch-thumb {
+  transform: translate3d(0, 0, 0);
+  background: linear-gradient(145deg, #FFFFFF 0%, #FAF9F5 58%, #EFECE4 100%);
+  border: 1px solid rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 3px 7px rgba(21, 34, 56, 0.16),
+    0 1px 2px rgba(21, 34, 56, 0.1),
+    0 0 10px rgba(251, 191, 36, 0.38),
+    inset 0 1px 1px rgba(255, 255, 255, 1),
+    inset 0 -1px 2px rgba(214, 211, 200, 0.55);
+}
+
+/* Dark Mode Active Thumb: Glossy Dark Surface with Electric Blue Rim Glow */
+.neu-theme-switch.is-dark .neu-switch-thumb {
+  transform: translate3d(
+    calc(var(--switch-w) - var(--thumb-size) - (var(--switch-pad) * 2)),
+    0,
+    0
+  );
+  background: linear-gradient(145deg, #262B38 0%, #181C26 55%, #10131A 100%);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  box-shadow:
+    0 4px 9px rgba(0, 0, 0, 0.75),
+    0 0 12px rgba(56, 189, 248, 0.48),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.22),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.65);
+}
+
+/* Tactile Hover & Active Micro-Interactions */
+.neu-theme-switch:hover.is-light .neu-switch-thumb {
+  box-shadow:
+    0 4px 9px rgba(21, 34, 56, 0.2),
+    0 0 14px rgba(251, 191, 36, 0.55),
+    inset 0 1px 1px rgba(255, 255, 255, 1);
+}
+
+.neu-theme-switch:hover.is-dark .neu-switch-thumb {
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.8),
+    0 0 16px rgba(56, 189, 248, 0.65),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.28);
+}
+
+.neu-theme-switch:active.is-light .neu-switch-thumb {
+  transform: translate3d(1px, 0, 0) scale(0.95);
+}
+
+.neu-theme-switch:active.is-dark .neu-switch-thumb {
+  transform: translate3d(
+      calc(var(--switch-w) - var(--thumb-size) - (var(--switch-pad) * 2) - 1px),
+      0,
+      0
+    )
+    scale(0.95);
+}
+
+/* Glass Top Bevel Shine on Sliding Thumb */
+.neu-thumb-shine {
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  right: 2px;
+  height: 42%;
+  border-radius: calc(var(--thumb-radius) - 2px) calc(var(--thumb-radius) - 2px) 50% 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.neu-theme-switch.is-dark .neu-thumb-shine {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Radial Icon Glow Inside Thumb */
+.neu-thumb-glow {
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  pointer-events: none;
+  transition:
+    background 480ms ease,
+    transform 420ms ease,
+    opacity 420ms ease;
+}
+
+.neu-theme-switch.is-light .neu-thumb-glow {
+  background: radial-gradient(
+    circle,
+    rgba(251, 191, 36, 0.42) 0%,
+    rgba(245, 158, 11, 0.12) 58%,
+    transparent 75%
+  );
+  opacity: 0.9;
+}
+
+.neu-theme-switch.is-dark .neu-thumb-glow {
+  background: radial-gradient(
+    circle,
+    rgba(56, 189, 248, 0.44) 0%,
+    rgba(59, 130, 246, 0.15) 58%,
+    transparent 75%
+  );
+  opacity: 0.95;
+}
+
+.neu-theme-switch.is-bursting .neu-thumb-glow {
+  transform: scale(1.35);
+  opacity: 1;
+}
+
+/* Morphing Sun & Moon Icon Wrappers */
+.neu-icon-wrapper {
+  position: absolute;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity, filter;
+  transition:
+    transform 540ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 420ms ease;
+}
+
+/* Sun Icon States */
+.neu-theme-switch.is-light .neu-icon-sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+  filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.65));
+}
+
+.neu-theme-switch.is-dark .neu-icon-sun {
+  opacity: 0;
+  transform: rotate(110deg) scale(0.35);
+  filter: drop-shadow(0 0 0px rgba(245, 158, 11, 0));
+}
+
+/* Moon Icon States */
+.neu-theme-switch.is-light .neu-icon-moon {
+  opacity: 0;
+  transform: rotate(-110deg) scale(0.35);
+  filter: drop-shadow(0 0 0px rgba(56, 189, 248, 0));
+}
+
+.neu-theme-switch.is-dark .neu-icon-moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8));
+}
+
+/* Subtle Star Twinkle in Dark Mode */
+.neu-theme-switch.is-dark .neu-moon-star-1 {
+  animation: neuStarTwinkle 2.8s ease-in-out infinite alternate;
+  transform-origin: 17.5px 6.1px;
+}
+
+.neu-theme-switch.is-dark .neu-moon-star-2 {
+  animation: neuStarTwinkle 2.2s ease-in-out 0.6s infinite alternate;
+  transform-origin: 14.2px 9.2px;
+}
+
+@keyframes neuStarTwinkle {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+/* Particle Burst Effect Around Sliding Thumb */
+.neu-particle-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.neu-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--p-size, 4px);
+  height: var(--p-size, 4px);
+  margin-top: calc(var(--p-size, 4px) / -2);
+  margin-left: calc(var(--p-size, 4px) / -2);
+  border-radius: 9999px;
+  background-color: var(--p-color, #FBBF24);
+  box-shadow: 0 0 6px var(--p-color, #FBBF24);
+  opacity: 0;
+  animation: neuParticleBurst 560ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--p-delay, 0ms);
+}
+
+@keyframes neuParticleBurst {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(0.5);
+  }
+  45% {
+    opacity: 0.95;
+    transform: translate3d(calc(var(--tx) * 0.72), calc(var(--ty) * 0.72), 0)
+      scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--tx), var(--ty), 0) scale(0.2);
+  }
+}
+

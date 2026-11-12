@@ -2,27 +2,18 @@ import type { Metadata } from 'next';
 import BusinessCategoryPageClient from '@/components/finance-suite/BusinessCategoryPageClient';
 
 export const metadata: Metadata = {
-  title:
-    'Business & Pricing Calculators — Gross Margin, Markup, Break-Even & 1099 Tax | SolveItCalculator',
+  title: 'Business Calculators: Margin, Markup, Break-Even | SolveIt',
   description:
-    'Free business and pricing calculators: compute gross margin, markup percentage, net operating profit margin, break-even units and revenue, and 1099 vs. W-2 contractor taxes.',
+    'Calculate gross margin, retail markup, net and operating profit margin, break-even unit volume, promotional discounts, and 1099 self-employment taxes.',
   alternates: {
     canonical: 'https://solveitcalculator.com/finance/business',
   },
   openGraph: {
-    title:
-      'Business & Pricing Calculators — Margin, Markup & Break-Even | SolveItCalculator',
+    title: 'Business Calculators: Margin, Markup, Break-Even | SolveIt',
     description:
-      'Calculate gross profit margin, markup percentage, break-even volume, and self-employment taxes with step-by-step formulas.',
+      'Calculate gross margin, markup, net profit margin, break-even volume, and 1099 contractor taxes.',
     url: 'https://solveitcalculator.com/finance/business',
     type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title:
-      'Business & Pricing Calculators — Margin, Markup & Break-Even | SolveItCalculator',
-    description:
-      'Calculate gross profit margin, markup percentage, break-even volume, and self-employment taxes with step-by-step formulas.',
   },
 };
 

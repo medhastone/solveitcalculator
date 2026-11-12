@@ -24,5 +24,5 @@ export const metadata: Metadata = {
 };
 
 export default function AccessibilityPage() {
-  return <PrivacyAccessibilityClient />;
+  return <PrivacyAccessibilityClient pageVariant="accessibility" />;
 }

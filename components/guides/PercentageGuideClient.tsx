@@ -80,8 +80,8 @@ const RELATED_CALCULATORS = [
     href: '/math/discount-calculator',
   },
   {
-    name: 'Proportion Calculator',
-    href: '/math/proportion-calculator',
+    name: 'Ratio & Proportion Calculator',
+    href: '/math/ratio-calculator',
   },
   {
     name: 'Percentage to Decimal',
@@ -89,7 +89,7 @@ const RELATED_CALCULATORS = [
   },
   {
     name: 'Percentage to Fraction',
-    href: '/math/fraction-calculator',
+    href: '/math/percentage-to-fraction-calculator',
   },
 ];
 

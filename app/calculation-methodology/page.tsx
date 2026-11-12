@@ -24,5 +24,5 @@ export const metadata: Metadata = {
 };
 
 export default function CalculationMethodologyPage() {
-  return <AboutMethodologyClient />;
+  return <AboutMethodologyClient pageVariant="methodology" />;
 }

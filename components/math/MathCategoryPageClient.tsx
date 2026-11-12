@@ -12,7 +12,6 @@ import {
   Grid,
   ArrowRight,
   ChevronRight,
-  ChevronDown,
   Flame,
   FolderOpen,
   Lightbulb,
@@ -26,6 +25,8 @@ import {
   BarChart3,
   FlaskConical,
   Share2,
+  BookOpen,
+  Tag,
 } from 'lucide-react';
 import {
   MATH_CALCULATORS,
@@ -55,6 +56,15 @@ export function MathSymbolBadge({
           aria-hidden="true"
         >
           <Percent className={size === 'sm' ? 'w-4 h-4 stroke-[2.5]' : 'w-6 h-6 stroke-[2.5]'} />
+        </div>
+      );
+    case 'discount-tag':
+      return (
+        <div
+          className={`${boxSize} bg-[#FFF6E5] text-[#D97706] flex items-center justify-center shrink-0 font-extrabold ${textSize}`}
+          aria-hidden="true"
+        >
+          <Tag className={size === 'sm' ? 'w-4 h-4 stroke-[2.5]' : 'w-6 h-6 stroke-[2.5]'} />
         </div>
       );
     case 'bar-chart-green':
@@ -220,16 +230,41 @@ const SIDEBAR_RELATED_CATEGORIES = [
   },
 ];
 
+const MATH_MATCHING_GUIDES = [
+  {
+    title: 'How to Calculate a Percentage',
+    description:
+      'Learn the core percentage formula, finding what percent X is of Y, and step-by-step worked examples.',
+    href: '/guides/how-to-calculate-a-percentage',
+  },
+  {
+    title: 'How to Calculate Percentage Change (Increase & Decrease)',
+    description:
+      'Master before-and-after percentage growth, markdowns, and why +20% followed by −20% does not return to 100%.',
+    href: '/guides/how-to-calculate-percentage-change',
+  },
+  {
+    title: 'How to Simplify, Add, and Multiply Fractions',
+    description:
+      'Find common denominators using LCM, reduce fractions with GCD, and convert fractions into decimals.',
+    href: '/guides/how-to-simplify-and-calculate-fractions',
+  },
+  {
+    title: 'How to Calculate Ratios, Proportions, and Averages',
+    description:
+      'Solve missing values in proportions by cross-multiplication and compare mean, median, and mode.',
+    href: '/guides/how-to-calculate-ratios-and-averages',
+  },
+];
+
 const MATH_CATEGORY_STATE_KEY = 'solveit_math_category_browsing_state';
 
 export default function MathCategoryPageClient() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<MathFilterCategory>('All');
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Restore search query, filter, and scroll position on mount/back navigation
   useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search);
@@ -329,6 +364,22 @@ export default function MathCategoryPageClient() {
     });
   }, [directoryCalculators, searchQuery, selectedFilter]);
 
+  const subcategoryGroups = useMemo(() => {
+    const orderedCats: Exclude<MathFilterCategory, 'All'>[] = [
+      'Percentages',
+      'Fractions',
+      'Ratios',
+      'Basic Math',
+      'Algebra',
+    ];
+    return orderedCats
+      .map((cat) => ({
+        name: cat,
+        tools: directoryCalculators.filter((t) => t.category === cat),
+      }))
+      .filter((g) => g.tools.length > 0);
+  }, [directoryCalculators]);
+
   const popularMathTools = useMemo(
     () => directoryCalculators.filter((t) => t.isPopular),
     [directoryCalculators]
@@ -341,6 +392,52 @@ export default function MathCategoryPageClient() {
     }
   };
 
+  const renderToolCard = (tool: MathCalculatorItem) => (
+    <div
+      key={tool.id}
+      role="listitem"
+      className="group rounded-xl bg-white border border-slate-200/90 px-4 py-3.5 hover:border-[#2457D6] hover:shadow-xs transition-all"
+    >
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+        <div className="flex items-start sm:items-center gap-3.5 min-w-0">
+          <MathSymbolBadge type={tool.symbolType} size="md" />
+          <div className="min-w-0">
+            <Link
+              href={`/math/${tool.slug}`}
+              onClick={recordScrollPosition}
+              className="text-base font-bold text-[#152238] group-hover:text-[#2457D6] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-xs"
+            >
+              {tool.name}
+            </Link>
+            <p className="text-xs sm:text-sm text-slate-600 mt-0.5 leading-snug">
+              {tool.description}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0 pl-15 sm:pl-0">
+          <span className="text-[11px] font-semibold text-slate-700 bg-[#EEF3FA] border border-slate-200/80 dark:bg-[#1E2E4F] dark:text-[#E2E8F0] dark:border-[#334E7D] px-2.5 py-1 rounded-md">
+            {tool.displayBadge || tool.category}
+          </span>
+          <Link
+            href={`/math/${tool.slug}`}
+            onClick={recordScrollPosition}
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#2457D6] hover:text-[#1d47b0] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md py-1 px-1.5"
+          >
+            <span>Open calculator</span>
+            <ArrowRight
+              className="w-4 h-4 group-hover:translate-x-0.5 transition-transform"
+              aria-hidden="true"
+            />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+
+  const isDefaultGroupedView =
+    selectedFilter === 'All' && searchQuery.trim().length === 0;
+
   return (
     <div className="min-h-screen bg-[#F5F7FA] text-[#152238]">
       {/* Category Header / Hero Section */}
@@ -349,7 +446,6 @@ export default function MathCategoryPageClient() {
         className="relative overflow-hidden border-b border-slate-200/80 bg-gradient-to-b from-[#EAF2FF] via-[#F1F6FF] to-[#F5F7FA] pt-5 pb-6"
       >
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Breadcrumb: Home / Math */}
           <nav aria-label="Breadcrumb" className="mb-4">
             <ol className="flex items-center gap-1.5 text-xs sm:text-sm font-medium">
               <li>
@@ -370,7 +466,6 @@ export default function MathCategoryPageClient() {
           </nav>
 
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            {/* Left: Icon + H1 + Intro + Search + Filters */}
             <div className="flex-1 max-w-4xl">
               <div className="flex items-start gap-4">
                 <div
@@ -380,6 +475,11 @@ export default function MathCategoryPageClient() {
                   <Calculator className="w-8 h-8 stroke-[2.2]" />
                 </div>
                 <div>
+                  <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#DCE8FF] text-[#1D4ED8] text-xs font-extrabold mb-1.5">
+                    <span>{directoryCalculators.length} Verified Calculators</span>
+                    <span>•</span>
+                    <span>Instant Step-by-Step Formulas</span>
+                  </div>
                   <h1
                     id="math-category-heading"
                     className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#152238]"
@@ -387,14 +487,11 @@ export default function MathCategoryPageClient() {
                     Math Calculators
                   </h1>
                   <p className="mt-1.5 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
-                    Solve everyday math problems with ease. Calculate
-                    percentages, fractions, ratios, averages, algebra and more
-                    with clear results and simple explanations.
+                    Pick the right math solver for your calculation—find percentages, markdowns, and percentage change, add or simplify fractions, scale ratios, summarize datasets with mean and median, or solve roots, logarithms, and quadratic equations step by step.
                   </p>
                 </div>
               </div>
 
-              {/* Prominent Search Field */}
               <form
                 onSubmit={handleSearchSubmit}
                 role="search"
@@ -412,7 +509,7 @@ export default function MathCategoryPageClient() {
                   type="search"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Find a math calculator (e.g. percentage, fraction, ratio...)"
+                  placeholder="Find a math calculator (e.g. percentage, fraction, ratio, quadratic...)"
                   className="w-full py-2 px-2 text-sm sm:text-base text-[#152238] placeholder:text-slate-400 bg-transparent focus:outline-none"
                 />
                 {searchQuery && (
@@ -434,7 +531,6 @@ export default function MathCategoryPageClient() {
                 </button>
               </form>
 
-              {/* Filter Controls: All, Basic Math, Percentages, Fractions, Ratios, Algebra */}
               <div
                 role="group"
                 aria-label="Filter math calculators by topic"
@@ -442,40 +538,50 @@ export default function MathCategoryPageClient() {
               >
                 {MATH_FILTER_CATEGORIES.map((category) => {
                   const isActive = selectedFilter === category;
+                  const count =
+                    category === 'All'
+                      ? directoryCalculators.length
+                      : directoryCalculators.filter((t) => t.category === category)
+                          .length;
                   return (
                     <button
                       key={category}
                       type="button"
                       onClick={() => setSelectedFilter(category)}
                       aria-pressed={isActive}
-                      className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] ${
+                      className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-colors cursor-pointer inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] ${
                         isActive
                           ? 'bg-[#2457D6] text-white border-[#2457D6] shadow-2xs'
                           : 'bg-[#E2ECFC] hover:bg-[#D2E2FA] text-[#152238] border-[#C6DBFF] dark:bg-[#1E325C] dark:border-[#33528E] dark:text-[#F8FAFC] dark:hover:bg-[#284278]'
                       }`}
                     >
-                      {category}
+                      <span>{category}</span>
+                      <span
+                        className={`text-[11px] px-1.5 py-0.2 rounded-full font-bold ${
+                          isActive
+                            ? 'bg-white/20 text-white'
+                            : 'bg-white/80 text-[#2457D6] dark:bg-slate-800 dark:text-blue-300'
+                        }`}
+                      >
+                        {count}
+                      </span>
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Right: Decorative Math Illustration on Desktop */}
             <div
               aria-hidden="true"
               className="hidden xl:flex items-center justify-center relative w-64 h-44 shrink-0 select-none"
             >
               <div className="w-44 h-44 rounded-full bg-[#DCE8FF]/70 flex items-center justify-center relative">
-                {/* Floating Pi badge */}
                 <div className="absolute -left-2 top-3 w-11 h-11 rounded-xl bg-[#60A5FA] text-white font-serif font-bold text-2xl flex items-center justify-center shadow-sm -rotate-12">
                   π
                 </div>
-                {/* Floating Sqrt badge */}
                 <div className="absolute -left-5 bottom-8 w-11 h-10 rounded-xl bg-[#D1FAE5] text-[#16856B] font-extrabold text-base flex items-center justify-center shadow-sm -rotate-6">
                   √x
                 </div>
-                {/* Tilted Calculator graphic */}
                 <div className="w-24 h-32 rounded-2xl bg-[#2457D6] p-2.5 shadow-md rotate-12 flex flex-col justify-between border-2 border-[#3B82F6]">
                   <div className="h-6 rounded-md bg-[#93C5FD]/90 w-full" />
                   <div className="grid grid-cols-3 gap-1.5">
@@ -490,7 +596,6 @@ export default function MathCategoryPageClient() {
                     <div className="h-3.5 rounded-xs bg-[#FBBF24]" />
                   </div>
                 </div>
-                {/* Floating % badge */}
                 <div className="absolute -right-3 top-12 w-11 h-11 rounded-xl bg-[#FBBF24] text-white font-extrabold text-xl flex items-center justify-center shadow-sm rotate-12">
                   %
                 </div>
@@ -502,95 +607,133 @@ export default function MathCategoryPageClient() {
 
       {/* Main Content Container */}
       <main className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-7">
-        {/* Two-Column Desktop Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
-          {/* Left Main Column: Calculator Row Directory */}
-          <div className="lg:col-span-8">
-            <div className="mb-4">
-              <div className="flex items-center gap-2">
-                <LayoutGrid
-                  className="w-5 h-5 text-[#2457D6]"
-                  aria-hidden="true"
-                />
-                <h2 className="text-xl font-extrabold text-[#152238] tracking-tight">
-                  {selectedFilter === 'All'
-                    ? 'All Math Calculators'
-                    : `${selectedFilter} Calculators`}
-                </h2>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-600 mt-0.5 pl-7">
-                Choose a calculator below to get started.
-              </p>
-            </div>
-
-            {filteredTools.length > 0 ? (
-              <div className="space-y-3" role="list">
-                {filteredTools.map((tool: MathCalculatorItem) => (
-                  <div
-                    key={tool.id}
-                    role="listitem"
-                    className="group rounded-xl bg-white border border-slate-200/90 px-4 py-3.5 hover:border-[#2457D6] hover:shadow-xs transition-all"
+          <div className="lg:col-span-8 space-y-8">
+            {isDefaultGroupedView ? (
+              <>
+                {subcategoryGroups.map((group) => (
+                  <section
+                    key={group.name}
+                    aria-labelledby={`math-group-${group.name}`}
+                    className="space-y-3.5"
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
-                      {/* Left: Icon + Title + 1-sentence description */}
-                      <div className="flex items-start sm:items-center gap-3.5 min-w-0">
-                        <MathSymbolBadge type={tool.symbolType} size="md" />
-                        <div className="min-w-0">
-                          <Link
-                            href={`/math/${tool.slug}`}
-                            onClick={recordScrollPosition}
-                            className="text-base font-bold text-[#152238] group-hover:text-[#2457D6] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-xs"
-                          >
-                            {tool.name}
-                          </Link>
-                          <p className="text-xs sm:text-sm text-slate-600 mt-0.5 leading-snug">
-                            {tool.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Right: Sub-topic label + Open calculator link */}
-                      <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0 pl-15 sm:pl-0">
-                        <span className="text-[11px] font-semibold text-slate-700 bg-[#EEF3FA] border border-slate-200/80 dark:bg-[#1E2E4F] dark:text-[#E2E8F0] dark:border-[#334E7D] px-2.5 py-1 rounded-md">
-                          {tool.displayBadge || tool.category}
-                        </span>
-                        <Link
-                          href={`/math/${tool.slug}`}
-                          onClick={recordScrollPosition}
-                          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#2457D6] hover:text-[#1d47b0] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md py-1 px-1.5"
+                    <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-2.5">
+                      <div className="flex items-center gap-2.5">
+                        <LayoutGrid
+                          className="w-5 h-5 text-[#2457D6]"
+                          aria-hidden="true"
+                        />
+                        <h2
+                          id={`math-group-${group.name}`}
+                          className="text-xl font-extrabold text-[#152238] tracking-tight"
                         >
-                          <span>Open calculator</span>
-                          <ArrowRight
-                            className="w-4 h-4 group-hover:translate-x-0.5 transition-transform"
-                            aria-hidden="true"
-                          />
-                        </Link>
+                          {group.name} Calculators
+                        </h2>
                       </div>
+                      <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#DCE8FF] text-[#2457D6]">
+                        {group.tools.length}{' '}
+                        {group.tools.length === 1 ? 'Tool' : 'Tools'}
+                      </span>
                     </div>
-                  </div>
+                    <div className="space-y-3" role="list">
+                      {group.tools.map((tool) => renderToolCard(tool))}
+                    </div>
+                  </section>
                 ))}
-              </div>
+              </>
             ) : (
-              <div className="rounded-xl bg-white border border-slate-200 p-8 text-center">
-                <p className="text-base font-bold text-[#152238]">
-                  No matching math calculators found
-                </p>
-                <p className="text-sm text-slate-600 mt-1">
-                  Try clearing your search query or switching the filter back to
-                  &ldquo;All&rdquo;.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSearchQuery('');
-                    setSelectedFilter('All');
-                  }}
-                  className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2457D6] text-white text-xs sm:text-sm font-semibold hover:bg-[#1d47b0] transition-colors cursor-pointer"
-                >
-                  Reset Filters
-                </button>
+              <div>
+                <div className="mb-4">
+                  <div className="flex items-center gap-2">
+                    <LayoutGrid
+                      className="w-5 h-5 text-[#2457D6]"
+                      aria-hidden="true"
+                    />
+                    <h2 className="text-xl font-extrabold text-[#152238] tracking-tight">
+                      {selectedFilter === 'All'
+                        ? `Matching Math Calculators (${filteredTools.length})`
+                        : `${selectedFilter} Calculators (${filteredTools.length})`}
+                    </h2>
+                  </div>
+                </div>
+
+                {filteredTools.length > 0 ? (
+                  <div className="space-y-3" role="list">
+                    {filteredTools.map((tool) => renderToolCard(tool))}
+                  </div>
+                ) : (
+                  <div className="rounded-xl bg-white border border-slate-200 p-8 text-center">
+                    <p className="text-base font-bold text-[#152238]">
+                      No matching math calculators found
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchQuery('');
+                        setSelectedFilter('All');
+                      }}
+                      className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2457D6] text-white text-xs sm:text-sm font-semibold hover:bg-[#1d47b0] transition-colors cursor-pointer"
+                    >
+                      Reset Filters
+                    </button>
+                  </div>
+                )}
               </div>
             )}
+
+            {/* Matching Math Guides */}
+            <section
+              aria-labelledby="math-guides-heading"
+              className="rounded-2xl bg-white border border-slate-200/90 p-6 shadow-2xs space-y-4"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-[#EBF2FF] text-[#2457D6] flex items-center justify-center shrink-0">
+                    <BookOpen className="w-5 h-5" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <h2
+                      id="math-guides-heading"
+                      className="text-lg font-extrabold text-[#152238]"
+                    >
+                      Matching Math &amp; Percentage Guides
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-600">
+                      Step-by-step tutorials with worked examples for percentages, fractions, and ratios.
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  href="/guides"
+                  className="text-xs sm:text-sm font-bold text-[#2457D6] hover:underline shrink-0"
+                >
+                  All Guides →
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {MATH_MATCHING_GUIDES.map((guide) => (
+                  <Link
+                    key={guide.href}
+                    href={guide.href}
+                    className="group rounded-xl border border-slate-200/90 bg-[#F8FAFC] hover:bg-white hover:border-[#2457D6] p-4 transition-all flex flex-col justify-between gap-2"
+                  >
+                    <div>
+                      <span className="text-sm font-bold text-[#152238] group-hover:text-[#2457D6] transition-colors">
+                        {guide.title}
+                      </span>
+                      <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                        {guide.description}
+                      </p>
+                    </div>
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#2457D6] mt-1">
+                      <span>Read guide</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </section>
           </div>
 
           {/* Right Sidebar Column */}
@@ -598,7 +741,6 @@ export default function MathCategoryPageClient() {
             aria-label="Popular and related calculators"
             className="lg:col-span-4 space-y-5"
           >
-            {/* Popular in Math Group */}
             <div className="rounded-2xl bg-white border border-slate-200/90 p-5 shadow-2xs">
               <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
                 <Flame
@@ -633,7 +775,6 @@ export default function MathCategoryPageClient() {
               </ul>
             </div>
 
-            {/* Related Calculator Categories Group */}
             <div className="rounded-2xl bg-white border border-slate-200/90 p-5 shadow-2xs">
               <div className="flex items-center gap-2 pb-3 border-b border-slate-100">
                 <FolderOpen
@@ -678,7 +819,6 @@ export default function MathCategoryPageClient() {
               </ul>
             </div>
 
-            {/* Need a different calculator? CTA Box */}
             <div className="rounded-2xl bg-[#EAF2FF] border border-[#CFE0FF] p-5">
               <div className="flex items-start gap-3.5">
                 <div className="w-10 h-10 rounded-xl bg-white text-[#D97706] flex items-center justify-center shrink-0 shadow-2xs">
@@ -706,34 +846,36 @@ export default function MathCategoryPageClient() {
           </aside>
         </div>
 
-        {/* Bottom Two-Column Row: How to Choose Guide (Left) + FAQs (Right) */}
+        {/* Bottom Two-Column Row: Which One Should I Use? Guide + Visible FAQs */}
         <section
           aria-label="Calculator selection guide and FAQs"
           className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start"
         >
-          {/* Left: How to choose the right math calculator */}
-          <div className="lg:col-span-7 rounded-2xl bg-[#EBF7F3] border border-[#BDE5D7] p-6">
+          <div className="lg:col-span-6 rounded-2xl bg-[#EBF7F3] border border-[#BDE5D7] p-6">
             <div className="flex items-center gap-2.5">
               <Settings
                 className="w-5 h-5 text-[#16856B]"
                 aria-hidden="true"
               />
               <h2 className="text-lg font-extrabold text-[#152238]">
-                How to choose the right math calculator
+                Which math calculator should I use?
               </h2>
             </div>
 
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5">
+            <div className="mt-5 grid grid-cols-1 gap-y-4">
               {MATH_CHOOSE_STEPS.map((item) => (
-                <div key={item.step} className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#D2EFE6] border border-[#BDE5D7] text-[#16856B] dark:bg-[#184239] dark:border-[#286658] dark:text-[#6EE7B7] font-extrabold text-sm flex items-center justify-center shrink-0">
+                <div
+                  key={item.step}
+                  className="flex items-start gap-3 bg-white/80 dark:bg-slate-900/60 rounded-xl p-3.5 border border-[#BDE5D7]/80"
+                >
+                  <div className="w-7 h-7 rounded-full bg-[#D2EFE6] border border-[#BDE5D7] text-[#16856B] dark:bg-[#184239] dark:border-[#286658] dark:text-[#6EE7B7] font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">
                     {item.step}
                   </div>
                   <div>
                     <h3 className="text-xs sm:text-sm font-bold text-[#152238]">
                       {item.title}
                     </h3>
-                    <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                    <p className="text-xs text-slate-600 mt-1 leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -742,8 +884,7 @@ export default function MathCategoryPageClient() {
             </div>
           </div>
 
-          {/* Right: Frequently Asked Questions */}
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-6">
             <div className="flex items-center gap-2 mb-3">
               <HelpCircle
                 className="w-5 h-5 text-[#2457D6] fill-[#2457D6]/10"
@@ -754,38 +895,20 @@ export default function MathCategoryPageClient() {
               </h2>
             </div>
 
-            <div className="space-y-2">
-              {MATH_FAQS.map((faq, index) => {
-                const isOpen = openFaqIndex === index;
-                return (
-                  <div
-                    key={faq.question}
-                    className="rounded-xl bg-white border border-slate-200/90 overflow-hidden"
-                  >
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setOpenFaqIndex(isOpen ? null : index)
-                      }
-                      aria-expanded={isOpen}
-                      className="w-full flex items-center justify-between gap-3 px-4 py-2.5 text-left text-xs sm:text-sm font-semibold text-[#152238] hover:text-[#2457D6] transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#2457D6]"
-                    >
-                      <span>{faq.question}</span>
-                      <ChevronDown
-                        className={`w-4 h-4 text-[#2457D6] shrink-0 transition-transform ${
-                          isOpen ? 'rotate-180' : ''
-                        }`}
-                        aria-hidden="true"
-                      />
-                    </button>
-                    {isOpen && (
-                      <div className="px-4 pb-3 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
-                        {faq.answer}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+            <div className="space-y-3">
+              {MATH_FAQS.map((faq) => (
+                <div
+                  key={faq.question}
+                  className="rounded-xl bg-white border border-slate-200/90 p-4 shadow-2xs"
+                >
+                  <h3 className="text-xs sm:text-sm font-bold text-[#152238]">
+                    {faq.question}
+                  </h3>
+                  <p className="mt-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>

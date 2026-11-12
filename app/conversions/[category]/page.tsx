@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import UnitConverter from '@/components/calculators/UnitConverter';
 import {
   CONVERSION_CATEGORIES,
@@ -58,6 +58,10 @@ export default async function ConversionCategoryPage({
 
   if (!resolvedSlug) {
     notFound();
+  }
+
+  if (category !== resolvedSlug) {
+    permanentRedirect(CONVERSION_CATEGORIES[resolvedSlug].canonicalPath);
   }
 
   return <UnitConverter initialCategory={resolvedSlug} />;

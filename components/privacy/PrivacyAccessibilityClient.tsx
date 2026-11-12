@@ -54,9 +54,16 @@ const TOC_ITEMS = [
   },
 ];
 
-export default function PrivacyAccessibilityClient() {
+interface PrivacyAccessibilityClientProps {
+  pageVariant?: 'privacy' | 'accessibility';
+}
+
+export default function PrivacyAccessibilityClient({
+  pageVariant = 'privacy',
+}: PrivacyAccessibilityClientProps) {
+  const isAccessibilityPage = pageVariant === 'accessibility';
   const [activeSection, setActiveSection] = useState<string>(
-    'information-we-collect'
+    isAccessibilityPage ? 'accessibility-commitment' : 'information-we-collect'
   );
   const [technicalOpen, setTechnicalOpen] = useState<boolean>(false);
 
@@ -255,7 +262,7 @@ export default function PrivacyAccessibilityClient() {
               className="text-[#0A58ED] font-semibold"
               aria-current="page"
             >
-              Privacy and Accessibility
+              {isAccessibilityPage ? 'Accessibility Statement' : 'Privacy Policy'}
             </span>
           </nav>
 
@@ -279,10 +286,21 @@ export default function PrivacyAccessibilityClient() {
 
               <div>
                 <h1 className="text-3xl sm:text-[42px] font-extrabold tracking-tight leading-[1.15]">
-                  <span className={isDarkMode ? 'text-white' : 'text-[#0B1528]'}>
-                    Privacy and{' '}
-                  </span>
-                  <span className="text-[#0A58ED]">Accessibility</span>
+                  {isAccessibilityPage ? (
+                    <>
+                      <span className="text-[#0A58ED]">Accessibility</span>{' '}
+                      <span className={isDarkMode ? 'text-white' : 'text-[#0B1528]'}>
+                        &amp; Display Preferences
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className={isDarkMode ? 'text-white' : 'text-[#0B1528]'}>
+                        Privacy Policy &amp;{' '}
+                      </span>
+                      <span className="text-[#0A58ED]">Data Protection</span>
+                    </>
+                  )}
                 </h1>
                 <p
                   className={`mt-2.5 text-sm sm:text-[16.5px] leading-relaxed max-w-[710px] ${mutedTextClass}`}
@@ -992,15 +1010,36 @@ export default function PrivacyAccessibilityClient() {
                     className="w-1.5 h-1.5 rounded-full bg-[#0A58ED] shrink-0"
                     aria-hidden="true"
                   />
-                  <a
-                    href="#accessibility-commitment"
-                    onClick={(e) =>
-                      handleTocClick(e, 'accessibility-commitment')
-                    }
+                  <Link
+                    href="/privacy-policy"
                     className="text-[#0A58ED] font-semibold hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A58ED] rounded-xs"
                   >
-                    Accessibility help
-                  </a>
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span
+                    className="w-1.5 h-1.5 rounded-full bg-[#0A58ED] shrink-0"
+                    aria-hidden="true"
+                  />
+                  <Link
+                    href="/terms-of-service"
+                    className="text-[#0A58ED] font-semibold hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A58ED] rounded-xs"
+                  >
+                    Terms of Service
+                  </Link>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span
+                    className="w-1.5 h-1.5 rounded-full bg-[#0A58ED] shrink-0"
+                    aria-hidden="true"
+                  />
+                  <Link
+                    href="/accessibility"
+                    className="text-[#0A58ED] font-semibold hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A58ED] rounded-xs"
+                  >
+                    Accessibility Statement
+                  </Link>
                 </li>
               </ul>
             </section>

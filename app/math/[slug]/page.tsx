@@ -12,6 +12,8 @@ const DUPLICATE_MATH_REDIRECTS: Record<string, string> = {
   'linear-equation-solver': '/math/equation-solver',
   'order-of-operations-calculator': '/math/scientific-calculator',
   'rounding-calculator': '/math/average-calculator',
+  'mean-median-mode-calculator': '/math/average-calculator',
+  'proportion-calculator': '/math/ratio-calculator',
   'decimal-to-fraction-calculator': '/math/fraction-to-decimal-calculator',
   'percentage-difference-calculator': '/math/percentage-change-calculator',
 };

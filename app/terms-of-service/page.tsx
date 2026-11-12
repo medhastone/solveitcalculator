@@ -43,8 +43,16 @@ export default function TermsOfServicePage() {
           <div className="pt-2 flex flex-wrap items-center gap-4 text-xs text-[#64748B]">
             <span>Last Updated: November 2026</span>
             <span>•</span>
+            <Link href="/about" className="text-[#2457D6] font-semibold hover:underline">
+              About SolveItCalculator
+            </Link>
+            <span>•</span>
             <Link href="/privacy-policy" className="text-[#2457D6] font-semibold hover:underline">
               Privacy Policy
+            </Link>
+            <span>•</span>
+            <Link href="/accessibility" className="text-[#2457D6] font-semibold hover:underline">
+              Accessibility
             </Link>
             <span>•</span>
             <Link

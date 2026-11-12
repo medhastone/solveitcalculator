@@ -31,10 +31,6 @@ const CALCULATOR_OPTIONS: CalculatorOption[] = [
     url: 'https://solveitcalculator.com/math/percentage-change-calculator',
   },
   {
-    name: 'Proportion Calculator',
-    url: 'https://solveitcalculator.com/math/proportion-calculator',
-  },
-  {
     name: 'Discount Calculator',
     url: 'https://solveitcalculator.com/math/discount-calculator',
   },

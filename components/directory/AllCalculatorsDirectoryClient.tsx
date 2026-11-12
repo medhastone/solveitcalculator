@@ -15,14 +15,13 @@ import {
   BarChart3,
   FlaskConical,
   PiggyBank,
-  Percent,
-  Tag,
-  Clock,
-  Star,
   ArrowUpDown,
   ClipboardList,
   BookOpen,
   X,
+  Compass,
+  CheckCircle2,
+  HelpCircle,
 } from 'lucide-react';
 import { GUIDES_DATA } from '@/lib/guidesData';
 
@@ -51,8 +50,7 @@ export interface DirectoryCategoryGroup {
     | 'home'
     | 'business'
     | 'science'
-    | 'retirement'
-    | 'guides';
+    | 'retirement';
   layout: 'list' | 'compact-grid';
   calculators: DirectoryCalculatorItem[];
 }
@@ -61,7 +59,7 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
   {
     id: 'math',
     title: 'Math Calculators',
-    subtitle: 'Basic math, percentages, fractions, ratios, algebra and more.',
+    subtitle: 'Percentages, fractions, ratios, averages, algebra, and multi-step expressions.',
     href: '/math',
     headerBg: 'bg-[#EEF4FF]',
     iconBg: 'bg-[#2457D6]',
@@ -80,70 +78,105 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
       {
         id: 'percentage-calculator',
         name: 'Percentage Calculator',
-        description: 'Calculate percentage, find the value or percent.',
+        description: 'Calculate the percentage of a number, what percent X is of Y, or whole from part.',
         href: '/math/percentage-calculator',
         keywords: ['percent', 'percentage', 'rate', 'value'],
       },
       {
-        id: 'fraction-calculator',
-        name: 'Fraction Calculator',
-        description: 'Add, subtract, multiply and divide fractions.',
-        href: '/math/fraction-calculator',
-        keywords: ['fraction', 'numerator', 'denominator', 'simplify'],
-      },
-      {
-        id: 'ratio-calculator',
-        name: 'Ratio Calculator',
-        description: 'Simplify ratios and compare quantities.',
-        href: '/math/ratio-calculator',
-        keywords: ['ratio', 'proportion', 'scale', 'compare'],
-      },
-      {
-        id: 'average-calculator',
-        name: 'Average Calculator',
-        description: 'Find mean, median, mode and range.',
-        href: '/math/average-calculator',
-        keywords: ['average', 'mean', 'median', 'mode', 'range'],
-      },
-      {
-        id: 'scientific-calculator',
-        name: 'Scientific Calculator',
-        description: 'Advanced calculations with trigonometry and more.',
-        href: '/math/scientific-calculator',
-        keywords: ['scientific', 'trigonometry', 'algebra', 'log', 'exponent'],
-      },
-      {
         id: 'percentage-change-calculator',
         name: 'Percentage Change Calculator',
-        description: 'Find the percentage increase or decrease between two values.',
+        description: 'Find the percentage increase, decrease, or difference between two values.',
         href: '/math/percentage-change-calculator',
-        keywords: ['percentage change', 'increase', 'decrease', 'growth'],
+        keywords: ['percentage change', 'increase', 'decrease', 'difference', 'growth'],
       },
       {
         id: 'discount-calculator',
         name: 'Discount Calculator',
-        description: 'Find the final price after a percentage discount and money saved.',
+        description: 'Find the final sale price after a percentage discount and total money saved.',
         href: '/math/discount-calculator',
         keywords: ['discount', 'sale price', 'percent off', 'markdown'],
       },
       {
+        id: 'percent-error-calculator',
+        name: 'Percent Error Calculator',
+        description: 'Compare experimental measurements against theoretical or accepted values.',
+        href: '/math/percent-error-calculator',
+        keywords: ['percent error', 'experimental', 'theoretical', 'accuracy'],
+      },
+      {
+        id: 'percentage-to-decimal-calculator',
+        name: 'Percentage to Decimal Calculator',
+        description: 'Convert any percentage value into its exact decimal form and vice versa.',
+        href: '/math/percentage-to-decimal-calculator',
+        keywords: ['percentage to decimal', 'convert percent', 'decimal'],
+      },
+      {
+        id: 'percentage-to-fraction-calculator',
+        name: 'Percentage to Fraction Calculator',
+        description: 'Convert any percentage into a simplified proper fraction or mixed number.',
+        href: '/math/percentage-to-fraction-calculator',
+        keywords: ['percentage to fraction', 'lowest terms', 'fraction'],
+      },
+      {
+        id: 'fraction-calculator',
+        name: 'Fraction Calculator',
+        description: 'Add, subtract, multiply, divide, and simplify fractions step by step.',
+        href: '/math/fraction-calculator',
+        keywords: ['fraction', 'numerator', 'denominator', 'simplify'],
+      },
+      {
+        id: 'fraction-to-decimal-calculator',
+        name: 'Fraction to Decimal & Percent Converter',
+        description: 'Convert proper, improper, or mixed fractions into decimals and percentages.',
+        href: '/math/fraction-to-decimal-calculator',
+        keywords: ['fraction to decimal', 'convert fraction', 'decimal'],
+      },
+      {
+        id: 'ratio-calculator',
+        name: 'Ratio & Proportion Calculator',
+        description: 'Simplify ratios, solve proportions by cross-multiplication, and scale quantities.',
+        href: '/math/ratio-calculator',
+        keywords: ['ratio', 'proportion', 'cross multiply', 'scale', 'compare'],
+      },
+      {
+        id: 'average-calculator',
+        name: 'Average Calculator (Mean, Median, Mode & Range)',
+        description: 'Find the arithmetic mean, median, mode, sum, and range of any number set.',
+        href: '/math/average-calculator',
+        keywords: ['average', 'mean', 'median', 'mode', 'range', 'statistics'],
+      },
+      {
+        id: 'scientific-calculator',
+        name: 'Scientific Calculator',
+        description: 'Evaluate advanced expressions with trigonometry, logarithms, and PEMDAS order.',
+        href: '/math/scientific-calculator',
+        keywords: ['scientific', 'trigonometry', 'algebra', 'log', 'exponent', 'pemdas'],
+      },
+      {
         id: 'square-root-calculator',
         name: 'Square Root Calculator',
-        description: 'Find the square root of a number and solve related problems.',
+        description: 'Find principal square roots, nth radicals, and simplified radical forms.',
         href: '/math/square-root-calculator',
         keywords: ['square root', 'radical', 'nth root', 'geometry'],
       },
       {
         id: 'exponent-calculator',
         name: 'Exponent Calculator',
-        description: 'Calculate powers, exponents and scientific notation.',
+        description: 'Calculate positive, negative, and fractional powers and scientific notation.',
         href: '/math/exponent-calculator',
         keywords: ['exponent', 'power', 'scientific notation'],
       },
       {
+        id: 'log-calculator',
+        name: 'Logarithm Calculator (log₁₀, ln & Base-b)',
+        description: 'Calculate common base-10, natural base-e, and custom-base logarithms.',
+        href: '/math/log-calculator',
+        keywords: ['logarithm', 'log', 'ln', 'natural log'],
+      },
+      {
         id: 'absolute-value-calculator',
         name: 'Absolute Value Calculator',
-        description: 'Find the absolute value of a number and distance between values.',
+        description: 'Find the absolute magnitude of a number and distance between two points.',
         href: '/math/absolute-value-calculator',
         keywords: ['absolute value', 'magnitude', 'distance'],
       },
@@ -155,81 +188,32 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         keywords: ['gcd', 'lcm', 'greatest common divisor', 'least common multiple'],
       },
       {
-        id: 'matrix-calculator',
-        name: 'Matrix Calculator',
-        description: 'Perform matrix operations like addition, multiplication and determinant.',
-        href: '/math/matrix-calculator',
-        keywords: ['matrix', 'determinant', 'inverse', 'linear algebra'],
-      },
-      {
         id: 'equation-solver',
-        name: 'Equation Solver',
-        description: 'Solve linear and quadratic equations step by step.',
+        name: 'Linear Equation Solver',
+        description: 'Isolate x and solve one-variable linear algebraic equations step by step.',
         href: '/math/equation-solver',
-        keywords: ['equation solver', 'algebra', 'quadratic', 'linear'],
-      },
-      {
-        id: 'fraction-to-decimal-calculator',
-        name: 'Fraction to Decimal & Percent Converter',
-        description: 'Convert proper, improper, or mixed fractions into decimals and percentages.',
-        href: '/math/fraction-to-decimal-calculator',
-        keywords: ['fraction to decimal', 'convert fraction', 'decimal'],
-      },
-      {
-        id: 'proportion-calculator',
-        name: 'Proportion & Cross-Multiplication Calculator',
-        description: 'Solve for the unknown variable X in two equal fractions (A/B = C/X).',
-        href: '/math/proportion-calculator',
-        keywords: ['proportion', 'cross multiply', 'equivalent ratio'],
+        keywords: ['equation solver', 'algebra', 'linear'],
       },
       {
         id: 'quadratic-equation-calculator',
         name: 'Quadratic Equation Solver',
-        description: 'Solve ax² + bx + c = 0 using the quadratic formula and discriminant.',
+        description: 'Solve ax² + bx + c = 0 using the quadratic formula, discriminant, and vertex.',
         href: '/math/quadratic-equation-calculator',
         keywords: ['quadratic formula', 'roots', 'discriminant', 'vertex'],
       },
       {
-        id: 'percentage-to-decimal-calculator',
-        name: 'Percentage to Decimal Calculator',
-        description: 'Convert any percentage value into its exact decimal form.',
-        href: '/math/percentage-to-decimal-calculator',
-        keywords: ['percentage to decimal', 'convert percent', 'decimal'],
-      },
-      {
-        id: 'percentage-to-fraction-calculator',
-        name: 'Percentage to Fraction Calculator',
-        description: 'Convert any percentage into a simplified fraction or mixed number.',
-        href: '/math/percentage-to-fraction-calculator',
-        keywords: ['percentage to fraction', 'lowest terms', 'fraction'],
-      },
-      {
-        id: 'percent-error-calculator',
-        name: 'Percent Error Calculator',
-        description: 'Compare experimental measurements against theoretical values.',
-        href: '/math/percent-error-calculator',
-        keywords: ['percent error', 'experimental', 'theoretical', 'accuracy'],
-      },
-      {
-        id: 'log-calculator',
-        name: 'Logarithm Calculator (log₁₀, ln & Base-b)',
-        description: 'Calculate common, natural, and custom-base logarithms.',
-        href: '/math/log-calculator',
-        keywords: ['logarithm', 'log', 'ln', 'natural log'],
-      },
-      {
-        id: 'mean-median-mode-calculator',
-        name: 'Mean, Median, Mode & Range Calculator',
-        description: 'Calculate statistical mean, median, mode, sum, and spread.',
-        href: '/math/mean-median-mode-calculator',
-        keywords: ['mean', 'median', 'mode', 'range', 'statistics'],
+        id: 'matrix-calculator',
+        name: 'Matrix Calculator',
+        description: 'Perform 2×2 and 3×3 matrix addition, multiplication, transpose, and determinant.',
+        href: '/math/matrix-calculator',
+        keywords: ['matrix', 'determinant', 'inverse', 'linear algebra'],
       },
     ],
   },
   {
     id: 'finance',
-    title: 'Finance Calculators',
-    subtitle: 'Loans, mortgages, interest, taxes, salary, retirement and more.',
+    title: 'Finance & Tax Calculators',
+    subtitle: 'Loans, mortgages, compound interest, US & global income taxes, and paychecks.',
     href: '/finance',
     headerBg: 'bg-[#ECFDF5]',
     iconBg: 'bg-[#F59E0B]',
@@ -239,9 +223,9 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
     calculators: [
       {
         id: 'salary-calculator',
-        name: 'Country-Specific Salary & Take-Home Pay Calculator (US, UK, CA, AU, IN)',
+        name: 'Multi-Country Salary & Take-Home Pay Calculator',
         description:
-          'Estimate gross-to-net take-home pay for the US, UK, Canada, Australia, and India with official tax brackets, statutory deductions, and assumptions.',
+          'Estimate gross-to-net take-home pay for the US, UK, Canada, Australia, and India with official tax brackets.',
         href: '/salary-calculator',
         keywords: [
           'salary calculator',
@@ -257,64 +241,29 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
       },
       {
         id: 'loan-payment-calculator',
-        name: 'Loan Payment Calculator',
-        description: 'Estimate monthly payments, total interest, and amortization schedule.',
+        name: 'Loan Payment & Amortization Calculator',
+        description: 'Estimate monthly loan payments, total interest cost, and full amortization schedule.',
         href: '/loan-calculator',
         keywords: ['loan', 'payment', 'emi', 'monthly', 'borrow'],
       },
       {
         id: 'interest-calculator',
-        name: 'Interest & Compound Growth Calculator',
-        description: 'Calculate simple or compound interest with monthly contributions.',
+        name: 'Compound Interest Calculator',
+        description: 'Calculate simple or compound interest growth with recurring monthly contributions.',
         href: '/compound-interest-calculator',
         keywords: ['interest', 'compound', 'simple', 'savings', 'apy'],
       },
       {
-        id: 'discount-calculator-finance',
-        name: 'Discount Calculator',
-        description: 'Find the final price and savings after a discount.',
-        href: '/math/discount-calculator',
-        keywords: ['discount', 'sale', 'price', 'percent off', 'savings'],
-      },
-      {
         id: 'mortgage-calculator',
-        name: 'Mortgage & Loan Affordability Calculator',
-        description: 'Calculate monthly principal, interest, taxes, insurance, and PMI.',
+        name: 'Mortgage Payment Calculator (PITI & Extra Payments)',
+        description: 'Calculate monthly principal, interest, property taxes, homeowners insurance, and PMI.',
         href: '/mortgage-calculator',
         keywords: ['affordability', 'mortgage', 'home loan', 'piti', 'pmi'],
       },
       {
-        id: '401k-calculator',
-        name: '401(k) Retirement & Investment Return Calculator',
-        description: 'Project 401(k) balance with employer match caps and IRS limits.',
-        href: '/finance/401k-calculator',
-        keywords: ['investment', 'return', 'retirement', '401k', 'employer match'],
-      },
-      {
-        id: 'roth-vs-traditional-calculator',
-        name: 'Roth vs. Traditional Calculator',
-        description: 'Compare after-tax retirement wealth between Traditional and Roth accounts.',
-        href: '/finance/roth-vs-traditional-calculator',
-        keywords: ['roth', 'traditional', 'ira', '401k', 'tax comparison'],
-      },
-      {
-        id: 'rmd-calculator',
-        name: 'Required Minimum Distribution (RMD) Calculator',
-        description: 'Calculate mandatory annual retirement withdrawals using IRS tables.',
-        href: '/finance/rmd-calculator',
-        keywords: ['rmd', 'required minimum distribution', 'irs', 'retirement'],
-      },
-      {
-        id: 'fire-forecaster',
-        name: 'FIRE Forecaster & Safe Withdrawal Calculator',
-        description: 'Calculate your Financial Independence target number and 4% rule longevity.',
-        href: '/fire-forecaster',
-        keywords: ['fire', 'financial independence', 'safe withdrawal rate', '4% rule'],
-      },
-      {
         id: 'us-federal-income-tax-calculator',
         name: 'US Federal Income Tax Calculator',
-        description: 'Estimate federal tax liability, effective and marginal rates, and refund.',
+        description: 'Estimate federal tax liability, effective and marginal rates, and tax refund.',
         href: '/finance/us-federal-income-tax-calculator',
         keywords: ['us federal tax', 'income tax', 'irs', 'brackets', 'refund'],
       },
@@ -326,25 +275,11 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         keywords: ['state tax', 'paycheck', 'take home pay', '50 states'],
       },
       {
-        id: 'self-employment-tax-calculator',
-        name: 'Self-Employment Tax Calculator',
-        description: 'Compute 15.3% Social Security and Medicare SE tax and quarterly estimates.',
-        href: '/finance/self-employment-tax-calculator',
-        keywords: ['self employment tax', '1099', 'schedule se', 'freelance'],
-      },
-      {
         id: 'capital-gains-tax-calculator',
         name: 'Capital Gains Tax Calculator (US)',
         description: 'Calculate short-term and long-term capital gains tax and 3.8% NIIT.',
         href: '/finance/capital-gains-tax-calculator',
         keywords: ['capital gains', 'stocks', 'real estate tax', 'niit'],
-      },
-      {
-        id: '1099-vs-w2-calculator',
-        name: '1099 Contractor vs. W-2 Employee Calculator',
-        description: 'Compare after-tax take-home pay and break-even 1099 hourly rate.',
-        href: '/finance/1099-vs-w2-calculator',
-        keywords: ['1099 vs w2', 'contractor', 'employee', 'break even'],
       },
       {
         id: 'salary-to-hourly-calculator',
@@ -355,36 +290,29 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
       },
       {
         id: 'take-home-pay-calculator',
-        name: 'Take-Home Pay Calculator',
-        description: 'Calculate net paycheck amount after taxes, 401(k), and pre-tax deductions.',
+        name: 'Take-Home Paycheck Calculator',
+        description: 'Calculate net paycheck amount after taxes, 401(k), and pre-tax health deductions.',
         href: '/finance/take-home-pay-calculator',
         keywords: ['take home pay', 'net salary', 'paycheck'],
       },
       {
         id: 'investment-growth-calculator',
-        name: 'Investment Growth, ROI & CAGR Calculator',
-        description: 'Project long-term portfolio growth, ROI, and Compound Annual Growth Rate (CAGR).',
+        name: 'Investment Growth, ROI & Expense Ratio Calculator',
+        description: 'Project long-term portfolio growth, ROI, CAGR, and annual fee drag.',
         href: '/finance/investment-growth-calculator',
         keywords: ['investment growth', 'roi', 'cagr', 'portfolio growth'],
       },
       {
         id: 'real-rate-of-return-calculator',
-        name: 'Real Rate of Return & Inflation-Adjusted Yield Calculator',
-        description: 'Calculate purchasing-power investment yield after inflation and taxes using the Fisher equation.',
+        name: 'Real Rate of Return (Inflation-Adjusted) Calculator',
+        description: 'Calculate purchasing-power investment yield after inflation using the Fisher equation.',
         href: '/finance/real-rate-of-return-calculator',
         keywords: ['real rate of return', 'inflation', 'fisher equation', 'purchasing power'],
       },
       {
-        id: 'rent-vs-buy-calculator',
-        name: 'Rent vs. Buy Home Comparison Calculator',
-        description: 'Compare 5-to-30 year net cost and equity build of buying a home versus renting and investing.',
-        href: '/finance/rent-vs-buy-calculator',
-        keywords: ['rent vs buy', 'homeownership', 'home equity'],
-      },
-      {
         id: 'pay-raise-calculator',
         name: 'Pay Raise & Salary Increase Calculator',
-        description: 'See your new salary and additional monthly income after a raise.',
+        description: 'See your new annual salary, hourly rate, and extra monthly income after a raise.',
         href: '/finance/pay-raise-calculator',
         keywords: ['pay raise', 'salary increase', 'promotion'],
       },
@@ -398,7 +326,7 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
       {
         id: 'bonus-tax-calculator',
         name: 'Bonus Tax Withholding Calculator (US)',
-        description: 'Compare IRS 22% flat supplemental withholding against aggregate method.',
+        description: 'Compare IRS 22% flat supplemental withholding against the aggregate paycheck method.',
         href: '/finance/bonus-tax-calculator',
         keywords: ['bonus tax', 'supplemental wages', '22% withholding'],
       },
@@ -426,7 +354,7 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
       {
         id: 'in-hand-salary-calculator',
         name: 'India In-Hand Salary Calculator (CTC to Net)',
-        description: 'Break down annual CTC into monthly in-hand pay after EPF, PT, and tax.',
+        description: 'Break down annual CTC into monthly in-hand pay after EPF, PT, and income tax.',
         href: '/finance/in-hand-salary-calculator',
         keywords: ['in hand salary', 'ctc to net', 'epf', 'india salary'],
       },
@@ -477,7 +405,7 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
   {
     id: 'unit-conversion',
     title: 'Unit Conversion Calculators',
-    subtitle: 'Convert length, weight, volume, area, temperature, speed and digital storage.',
+    subtitle: 'Convert length, weight, volume, area, temperature, cooking, speed, and data.',
     href: '/conversions',
     headerBg: 'bg-[#F3EEFF]',
     iconBg: 'bg-[#7C3AED]',
@@ -487,94 +415,94 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
     calculators: [
       {
         id: 'recipe-converter',
-        name: 'Recipe Converter (Scale Servings & Cups to Grams)',
-        description: 'Scale recipes by serving count and convert cups, spoons, and mL to grams using verified ingredient densities.',
+        name: 'Recipe Ingredient & Serving Scale Converter',
+        description: 'Scale recipes by serving count and convert cups, spoons, and mL to grams using ingredient densities.',
         href: '/recipe-converter',
         keywords: ['recipe converter', 'baking', 'cups to grams', 'flour', 'sugar', 'butter', 'servings'],
       },
       {
         id: 'length-conversion',
-        name: 'Length & Distance Conversion',
-        description: 'Convert meters, kilometers, feet, inches, yards, and miles.',
+        name: 'Length & Distance Converter',
+        description: 'Convert meters, kilometers, centimeters, millimeters, feet, inches, yards, and miles.',
         href: '/conversions/length',
         keywords: ['length', 'meters', 'feet', 'inches', 'kilometers', 'miles'],
       },
       {
         id: 'weight-conversion',
-        name: 'Weight & Mass Conversion',
-        description: 'Convert kilograms, pounds, grams, ounces, stones, and metric tons.',
+        name: 'Weight & Mass Converter',
+        description: 'Convert kilograms, pounds, grams, milligrams, ounces, stones, and metric tons.',
         href: '/conversions/weight',
         keywords: ['weight', 'mass', 'kilograms', 'pounds', 'grams', 'ounces'],
       },
       {
-        id: 'area-conversion',
-        name: 'Area & Land Conversion',
-        description: 'Convert square meters, square feet, acres, hectares, and square yards.',
-        href: '/conversions/area',
-        keywords: ['area', 'square meters', 'square feet', 'acres', 'hectares'],
-      },
-      {
-        id: 'volume-conversion',
-        name: 'Volume & Liquid Conversion',
-        description: 'Convert liters, milliliters, US gallons, quarts, cups, and cubic meters.',
-        href: '/conversions/volume',
-        keywords: ['volume', 'liters', 'gallons', 'milliliters', 'cubic'],
-      },
-      {
         id: 'temperature-conversion',
-        name: 'Temperature Conversion (Celsius, Fahrenheit & Kelvin)',
+        name: 'Temperature Converter (Celsius, Fahrenheit & Kelvin)',
         description: 'Convert temperatures between Celsius (°C), Fahrenheit (°F), and Kelvin (K).',
         href: '/conversions/temperature',
         keywords: ['temperature', 'celsius', 'fahrenheit', 'kelvin'],
       },
       {
-        id: 'speed-velocity-converter',
-        name: 'Speed & Velocity Converter',
-        description: 'Convert miles per hour (mph), kilometers per hour (km/h), m/s, and knots.',
-        href: '/conversions/speed',
-        keywords: ['speed', 'velocity', 'mph', 'kmh', 'knots'],
+        id: 'volume-conversion',
+        name: 'Liquid Volume & Capacity Converter',
+        description: 'Convert liters, milliliters, US gallons, quarts, pints, cups, fluid ounces, and cubic meters.',
+        href: '/conversions/volume',
+        keywords: ['volume', 'liters', 'gallons', 'milliliters', 'cubic'],
       },
       {
         id: 'cooking-measurement-converter',
-        name: 'Kitchen & Cooking Unit Converter',
-        description: 'Convert tablespoons, teaspoons, cups, milliliters, and fluid ounces.',
+        name: 'Kitchen Volume & Spoon Converter',
+        description: 'Convert US cups, tablespoons, teaspoons, fluid ounces, milliliters, and liters.',
         href: '/conversions/cooking',
         keywords: ['cooking', 'kitchen', 'cups', 'tablespoons', 'teaspoons', 'ml'],
       },
       {
+        id: 'area-conversion',
+        name: 'Area & Land Measurement Converter',
+        description: 'Convert square meters, square feet, acres, hectares, square yards, and square inches.',
+        href: '/conversions/area',
+        keywords: ['area', 'square meters', 'square feet', 'acres', 'hectares'],
+      },
+      {
+        id: 'speed-velocity-converter',
+        name: 'Speed & Velocity Converter',
+        description: 'Convert miles per hour (mph), kilometers per hour (km/h), meters per second (m/s), and knots.',
+        href: '/conversions/speed',
+        keywords: ['speed', 'velocity', 'mph', 'kmh', 'knots'],
+      },
+      {
         id: 'fuel-economy-converter',
-        name: 'Fuel Economy Converter (L/100km, MPG & km/L)',
-        description: 'Convert liters per 100 km, US/UK miles per gallon (MPG), and km/L.',
+        name: 'Fuel Economy & Consumption Converter',
+        description: 'Convert US MPG, UK Imperial MPG, kilometers per liter (km/L), and liters per 100 km (L/100km).',
         href: '/conversions/fuel-economy',
         keywords: ['fuel economy', 'mpg', 'l/100km', 'km/l'],
       },
       {
         id: 'torque-converter',
-        name: 'Torque Converter (Newton-Meters to Foot-Pounds & Inch-Pounds)',
-        description: 'Convert N·m, ft-lb, and in-lb for automotive and mechanical fasteners.',
+        name: 'Torque Converter (N·m, ft-lb & in-lb)',
+        description: 'Convert Newton-meters (N·m), foot-pounds (ft-lb), and inch-pounds (in-lb) for fasteners.',
         href: '/conversions/torque',
         keywords: ['torque', 'nm to ft lbs', 'inch pounds'],
       },
       {
-        id: 'digital-storage-converter',
-        name: 'Digital Data & Storage Converter',
-        description: 'Convert bytes, kilobytes (KB), megabytes (MB), gigabytes (GB), and TB.',
-        href: '/conversions/digital',
-        keywords: ['digital storage', 'bytes', 'mb', 'gb', 'tb', 'data'],
-      },
-      {
         id: 'energy-power-converter',
         name: 'Energy & Work Unit Converter',
-        description: 'Convert joules, kilojoules, calories, kilocalories, watt-hours, and kWh.',
+        description: 'Convert joules, kilojoules, calories, kilocalories (kcal), watt-hours, kWh, and BTU.',
         href: '/conversions/energy',
         keywords: ['energy', 'joules', 'calories', 'kwh', 'btu'],
+      },
+      {
+        id: 'digital-storage-converter',
+        name: 'Digital Data & Storage Converter',
+        description: 'Convert bits, bytes, kilobytes (KB), megabytes (MB), gigabytes (GB), and terabytes (TB).',
+        href: '/conversions/digital',
+        keywords: ['digital storage', 'bytes', 'mb', 'gb', 'tb', 'data'],
       },
     ],
   },
   {
     id: 'date-time',
-    title: 'Date and Time Calculators',
-    subtitle: 'Date differences, exact age, time duration, workdays and deadlines.',
+    title: 'Date & Time Calculators',
+    subtitle: 'Date differences, days from today, business days, exact age, countdowns, and timers.',
     href: '/date-time',
     headerBg: 'bg-[#FFF1F2]',
     iconBg: 'bg-[#E11D48]',
@@ -585,72 +513,79 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
       {
         id: 'date-difference-calculator',
         name: 'Date Difference Calculator',
-        description: 'Calculate the exact number of years, months, weeks, and days between dates.',
+        description: 'Calculate exact years, months, weeks, and total calendar days between two dates.',
         href: '/date-difference-calculator',
-        keywords: ['date', 'difference', 'days between', 'calendar'],
+        keywords: ['date difference', 'days between dates', 'calendar days'],
+      },
+      {
+        id: 'days-from-today-calculator',
+        name: 'Days From Today Calculator (Add or Subtract Days)',
+        description: 'Find the exact calendar date N days, weeks, or months from today or before a start date.',
+        href: '/days-from-today-calculator',
+        keywords: ['days from today', 'add days to date', '30 days from today', '90 days from today'],
+      },
+      {
+        id: 'business-days-calculator',
+        name: 'Business Days & Working Days Calculator',
+        description: 'Count Monday–Friday working days between two dates or project a business-day deadline.',
+        href: '/business-days-calculator',
+        keywords: ['business days', 'working days', 'weekdays', 'exclude weekends'],
       },
       {
         id: 'age-calculator',
-        name: 'Age Calculator',
-        description: 'Find your exact age in years, months, weeks, and days from date of birth.',
+        name: 'Chronological Age Calculator',
+        description: 'Find your exact age in years, months, weeks, days, hours, and minutes from date of birth.',
         href: '/age-calculator',
-        keywords: ['age', 'birthday', 'date of birth', 'years'],
+        keywords: ['age', 'birthday', 'date of birth', 'years', 'chronological age'],
+      },
+      {
+        id: 'countdown-calculator',
+        name: 'Event & Holiday Countdown Calculator',
+        description: 'See live days, hours, minutes, and seconds remaining until any upcoming event or deadline.',
+        href: '/countdown-calculator',
+        keywords: ['countdown', 'days until', 'event countdown', 'retirement countdown'],
       },
       {
         id: 'time-duration-calculator',
-        name: 'Time Duration Calculator',
-        description: 'Calculate elapsed hours, minutes, and seconds between two times or dates.',
+        name: 'Time Duration Calculator (Hours & Minutes Between Times)',
+        description: 'Calculate elapsed hours, minutes, seconds, and decimal hours between a start and end time.',
         href: '/time-duration-calculator',
-        keywords: ['time', 'duration', 'hours', 'minutes', 'elapsed'],
+        keywords: ['time duration', 'hours between times', 'elapsed time'],
       },
       {
-        id: 'time-zone-converter',
-        name: 'Time Zone Converter',
-        description: 'Convert time between different global time zones and UTC offsets.',
-        href: '/date-time',
-        keywords: ['time zone', 'utc', 'gmt', 'world clock'],
+        id: 'work-hours-calculator',
+        name: 'Weekly Work Hours & Timesheet Pay Calculator',
+        description: 'Total weekly shift hours, deduct unpaid breaks, and compute regular plus 1.5× overtime pay.',
+        href: '/work-hours-calculator',
+        keywords: ['work hours', 'timesheet', 'time card', 'payroll hours'],
       },
       {
-        id: 'workdays-calculator',
-        name: 'Business Days & Working Days Calculator',
-        description: 'Count working weekdays between two dates excluding Saturdays and Sundays.',
-        href: '/date-difference-calculator',
-        keywords: ['workdays', 'business days', 'working days', 'schedule'],
+        id: 'timer-stopwatch',
+        name: 'Online Interval Timer & Lap Stopwatch',
+        description: 'Run a countdown timer with focus presets or record millisecond lap splits in your browser.',
+        href: '/timer-stopwatch',
+        keywords: ['timer', 'stopwatch', 'pomodoro', 'lap timer'],
       },
       {
-        id: 'add-subtract-days-calculator',
-        name: 'Add or Subtract Days from a Date Calculator',
-        description: 'Find the future or past calendar date after adding or subtracting days.',
-        href: '/date-difference-calculator',
-        keywords: ['add days', 'subtract days', 'future date', 'calendar'],
+        id: 'military-time-converter',
+        name: 'Military Time Converter (24-Hour & 12-Hour AM/PM)',
+        description: 'Convert 24-hour military time (0000–2359) to standard 12-hour AM/PM time and spoken phonetics.',
+        href: '/military-time-converter',
+        keywords: ['military time', '24 hour clock', 'am pm converter'],
       },
       {
-        id: 'work-hours-timesheet-calculator',
-        name: 'Work Hours & Shift Duration Calculator',
-        description: 'Calculate total shift hours and decimal payroll hours from clock times.',
-        href: '/time-duration-calculator',
-        keywords: ['work hours', 'timesheet', 'shift duration', 'payroll hours'],
-      },
-      {
-        id: 'birthday-milestone-calculator',
-        name: 'Next Birthday & Milestone Countdown Calculator',
-        description: 'See how many days remain until your next birthday and life milestones.',
-        href: '/age-calculator',
-        keywords: ['next birthday', 'countdown', 'days lived', 'milestone'],
-      },
-      {
-        id: 'project-deadline-calculator',
-        name: 'Project Deadline & Day Counter',
-        description: 'Plan project schedules by counting total calendar days and weekdays.',
-        href: '/date-difference-calculator',
-        keywords: ['project deadline', 'day counter', 'delivery date'],
+        id: 'time-unit-converter',
+        name: 'Time Unit Converter (Seconds, Minutes, Hours, Days & Weeks)',
+        description: 'Convert durations across milliseconds, seconds, minutes, hours, days, weeks, and years.',
+        href: '/time-unit-converter',
+        keywords: ['time converter', 'hours to minutes', 'seconds to hours', 'days to hours'],
       },
     ],
   },
   {
     id: 'health-fitness',
-    title: 'Health and Fitness Calculators',
-    subtitle: 'BMI, daily calorie needs (TDEE), BMR, body fat, ideal weight and pace.',
+    title: 'Health & Fitness Calculators',
+    subtitle: 'Adult BMI, Total Daily Energy Expenditure (TDEE), resting BMR, body fat %, and ideal weight.',
     href: '/health-fitness',
     headerBg: 'bg-[#ECFDF5]',
     iconBg: 'bg-[#16856B]',
@@ -661,72 +596,49 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
       {
         id: 'bmi-calculator',
         name: 'BMI Calculator (Body Mass Index)',
-        description: 'Check your body mass index and WHO adult health range in metric or imperial.',
+        description:
+          'Calculate adult Body Mass Index (kg/m²), WHO weight status category, Ponderal Index, and healthy weight range.',
         href: '/bmi-calculator',
-        keywords: ['bmi', 'body mass index', 'weight', 'height', 'health'],
+        keywords: ['bmi', 'body mass index', 'weight category', 'who bmi'],
       },
       {
-        id: 'calorie-calculator',
-        name: 'Daily Calorie & TDEE Calculator',
-        description: 'Estimate Total Daily Energy Expenditure (TDEE) to maintain or lose weight.',
-        href: '/bmi-calculator?mode=tdee',
-        keywords: ['calorie', 'tdee', 'nutrition', 'diet', 'daily intake'],
-      },
-      {
-        id: 'body-fat-percentage-calculator',
-        name: 'Body Fat Percentage Calculator',
-        description: 'Estimate your body fat percentage and lean body mass composition.',
-        href: '/bmi-calculator?mode=body-fat',
-        keywords: ['body fat', 'lean mass', 'fitness', 'composition'],
-      },
-      {
-        id: 'ideal-weight-calculator',
-        name: 'Ideal & Healthy Weight Range Calculator',
-        description: 'Find the recommended healthy weight range (BMI 18.5–24.9) for your height.',
-        href: '/bmi-calculator?mode=ideal-weight',
-        keywords: ['ideal weight', 'healthy weight', 'target weight'],
+        id: 'tdee-calculator',
+        name: 'TDEE Calculator (Total Daily Energy Expenditure)',
+        description:
+          'Estimate total daily calorie burn across 5 activity levels plus target calories and macros for cutting or bulking.',
+        href: '/tdee-calculator',
+        keywords: ['tdee', 'daily calories', 'calorie burn', 'macros', 'maintenance calories'],
       },
       {
         id: 'bmr-calculator',
-        name: 'Basal Metabolic Rate (BMR) Calculator',
-        description: 'Calculate your resting calorie burn using the Mifflin-St Jeor equation.',
-        href: '/bmi-calculator?mode=bmr',
-        keywords: ['bmr', 'basal metabolic rate', 'metabolism', 'calories'],
+        name: 'BMR Calculator (Basal Metabolic Rate)',
+        description:
+          'Calculate resting metabolic calorie expenditure using the Mifflin-St Jeor and Revised Harris-Benedict equations.',
+        href: '/bmr-calculator',
+        keywords: ['bmr', 'basal metabolic rate', 'resting calories', 'mifflin st jeor'],
       },
       {
-        id: 'weight-change-percentage-calculator',
-        name: 'Weight Loss & Body Change Percentage Calculator',
-        description: 'Calculate the exact percentage of body weight lost or gained over time.',
-        href: '/math/percentage-change-calculator',
-        keywords: ['weight loss percentage', 'body change', 'fitness progress'],
+        id: 'body-fat-calculator',
+        name: 'Body Fat Percentage Calculator (U.S. Navy Method)',
+        description:
+          'Estimate body fat percentage, fat mass, and lean body mass from neck, waist, hip, and height circumference.',
+        href: '/body-fat-calculator',
+        keywords: ['body fat', 'us navy body fat', 'lean body mass', 'fat percentage'],
       },
       {
-        id: 'chronological-age-calculator',
-        name: 'Exact Chronological Age Calculator',
-        description: 'Determine exact age in years, months, and days for health screenings.',
-        href: '/age-calculator',
-        keywords: ['chronological age', 'health age', 'exact age'],
-      },
-      {
-        id: 'workout-duration-pace-timer',
-        name: 'Workout & Interval Time Duration Calculator',
-        description: 'Calculate total training session duration in hours, minutes, and seconds.',
-        href: '/time-duration-calculator',
-        keywords: ['workout duration', 'training time', 'interval timer'],
-      },
-      {
-        id: 'body-weight-unit-converter',
-        name: 'Body Weight & Height Unit Converter (kg/lb & cm/ft)',
-        description: 'Convert body weight between kg, lbs, and stones, or height between ft and cm.',
-        href: '/conversions/weight',
-        keywords: ['kg to lbs', 'cm to feet', 'body weight converter'],
+        id: 'ideal-weight-calculator',
+        name: 'Ideal Weight Calculator (Devine, Robinson, Miller & WHO)',
+        description:
+          'Compare healthy target body weight across four clinical height-based formulas and the WHO normal BMI band.',
+        href: '/ideal-weight-calculator',
+        keywords: ['ideal weight', 'healthy weight', 'devine formula', 'target weight'],
       },
     ],
   },
   {
     id: 'home-construction',
-    title: 'Home and Construction Calculators',
-    subtitle: 'Room area, concrete volume, paint coverage, roofing and home financing.',
+    title: 'Home & Construction Calculators',
+    subtitle: 'Concrete slabs, post holes, flooring boxes and waste allowance, and home financing.',
     href: '/home-construction',
     headerBg: 'bg-[#FFFBEB]',
     iconBg: 'bg-[#D97706]',
@@ -736,9 +648,9 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
     calculators: [
       {
         id: 'construction-project-calculator',
-        name: 'Construction Project Calculator (Area, Concrete Slabs & Post Holes)',
+        name: 'Concrete Slab, Footing & Material Volume Calculator',
         description:
-          'Guided 4-stage workflow: enter measurements, calculate area or cubic volume, add waste allowance, and estimate material packages and cost.',
+          'Calculate square footage, cubic feet, cubic yards, and pre-mixed concrete bag counts (40, 60, or 80 lb) with waste allowance.',
         href: '/construction-project-calculator',
         keywords: [
           'construction project calculator',
@@ -751,9 +663,9 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
       },
       {
         id: 'flooring-project-calculator',
-        name: 'Flooring Calculator (Estimate Your Flooring Project)',
+        name: 'Flooring & Tile Estimator (Area, Waste & Box Count)',
         description:
-          'Calculate room area, estimate flooring quantity with waste allowance, and get a material cost estimate.',
+          'Calculate room square footage, add 5%–15% cutting waste allowance, and estimate flooring boxes and project cost.',
         href: '/home-construction/flooring-calculator',
         keywords: [
           'flooring',
@@ -766,81 +678,32 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
         ],
       },
       {
-        id: 'area-calculator',
-        name: 'Square Footage & Room Area Calculator',
-        description: 'Calculate and convert room area between sq ft, sq meters, and acres.',
-        href: '/conversions/area',
-        keywords: ['area', 'square footage', 'room size', 'flooring'],
-      },
-      {
-        id: 'volume-calculator',
-        name: 'Cubic Volume Calculator',
-        description: 'Find the volume of a space or slab in cubic feet, cubic yards, or meters.',
-        href: '/conversions/volume',
-        keywords: ['volume', 'cubic feet', 'cubic meters', 'capacity'],
-      },
-      {
-        id: 'concrete-calculator',
-        name: 'Concrete & Cubic Yards Volume Calculator',
-        description: 'Estimate concrete quantity in cubic yards and bags for slabs and footings.',
-        href: '/construction-project-calculator',
-        keywords: ['concrete', 'slab', 'cement', 'bags', 'construction'],
-      },
-      {
-        id: 'paint-calculator',
-        name: 'Wall Area & Paint Coverage Calculator',
-        description: 'Calculate wall surface area and gallons or liters of paint needed.',
-        href: '/conversions/area',
-        keywords: ['paint', 'gallons', 'wall coverage', 'renovation'],
-      },
-      {
-        id: 'roofing-calculator',
-        name: 'Roofing & Material Area Calculator',
-        description: 'Estimate roofing materials, bundles, and pitch surface area.',
-        href: '/home-construction',
-        keywords: ['roofing', 'shingles', 'pitch', 'roof area'],
-      },
-      {
-        id: 'home-mortgage-payment-calculator',
-        name: 'Home Mortgage Payment Calculator (PITI)',
-        description: 'Estimate monthly principal, interest, property taxes, and home insurance.',
-        href: '/mortgage-calculator',
-        keywords: ['home mortgage', 'piti', 'house payment', 'property tax'],
-      },
-      {
         id: 'home-affordability-calculator',
         name: 'Home Affordability Calculator (28/36 Rule)',
-        description: 'Calculate the maximum house price you can afford based on income and debt.',
+        description: 'Calculate the maximum house price you can afford based on gross income, down payment, and debt.',
         href: '/finance/home-affordability-calculator',
         keywords: ['home affordability', '28/36 rule', 'how much house'],
       },
       {
         id: 'refinance-break-even-calculator',
         name: 'Mortgage Refinance & Break-Even Calculator',
-        description: 'Compare your current mortgage against a new loan rate and closing costs.',
+        description: 'Compare your current mortgage against a new loan rate and closing costs to find break-even months.',
         href: '/finance/refinance-calculator',
         keywords: ['refinance', 'break even', 'closing costs', 'lower rate'],
       },
       {
-        id: 'lumber-length-dimension-converter',
-        name: 'Construction Length & Dimension Converter',
-        description: 'Convert blueprint dimensions between inches, feet, yards, mm, cm, and meters.',
-        href: '/conversions/length',
-        keywords: ['lumber', 'blueprint', 'inches to feet', 'mm to inches'],
-      },
-      {
-        id: 'flooring-waste-percentage-calculator',
-        name: 'Material Overage & Waste Percentage Calculator',
-        description: 'Add 10% to 15% cutting waste to tile, hardwood flooring, or drywall orders.',
-        href: '/math/percentage-calculator',
-        keywords: ['flooring waste', 'tile overage', 'material buffer'],
+        id: 'rent-vs-buy-calculator',
+        name: 'Rent vs. Buy Home Comparison Calculator',
+        description: 'Compare 5-to-30 year net cost and equity build of buying a home versus renting and investing.',
+        href: '/finance/rent-vs-buy-calculator',
+        keywords: ['rent vs buy', 'homeownership', 'home equity'],
       },
     ],
   },
   {
     id: 'business',
     title: 'Business Calculators',
-    subtitle: 'Gross margin, markup, profit margin, break-even point, ROI, and taxes.',
+    subtitle: 'Gross margin, price markup, operating & net profit margin, break-even, and contractor taxes.',
     href: '/finance/business',
     headerBg: 'bg-[#FFF1F2]',
     iconBg: 'bg-[#E11D48]',
@@ -850,94 +713,52 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
     calculators: [
       {
         id: 'profit-margin-calculator',
-        name: 'Profit Margin Calculator',
-        description: 'Compute gross, operating, and net profit margins from revenue and costs.',
+        name: 'Net & Operating Profit Margin Calculator',
+        description: 'Compute gross, operating, and net profit margins from revenue, COGS, operating expenses, and tax.',
         href: '/finance/profit-margin-calculator',
         keywords: ['profit margin', 'net margin', 'operating margin', 'revenue'],
       },
       {
         id: 'margin-calculator',
         name: 'Gross Margin Calculator',
-        description: 'Calculate gross margin percentage, unit profit, and required selling price.',
+        description: 'Calculate gross margin percentage, unit profit, and required selling price from unit cost.',
         href: '/finance/margin-calculator',
         keywords: ['gross margin', 'unit profit', 'selling price', 'cogs'],
       },
       {
         id: 'markup-calculator',
         name: 'Price Markup Calculator',
-        description: 'Find selling price, dollar profit, and gross margin from cost and markup %.',
+        description: 'Find selling price, dollar profit, and gross margin equivalent from unit cost and markup %.',
         href: '/finance/markup-calculator',
         keywords: ['markup', 'wholesale cost', 'retail price'],
       },
       {
         id: 'break-even-calculator',
         name: 'Break-Even Point Calculator',
-        description: 'Find the exact sales volume in units and revenue to cover fixed costs.',
+        description: 'Find the exact sales volume in units and revenue required to cover fixed and variable costs.',
         href: '/finance/break-even-calculator',
         keywords: ['break even', 'fixed costs', 'unit price', 'contribution margin'],
       },
       {
-        id: 'sales-tax-calculator',
-        name: 'Payroll & Net Take-Home Pay Calculator',
-        description: 'Calculate gross-to-net salary, payroll withholding, and deductions.',
-        href: '/finance/take-home-pay-calculator',
-        keywords: ['payroll', 'take home pay', 'net pay', 'business'],
-      },
-      {
-        id: 'roi-calculator',
-        name: 'ROI & Investment Growth Calculator',
-        description: 'Calculate return on investment (ROI) and annualized compound growth (CAGR).',
-        href: '/finance/investment-growth-calculator',
-        keywords: ['roi', 'return on investment', 'business return', 'cagr'],
-      },
-      {
-        id: 'gst-calculator',
-        name: 'GST & Business Tax Calculator',
-        description: 'Calculate goods and services tax and business tax deductions.',
-        href: '/finance/us-federal-income-tax-calculator',
-        keywords: ['gst', 'goods and services tax', 'tax inclusive'],
-      },
-      {
-        id: 'business-discount-calculator',
-        name: 'Promotional Discount & Markdown Calculator',
-        description: 'Calculate promotional sale prices, customer savings, and net revenue.',
-        href: '/math/discount-calculator',
-        keywords: ['promotional discount', 'markdown', 'sale price'],
-      },
-      {
         id: 'business-self-employment-tax',
-        name: 'Freelance & Self-Employment Tax Calculator',
-        description: 'Calculate Social Security and Medicare SE taxes and quarterly IRS payments.',
+        name: 'Self-Employment Tax Calculator (Schedule SE)',
+        description: 'Calculate 15.3% Social Security and Medicare SE taxes, half-SE deduction, and quarterly IRS payments.',
         href: '/finance/self-employment-tax-calculator',
         keywords: ['freelance tax', 'self employment', 'schedule se'],
       },
       {
         id: 'business-1099-vs-w2',
         name: '1099 Contractor vs. W-2 Compensation Calculator',
-        description: 'Compare net business income against salaried employment and benefits.',
+        description: 'Compare net independent contractor income against salaried W-2 employment and benefits.',
         href: '/finance/1099-vs-w2-calculator',
         keywords: ['1099', 'contractor rate', 'consulting'],
-      },
-      {
-        id: 'revenue-growth-percentage-calculator',
-        name: 'Revenue & Percentage Change Calculator',
-        description: 'Measure period-over-period revenue growth and expense changes.',
-        href: '/math/percentage-change-calculator',
-        keywords: ['revenue growth', 'yoy growth', 'percentage change'],
-      },
-      {
-        id: 'business-loan-calculator',
-        name: 'Business Loan Payment Calculator',
-        description: 'Estimate monthly payments and total interest for business or equipment loans.',
-        href: '/loan-calculator',
-        keywords: ['business loan', 'working capital', 'equipment financing'],
       },
     ],
   },
   {
     id: 'science',
     title: 'Science Calculators',
-    subtitle: 'Physics, chemistry, scientific functions, logarithms, percent error and SI units.',
+    subtitle: "Physics, chemistry, density, Newton's second law of force, Ohm's law, and solution molarity.",
     href: '/science',
     headerBg: 'bg-[#EEF4FF]',
     iconBg: 'bg-[#2457D6]',
@@ -946,109 +767,39 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
     layout: 'list',
     calculators: [
       {
-        id: 'speed-calculator',
-        name: 'Speed & Velocity Calculator',
-        description: 'Calculate and convert speed, distance, and time across metric and imperial.',
-        href: '/conversions/speed',
-        keywords: ['speed', 'velocity', 'distance', 'time', 'physics'],
-      },
-      {
-        id: 'energy-calculator',
-        name: 'Energy & Work Calculator',
-        description: 'Calculate and convert kinetic, thermal, and electrical energy in Joules and kWh.',
-        href: '/conversions/energy',
-        keywords: ['energy', 'kinetic', 'potential', 'joules', 'physics'],
-      },
-      {
         id: 'density-calculator',
-        name: 'Density Calculator',
-        description: 'Calculate density from mass and volume using ρ = m ÷ V.',
+        name: 'Density, Mass & Volume Calculator',
+        description: 'Calculate density (ρ), mass (m), or volume (V) using ρ = m ÷ V with water buoyancy check.',
         href: '/science/density-calculator',
         keywords: ['density', 'mass', 'volume', 'chemistry', 'physics'],
       },
       {
         id: 'force-calculator',
-        name: 'Force Calculator (Newton’s Second Law)',
-        description: 'Calculate net force in Newtons using mass and acceleration (F = m × a).',
+        name: 'Force, Mass & Acceleration Calculator (F = m × a)',
+        description: "Calculate net force in Newtons, mass in kg, or acceleration in m/s² using Newton's Second Law.",
         href: '/science/force-calculator',
         keywords: ['force', 'newton', 'mass', 'acceleration', 'physics'],
       },
       {
         id: 'ohms-law-calculator',
-        name: "Ohm's Law Calculator",
-        description: 'Calculate voltage (V), current (I), resistance (R), and electrical power (W).',
+        name: "Ohm's Law & DC Power Calculator (V, I, R, P)",
+        description: 'Calculate voltage (V), current (I), resistance (Ω), and electrical power (W) from any two values.',
         href: '/science/ohms-law-calculator',
         keywords: ['ohms law', 'voltage', 'current', 'resistance', 'watts'],
       },
       {
         id: 'molarity-calculator',
-        name: 'Molarity & Solution Concentration Calculator',
-        description: 'Calculate molarity (M), moles of solute, and solution volume for chemistry labs.',
+        name: 'Molarity, Solution Mass & Dilution Calculator',
+        description: 'Calculate molar concentration (M = mol ÷ L), required solute grams, or C₁V₁ = C₂V₂ stock dilutions.',
         href: '/science/molarity-calculator',
         keywords: ['molarity', 'moles', 'concentration', 'chemistry'],
-      },
-      {
-        id: 'science-scientific-calculator',
-        name: 'Scientific Calculator (Trig, Logs & Constants)',
-        description: 'Evaluate sin, cos, tan, logarithms, factorials, powers, and π or e.',
-        href: '/math/scientific-calculator',
-        keywords: ['scientific calculator', 'trigonometry', 'radians', 'degrees'],
-      },
-      {
-        id: 'science-percent-error-calculator',
-        name: 'Percent Error Calculator (Experimental vs. Theoretical)',
-        description: 'Measure lab accuracy by comparing experimental and theoretical values.',
-        href: '/math/percent-error-calculator',
-        keywords: ['percent error', 'chemistry lab', 'physics lab', 'experimental'],
-      },
-      {
-        id: 'science-exponent-calculator',
-        name: 'Exponent & Scientific Notation Power Calculator',
-        description: 'Compute positive, negative, and fractional exponents and orders of magnitude.',
-        href: '/math/exponent-calculator',
-        keywords: ['scientific notation', 'powers of 10', 'exponents'],
-      },
-      {
-        id: 'science-log-calculator',
-        name: 'Logarithm & pH Scale Calculator (log₁₀ & ln)',
-        description: 'Calculate base-10 and natural logarithms used in pH, decibels, and half-life.',
-        href: '/math/log-calculator',
-        keywords: ['ph scale', 'logarithm', 'half life', 'decibels'],
-      },
-      {
-        id: 'science-si-unit-converter',
-        name: 'SI & Metric Unit Converter (Kelvin, Joules, kg, m)',
-        description: 'Convert SI base and derived units for physics and chemistry equations.',
-        href: '/conversions',
-        keywords: ['si units', 'kelvin', 'metric converter', 'physics units'],
-      },
-      {
-        id: 'science-quadratic-kinematics',
-        name: 'Quadratic Equation & Projectile Trajectory Solver',
-        description: 'Solve second-degree kinematics and chemical equilibrium equations.',
-        href: '/math/quadratic-equation-calculator',
-        keywords: ['projectile motion', 'kinematics', 'quadratic equilibrium'],
-      },
-      {
-        id: 'science-square-root-calculator',
-        name: 'Square Root & Radical Calculator',
-        description: 'Calculate principal square roots for RMS speed and vector magnitudes.',
-        href: '/math/square-root-calculator',
-        keywords: ['rms speed', 'vector magnitude', 'square root'],
-      },
-      {
-        id: 'science-statistical-analyzer',
-        name: 'Experimental Data Mean, Median & Range Calculator',
-        description: 'Analyze repeated lab trials by finding the sample mean, median, and spread.',
-        href: '/math/mean-median-mode-calculator',
-        keywords: ['lab trials', 'sample mean', 'experimental statistics'],
       },
     ],
   },
   {
     id: 'retirement-and-super',
     title: 'Retirement & Super Calculators',
-    subtitle: '401(k) match, Roth vs. Traditional, RMDs, FIRE, and Safe Withdrawal Rates.',
+    subtitle: '401(k) employer match, Roth vs. Traditional, IRS RMDs, Safe Withdrawal Rate, and FIRE.',
     href: '/retirement-and-super',
     headerBg: 'bg-[#ECFDF5]',
     iconBg: 'bg-[#16856B]',
@@ -1059,130 +810,90 @@ export const DIRECTORY_GROUPS: DirectoryCategoryGroup[] = [
       {
         id: 'ret-401k-calculator',
         name: '401(k) Retirement & Employer Match Calculator',
-        description: 'Project your 401(k) balance with employer match caps and IRS catch-up limits.',
+        description: 'Project your 401(k) balance with employer match caps, IRS limits, and inflation adjustment.',
         href: '/finance/401k-calculator',
         keywords: ['401k', 'employer match', 'retirement savings', 'catch up'],
       },
       {
         id: 'ret-roth-vs-traditional',
         name: 'Roth vs. Traditional Retirement Calculator',
-        description: 'Compare pre-tax Traditional vs. post-tax Roth retirement wealth.',
+        description: 'Compare pre-tax Traditional vs. post-tax Roth retirement wealth across marginal brackets.',
         href: '/finance/roth-vs-traditional-calculator',
         keywords: ['roth vs traditional', 'roth ira', 'roth 401k'],
       },
       {
         id: 'ret-rmd-calculator',
         name: 'Required Minimum Distribution (RMD) Calculator',
-        description: 'Calculate mandatory annual withdrawals under IRS Publication 590-B rules.',
+        description: 'Calculate mandatory annual withdrawals under IRS Publication 590-B Uniform Lifetime tables.',
         href: '/finance/rmd-calculator',
         keywords: ['rmd', 'required minimum distribution', 'secure 2.0'],
       },
       {
         id: 'ret-safe-withdrawal-rate',
         name: 'Safe Withdrawal Rate (4% Rule) Calculator',
-        description: 'Simulate retirement portfolio longevity with inflation-adjusted withdrawals.',
+        description: 'Simulate retirement portfolio longevity across 20–40 years with inflation-adjusted withdrawals.',
         href: '/finance/safe-withdrawal-rate-calculator',
         keywords: ['safe withdrawal rate', '4% rule', 'trinity study', 'swr'],
       },
       {
         id: 'ret-fire-forecaster',
         name: 'FIRE Forecaster & Financial Independence Calculator',
-        description: 'Calculate your FIRE target number, savings rate, and years to retirement.',
+        description: 'Calculate your FIRE target nest egg, savings rate, and years to early retirement.',
         href: '/fire-forecaster',
         keywords: ['fire calculator', 'lean fire', 'fat fire', 'retire early'],
       },
-      {
-        id: 'ret-compound-interest',
-        name: 'Compound Interest & Nest Egg Growth Calculator',
-        description: 'See how initial retirement savings and monthly deposits compound over decades.',
-        href: '/compound-interest-calculator',
-        keywords: ['nest egg', 'compound growth', 'retirement compound interest'],
-      },
-      {
-        id: 'ret-pre-tax-deduction-tax',
-        name: 'Pre-Tax 401(k) & Federal Tax Savings Calculator',
-        description: 'See how pre-tax 401(k) and IRA contributions reduce your current tax bill.',
-        href: '/finance/us-federal-income-tax-calculator',
-        keywords: ['pre tax 401k', 'agi reduction', 'tax deferred'],
-      },
     ],
-  },
-  {
-    id: 'guides',
-    title: 'Formula Guides & Tutorials',
-    subtitle: 'Step-by-step math, finance, home, and conversion guides with worked examples.',
-    href: '/guides',
-    headerBg: 'bg-[#EEF4FF]',
-    iconBg: 'bg-[#2457D6]',
-    iconColor: 'text-white',
-    iconName: 'guides',
-    layout: 'list',
-    calculators: GUIDES_DATA.map((guide) => ({
-      id: `guide-${guide.slug}`,
-      name: guide.title,
-      description: guide.heroIntro,
-      href: `/guides/${guide.slug}`,
-      keywords: guide.keywords,
-    })),
   },
 ];
 
-const POPULAR_SHORTCUTS = [
+const WHICH_DIRECTORY_CATEGORY_GUIDE = [
   {
-    name: 'Percentage Calculator',
-    href: '/math/percentage-calculator',
-    icon: Percent,
-    iconBg: 'bg-[#FFF0EE]',
-    iconColor: 'text-[#E54D37]',
+    title: 'Math vs. Science vs. Unit Conversions',
+    summary:
+      'Choose Math Calculators for percentages, fractions, ratios, averages, and algebraic equations. Choose Science Calculators when solving physical laws like F = m × a, V = I × R, density, or chemical molarity. Choose Unit Conversions when translating a known measurement between Metric and US Imperial units (such as meters to feet, kg to lbs, or cups to grams).',
+    recommendedHref: '/math',
+    recommendedLabel: 'Explore Math Calculators',
   },
   {
-    name: 'Age Calculator',
-    href: '/age-calculator',
-    icon: Calendar,
-    iconBg: 'bg-[#E6F6F1]',
-    iconColor: 'text-[#16856B]',
+    title: 'Personal Finance vs. Business vs. Retirement',
+    summary:
+      'Choose Finance & Tax Calculators for mortgages, personal loans, compound interest, and country-specific net salary or tax returns. Choose Business Calculators when setting product selling prices (gross margin vs. markup), finding break-even unit volume, or filing Schedule SE contractor taxes. Choose Retirement Calculators for 401(k) matching, Roth vs. Traditional comparisons, RMDs, and 4% safe withdrawal planning.',
+    recommendedHref: '/finance',
+    recommendedLabel: 'Explore Finance Calculators',
   },
   {
-    name: 'Loan Payment Calculator',
-    href: '/loan-calculator',
-    icon: Home,
-    iconBg: 'bg-[#EBF2FF]',
-    iconColor: 'text-[#2457D6]',
+    title: 'Date & Time vs. Health & Fitness vs. Home & Construction',
+    summary:
+      'Choose Date & Time Calculators for calendar date differences, adding business days, chronological age, work timesheets, and 24-hour military time. Choose Health & Fitness for BMI, TDEE daily calories, resting BMR, U.S. Navy body fat %, and ideal weight. Choose Home & Construction for concrete slab cubic yards, flooring box counts with waste allowance, and home affordability.',
+    recommendedHref: '/date-time',
+    recommendedLabel: 'Explore Date & Time Calculators',
+  },
+];
+
+const DIRECTORY_FAQS = [
+  {
+    q: 'How do I calculate a percentage of a number or percentage change?',
+    a: 'To find X% of Y, multiply Y by (X ÷ 100). To find percentage increase or decrease from an original value to a new value, compute ((New − Original) ÷ |Original|) × 100. Open our Percentage Calculator or Percentage Change Calculator for instant step-by-step solutions.',
   },
   {
-    name: 'Unit Conversion Calculator',
-    href: '/conversions',
-    icon: ArrowLeftRight,
-    iconBg: 'bg-[#F3EEFF]',
-    iconColor: 'text-[#7C3AED]',
+    q: 'How is a monthly mortgage payment (PITI) calculated?',
+    a: 'Monthly Principal & Interest uses M = P × [r(1 + r)^n] ÷ [(1 + r)^n − 1], where P is loan principal, r is monthly interest rate (annual rate ÷ 12), and n is total monthly payments. Add monthly property tax, homeowners insurance, and HOA/PMI for full PITI.',
   },
   {
-    name: 'Discount Calculator',
-    href: '/math/discount-calculator',
-    icon: Tag,
-    iconBg: 'bg-[#FFF6E5]',
-    iconColor: 'text-[#D97706]',
+    q: 'What is the difference between gross salary and net take-home pay?',
+    a: 'Gross salary is your total earnings before deductions. Net take-home pay is what reaches your bank account after subtracting federal/national income tax, state or provincial tax, Social Security/National Insurance, and retirement contributions.',
   },
   {
-    name: 'BMI Calculator',
-    href: '/bmi-calculator',
-    icon: Heart,
-    iconBg: 'bg-[#E6F6F1]',
-    iconColor: 'text-[#16856B]',
+    q: 'How do I convert millimeters to inches and kilograms to pounds?',
+    a: '1 inch equals exactly 25.4 millimeters (divide mm by 25.4 to get inches). 1 kilogram equals approximately 2.20462262 pounds (divide kg by 0.45359237 to get pounds). All unit converters follow NIST SP 811 constants.',
   },
   {
-    name: 'Date Difference Calculator',
-    href: '/date-difference-calculator',
-    icon: Calendar,
-    iconBg: 'bg-[#FFF0EE]',
-    iconColor: 'text-[#E11D48]',
+    q: 'How is Body Mass Index (BMI) and daily calorie expenditure (TDEE) calculated?',
+    a: 'BMI equals weight (kg) ÷ [height (m)]² (or 703 × lbs ÷ in²). Total Daily Energy Expenditure (TDEE) calculates resting Basal Metabolic Rate via the Mifflin-St Jeor equation and multiplies by your physical activity factor.',
   },
   {
-    name: 'Time Duration Calculator',
-    href: '/time-duration-calculator',
-    icon: Clock,
-    iconBg: 'bg-[#EBF2FF]',
-    iconColor: 'text-[#2457D6]',
+    q: 'How do I calculate cubic yards of concrete and square footage for flooring?',
+    a: 'Square footage equals Length (ft) × Width (ft); add 10% for flooring cut waste. For concrete slabs, multiply Length (ft) × Width (ft) × Thickness (ft) and divide by 27 to convert cubic feet into cubic yards.',
   },
 ];
 
@@ -1214,8 +925,6 @@ function CategoryHeaderIcon({
       return <FlaskConical className={className} aria-hidden="true" />;
     case 'retirement':
       return <PiggyBank className={className} aria-hidden="true" />;
-    case 'guides':
-      return <BookOpen className={className} aria-hidden="true" />;
   }
 }
 
@@ -1227,6 +936,15 @@ export default function AllCalculatorsDirectoryClient() {
   const [sortOrder, setSortOrder] = useState<'default' | 'az' | 'za'>('default');
   const [selectedLetter, setSelectedLetter] = useState<string>('All');
   const [isHydrated, setIsHydrated] = useState(false);
+
+  const totalCalculatorsCount = useMemo(
+    () =>
+      DIRECTORY_GROUPS.reduce(
+        (sum, group) => sum + group.calculators.length,
+        0
+      ),
+    []
+  );
 
   // Restore browsing state from URL params or sessionStorage on mount
   useEffect(() => {
@@ -1400,76 +1118,6 @@ export default function AllCalculatorsDirectoryClient() {
         aria-labelledby="all-calculators-heading"
         className="relative overflow-hidden border-b border-[#E2E8F0] bg-gradient-to-b from-[#EAF2FF] via-[#F2F7FF] to-[#F8FAFC] pt-4 pb-7"
       >
-        {/* Subtle Decorative Left & Right Illustrations on wide viewports */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none hidden xl:block absolute left-10 top-12 select-none"
-        >
-          <div className="relative w-44 h-44">
-            <div className="absolute left-6 top-6 w-28 h-36 rounded-2xl bg-[#2457D6] shadow-md p-3.5 -rotate-12 flex flex-col justify-between">
-              <div className="h-6 rounded-md bg-[#93C5FD]/90 w-full" />
-              <div className="grid grid-cols-3 gap-1.5">
-                <div className="h-4 rounded-xs bg-white/90" />
-                <div className="h-4 rounded-xs bg-white/90" />
-                <div className="h-4 rounded-xs bg-white/90" />
-                <div className="h-4 rounded-xs bg-white/90" />
-                <div className="h-4 rounded-xs bg-white/90" />
-                <div className="h-4 rounded-xs bg-white/90" />
-                <div className="h-4 rounded-xs bg-white/90" />
-                <div className="h-4 rounded-xs bg-white/90" />
-                <div className="h-4 rounded-xs bg-white/90" />
-              </div>
-            </div>
-            <div className="absolute left-1 bottom-8 w-10 h-10 rounded-xl bg-[#16856B] text-white font-bold text-lg flex items-center justify-center shadow-xs -rotate-12">
-              %
-            </div>
-            <div className="absolute right-4 top-8 w-9 h-9 rounded-full bg-[#93C5FD] text-[#152238] font-bold text-base flex items-center justify-center shadow-xs rotate-12">
-              ÷
-            </div>
-          </div>
-        </div>
-
-        <div
-          aria-hidden="true"
-          className="pointer-events-none hidden xl:block absolute right-10 top-10 select-none"
-        >
-          <div className="relative w-48 h-44">
-            <div className="absolute right-10 top-4 w-32 h-36 rounded-2xl bg-white border border-[#D0E1FD] shadow-md p-3.5 rotate-6 flex flex-col justify-between">
-              <div className="space-y-2.5">
-                <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 rounded-xs bg-[#DBEAFE] text-[#2457D6] flex items-center justify-center text-[10px] font-bold">
-                    ✓
-                  </span>
-                  <span className="h-2.5 w-16 rounded bg-[#CBD5E1]" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 rounded-xs bg-[#DBEAFE] text-[#2457D6] flex items-center justify-center text-[10px] font-bold">
-                    ✓
-                  </span>
-                  <span className="h-2.5 w-14 rounded bg-[#CBD5E1]" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 rounded-xs bg-[#DBEAFE] text-[#2457D6] flex items-center justify-center text-[10px] font-bold">
-                    ✓
-                  </span>
-                  <span className="h-2.5 w-16 rounded bg-[#CBD5E1]" />
-                </div>
-              </div>
-            </div>
-            <div className="absolute right-2 bottom-3 w-16 h-22 rounded-xl bg-[#2457D6] shadow-md p-2 rotate-12 flex flex-col justify-between">
-              <div className="h-4 rounded-xs bg-[#BFDBFE] w-full" />
-              <div className="grid grid-cols-3 gap-1">
-                <div className="h-2.5 rounded-xs bg-white/90" />
-                <div className="h-2.5 rounded-xs bg-white/90" />
-                <div className="h-2.5 rounded-xs bg-white/90" />
-                <div className="h-2.5 rounded-xs bg-white/90" />
-                <div className="h-2.5 rounded-xs bg-white/90" />
-                <div className="h-2.5 rounded-xs bg-white/90" />
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Breadcrumb: Home / All Calculators */}
           <nav aria-label="Breadcrumb" className="mb-3">
@@ -1493,15 +1141,18 @@ export default function AllCalculatorsDirectoryClient() {
 
           {/* Centered Title & Concise Introduction */}
           <div className="max-w-3xl mx-auto text-center">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#C6DBFF] text-[#2457D6] text-xs font-bold mb-2.5 shadow-2xs">
+              <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>{totalCalculatorsCount} Verified Calculators</span>
+            </div>
             <h1
               id="all-calculators-heading"
               className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[#152238]"
             >
-              All <span className="text-[#2457D6]">Calculators</span>
+              All <span className="text-[#2457D6]">Calculators</span> Directory
             </h1>
-            <p className="mt-2.5 text-sm sm:text-base lg:text-[17px] text-[#475569] leading-relaxed max-w-2xl mx-auto">
-              Browse all available calculators. Find the right tool for your
-              needs and get instant, accurate results with clear explanations.
+            <p className="mt-2.5 text-sm sm:text-base text-[#475569] leading-relaxed max-w-3xl mx-auto">
+              Finding the right calculator starts with matching your question to the proper domain: browse our {totalCalculatorsCount} verified tools organized across Math, Finance &amp; Tax, Unit Conversions, Date &amp; Time, Health &amp; Fitness, Home &amp; Construction, Business, Science, and Retirement—or filter alphabetically and by keyword to jump straight to a live calculator with transparent formulas.
             </p>
 
             {/* Large Search Field */}
@@ -1522,7 +1173,7 @@ export default function AllCalculatorsDirectoryClient() {
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search calculators (e.g. percentage, loan, BMI, time...)"
+                placeholder="Search calculators (e.g. percentage, mortgage, TDEE, business days...)"
                 className="w-full py-2 px-2 text-sm sm:text-base text-[#152238] placeholder:text-[#64748B] bg-transparent focus:outline-none"
               />
               {searchQuery && (
@@ -1559,10 +1210,10 @@ export default function AllCalculatorsDirectoryClient() {
                   onChange={(e) => setSelectedTopic(e.target.value)}
                   className="w-full bg-white dark:bg-[#0F172A] rounded-xl border border-[#CBD5E1] dark:border-[#334155] pl-10 pr-8 py-2.5 text-sm font-semibold text-[#152238] dark:text-[#F8FAFC] shadow-2xs focus:border-[#2457D6] focus:outline-none focus:ring-2 focus:ring-[#2457D6] cursor-pointer"
                 >
-                  <option value="all">All Topics</option>
+                  <option value="all">All Topics ({totalCalculatorsCount})</option>
                   {DIRECTORY_GROUPS.map((g) => (
                     <option key={g.id} value={g.id}>
-                      {g.title}
+                      {g.title} ({g.calculators.length})
                     </option>
                   ))}
                 </select>
@@ -1657,7 +1308,7 @@ export default function AllCalculatorsDirectoryClient() {
                   : 'bg-[#F8FAFC] text-[#152238] border-[#E2E8F0] hover:border-[#2457D6] hover:text-[#2457D6]'
               }`}
             >
-              All Categories
+              All Categories ({totalCalculatorsCount})
             </button>
             {DIRECTORY_GROUPS.map((group) => (
               <button
@@ -1671,7 +1322,7 @@ export default function AllCalculatorsDirectoryClient() {
                     : 'bg-[#F8FAFC] text-[#152238] border-[#E2E8F0] hover:border-[#2457D6] hover:text-[#2457D6]'
                 }`}
               >
-                {group.title.replace(' Calculators', '')}
+                {group.title.replace(' Calculators', '')} ({group.calculators.length})
               </button>
             ))}
           </div>
@@ -1679,10 +1330,60 @@ export default function AllCalculatorsDirectoryClient() {
       </section>
 
       {/* Main Directory Content */}
-      <main className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-7">
+      <main className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-7 space-y-8">
+        {/* "Which calculator category should I use?" Guide */}
+        <section
+          aria-labelledby="which-directory-category-heading"
+          className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xs p-5 sm:p-6"
+        >
+          <div className="flex items-center gap-2.5 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-[#EEF4FF] text-[#2457D6] flex items-center justify-center shrink-0">
+              <Compass className="w-5 h-5" aria-hidden="true" />
+            </div>
+            <div>
+              <h2
+                id="which-directory-category-heading"
+                className="text-base sm:text-lg font-extrabold text-[#152238]"
+              >
+                Which Calculator Category Should I Use?
+              </h2>
+              <p className="text-xs sm:text-sm text-[#64748B]">
+                Compare how our 9 specialized hubs divide formulas so you pick the exact tool for your calculation.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {WHICH_DIRECTORY_CATEGORY_GUIDE.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] p-4 flex flex-col justify-between"
+              >
+                <div>
+                  <h3 className="text-sm font-bold text-[#152238]">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-[#475569] mt-1.5 leading-relaxed">
+                    {item.summary}
+                  </p>
+                </div>
+                <div className="mt-3 pt-2.5 border-t border-[#E2E8F0]">
+                  <Link
+                    href={item.recommendedHref}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2457D6] hover:underline"
+                  >
+                    <span>{item.recommendedLabel}</span>
+                    <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Active Filter Banner if user filtered by letter, topic, or search */}
         {hasActiveFilters && (
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm">
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-white border border-[#E2E8F0] rounded-xl px-4 py-2.5 text-sm">
             <div className="text-[#475569]">
               Showing directory results
               {selectedTopic !== 'all' && (
@@ -1745,17 +1446,23 @@ export default function AllCalculatorsDirectoryClient() {
                       />
                     </div>
                     <div className="min-w-0">
-                      <h2
-                        id={`group-heading-${group.id}`}
-                        className="text-base sm:text-lg font-extrabold text-[#152238] leading-snug"
-                      >
-                        <Link
-                          href={group.href}
-                          className="hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded"
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h2
+                          id={`group-heading-${group.id}`}
+                          className="text-base sm:text-lg font-extrabold text-[#152238] leading-snug"
                         >
-                          {group.title}
-                        </Link>
-                      </h2>
+                          <Link
+                            href={group.href}
+                            className="hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded"
+                          >
+                            {group.title}
+                          </Link>
+                        </h2>
+                        <span className="text-[11px] font-bold text-[#2457D6] bg-white/90 border border-[#CBD5E1] px-2 py-0.5 rounded-full">
+                          {group.calculators.length}{' '}
+                          {group.calculators.length === 1 ? 'Tool' : 'Tools'}
+                        </span>
+                      </div>
                       <p className="text-xs sm:text-sm text-[#475569] truncate">
                         {group.subtitle}
                       </p>
@@ -1767,7 +1474,7 @@ export default function AllCalculatorsDirectoryClient() {
                     aria-label={`Open ${group.title} category page`}
                     className="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-[#2457D6] hover:text-[#1D47B0] hover:underline shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded px-1 py-0.5"
                   >
-                    <span>Category Page</span>
+                    <span>Category Hub</span>
                     <ArrowRight className="w-4 h-4" aria-hidden="true" />
                   </Link>
                 </div>
@@ -1820,119 +1527,95 @@ export default function AllCalculatorsDirectoryClient() {
           </div>
         )}
 
-        {/* Bottom Route Back to Popular Calculators and Category Landing Pages */}
+        {/* Matching Step-by-Step Formula Guides */}
         <section
-          aria-labelledby="popular-calculators-strip-heading"
-          className="mt-7 bg-white rounded-2xl border border-[#E2E8F0] shadow-2xs p-5"
+          aria-labelledby="matching-guides-directory-heading"
+          className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xs p-5 sm:p-6"
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[#F1F5F9]">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <span className="w-7 h-7 rounded-lg bg-[#2457D6] text-white flex items-center justify-center shrink-0">
-                <Star className="w-4 h-4 fill-current" aria-hidden="true" />
+            <div className="flex items-center gap-2.5">
+              <span className="w-8 h-8 rounded-xl bg-[#EEF4FF] text-[#2457D6] flex items-center justify-center shrink-0">
+                <BookOpen className="w-4 h-4" aria-hidden="true" />
               </span>
-              <h2
-                id="popular-calculators-strip-heading"
-                className="text-base sm:text-lg font-extrabold text-[#152238]"
-              >
-                Popular Calculators
-              </h2>
-              <span className="text-xs sm:text-sm text-[#64748B]">
-                Quick access to commonly used tools.
-              </span>
+              <div>
+                <h2
+                  id="matching-guides-directory-heading"
+                  className="text-base sm:text-lg font-extrabold text-[#152238]"
+                >
+                  Matching Step-by-Step Formula Guides ({GUIDES_DATA.length} Guides)
+                </h2>
+                <p className="text-xs sm:text-sm text-[#64748B]">
+                  Learn the underlying equations, worked examples, and common mistakes behind our calculators.
+                </p>
+              </div>
             </div>
 
             <Link
-              href="/#popular-calculators"
+              href="/guides"
               className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#2457D6] hover:text-[#1D47B0] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded"
             >
-              <span>View All Popular Calculators</span>
+              <span>Browse All Formula Guides</span>
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
 
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2.5">
-            {POPULAR_SHORTCUTS.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center gap-2.5 p-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] hover:bg-white hover:border-[#2457D6] transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
-                >
-                  <span
-                    className={`w-8 h-8 rounded-lg ${item.iconBg} ${item.iconColor} flex items-center justify-center shrink-0`}
-                  >
-                    <Icon className="w-4 h-4" aria-hidden="true" />
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            {GUIDES_DATA.map((guide) => (
+              <Link
+                key={guide.slug}
+                href={`/guides/${guide.slug}`}
+                className="flex flex-col justify-between p-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] hover:bg-white hover:border-[#2457D6] transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+              >
+                <div>
+                  <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-[#2457D6] mb-1">
+                    {guide.category}
                   </span>
-                  <span className="text-xs font-bold text-[#152238] group-hover:text-[#2457D6] leading-tight">
-                    {item.name}
-                  </span>
-                </Link>
-              );
-            })}
+                  <h3 className="text-sm font-bold text-[#152238] group-hover:text-[#2457D6] leading-snug">
+                    {guide.title}
+                  </h3>
+                  <p className="text-xs text-[#64748B] mt-1 line-clamp-2">
+                    {guide.heroIntro}
+                  </p>
+                </div>
+                <span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-[#2457D6]">
+                  <span>Read guide</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </span>
+              </Link>
+            ))}
           </div>
         </section>
 
-        {/* Frequently Asked Questions (Most-Asked Google Search Calculator Queries) */}
+        {/* Frequently Asked Questions with Visible Answers */}
         <section
           id="faq"
           aria-labelledby="directory-faq-heading"
-          className="mt-7 bg-white rounded-2xl border border-[#E2E8F0] shadow-2xs p-5 sm:p-6 space-y-4"
+          className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xs p-5 sm:p-6 space-y-4"
         >
-          <div>
-            <h2
-              id="directory-faq-heading"
-              className="text-base sm:text-lg font-extrabold text-[#152238]"
-            >
-              Frequently Asked Questions About Online Calculators &amp; Formulas
-            </h2>
-            <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
-              Quick answers to the most-searched math, finance, conversion, health, and construction formulas.
-            </p>
+          <div className="flex items-center gap-2.5">
+            <HelpCircle className="w-5 h-5 text-[#2457D6]" aria-hidden="true" />
+            <div>
+              <h2
+                id="directory-faq-heading"
+                className="text-base sm:text-lg font-extrabold text-[#152238]"
+              >
+                Frequently Asked Questions About Online Calculators &amp; Formulas
+              </h2>
+              <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
+                Visible answers to the most-searched math, finance, conversion, health, and construction formulas.
+              </p>
+            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-            {[
-              {
-                q: 'How do I calculate a percentage of a number or percentage change?',
-                a: 'To find X% of Y, multiply Y by (X ÷ 100). To find percentage increase or decrease from an old value to a new value, compute ((New − Old) ÷ Old) × 100. Open our Percentage Calculator for instant step-by-step solutions.',
-              },
-              {
-                q: 'How is a monthly mortgage payment (PITI) calculated?',
-                a: 'Monthly Principal & Interest uses M = P × [r(1 + r)^n] ÷ [(1 + r)^n − 1], where P is loan principal, r is monthly interest rate (annual rate ÷ 12), and n is total monthly payments. Add monthly property tax, homeowners insurance, and HOA/PMI for full PITI.',
-              },
-              {
-                q: 'What is the difference between gross salary and net take-home pay?',
-                a: 'Gross salary is your total earnings before deductions. Net take-home pay is what reaches your bank account after subtracting federal/national income tax, state or provincial tax, Social Security/National Insurance, and retirement contributions.',
-              },
-              {
-                q: 'How do I convert millimeters to inches and kilograms to pounds?',
-                a: '1 inch equals exactly 25.4 millimeters (divide mm by 25.4 to get inches). 1 kilogram equals approximately 2.20462262 pounds (divide kg by 0.45359237 to get pounds). All unit converters follow NIST SP 811 constants.',
-              },
-              {
-                q: 'How is Body Mass Index (BMI) and daily calorie expenditure (TDEE) calculated?',
-                a: 'BMI equals weight (kg) ÷ [height (m)]² (or 703 × lbs ÷ in²). Total Daily Energy Expenditure (TDEE) calculates resting Basal Metabolic Rate via the Mifflin-St Jeor equation and multiplies by your physical activity factor.',
-              },
-              {
-                q: 'How do I calculate cubic yards of concrete and square footage for flooring?',
-                a: 'Square footage equals Length (ft) × Width (ft); add 10% for flooring cut waste. For concrete slabs, multiply Length (ft) × Width (ft) × Thickness (ft) and divide by 27 to convert cubic feet into cubic yards.',
-              },
-              {
-                q: 'How do I convert hours and minutes into decimal hours for payroll?',
-                a: 'Keep the whole hours and divide minutes by 60. For example, 8 hours and 45 minutes equals 8 + (45 ÷ 60) = 8.75 decimal hours.',
-              },
-              {
-                q: 'Are all calculators on SolveItCalculator free and mobile-friendly?',
-                a: 'Yes. Every calculator in our directory is 100% free, requires no registration, shows the verified formula and worked example alongside your live output, and runs privately in your browser on desktop and mobile.',
-              },
-            ].map((faq) => (
+            {DIRECTORY_FAQS.map((faq) => (
               <div
                 key={faq.q}
-                className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-1"
+                className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-1.5"
               >
                 <h3 className="text-xs sm:text-sm font-bold text-[#152238]">
                   {faq.q}
                 </h3>
-                <p className="text-xs text-[#475569] leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#475569] leading-relaxed">
                   {faq.a}
                 </p>
               </div>

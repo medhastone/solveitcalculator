@@ -4,197 +4,203 @@ import CategoryHubPageClient, {
 } from '@/components/CategoryHubPageClient';
 
 export const metadata: Metadata = {
-  title: 'Unit Conversion Calculators (mm to in, kg to lbs, °C to °F) | SolveIt',
+  title: 'Unit Conversion Calculators: Metric & Imperial | SolveIt',
   description:
-    'Convert length (mm to inches, cm to in), weight (kg to lbs, grams to oz), temperature (°C to °F), cooking volume (tbsp to cups), fuel economy, and torque.',
+    'Convert metric and US imperial measurements across length, weight, temperature, cooking volume, area, speed, fuel economy, torque, energy, and digital storage.',
   alternates: {
     canonical: 'https://solveitcalculator.com/conversions',
   },
   openGraph: {
-    title: 'Unit Conversion Calculators (mm to in, kg to lbs, °C to °F) | SolveIt',
+    title: 'Unit Conversion Calculators: Metric & Imperial | SolveIt',
     description:
-      'Convert length (mm to inches, cm to in), weight (kg to lbs, grams to oz), temperature (°C to °F), cooking volume (tbsp to cups), fuel economy, and torque.',
+      'Convert length, weight, temperature, cooking ingredients, volume, area, speed, fuel economy, and digital storage with NIST conversion factors.',
     url: 'https://solveitcalculator.com/conversions',
     type: 'website',
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Unit Conversion Calculators (mm to in, kg to lbs, °C to °F) | SolveIt',
-    description: 'Convert length (mm to inches, cm to in), weight (kg to lbs, grams to oz), temperature (°C to °F), cooking volume (tbsp to cups), fuel economy, and torque.',
-  },
 };
 
-export const CONVERSIONS_HUB_CONFIG: CategoryHubConfig = {
+const UNIT_CONVERSION_CONFIG: CategoryHubConfig = {
   id: 'conversions',
-  breadcrumbLabel: 'Unit Conversions',
+  breadcrumbLabel: 'Unit Conversion',
   title: 'Unit Conversion Calculators',
-  shortTitle: 'Unit Conversions',
+  shortTitle: 'Unit Conversion',
   introduction:
-    'Convert measurements between metric, imperial, and US customary units. Every calculator uses conversion factors that follow NIST SP 811, worked formulas, and quick-load reference tables.',
-  searchPlaceholder: 'Find a unit conversion calculator (e.g. mm to in, kg to lbs, °C to °F)',
+    'Choose a converter below based on what you are measuring—whether you need to switch ruler dimensions between millimeters and inches, weigh parcels in kilograms or pounds, convert oven temperatures, or turn recipe cups into kitchen-scale grams.',
+  searchPlaceholder:
+    'Find a unit converter (e.g. length, weight, temperature, cups to grams, mpg...)',
   headerIconName: 'arrow-left-right',
-  heroBadgeTopLeft: 'mm',
-  heroBadgeBottomLeft: 'kg',
+  heroBadgeTopLeft: 'kg',
+  heroBadgeBottomLeft: 'in↔cm',
   filters: [
     'All',
-    'Length & Distance',
-    'Weight & Mass',
-    'Temperature & Speed',
-    'Volume & Cooking',
-    'Area & Land',
-    'Automotive & Torque',
-    'Digital & Energy',
+    'Length & Area',
+    'Weight & Volume',
+    'Cooking & Temperature',
+    'Speed, Fuel & Power',
+    'Digital & Data',
   ],
   tools: [
     {
       id: 'length-converter',
-      name: 'Millimeters to Inches & Length Converter (mm, cm, ft, m)',
+      name: 'Length & Distance Converter (mm, cm, m, in, ft, yd, mi)',
       description:
-        'Convert millimeters to inches (mm to in), centimeters to inches (cm to in), feet, meters, and kilometers with worked examples.',
+        'Convert between millimeters, centimeters, meters, kilometers, inches, feet, yards, and miles.',
       href: '/conversions/length',
-      category: 'Length & Distance',
-      displayBadge: 'Length',
+      category: 'Length & Area',
+      displayBadge: 'Length & Distance',
       iconName: 'ruler',
+      symbolText: 'in↔cm',
       iconBg: 'bg-[#EBF2FF]',
       iconColor: 'text-[#2457D6]',
       isPopular: true,
     },
     {
-      id: 'weight-mass-converter',
-      name: 'Kilograms to Pounds & Weight Converter (kg to lbs, g, oz)',
+      id: 'area-converter',
+      name: 'Area & Land Measurement Converter (sq ft, m², acres, ha)',
       description:
-        'Convert kilograms to pounds (kg to lbs), pounds to kilograms, grams to pounds, ounces, stone, and metric tons.',
+        'Convert square feet, square meters, square yards, acres, and hectares for rooms and land parcels.',
+      href: '/conversions/area',
+      category: 'Length & Area',
+      displayBadge: 'Area & Land',
+      iconName: 'ruler',
+      symbolText: 'ft²↔m²',
+      iconBg: 'bg-[#F3EEFF]',
+      iconColor: 'text-[#7C3AED]',
+    },
+    {
+      id: 'weight-mass-converter',
+      name: 'Weight & Mass Converter (kg, g, mg, lbs, oz, stone)',
+      description:
+        'Convert kilograms, grams, milligrams, pounds, ounces, US tons, and imperial stones.',
       href: '/conversions/weight',
-      category: 'Weight & Mass',
+      category: 'Weight & Volume',
       displayBadge: 'Weight & Mass',
       iconName: 'scale',
+      symbolText: 'kg↔lb',
+      iconBg: 'bg-[#E6F6F1]',
+      iconColor: 'text-[#16856B]',
+      isPopular: true,
+    },
+    {
+      id: 'liquid-volume-converter',
+      name: 'Liquid Volume & Capacity Converter (L, mL, gal, qt, pt, fl oz)',
+      description:
+        'Convert liters, milliliters, US gallons, quarts, pints, fluid ounces, and cubic meters.',
+      href: '/conversions/volume',
+      category: 'Weight & Volume',
+      displayBadge: 'Liquid Volume',
+      iconName: 'droplets',
+      symbolText: 'L↔gal',
+      iconBg: 'bg-[#EBF2FF]',
+      iconColor: 'text-[#2457D6]',
+      isPopular: true,
+    },
+    {
+      id: 'cooking-measurement-converter',
+      name: 'Cooking Volume Converter (Cups, Tbsp, Tsp & mL)',
+      description:
+        'Convert US customary cups, tablespoons, teaspoons, fluid ounces, and milliliters for kitchen liquids.',
+      href: '/conversions/cooking',
+      category: 'Cooking & Temperature',
+      displayBadge: 'Cooking Volume',
+      iconName: 'droplets',
+      symbolText: 'cup↔mL',
+      iconBg: 'bg-[#FFF0EE]',
+      iconColor: 'text-[#E54D37]',
+      isPopular: true,
+    },
+    {
+      id: 'recipe-scaler-converter',
+      name: 'Recipe Ingredient Weight Converter & Portion Scaler (Cups to Grams)',
+      description:
+        'Convert dry baking ingredients (flour, sugar, butter, oats) from cups to grams using ingredient density and scale servings.',
+      href: '/recipe-converter',
+      category: 'Cooking & Temperature',
+      displayBadge: 'Baking & Density',
+      iconName: 'scale',
+      symbolText: 'cup→g',
       iconBg: 'bg-[#E6F6F1]',
       iconColor: 'text-[#16856B]',
       isPopular: true,
     },
     {
       id: 'temperature-converter',
-      name: 'Celsius to Fahrenheit & Temperature Converter (°C, °F, K)',
+      name: 'Temperature Converter (Celsius, Fahrenheit & Kelvin)',
       description:
-        'Convert Celsius to Fahrenheit (°C to °F), Fahrenheit to Celsius, and Kelvin with oven and weather reference tables.',
+        'Convert °C, °F, and Kelvin temperatures for weather, baking ovens, fever checks, and lab work.',
       href: '/conversions/temperature',
-      category: 'Temperature & Speed',
+      category: 'Cooking & Temperature',
       displayBadge: 'Temperature',
       iconName: 'thermometer',
-      iconBg: 'bg-[#FFF0EE]',
-      iconColor: 'text-[#E54D37]',
+      symbolText: '°C↔°F',
+      iconBg: 'bg-[#FFF6E5]',
+      iconColor: 'text-[#D97706]',
       isPopular: true,
     },
     {
-      id: 'cooking-measurement-converter',
-      name: 'Tablespoons to Cups & Cooking Converter (tbsp, tsp, cups)',
+      id: 'speed-velocity-converter',
+      name: 'Speed & Velocity Converter (mph, km/h, m/s, knots)',
       description:
-        'Convert kitchen tablespoons to cups, teaspoons, fluid ounces, and milliliters for cooking and baking.',
-      href: '/conversions/cooking',
-      category: 'Volume & Cooking',
-      displayBadge: 'Cooking',
-      iconName: 'droplets',
-      iconBg: 'bg-[#E6F6F1]',
-      iconColor: 'text-[#16856B]',
-      isPopular: true,
-    },
-    {
-      id: 'recipe-converter',
-      name: 'Ingredient-Aware Recipe Converter & Batch Scaler (Cups to Grams)',
-      description:
-        'Scale recipes by serving count and convert cups, tablespoons, and milliliters to grams using verified ingredient densities.',
-      href: '/recipe-converter',
-      category: 'Volume & Cooking',
-      displayBadge: 'Cooking & Baking',
-      iconName: 'scale',
-      iconBg: 'bg-[#E6F6F1]',
-      iconColor: 'text-[#16856B]',
-      isPopular: true,
-    },
-    {
-      id: 'volume-liquid-converter',
-      name: 'Liters to Gallons & Volume Converter (L, gal, qt, mL)',
-      description:
-        'Convert liters to US gallons, quarts to gallons, milliliters, fluid ounces, cubic feet, and cubic yards.',
-      href: '/conversions/volume',
-      category: 'Volume & Cooking',
-      displayBadge: 'Volume',
-      iconName: 'droplets',
-      iconBg: 'bg-[#F3EEFF]',
-      iconColor: 'text-[#7C3AED]',
-      isPopular: true,
-    },
-    {
-      id: 'area-land-converter',
-      name: 'Square Meters to Square Feet & Area Converter (m², ft², acres)',
-      description:
-        'Convert square meters to square feet, square yards, acres, hectares, and square kilometers.',
-      href: '/conversions/area',
-      category: 'Area & Land',
-      displayBadge: 'Area',
-      iconName: 'layers',
+        'Convert miles per hour, kilometers per hour, meters per second, and nautical knots.',
+      href: '/conversions/speed',
+      category: 'Speed, Fuel & Power',
+      displayBadge: 'Speed',
+      iconName: 'gauge',
+      symbolText: 'mph',
       iconBg: 'bg-[#FFF6E5]',
       iconColor: 'text-[#D97706]',
     },
     {
-      id: 'speed-velocity-converter',
-      name: 'Kilometers per Hour to mph & Speed Converter (km/h, mph, m/s)',
-      description:
-        'Convert kilometers per hour to miles per hour (km/h to mph), meters per second, feet per second, and knots.',
-      href: '/conversions/speed',
-      category: 'Temperature & Speed',
-      displayBadge: 'Speed',
-      iconName: 'gauge',
-      iconBg: 'bg-[#EBF2FF]',
-      iconColor: 'text-[#2457D6]',
-    },
-    {
       id: 'fuel-economy-converter',
-      name: 'Fuel Economy Converter (L/100km to MPG & km/L)',
+      name: 'Fuel Economy & Consumption Converter (MPG ↔ L/100km)',
       description:
-        'Convert liters per 100 km to US and UK miles per gallon (L/100km to mpg) and kilometers per liter.',
+        'Convert between US MPG, UK Imperial MPG, kilometers per liter (km/L), and liters per 100 km.',
       href: '/conversions/fuel-economy',
-      category: 'Automotive & Torque',
-      displayBadge: 'Fuel',
+      category: 'Speed, Fuel & Power',
+      displayBadge: 'Fuel Economy',
       iconName: 'gauge',
+      symbolText: 'MPG',
       iconBg: 'bg-[#E6F6F1]',
       iconColor: 'text-[#16856B]',
     },
     {
       id: 'torque-converter',
-      name: 'Torque Converter (Newton-Meters to Foot-Pounds, N·m to ft-lb)',
+      name: 'Torque & Rotational Force Converter (Nm ↔ lb-ft & lb-in)',
       description:
-        'Convert Newton-meters (N·m) to foot-pounds (ft-lb) and inch-pounds (in-lb) for fastener and engine specs.',
+        'Convert Newton-meters (Nm), foot-pounds (lb-ft), and inch-pounds (lb-in) for automotive torque wrenches.',
       href: '/conversions/torque',
-      category: 'Automotive & Torque',
-      displayBadge: 'Torque',
-      iconName: 'zap',
-      iconBg: 'bg-[#FFF6E5]',
-      iconColor: 'text-[#D97706]',
-    },
-    {
-      id: 'digital-storage-converter',
-      name: 'Digital Data Storage Converter (MB to GB, TB, MiB, GiB)',
-      description:
-        'Convert bytes, kilobytes (KB), megabytes (MB), gigabytes (GB), and terabytes (TB) in decimal SI or binary IEC.',
-      href: '/conversions/digital',
-      category: 'Digital & Energy',
-      displayBadge: 'Digital',
-      iconName: 'database',
+      category: 'Speed, Fuel & Power',
+      displayBadge: 'Automotive',
+      iconName: 'gauge',
+      symbolText: 'Nm',
       iconBg: 'bg-[#F3EEFF]',
       iconColor: 'text-[#7C3AED]',
     },
     {
-      id: 'energy-power-converter',
-      name: 'Energy & Work Unit Converter (Joules, kJ, kcal, kWh, BTU)',
+      id: 'energy-work-converter',
+      name: 'Energy, Work & Heat Converter (Joules, kWh, Calories, BTU)',
       description:
-        'Convert joules, kilojoules, calories, kilocalories, watt-hours, kilowatt-hours (kWh), and BTUs.',
+        'Convert Joules, kilojoules, kilowatt-hours (kWh), food kilocalories, and British Thermal Units (BTU).',
       href: '/conversions/energy',
-      category: 'Digital & Energy',
-      displayBadge: 'Energy',
+      category: 'Speed, Fuel & Power',
+      displayBadge: 'Energy & Power',
       iconName: 'zap',
-      iconBg: 'bg-[#FFF6E5]',
-      iconColor: 'text-[#D97706]',
+      symbolText: 'J↔kWh',
+      iconBg: 'bg-[#FFF0EE]',
+      iconColor: 'text-[#E11D48]',
+    },
+    {
+      id: 'digital-storage-converter',
+      name: 'Digital Storage Converter (KB, MB, GB, TB & Binary GiB)',
+      description:
+        'Convert kilobytes, megabytes, gigabytes, and terabytes across decimal SI (1,000) and binary IEC (1,024) standards.',
+      href: '/conversions/digital',
+      category: 'Digital & Data',
+      displayBadge: 'Data Storage',
+      iconName: 'database',
+      symbolText: 'GB↔TB',
+      iconBg: 'bg-[#E6F6F1]',
+      iconColor: 'text-[#16856B]',
     },
   ],
   relatedCategories: [
@@ -216,102 +222,99 @@ export const CONVERSIONS_HUB_CONFIG: CategoryHubConfig = {
       name: 'Science Calculators',
       href: '/science',
       iconName: 'flask',
-      iconBg: 'bg-[#EBF2FF]',
-      iconColor: 'text-[#2457D6]',
-    },
-    {
-      name: 'Date & Time Calculators',
-      href: '/date-time',
-      iconName: 'calendar',
-      iconBg: 'bg-[#FFF0F0]',
-      iconColor: 'text-[#E11D48]',
+      iconBg: 'bg-[#F3EEFF]',
+      iconColor: 'text-[#7C3AED]',
     },
     {
       name: 'Health & Fitness Calculators',
       href: '/health-fitness',
       iconName: 'heart',
-      iconBg: 'bg-[#E6F6F1]',
-      iconColor: 'text-[#16856B]',
+      iconBg: 'bg-[#FFF0EE]',
+      iconColor: 'text-[#E11D48]',
     },
     {
-      name: 'Finance Calculators',
-      href: '/finance',
-      iconName: 'coins',
+      name: 'Date & Time Calculators',
+      href: '/date-time',
+      iconName: 'calendar',
       iconBg: 'bg-[#FFF6E5]',
       iconColor: 'text-[#D97706]',
     },
   ],
-  chooseGuideHeading: 'How to choose the right unit conversion calculator',
+  chooseGuideHeading: 'Which unit converter should I use?',
   chooseSteps: [
     {
       step: 1,
-      title: 'Pick your measurement category',
+      title: 'Cooking Volume Converter vs. Recipe Weight Converter',
       description:
-        'Select Length, Weight, Temperature, Cooking, Liquid Volume, Area, Speed, Fuel Economy, or Torque.',
+        'Use the Cooking Volume Converter when switching liquid spoons and cups to milliliters (1 cup = 236.59 mL). Use the Recipe Weight Converter when turning dry cups of flour, sugar, or oats into grams—because dry ingredients have different densities.',
     },
     {
       step: 2,
-      title: 'Use Cooking for cups and spoons',
+      title: 'Length Converter vs. Area Converter',
       description:
-        'Open /conversions/cooking for cups, tablespoons, and teaspoons, or /recipe-converter for cups-to-grams by ingredient.',
+        'Use the Length Converter for 1D straight-line distances (inches, feet, meters). Use the Area Converter for 2D surfaces (square feet to square meters or acres), where the linear factor is squared (1 m² = 10.7639 sq ft).',
     },
     {
       step: 3,
-      title: 'Load a popular pair or common value',
+      title: 'Weight & Mass Converter vs. Liquid Volume Converter',
       description:
-        'Click any popular pair card or Load button in the reference table to populate the calculator immediately.',
+        'Use Weight & Mass for shipping parcels and body weight (kg, lbs, oz). Use Liquid Volume for tank capacity and beverages (liters, US gallons, fluid ounces). Never equate fluid ounces (volume) with dryavoirdupois ounces (weight).',
     },
     {
       step: 4,
-      title: 'Verify the NIST SP 811 formula',
+      title: 'Speed Converter vs. Fuel Economy Converter',
       description:
-        'Review the converted output along with the exact multiplier or offset equation.',
+        'Use Speed Converter for travel velocity (mph to km/h). Use Fuel Economy Converter for inverse consumption metrics (US MPG to L/100km or UK Imperial gallons).',
+    },
+  ],
+  matchingGuides: [
+    {
+      title: 'How to Convert Metric and Imperial Units Accurately',
+      description:
+        'Master NIST conversion factors for length, weight, volume, and temperature without rounding errors.',
+      href: '/guides/how-to-convert-metric-and-imperial-units',
+    },
+    {
+      title: 'How to Measure Room Area, Flooring, and Paint Coverage',
+      description:
+        'Learn how square feet, square meters, and cubic yards relate when estimating materials.',
+      href: '/guides/how-to-measure-room-area-and-flooring',
     },
   ],
   faqs: [
     {
-      question: 'How many millimeters are in an inch?',
+      question: 'How do I convert inches to centimeters and millimeters?',
       answer:
-        '1 inch is defined internationally as exactly 25.4 millimeters (2.54 centimeters). To convert mm to inches, divide by 25.4—for example, 8 mm is about 0.315 inches (8 ÷ 25.4 = 0.31496 in).',
+        'Multiply inches by 2.54 to get centimeters, or multiply inches by 25.4 to get millimeters. To convert millimeters back to inches, divide by 25.4.',
     },
     {
-      question: 'How do I convert kilograms to pounds (kg to lbs)?',
+      question: 'How do I convert kilograms (kg) to pounds (lbs)?',
       answer:
-        'Divide the weight in kilograms by 0.45359237 (or multiply by 2.20462262). For example, 60 kg is about 132.28 pounds (60 × 2.20462262 = 132.277 lbs).',
+        'Multiply kilograms by 2.20462262 to get pounds (for example, 70 kg × 2.20462 = 154.32 lbs). Divide pounds by 2.20462262 to convert back to kilograms.',
     },
     {
-      question: 'What is the formula to convert Celsius to Fahrenheit?',
+      question: 'What is the exact formula to convert Celsius (°C) to Fahrenheit (°F)?',
       answer:
-        'Multiply the Celsius temperature by 1.8 (9/5) and add 32. For example, 200 °C equals 392 °F ((200 × 1.8) + 32 = 392). To convert Fahrenheit to Celsius, subtract 32 first and divide by 1.8.',
+        'Multiply the Celsius temperature by 9/5 (or 1.8) and add 32: °F = (°C × 1.8) + 32. To convert Fahrenheit to Celsius, subtract 32 first and multiply by 5/9.',
     },
     {
-      question: 'How many tablespoons and teaspoons are in a cup?',
+      question: 'Why does 1 cup of flour weigh fewer grams than 1 cup of sugar?',
       answer:
-        '1 US customary cup equals 16 tablespoons or 48 teaspoons (236.588 milliliters). Each US tablespoon equals exactly 3 teaspoons (14.787 mL).',
-    },
-    {
-      question: 'How many feet and inches are in a meter?',
-      answer:
-        '1 meter equals approximately 3.28084 feet, which is 3 feet and 3.37 inches (39.3701 inches total). To convert meters to feet, multiply meters by 3.28084.',
+        'A cup measures volume (space), whereas grams measure mass. Because all-purpose flour is less dense than granulated sugar, 1 US cup of flour weighs about 120 grams while 1 US cup of sugar weighs 200 grams.',
     },
     {
       question: 'What is the difference between a US gallon and a UK Imperial gallon?',
       answer:
-        'A US liquid gallon is 3.78541 liters (128 US fluid ounces), whereas a UK Imperial gallon is 4.54609 liters (160 Imperial fluid ounces)—making the Imperial gallon about 20.1% larger.',
+        'A US liquid gallon equals 3.78541 liters (128 US fluid ounces), whereas a UK Imperial gallon equals 4.54609 liters (160 Imperial fluid ounces)—making the UK gallon about 20% larger.',
     },
     {
-      question: 'How do you convert L/100km to MPG (miles per gallon)?',
+      question: 'Why does a 1 TB hard drive show as 931 GB on my computer?',
       answer:
-        'Divide 235.215 by the fuel consumption in L/100km to get US MPG (or divide 282.481 by L/100km for UK Imperial MPG). For example, 8 L/100km equals 235.215 ÷ 8 = 29.4 US MPG.',
-    },
-    {
-      question: 'Where do I convert recipe ingredient weights like grams to cups?',
-      answer:
-        'Kitchen spoon and cup volume conversions live on our Cooking Measurement Converter (/conversions/cooking), while density-specific ingredient conversions (flour, sugar, butter, oats) live on our Recipe Converter (/recipe-converter).',
+        'Storage manufacturers label drives using decimal SI units (1 TB = 1,000,000,000,000 bytes), while operating systems often report binary GiB (dividing by 1,024³), which equals 931.32 GiB.',
     },
   ],
 };
 
-export default function ConversionsHubPage() {
-  return <CategoryHubPageClient config={CONVERSIONS_HUB_CONFIG} />;
+export default function UnitConversionCategoryPage() {
+  return <CategoryHubPageClient config={UNIT_CONVERSION_CONFIG} />;
 }

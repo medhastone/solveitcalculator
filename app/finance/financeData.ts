@@ -937,7 +937,7 @@ export const FINANCE_CATALOG = [
         description: 'Calculate profit margins, retail markups, discount savings, and percentage changes with step-by-step math.',
         category: 'Business Finance',
         categorySlug: 'percentage-calculator',
-        path: '/percentage-calculator',
+        path: '/math/percentage-calculator',
         keywords: [
             'percentage',
             'margin',
@@ -1342,12 +1342,12 @@ export const FINANCE_GOALS = [
             },
             {
                 name: 'FIRE & Retirement Forecaster',
-                path: '/finance/fire-forecaster',
+                path: '/fire-forecaster',
                 desc: 'Coast FIRE, Lean FIRE, and safe withdrawal rates (3%–5%)'
             },
             {
                 name: 'Retirement Countdown in Workdays',
-                path: '/time-date/retirement-countdown',
+                path: '/date-difference-calculator',
                 desc: 'Exact calendar days, work shifts, and hours remaining'
             },
             {
@@ -1393,7 +1393,7 @@ export const FINANCE_GOALS = [
             },
             {
                 name: 'Work Hours & Timesheets',
-                path: '/time-date/work-hours',
+                path: '/time-duration-calculator',
                 desc: 'Bi-weekly checks, overtime shifts, and deductions'
             },
             {
@@ -1416,7 +1416,7 @@ export const FINANCE_GOALS = [
             },
             {
                 name: 'Margin & Markup Calculator',
-                path: '/percentage-calculator',
+                path: '/finance/margin-calculator',
                 desc: 'Gross margin vs. markup and discount structures'
             },
             {
@@ -1473,7 +1473,7 @@ export const FINANCIAL_QUESTIONS = [
     {
         question: 'When could I reach my retirement target?',
         toolName: 'FIRE & Retirement Forecaster',
-        path: '/finance/fire-forecaster',
+        path: '/fire-forecaster',
         hint: 'Calculate your target portfolio number based on planned annual spending.',
         icon: 'local_fire_department'
     },
@@ -1508,7 +1508,7 @@ export const FINANCIAL_QUESTIONS = [
     {
         question: 'How many workdays and working hours remain until retirement?',
         toolName: 'Retirement Countdown',
-        path: '/time-date/retirement-countdown',
+        path: '/date-difference-calculator',
         hint: 'Filter by shift schedules, weekends, holidays, and annual leave.',
         icon: 'event_available'
     },
@@ -1617,11 +1617,11 @@ export const FINANCE_CATEGORIES = [
             },
             {
                 name: 'FIRE & Retirement Forecaster',
-                path: '/finance/fire-forecaster'
+                path: '/fire-forecaster'
             },
             {
                 name: 'Retirement Countdown in Workdays',
-                path: '/time-date/retirement-countdown'
+                path: '/date-difference-calculator'
             },
             {
                 name: 'Retirement & Super Hub',

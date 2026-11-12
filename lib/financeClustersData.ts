@@ -518,9 +518,9 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     ],
     primaryToolIds: ['fire-forecaster', 'compound-interest-calculator', 'retirement-countdown'],
     goalTasks: [
-      { task: 'Calculate retirement nest egg needed for target income', targetUrl: '/finance/fire-forecaster', badge: 'Nest Egg Sizer' },
+      { task: 'Calculate retirement nest egg needed for target income', targetUrl: '/fire-forecaster', badge: 'Nest Egg Sizer' },
       { task: 'Project 401(k) and IRA growth with employer match', targetUrl: '/compound-interest-calculator', badge: '401(k) Forecaster' },
-      { task: 'Count exact remaining workdays and shifts to retirement', targetUrl: '/finance/retirement', badge: 'Workday Countdown' }
+      { task: 'Count exact remaining workdays and shifts to retirement', targetUrl: '/retirement-and-super', badge: 'Workday Countdown' }
     ],
     guides: [
       {
@@ -568,9 +568,9 @@ export const FINANCE_SUBCATEGORY_CLUSTERS: Record<string, FinanceSubcategoryClus
     ],
     primaryToolIds: ['fire-forecaster', 'compound-interest-calculator', 'investment-calculator'],
     goalTasks: [
-      { task: 'Calculate exact FIRE Number and years to financial freedom', targetUrl: '/finance/fire-forecaster', badge: 'FIRE Forecaster' },
-      { task: 'Model CoastFIRE milestone threshold', targetUrl: '/finance/fire-forecaster', badge: 'CoastFIRE Sizer' },
-      { task: 'Compare LeanFIRE, Regular FIRE, and FatFIRE expense levels', targetUrl: '/finance/fire-forecaster', badge: 'FIRE Tiers' }
+      { task: 'Calculate exact FIRE Number and years to financial freedom', targetUrl: '/fire-forecaster', badge: 'FIRE Forecaster' },
+      { task: 'Model CoastFIRE milestone threshold', targetUrl: '/fire-forecaster', badge: 'CoastFIRE Sizer' },
+      { task: 'Compare LeanFIRE, Regular FIRE, and FatFIRE expense levels', targetUrl: '/fire-forecaster', badge: 'FIRE Tiers' }
     ],
     guides: [
       {

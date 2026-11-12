@@ -1,6 +1,0 @@
-{
-  "summary": "Architectural and editorial plan to eliminate repetitive template footprints across SolveItCalculator by introducing 6 category-specific layout archetypes, topic-specific H2 headings, real domain benchmark tables, and human-written practitioner prose with varied sentence burstiness and real-world edge-case field notes.",
-  "updatedAt": "2026-11-06T03:09:38.133287553Z",
-  "requestFeedback": true,
-  "userFacing": true
-}

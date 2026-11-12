@@ -3970,11 +3970,14 @@ export function resolveConversionCategorySlug(
     return normalized as ConversionCategorySlug;
   }
   const aliasMap: Record<string, ConversionCategorySlug> = {
+    mass: 'weight',
     'weight-mass': 'weight',
     'mass-volume': 'cooking',
     'volume-capacity': 'volume',
     data: 'digital',
+    'data-storage': 'digital',
     temp: 'temperature',
+    fuel_economy: 'fuel-economy',
     'length-converter': 'length',
     'weight-converter': 'weight',
     'temperature-converter': 'temperature',
