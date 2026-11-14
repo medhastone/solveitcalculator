@@ -1415,9 +1415,18 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/401k-cal
         {activeAnalysisTab === 'guide' && (
           <div className="p-6 rounded-3xl bg-surface-container border border-outline-variant/60 shadow-xs space-y-6 animate-in fade-in duration-200">
             <div className="space-y-1">
-              <h3 className="text-base font-bold text-on-surface">IRS 401(k) Contribution Limits &amp; SECURE 2.0 Rules</h3>
+              <h3 className="text-base font-bold text-on-surface">IRS 401(k) Contribution Limits &amp; SECURE 2.0 Rules (2025)</h3>
               <p className="text-xs text-on-surface-variant">
-                Official statutory limits verified under Internal Revenue Code Section 402(g) and Notice 2024-80.
+                Source:{' '}
+                <a
+                  href="https://www.irs.gov/pub/irs-drop/n-24-80.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-primary hover:underline"
+                >
+                  IRS Notice 2024-80 &amp; Internal Revenue Code § 402(g) (Published Nov 1, 2024 for 2025 Tax Year)
+                </a>
+                .
               </p>
             </div>
 
@@ -1443,10 +1452,10 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/401k-cal
           </div>
         )}
 
-        {/* Regulatory & Fiduciary Disclaimer Box */}
+        {/* Plain Disclaimer Box */}
         <div className="p-4 rounded-2xl bg-surface-container/60 border border-outline-variant/40 text-xs text-on-surface-variant leading-relaxed">
           <p>
-            <strong>Statutory Disclosure &amp; Disclaimer:</strong> This 401(k) calculator provides mathematical projections based on user-supplied inputs and statutory IRS contribution limits (IRC § 401(k), § 402(g), § 415(c)). Calculations assume constant annual compounding and do not guarantee future investment returns or account balances. Plan rules vary by employer. Consult a licensed CERTIFIED FINANCIAL PLANNER™ (CFP®) or certified CPA before making retirement plan allocation decisions.
+            <strong>Disclaimer:</strong> Estimate only, not financial, tax, or investment advice. This 401(k) calculator provides mathematical projections based on user-supplied inputs and published IRS contribution limits (IRC § 401(k), § 402(g), § 415(c); IRS Notice 2024-80). Calculations assume constant annual compounding and do not guarantee future investment returns or account balances.
           </p>
         </div>
 

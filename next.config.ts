@@ -1,6 +1,12 @@
 import type { NextConfig } from 'next';
 
+const isStaticExport =
+  process.env.GITHUB_PAGES === 'true' || process.env.STATIC_EXPORT === 'true';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 const nextConfig: NextConfig = {
+  ...(isStaticExport ? { output: 'export', trailingSlash: false } : {}),
+  ...(basePath ? { basePath, assetPrefix: basePath } : {}),
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -13,10 +19,12 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'recharts'],
   },
-  async redirects() {
-    return [
-      // Duplicate Static Route Consolidations (301/308 Permanent Redirects)
-      {
+  ...(!isStaticExport
+    ? {
+        async redirects() {
+          return [
+            // Duplicate Static Route Consolidations (301/308 Permanent Redirects)
+            {
         source: '/percentage-calculator',
         destination: '/math/percentage-calculator',
         permanent: true,
@@ -554,8 +562,10 @@ const nextConfig: NextConfig = {
         destination: '/science/force-calculator',
         permanent: true,
       },
-    ];
-  },
+          ];
+        },
+      }
+    : {}),
 };
 
 export default nextConfig;

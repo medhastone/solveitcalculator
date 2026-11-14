@@ -607,8 +607,9 @@ export default function ContactErrorReportClient() {
               COLUMN 2: REPORT A CALCULATION ERROR (5 cols on lg)
           ================================================================ */}
           <section
+            id="report-error"
             aria-labelledby="heading-report-error"
-            className="lg:col-span-5 bg-gradient-to-b from-[#FFF9F9] via-white to-white rounded-2xl border border-[#DCE5F2] shadow-2xs p-6"
+            className="lg:col-span-5 bg-gradient-to-b from-[#FFF9F9] via-white to-white rounded-2xl border border-[#DCE5F2] shadow-2xs p-6 scroll-mt-24"
           >
             {/* Card Header */}
             <div className="flex items-start gap-3.5">

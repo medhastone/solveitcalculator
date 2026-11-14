@@ -4,46 +4,59 @@ import React, { useState, useMemo } from 'react';
 import { Calculator, RotateCcw, AlertCircle } from 'lucide-react';
 import SingleCalculatorPageShell, {
   RelatedCalculatorLink,
+  ReferenceTableRow,
 } from '@/components/calculator-page/SingleCalculatorPageShell';
 
 const DATE_RELATED_LINKS: RelatedCalculatorLink[] = [
   {
     name: 'Date Difference Calculator',
-    description: 'Find exact calendar days and weeks between any two dates.',
+    description: 'Find exact calendar days, weekdays, and weeks between any two dates.',
     href: '/date-difference-calculator',
     iconVariant: 'clock-indigo',
   },
   {
     name: 'Time Duration Calculator',
-    description: 'Calculate hours, minutes, and payroll decimal hours.',
+    description: 'Calculate elapsed shift hours, minutes, and payroll decimal hours.',
     href: '/time-duration-calculator',
     iconVariant: 'arrows-blue',
   },
   {
-    name: 'BMI Calculator',
-    description: 'Calculate Body Mass Index and healthy weight range.',
-    href: '/bmi-calculator',
-    iconVariant: 'heart-rose',
+    name: 'Days From Today Calculator',
+    description: 'Add or subtract days from any calendar date for project deadlines.',
+    href: '/days-from-today',
+    iconVariant: 'tag-amber',
   },
   {
     name: '401(k) Retirement Calculator',
-    description: 'Project retirement savings by age and target retirement date.',
+    description: 'Project retirement savings growth by current age and target age.',
     href: '/finance/401k-calculator',
     iconVariant: 'coins-gold',
   },
   {
-    name: 'RMD Calculator',
-    description: 'Check Required Minimum Distributions by age (73 or 75).',
+    name: 'RMD Withdrawal Calculator',
+    description: 'Check Required Minimum Distributions at age 73 or 75.',
     href: '/finance/rmd-calculator',
     iconVariant: 'chart-green',
   },
 ];
 
-export default function AgeCalculatorPageClient() {
-  const [birthDate, setBirthDate] = useState('1995-06-15');
-  const [targetDate, setTargetDate] = useState('2026-10-26');
+export default function AgeCalculatorPageClient({
+  initialTodayDate,
+}: {
+  initialTodayDate?: string;
+}) {
+  const todayIso = initialTodayDate || new Date().toISOString().slice(0, 10);
+  const currentYear = Number(todayIso.slice(0, 4)) || 2026;
+
+  const [birthDate, setBirthDate] = useState('');
+  const [targetDate, setTargetDate] = useState(todayIso);
+
+  const isInputEmpty = birthDate.trim() === '' || targetDate.trim() === '';
 
   const result = useMemo(() => {
+    if (birthDate.trim() === '' || targetDate.trim() === '') {
+      return null;
+    }
     const start = new Date(birthDate);
     const end = new Date(targetDate);
     if (isNaN(start.getTime()) || isNaN(end.getTime()) || end < start) {
@@ -80,34 +93,102 @@ export default function AgeCalculatorPageClient() {
     };
   }, [birthDate, targetDate]);
 
-  const handleReset = () => {
+  const showDateOrderError = !isInputEmpty && result === null;
+
+  const handleLoadSample = () => {
     setBirthDate('1995-06-15');
-    setTargetDate('2026-10-26');
+    setTargetDate(todayIso);
   };
+
+  const handleReset = () => {
+    setBirthDate('');
+    setTargetDate(todayIso);
+  };
+
+  const sampleAge1995 = currentYear - 1995;
+
+  const ageLookupRows: ReferenceTableRow[] = useMemo(
+    () => [
+      {
+        scenarioLabel: `Born ${currentYear - 18}`,
+        multiplierLabel: `Turns 18 in ${currentYear}`,
+        calculatedOutput: '18 years old',
+        formulaNote: `${currentYear} − ${currentYear - 18} = 18`,
+      },
+      {
+        scenarioLabel: `Born ${currentYear - 25}`,
+        multiplierLabel: `Turns 25 in ${currentYear}`,
+        calculatedOutput: '25 years old',
+        formulaNote: `${currentYear} − ${currentYear - 25} = 25`,
+      },
+      {
+        scenarioLabel: `Born ${currentYear - 30}`,
+        multiplierLabel: `Turns 30 in ${currentYear}`,
+        calculatedOutput: '30 years old',
+        formulaNote: `${currentYear} − ${currentYear - 30} = 30`,
+      },
+      {
+        scenarioLabel: `Born ${currentYear - 40}`,
+        multiplierLabel: `Turns 40 in ${currentYear}`,
+        calculatedOutput: '40 years old',
+        formulaNote: `${currentYear} − ${currentYear - 40} = 40`,
+      },
+      {
+        scenarioLabel: `Born ${currentYear - 50}`,
+        multiplierLabel: `Turns 50 in ${currentYear}`,
+        calculatedOutput: '50 years old',
+        formulaNote: `${currentYear} − ${currentYear - 50} = 50`,
+      },
+      {
+        scenarioLabel: `Born ${currentYear - 65}`,
+        multiplierLabel: `Turns 65 in ${currentYear}`,
+        calculatedOutput: '65 years old',
+        formulaNote: `${currentYear} − ${currentYear - 65} = 65`,
+      },
+    ],
+    [currentYear]
+  );
 
   const calculatorCard = (
     <section
       id="calculator"
       aria-label="Age Calculator input panel"
-      className="bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-7 shadow-2xs space-y-6"
+      className="bg-white rounded-2xl border border-[#E2E8F0] p-4 sm:p-5 shadow-2xs space-y-4"
     >
-      <div className="flex items-start gap-3">
-        <div className="w-9 h-9 rounded-xl bg-[#EBF2FF] text-[#2457D6] flex items-center justify-center shrink-0 mt-0.5">
-          <Calculator className="w-5 h-5" />
+      <div className="flex items-start justify-between gap-2.5">
+        <div className="flex items-start gap-2.5 sm:gap-3">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#EBF2FF] text-[#2457D6] flex items-center justify-center shrink-0 mt-0.5">
+            <Calculator className="w-4 h-4 sm:w-5 sm:h-5" />
+          </div>
+          <div>
+            <h2 className="text-base sm:text-lg font-extrabold text-[#152238] leading-snug">
+              Calculate Exact Chronological Age
+            </h2>
+          </div>
         </div>
-        <div>
-          <h2 className="text-lg sm:text-xl font-extrabold text-[#152238]">
-            Calculate Exact Chronological Age
-          </h2>
-          <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
-            Enter your date of birth and the target date to find your exact age in years, months, and days.
-          </p>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button
+            type="button"
+            onClick={handleLoadSample}
+            className="min-h-[44px] px-3 py-2 rounded-xl bg-[#EBF2FF] hover:bg-[#DCE7FF] text-[#2457D6] text-xs font-extrabold transition-colors cursor-pointer whitespace-nowrap"
+          >
+            Try Sample
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            aria-label="Clear birth date input"
+            className="min-h-[44px] px-3 py-2 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#152238] text-xs font-extrabold inline-flex items-center gap-1 transition-colors cursor-pointer whitespace-nowrap"
+          >
+            <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
+            <span>Reset</span>
+          </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
         <div>
-          <label htmlFor="birth-date" className="block text-sm font-extrabold text-[#152238] mb-2">
+          <label htmlFor="birth-date" className="block text-xs sm:text-sm font-extrabold text-[#152238] mb-1.5">
             Date of Birth <span className="text-[#E11D48]">*</span>
           </label>
           <input
@@ -115,13 +196,12 @@ export default function AgeCalculatorPageClient() {
             type="date"
             value={birthDate}
             onChange={(e) => setBirthDate(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] focus:border-[#2457D6] focus:outline-none focus:ring-3 focus:ring-[#2457D6]/15"
+            className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] focus:border-[#2457D6] focus:outline-none focus:ring-3 focus:ring-[#2457D6]/15"
           />
-          <p className="text-xs text-[#64748B] mt-1.5">Select birth year, month, and day</p>
         </div>
 
         <div>
-          <label htmlFor="target-date" className="block text-sm font-extrabold text-[#152238] mb-2">
+          <label htmlFor="target-date" className="block text-xs sm:text-sm font-extrabold text-[#152238] mb-1.5">
             Age at the Date of <span className="text-[#E11D48]">*</span>
           </label>
           <input
@@ -129,40 +209,20 @@ export default function AgeCalculatorPageClient() {
             type="date"
             value={targetDate}
             onChange={(e) => setTargetDate(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] focus:border-[#2457D6] focus:outline-none focus:ring-3 focus:ring-[#2457D6]/15"
+            className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] focus:border-[#2457D6] focus:outline-none focus:ring-3 focus:ring-[#2457D6]/15"
           />
-          <p className="text-xs text-[#64748B] mt-1.5">Defaults to current date or future milestone</p>
         </div>
       </div>
 
-      {!result && (
+      {showDateOrderError && (
         <div
           role="alert"
           className="flex items-center gap-2.5 px-4 py-3 rounded-xl bg-[#FFF1F2] border border-[#FECDD3] text-xs sm:text-sm font-bold text-[#BE123C]"
         >
           <AlertCircle className="w-4 h-4 shrink-0" />
-          <span>Please ensure the target date is on or after the date of birth.</span>
+          <span>Please ensure the target date is on or after your date of birth.</span>
         </div>
       )}
-
-      <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5 pt-1">
-        <button
-          type="button"
-          onClick={() => {}}
-          className="sm:col-span-8 inline-flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl bg-[#0B5CFF] hover:bg-[#1D46B0] text-white text-base font-extrabold shadow-xs transition-colors cursor-pointer"
-        >
-          <Calculator className="w-5 h-5" />
-          <span>Calculate</span>
-        </button>
-        <button
-          type="button"
-          onClick={handleReset}
-          className="sm:col-span-4 inline-flex items-center justify-center gap-2 py-3.5 px-5 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#152238] text-base font-extrabold transition-colors cursor-pointer"
-        >
-          <RotateCcw className="w-4 h-4" />
-          <span>Reset</span>
-        </button>
-      </div>
     </section>
   );
 
@@ -174,7 +234,30 @@ export default function AgeCalculatorPageClient() {
         { label: 'Age Calculator' },
       ]}
       title="Age Calculator"
-      subtitle="Find your exact chronological age in years, months, weeks, and days between your date of birth and any target date."
+      subtitle="Find your exact chronological age in years, months, weeks, and days between your birth date and today or any target date."
+      quickAnswer={{
+        question: 'How old is someone born in 1995 right now?',
+        answer: `Someone born on June 15, 1995 turns ${sampleAge1995} years old on June 15, ${currentYear}. Enter your birth date below for exact years, months, weeks, and total calendar days.`,
+        targetAnchor: '#reference-table',
+        targetLabel: 'Birth-Year Age Table ↓',
+      }}
+      workedExampleCard={{
+        title: `Born June 15, 1995 on June 15, ${currentYear}`,
+        equation: `${currentYear} − 1995 = ${sampleAge1995} years, 0 months, 0 days`,
+        steps: [
+          `Target year (${currentYear}) − birth year (1995) = ${sampleAge1995} full calendar years.`,
+          `Total days reflect exact month lengths and leap years between both dates.`,
+        ],
+      }}
+      matchingGuide={{
+        title: 'How to Calculate Exact Age and Date Differences',
+        description:
+          'Understand calendar month borrowing, February 29 leap-year birthdays, and legal retirement age cutoffs.',
+        href: '/guides/how-to-calculate-exact-age-and-date-difference',
+      }}
+      layoutVariant="result-below-inputs"
+      useCuratedFaqsOnly={true}
+      schemaAppCategory="UtilitiesApplication"
       heroSymbol="🎂"
       heroBadgeBg="bg-[#EEF2FF]"
       heroBadgeColor="text-[#4F46E5]"
@@ -182,7 +265,7 @@ export default function AgeCalculatorPageClient() {
       categoryHref="/date-time"
       otherCalculatorsTitle="Other Date & Time Calculators"
       otherCalculators={DATE_RELATED_LINKS}
-      relatedCalculators={DATE_RELATED_LINKS.slice(0, 4)}
+      relatedCalculators={DATE_RELATED_LINKS}
       calculatorCard={calculatorCard}
       resultCard={
         result
@@ -191,31 +274,40 @@ export default function AgeCalculatorPageClient() {
               promptSuffix: 'is:',
               mainValue: `${result.years} yrs, ${result.months} mos, ${result.days} days`,
               equation: `${result.totalMonths.toLocaleString()} total months  ·  ${result.totalWeeks.toLocaleString()} total weeks  ·  ${result.totalDays.toLocaleString()} total days`,
+              isEmpty: false,
             }
-          : undefined
+          : {
+              promptSummary: 'Chronological age',
+              promptSuffix: 'is:',
+              mainValue: '—',
+              equation: 'Age = (Target Date − Birth Date) adjusted for exact calendar months & leap years',
+              isEmpty: true,
+              placeholderMessage: 'Select your Date of Birth above (or tap Try Sample) to see your exact age:',
+            }
       }
       formulaCard={{
         introText: 'The calendar formula to compute exact chronological age is:',
         formulaText: 'Age = (Target Year − Birth Year) adjusted for Month & Day borrows',
-        exampleTitle: 'Born June 15, 1995 to October 26, 2026:',
+        exampleTitle: `Born June 15, 1995 to October 26, ${currentYear}:`,
         exampleSteps: [
-          'Years = 2026 − 1995 = 31 years',
+          `Years = ${currentYear} − 1995 = ${currentYear - 1995} years`,
           'Months = October (10) − June (6) = 4 months',
-          'Days = 26 − 15 = 11 days (31 yrs, 4 mos, 11 days)',
+          `Days = 26 − 15 = 11 days (${currentYear - 1995} yrs, 4 mos, 11 days)`,
         ],
       }}
+      referenceTableRows={ageLookupRows}
       howToUseSteps={[
-        'Select or type your Date of Birth in the first field.',
-        'Select the Target Date (today or any past/future date) in the second field.',
-        'Click the Calculate button to compute your chronological age.',
-        'View your age in years, months, and days, plus total weeks and total days.',
+        'Select or type your Date of Birth in the first date field.',
+        `Verify the target date ("Age at the Date of"), which automatically defaults to today (${todayIso}).`,
+        'Read your exact age in years, months, and days directly underneath the inputs.',
+        'Use Copy or Share to save your age summary or test a future milestone date.',
       ]}
       howItWorks={{
         paragraph:
-          'The calculator compares calendar years, months, and days between the two dates, automatically accounting for 28-, 30-, and 31-day months as well as leap years (February 29).',
+          'The calculator subtracts birth date from target date right-to-left (days, then months, then years), borrowing the exact day count of the preceding month when needed and counting every leap year.',
         formulaBox: 'Total Days = (Target Date − Birth Date) ÷ 86,400,000 ms',
         closingNote:
-          'Follows the universal Western chronological age system where age increments on your birthday each year.',
+          'Follows the international chronological age system where age increments on your annual birthday.',
       }}
       understandingResult={{
         paragraph: result ? (
@@ -228,29 +320,39 @@ export default function AgeCalculatorPageClient() {
             , which equals <strong className="font-bold text-[#152238]">{result.totalDays.toLocaleString()} total calendar days</strong>.
           </>
         ) : (
-          <>Enter a valid birth date and target date above to see your complete age breakdown.</>
+          <>Enter your birth date above to calculate your exact chronological age in years, months, weeks, and total calendar days.</>
         ),
       }}
       faqs={[
         {
-          question: 'Does the Age Calculator account for leap years?',
+          question: 'How does the Age Calculator compute exact years, months, and days?',
           answer:
-            'Yes. Every leap year (such as 2000, 2004, 2008, 2012, 2016, 2020, and 2024) and exact month length is automatically included in the calculation.',
+            'It subtracts your birth date from the target date calendar-by-calendar, borrowing the exact number of days (28, 29, 30, or 31) from the preceding month whenever the target day is earlier than your birth day.',
         },
         {
-          question: 'Can I calculate my age on a future date?',
+          question: 'Does the Age Calculator account for leap years and February 29 births?',
           answer:
-            'Yes. Set the "Age at the Date of" field to any future year to verify retirement eligibility, milestone birthdays, or school enrollment cutoffs.',
+            'Yes. Every Gregorian leap year (including February 29 in 2000, 2004, 2008, 2012, 2016, 2020, and 2024) is counted in both total days lived and completed calendar years.',
         },
         {
-          question: 'How are months with different lengths handled?',
+          question: 'Can I calculate my age on a future retirement or school enrollment date?',
           answer:
-            'When the target day of the month is earlier than the birth day, the calculator borrows the exact number of days from the preceding calendar month.',
+            'Yes. Change the "Age at the Date of" field to any past or future date to check retirement milestones (such as age 59½, 65, or 73) or school grade cutoffs.',
         },
         {
-          question: 'How do I copy or print my age result?',
+          question: 'Why does dividing total days by 365 differ from calendar age?',
           answer:
-            'Click the Copy result or Print button in the green result card above to copy the full summary or print a clean copy.',
+            'Standard years have 365 days while leap years have 366 days, and calendar months vary from 28 to 31 days. Calendar subtraction avoids rough rounding drift across decades.',
+        },
+        {
+          question: 'Does the target date update automatically every day?',
+          answer:
+            `Yes. The "Age at the Date of" field automatically loads today's current calendar date (${todayIso}) whenever you open the page.`,
+        },
+        {
+          question: 'How many total weeks and months are shown in the result?',
+          answer:
+            'Alongside your age in years, months, and days, the result card prints your total completed months, full 7-day weeks, and total elapsed calendar days.',
         },
       ]}
     />

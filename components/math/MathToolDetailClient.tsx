@@ -48,24 +48,77 @@ function getHeroSymbolForTool(tool: MathCalculatorItem): {
   }
 }
 
+const PERCENTAGE_REFERENCE_ROWS = [
+  {
+    scenarioLabel: '5% of 200',
+    multiplierLabel: '200 × 0.05',
+    calculatedOutput: '10',
+    formulaNote: '(5 × 200) ÷ 100 = 10',
+  },
+  {
+    scenarioLabel: '10% of 200',
+    multiplierLabel: '200 × 0.10',
+    calculatedOutput: '20',
+    formulaNote: '(10 × 200) ÷ 100 = 20',
+  },
+  {
+    scenarioLabel: '15% tip on $80',
+    multiplierLabel: '80 × 0.15',
+    calculatedOutput: '$12',
+    formulaNote: '(15 × 80) ÷ 100 = 12',
+  },
+  {
+    scenarioLabel: '20% off $150',
+    multiplierLabel: '150 × 0.20',
+    calculatedOutput: '$30 off ($120)',
+    formulaNote: '(20 × 150) ÷ 100 = 30 discount',
+  },
+  {
+    scenarioLabel: '25% of 200',
+    multiplierLabel: '200 × 0.25',
+    calculatedOutput: '50',
+    formulaNote: '(25 × 200) ÷ 100 = 50',
+  },
+  {
+    scenarioLabel: '50% of 200',
+    multiplierLabel: '200 × 0.50',
+    calculatedOutput: '100',
+    formulaNote: '(50 × 200) ÷ 100 = 100',
+  },
+  {
+    scenarioLabel: '75% of 200',
+    multiplierLabel: '200 × 0.75',
+    calculatedOutput: '150',
+    formulaNote: '(75 × 200) ÷ 100 = 150',
+  },
+];
+
 export default function MathToolDetailClient({
   tool,
 }: {
   tool: MathCalculatorItem;
 }) {
-  const [rawA, setRawA] = useState<string>(String(tool.defaultInputs.valueA));
-  const [rawB, setRawB] = useState<string>(String(tool.defaultInputs.valueB));
+  const isPercentageMain = tool.slug === 'percentage-calculator';
+
+  const [rawA, setRawA] = useState<string>(
+    isPercentageMain ? '' : String(tool.defaultInputs.valueA)
+  );
+  const [rawB, setRawB] = useState<string>(
+    isPercentageMain ? '' : String(tool.defaultInputs.valueB)
+  );
   const [rawC, setRawC] = useState<string>(
     typeof tool.defaultInputs.valueC === 'number'
       ? String(tool.defaultInputs.valueC)
       : '4'
   );
-  const [valA, setValA] = useState<number>(tool.defaultInputs.valueA);
-  const [valB, setValB] = useState<number>(tool.defaultInputs.valueB);
+  const [valA, setValA] = useState<number>(
+    isPercentageMain ? 0 : tool.defaultInputs.valueA
+  );
+  const [valB, setValB] = useState<number>(
+    isPercentageMain ? 0 : tool.defaultInputs.valueB
+  );
   const [valC, setValC] = useState<number>(tool.defaultInputs.valueC ?? 4);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const isPercentageMain = tool.slug === 'percentage-calculator';
 
   const output = useMemo(
     () => computeMathToolResult(tool.slug, valA, valB, valC),
@@ -101,8 +154,27 @@ export default function MathToolDetailClient({
     }
   };
 
+  const handleLoadSample = () => {
+    setErrorMsg(null);
+    setRawA(String(tool.defaultInputs.valueA));
+    setRawB(String(tool.defaultInputs.valueB));
+    setValA(tool.defaultInputs.valueA);
+    setValB(tool.defaultInputs.valueB);
+    if (typeof tool.defaultInputs.valueC === 'number') {
+      setRawC(String(tool.defaultInputs.valueC));
+      setValC(tool.defaultInputs.valueC);
+    }
+  };
+
   const handleReset = () => {
     setErrorMsg(null);
+    if (isPercentageMain) {
+      setRawA('');
+      setRawB('');
+      setValA(0);
+      setValB(0);
+      return;
+    }
     setRawA(String(tool.defaultInputs.valueA));
     setRawB(String(tool.defaultInputs.valueB));
     setValA(tool.defaultInputs.valueA);
@@ -124,26 +196,26 @@ export default function MathToolDetailClient({
           iconVariant: 'chart-green',
         },
         {
-          name: 'Discount Calculator',
-          description: 'Calculate the final price after a discount.',
+          name: 'Retail Discount & Sale Price Calculator',
+          description: 'Compute final sale price and dollar savings after a discount.',
           href: '/math/discount-calculator',
           iconVariant: 'tag-amber',
         },
         {
-          name: 'Profit Margin Calculator',
-          description: 'Find profit margin and markup percentage.',
+          name: 'Profit Margin & Markup Calculator',
+          description: 'Find gross profit margin and markup percentage on cost.',
           href: '/finance/profit-margin-calculator',
           iconVariant: 'coins-gold',
         },
         {
-          name: 'Percentage to Decimal',
-          description: 'Convert percentage to decimal value.',
+          name: 'Percentage to Decimal Converter',
+          description: 'Convert any percent into an exact decimal multiplier.',
           href: '/math/percentage-to-decimal-calculator',
           iconVariant: 'arrows-blue',
         },
         {
-          name: 'Percentage to Fraction',
-          description: 'Convert percentage to fraction form.',
+          name: 'Percentage to Simplified Fraction',
+          description: 'Turn percentages into reduced whole-number fractions.',
           href: '/math/percentage-to-fraction-calculator',
           iconVariant: 'fraction-purple',
         },
@@ -169,32 +241,7 @@ export default function MathToolDetailClient({
 
   const relatedCalculatorsBottom: RelatedCalculatorLink[] = useMemo(() => {
     if (isPercentageMain || tool.category === 'Percentages') {
-      return [
-        {
-          name: 'Percentage Change Calculator',
-          description: 'Find the percentage increase or decrease between two values.',
-          href: '/math/percentage-change-calculator',
-          iconVariant: 'percent-coral',
-        },
-        {
-          name: 'Discount Calculator',
-          description: 'Calculate the final price after a discount.',
-          href: '/math/discount-calculator',
-          iconVariant: 'tag-amber',
-        },
-        {
-          name: 'Profit Margin Calculator',
-          description: 'Find profit margin and markup percentage.',
-          href: '/finance/profit-margin-calculator',
-          iconVariant: 'coins-gold',
-        },
-        {
-          name: 'Percentage to Decimal',
-          description: 'Convert percentage to decimal value.',
-          href: '/math/percentage-to-decimal-calculator',
-          iconVariant: 'arrows-blue',
-        },
-      ];
+      return otherCalculators;
     }
     return otherCalculators.slice(0, 4);
   }, [isPercentageMain, tool.category, otherCalculators]);
@@ -218,7 +265,7 @@ export default function MathToolDetailClient({
         equation: `${numericAns} = ${valA} × ${valB} ÷ 100`,
         isEmpty: hasEmptyInput,
         placeholderMessage:
-          'Enter both the percentage value and the number on the left to see your result:',
+          'Enter a percentage and a base number to calculate your exact answer.',
       };
     }
     return {
@@ -267,10 +314,10 @@ export default function MathToolDetailClient({
   const howToUseSteps = useMemo(() => {
     if (isPercentageMain) {
       return [
-        'Enter the percentage value in the first field.',
-        'Enter the number you want to find the percentage of.',
-        'Click the Calculate button to get the result instantly.',
-        'View the answer and the step-by-step equation.',
+        'Enter the percentage value in the first field (for example, 25).',
+        'Enter the base number you want to take that percentage of (for example, 200).',
+        'Review the live answer and equation right below the inputs, or tap Try Sample (25% of 200).',
+        'Click Copy or Share to save your result, or Reset to clear the fields.',
       ];
     }
     return [
@@ -285,10 +332,10 @@ export default function MathToolDetailClient({
     if (isPercentageMain) {
       return {
         paragraph:
-          'The calculator multiplies the percentage value by the number and then divides the result by 100. This gives you the exact value for the given percentage.',
+          'The calculator multiplies the percentage value by the number and then divides the result by 100. Dividing by 100 converts a percent into its decimal equivalent before scaling the base amount.',
         formulaBox: 'Result = (Percentage × Number) ÷ 100',
         closingNote:
-          'This formula works for any positive or negative number and any percentage value.',
+          'This formula works for any positive, negative, whole, or decimal value.',
       };
     }
     return {
@@ -303,8 +350,8 @@ export default function MathToolDetailClient({
       return {
         paragraph: (
           <>
-            The result shows the part of the number that corresponds to the given percentage. For example,{' '}
-            <strong className="font-bold text-[#152238]">25% of 200</strong> means 25 out of every 100 parts of 200, which equals 50. You can use this calculator for many real-life situations such as discounts, tax calculations, tips, and more.
+            The result shows the share of the base number that matches your percentage. For example,{' '}
+            <strong className="font-bold text-[#152238]">25% of 200</strong> equals 50 because 25 out of every 100 units across 200 units totals 50—helpful for sale discounts, restaurant tips, sales tax, and test scores.
           </>
         ),
       };
@@ -322,24 +369,34 @@ export default function MathToolDetailClient({
     if (isPercentageMain) {
       return [
         {
-          question: 'What is a percentage?',
+          question: 'How do you calculate the percentage of a number?',
           answer:
-            'A percentage is a number or ratio expressed as a fraction of 100. It is denoted using the percent sign (%) and means "per hundred." For example, 25% equals 25 out of 100, or 0.25 as a decimal.',
+            'Multiply the percentage by the number and divide the product by 100. For example, 25% of 200 is (25 × 200) ÷ 100 = 50.',
         },
         {
-          question: 'How do I calculate the percentage of a number?',
+          question: 'How do I calculate a 20% discount on an item?',
           answer:
-            'Multiply the percentage value by the number and divide the product by 100. For example, to find 25% of 200, compute (25 × 200) ÷ 100 = 50.',
+            'Multiply the original price by 0.20 to find your savings, then subtract that from the original price. On a $150 jacket, 20% is $30 off, leaving a $120 sale price.',
         },
         {
-          question: 'Can I use decimal values?',
+          question: 'What is X as a percentage of Y (such as a test score)?',
           answer:
-            'Yes. You can enter whole numbers, decimals (such as 7.25% or 149.99), or negative values in either field, and the calculator will compute the exact result.',
+            'Divide the part by the whole and multiply by 100. For example, scoring 42 correct out of 50 questions gives (42 ÷ 50) × 100 = 84%.',
         },
         {
-          question: 'Can this calculator find percentage increase or decrease?',
+          question: 'Can I calculate percentages with decimals like 7.25% or 8.875%?',
           answer:
-            'For comparing a starting value and an ending value, open our dedicated Percentage Change Calculator linked in the sidebar to see the exact percentage increase or decrease.',
+            'Yes. Enter any decimal percentage or dollar amount such as 7.25% sales tax on $149.99, and the calculator handles floating-point values without rounding inputs first.',
+        },
+        {
+          question: 'How do I calculate percentage increase or decrease instead?',
+          answer:
+            'Subtract the old value from the new value, divide by the old value, and multiply by 100—or open our dedicated Percentage Change Calculator linked below.',
+        },
+        {
+          question: 'What is the quick mental math trick for 15% tips?',
+          answer:
+            'Move the decimal point one place left to find 10%, add half of that amount for the remaining 5%, and sum the two numbers. For an $80 bill, 10% is $8 and half is $4, making a $12 tip.',
         },
       ];
     }
@@ -371,41 +428,51 @@ export default function MathToolDetailClient({
     <section
       id="calculator"
       aria-label={`${tool.name} input panel`}
-      className="bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-7 shadow-2xs space-y-6"
+      className={`bg-white rounded-2xl border border-[#E2E8F0] shadow-2xs ${
+        isPercentageMain ? 'p-4 sm:p-6 space-y-4' : 'p-6 sm:p-7 space-y-6'
+      }`}
     >
       {/* Card Header */}
-      <div className="flex items-start gap-3">
-        <div className="w-9 h-9 rounded-xl bg-[#EBF2FF] text-[#2457D6] flex items-center justify-center shrink-0 mt-0.5">
-          <Calculator className="w-5 h-5" />
+      <div className="flex items-start gap-2.5 sm:gap-3">
+        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#EBF2FF] text-[#2457D6] flex items-center justify-center shrink-0 mt-0.5">
+          <Calculator className="w-4 h-4 sm:w-5 sm:h-5" />
         </div>
         <div>
-          <h2 className="text-lg sm:text-xl font-extrabold text-[#152238]">
+          <h2 className="text-base sm:text-xl font-extrabold text-[#152238]">
             {isPercentageMain
               ? 'Calculate Percentage of a Number'
               : `Calculate ${tool.name.replace(/ Calculator$/i, '')}`}
           </h2>
           <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
             {isPercentageMain
-              ? 'Enter the percentage and the number to find the result.'
+              ? 'Enter the percentage value and the base number.'
               : 'Enter your values in the required fields below to find the result.'}
           </p>
         </div>
       </div>
 
-      <form onSubmit={handleCalculate} className="space-y-5" noValidate>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <form onSubmit={handleCalculate} className={isPercentageMain ? 'space-y-4' : 'space-y-5'} noValidate>
+        <div
+          className={
+            isPercentageMain
+              ? 'grid grid-cols-2 gap-3 sm:gap-4'
+              : 'grid grid-cols-1 sm:grid-cols-2 gap-5'
+          }
+        >
           {/* Field A */}
           <div>
             <label
               htmlFor="math-val-a"
-              className="block text-sm font-extrabold text-[#152238] mb-2"
+              className={`block font-extrabold text-[#152238] ${
+                isPercentageMain ? 'text-xs sm:text-sm mb-1' : 'text-sm mb-2'
+              }`}
             >
               {tool.defaultInputs.labelA}{' '}
               <span className="text-[#E11D48]" aria-hidden="true">
                 *
               </span>
             </label>
-            <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 transition-all">
+            <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 transition-all min-h-[44px]">
               <input
                 id="math-val-a"
                 type="number"
@@ -420,31 +487,33 @@ export default function MathToolDetailClient({
                     setErrorMsg(null);
                   }
                 }}
-                className="w-full px-4 py-3 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+                className="w-full min-h-[44px] px-3 sm:px-4 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
               />
-              <span className="px-3.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center justify-center shrink-0 select-none">
+              <span className="px-3 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center justify-center shrink-0 select-none">
                 {tool.defaultInputs.unitA || (isPercentageMain ? '%' : 'Value')}
               </span>
             </div>
-            <p className="text-xs text-[#64748B] mt-1.5">
-              {isPercentageMain
-                ? 'Enter a percentage value (e.g. 25)'
-                : `Enter ${tool.defaultInputs.labelA.toLowerCase()} (e.g. ${tool.defaultInputs.valueA})`}
-            </p>
+            {!isPercentageMain && (
+              <p className="text-xs text-[#64748B] mt-1.5">
+                Enter {tool.defaultInputs.labelA.toLowerCase()} (e.g. {tool.defaultInputs.valueA})
+              </p>
+            )}
           </div>
 
           {/* Field B */}
           <div>
             <label
               htmlFor="math-val-b"
-              className="block text-sm font-extrabold text-[#152238] mb-2"
+              className={`block font-extrabold text-[#152238] ${
+                isPercentageMain ? 'text-xs sm:text-sm mb-1' : 'text-sm mb-2'
+              }`}
             >
               {tool.defaultInputs.labelB}{' '}
               <span className="text-[#E11D48]" aria-hidden="true">
                 *
               </span>
             </label>
-            <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 transition-all">
+            <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 transition-all min-h-[44px]">
               <input
                 id="math-val-b"
                 type="number"
@@ -459,17 +528,17 @@ export default function MathToolDetailClient({
                     setErrorMsg(null);
                   }
                 }}
-                className="w-full px-4 py-3 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+                className="w-full min-h-[44px] px-3 sm:px-4 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
               />
-              <span className="px-3.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center justify-center shrink-0 select-none">
-                {tool.defaultInputs.unitB || (isPercentageMain ? 'Number' : 'Value')}
+              <span className="px-2.5 sm:px-3.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center justify-center shrink-0 select-none">
+                {tool.defaultInputs.unitB || (isPercentageMain ? '#' : 'Value')}
               </span>
             </div>
-            <p className="text-xs text-[#64748B] mt-1.5">
-              {isPercentageMain
-                ? 'Enter the number (e.g. 200)'
-                : `Enter ${tool.defaultInputs.labelB.toLowerCase()} (e.g. ${tool.defaultInputs.valueB})`}
-            </p>
+            {!isPercentageMain && (
+              <p className="text-xs text-[#64748B] mt-1.5">
+                Enter {tool.defaultInputs.labelB.toLowerCase()} (e.g. {tool.defaultInputs.valueB})
+              </p>
+            )}
           </div>
 
           {/* Optional Field C */}
@@ -519,30 +588,54 @@ export default function MathToolDetailClient({
           </div>
         )}
 
-        {/* Primary Calculate & Secondary Reset Actions */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5 pt-1">
-          <button
-            type="submit"
-            className="sm:col-span-8 inline-flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl bg-[#0B5CFF] hover:bg-[#1D46B0] text-white text-base font-extrabold shadow-xs transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#152238]"
-          >
-            <Calculator className="w-5 h-5" />
-            <span>Calculate</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="sm:col-span-4 inline-flex items-center justify-center gap-2 py-3.5 px-5 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#152238] text-base font-extrabold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
-          >
-            <RotateCcw className="w-4 h-4" />
-            <span>Reset</span>
-          </button>
-        </div>
+        {/* Primary & Reset Actions */}
+        {isPercentageMain ? (
+          <div className="grid grid-cols-12 gap-2.5 pt-1">
+            <button
+              type="button"
+              onClick={handleLoadSample}
+              className="col-span-7 sm:col-span-8 min-h-[44px] inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#0B5CFF] hover:bg-[#1D46B0] text-white text-sm sm:text-base font-extrabold shadow-xs transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#152238]"
+            >
+              <Calculator className="w-4 h-4" />
+              <span>Try Sample (25% of 200)</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="col-span-5 sm:col-span-4 min-h-[44px] inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#152238] text-sm sm:text-base font-extrabold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+            >
+              <RotateCcw className="w-4 h-4" />
+              <span>Reset</span>
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5 pt-1">
+            <button
+              type="submit"
+              className="sm:col-span-8 inline-flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl bg-[#0B5CFF] hover:bg-[#1D46B0] text-white text-base font-extrabold shadow-xs transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#152238]"
+            >
+              <Calculator className="w-5 h-5" />
+              <span>Calculate</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="sm:col-span-4 inline-flex items-center justify-center gap-2 py-3.5 px-5 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#152238] text-base font-extrabold transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+            >
+              <RotateCcw className="w-4 h-4" />
+              <span>Reset</span>
+            </button>
+          </div>
+        )}
       </form>
     </section>
   );
 
   return (
     <SingleCalculatorPageShell
+      layoutVariant={isPercentageMain ? 'result-below-inputs' : 'default'}
+      useCuratedFaqsOnly={isPercentageMain}
+      schemaAppCategory={isPercentageMain ? 'EducationalApplication' : undefined}
       breadcrumbs={[
         { label: 'Home', href: '/' },
         { label: 'Math', href: '/math' },
@@ -552,6 +645,41 @@ export default function MathToolDetailClient({
       ]}
       title={tool.name}
       subtitle={tool.description}
+      quickAnswer={
+        isPercentageMain
+          ? {
+              question: 'What is 25% of 200?',
+              answer:
+                '25% of 200 equals 50 because (25 × 200) ÷ 100 = 50. Enter any percent and base number below for instant step-by-step math.',
+              targetAnchor: '#reference-table',
+              targetLabel: 'Percent table ↓',
+            }
+          : undefined
+      }
+      workedExampleCard={
+        isPercentageMain
+          ? {
+              title: 'Find 25% of 200 (discounts, tips & tax):',
+              equation: '25 × 200 ÷ 100 = 50',
+              steps: [
+                'Multiply the percent by the number: 25 × 200 = 5,000',
+                'Divide the product by 100: 5,000 ÷ 100 = 50',
+                'Check: 25% equals one-quarter (0.25 × 200 = 50)',
+              ],
+            }
+          : undefined
+      }
+      matchingGuide={
+        isPercentageMain
+          ? {
+              title: 'How to Calculate a Percentage: Step-by-Step Formulas',
+              description:
+                'Master percent of a number, discounts, reverse percentages, and percent change with real examples.',
+              href: '/guides/how-to-calculate-a-percentage',
+            }
+          : undefined
+      }
+      referenceTableRows={isPercentageMain ? PERCENTAGE_REFERENCE_ROWS : undefined}
       heroSymbol={heroBadge.symbol}
       heroBadgeBg={heroBadge.bg}
       heroBadgeColor={heroBadge.color}

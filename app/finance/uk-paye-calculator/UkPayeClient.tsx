@@ -241,9 +241,19 @@ export default function UkPayeClient() {
 
           {/* PAYE Breakdown Table */}
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5">
-            <h3 className="text-sm font-bold text-[var(--text)] mb-3">
-              HMRC Income Tax, Class 1 National Insurance &amp; Deductions
-            </h3>
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <h3 className="text-sm font-bold text-[var(--text)]">
+                HMRC Income Tax, Class 1 National Insurance &amp; Deductions ({taxYear})
+              </h3>
+              <a
+                href="https://www.gov.uk/income-tax-rates"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Source: GOV.UK HMRC Rates &amp; Thresholds ({taxYear}, effective 6 April 2025) ↗
+              </a>
+            </div>
             <table className="w-full text-xs border-collapse tabular-nums">
               <thead>
                 <tr className="border-b border-[var(--border)] text-[var(--muted)] text-left font-bold">

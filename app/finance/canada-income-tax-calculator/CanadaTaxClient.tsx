@@ -62,7 +62,7 @@ export default function CanadaTaxClient() {
 
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-1.5">
-              Province (Ontario, BC, Alberta Verified)
+              Province (Ontario, BC, Alberta — 2025 CRA Schedules)
             </label>
             <div className="grid grid-cols-3 gap-2 mb-2">
               {(['ON', 'BC', 'AB'] as const).map((code) => (
@@ -185,9 +185,19 @@ export default function CanadaTaxClient() {
           </div>
 
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5">
-            <h3 className="text-sm font-bold text-[var(--text)] mb-3">
-              2025 CRA Federal, {result.provinceProfile.name} Provincial, CPP/CPP2 &amp; EI Breakdown
-            </h3>
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <h3 className="text-sm font-bold text-[var(--text)]">
+                2025 CRA Federal, {result.provinceProfile.name} Provincial, CPP/CPP2 &amp; EI Breakdown
+              </h3>
+              <a
+                href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Source: Canada Revenue Agency (CRA) T4127 Payroll Deductions (Effective Jan 1, 2025) ↗
+              </a>
+            </div>
             <table className="w-full text-xs border-collapse tabular-nums">
               <thead>
                 <tr className="border-b border-[var(--border)] text-[var(--muted)] text-left font-bold">

@@ -141,7 +141,7 @@ export function VerifiedSourceBadge({
         </div>
         <span className="inline-flex items-center gap-1">
           <Calendar className="w-3.5 h-3.5" />
-          Verified: {verifiedDate}
+          Last updated: {verifiedDate}
         </span>
         {url && (
           <a

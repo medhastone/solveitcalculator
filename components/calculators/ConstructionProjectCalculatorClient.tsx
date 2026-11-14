@@ -2109,18 +2109,18 @@ export default function ConstructionProjectCalculatorClient() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
             <div className="rounded-xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 p-4 space-y-1">
               <div className="font-extrabold text-amber-900 dark:text-amber-200 uppercase tracking-wide text-xs">
-                Sitework Field Note · Why a &quot;4-Inch Slab&quot; Uses 10% More Concrete Than the Math Says
+                Calculation Note · Why a &quot;4-Inch Slab&quot; Often Needs a 5%–10% Subgrade Buffer
               </div>
               <p className="text-amber-950/80 dark:text-amber-100/80 leading-relaxed text-xs">
-                Compacted gravel subgrades are rarely laser-flat: if your excavation dips from 4.0 inches to just 4.5 inches in the center of the patio, your concrete volume jumps by 12.5% across that zone. Running 0.25 cubic yards short on a ready-mix truck pour is a costly headache—always include a 5% to 10% subgrade waste buffer.
+                Compacted gravel subgrades are rarely laser-flat: if your excavation dips from 4.0 inches to just 4.5 inches in the center of the patio, your concrete volume increases by 12.5% across that zone. Including a 5% to 10% subgrade waste buffer helps prevent running short on a ready-mix pour.
               </p>
             </div>
             <div className="rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 p-4 space-y-1">
               <div className="font-extrabold text-emerald-900 dark:text-emerald-200 uppercase tracking-wide text-xs">
-                Pro Tip · Bagged Mix vs. Ready-Mix Truck Break-Even Point
+                Ordering Note · Bagged Mix vs. Ready-Mix Truck Volume Comparison
               </div>
               <p className="text-emerald-950/80 dark:text-emerald-100/80 leading-relaxed text-xs">
-                One cubic yard requires 45 bags of 80-lb concrete (3,600 lbs of lifting and mixing). For pours under 1.0 yd³, bagged concrete on a pallet is usually cheaper because ready-mix plants charge a &quot;short-load fee&quot; for orders under 3 to 4 cubic yards. Above 1.5 yd³ (68+ bags), ordering a transit-mix truck or trailer batch saves both money and a cold joint.
+                One cubic yard (27 ft³) requires 45 bags of 80-lb concrete (at 0.60 ft³ yield per bag, totaling 3,600 lbs). For pours under 1.0 yd³, bagged concrete is commonly used because ready-mix suppliers often apply minimum load fees below 3 to 4 cubic yards.
               </p>
             </div>
           </div>
@@ -2206,6 +2206,27 @@ export default function ConstructionProjectCalculatorClient() {
               className="text-blue-600 dark:text-blue-400 hover:underline font-semibold"
             >
               Tons &amp; Weight Converter
+            </Link>
+            <span className="text-slate-300 dark:text-slate-700">•</span>
+            <Link
+              href="/calculation-methodology"
+              className="text-blue-600 dark:text-blue-400 hover:underline font-semibold"
+            >
+              Calculation Methodology
+            </Link>
+            <span className="text-slate-300 dark:text-slate-700">•</span>
+            <Link
+              href="/contact"
+              className="text-blue-600 dark:text-blue-400 hover:underline font-semibold"
+            >
+              Contact
+            </Link>
+            <span className="text-slate-300 dark:text-slate-700">•</span>
+            <Link
+              href="/contact#report-error"
+              className="text-rose-600 dark:text-rose-400 hover:underline font-semibold"
+            >
+              Report an error
             </Link>
           </div>
         </section>

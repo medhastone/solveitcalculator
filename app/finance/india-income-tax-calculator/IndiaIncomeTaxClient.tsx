@@ -284,9 +284,19 @@ export default function IndiaIncomeTaxClient() {
 
           {/* Plain Guide: What is Allowed in Each Regime */}
           <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg)] p-5 space-y-3">
-            <h3 className="text-sm font-bold text-[var(--text)]">
-              Plain Guide: Which Deductions Are Allowed in New vs Old Regime?
-            </h3>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="text-sm font-bold text-[var(--text)]">
+                Plain Guide: Which Deductions Are Allowed in New vs Old Regime?
+              </h3>
+              <a
+                href="https://www.incometax.gov.in/iec/foportal/help/individual/return-applicable-1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Source: Income Tax Dept. India — Sec. 115BAC &amp; Finance Act (Effective FY {financialYear}) ↗
+              </a>
+            </div>
             <div className="overflow-x-auto">
               <table className="w-full text-xs border-collapse">
                 <thead>

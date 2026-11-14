@@ -35,7 +35,7 @@ export interface JurisdictionTaxYearConfig {
   taxYearLabel: string;
   effectivePeriodLabel: string;
   verifiedDate: string;
-  verificationStatus: 'Verified against official statutory tables';
+  verificationStatus: 'Based on published statutory tax tables';
   defaultGrossAnnual: number;
   fieldSupport: JurisdictionFieldSupport;
   assumptions: string[];
@@ -419,7 +419,7 @@ export const JURISDICTION_MODULES: Record<JurisdictionId, JurisdictionModule> = 
         taxYearLabel: '2025 Tax Year',
         effectivePeriodLabel: 'January 1, 2025 – December 31, 2025',
         verifiedDate: '2025-01-15',
-        verificationStatus: 'Verified against official statutory tables',
+        verificationStatus: 'Based on published statutory tax tables',
         defaultGrossAnnual: 85000,
         fieldSupport: {
           supportsFilingStatus: true,
@@ -470,7 +470,7 @@ export const JURISDICTION_MODULES: Record<JurisdictionId, JurisdictionModule> = 
         taxYearLabel: '2024 Tax Year',
         effectivePeriodLabel: 'January 1, 2024 – December 31, 2024',
         verifiedDate: '2025-01-15',
-        verificationStatus: 'Verified against official statutory tables',
+        verificationStatus: 'Based on published statutory tax tables',
         defaultGrossAnnual: 85000,
         fieldSupport: {
           supportsFilingStatus: true,
@@ -534,7 +534,7 @@ export const JURISDICTION_MODULES: Record<JurisdictionId, JurisdictionModule> = 
         taxYearLabel: '2025/26 Tax Year',
         effectivePeriodLabel: '6 April 2025 – 5 April 2026',
         verifiedDate: '2025-04-06',
-        verificationStatus: 'Verified against official statutory tables',
+        verificationStatus: 'Based on published statutory tax tables',
         defaultGrossAnnual: 45000,
         fieldSupport: {
           supportsFilingStatus: false,
@@ -584,7 +584,7 @@ export const JURISDICTION_MODULES: Record<JurisdictionId, JurisdictionModule> = 
         taxYearLabel: '2024/25 Tax Year',
         effectivePeriodLabel: '6 April 2024 – 5 April 2025',
         verifiedDate: '2025-01-15',
-        verificationStatus: 'Verified against official statutory tables',
+        verificationStatus: 'Based on published statutory tax tables',
         defaultGrossAnnual: 45000,
         fieldSupport: {
           supportsFilingStatus: false,
@@ -639,7 +639,7 @@ export const JURISDICTION_MODULES: Record<JurisdictionId, JurisdictionModule> = 
         taxYearLabel: '2025 Tax Year',
         effectivePeriodLabel: 'January 1, 2025 – December 31, 2025',
         verifiedDate: '2025-01-15',
-        verificationStatus: 'Verified against official statutory tables',
+        verificationStatus: 'Based on published statutory tax tables',
         defaultGrossAnnual: 75000,
         fieldSupport: {
           supportsFilingStatus: false,
@@ -689,7 +689,7 @@ export const JURISDICTION_MODULES: Record<JurisdictionId, JurisdictionModule> = 
         taxYearLabel: '2024 Tax Year',
         effectivePeriodLabel: 'January 1, 2024 – December 31, 2024',
         verifiedDate: '2025-01-15',
-        verificationStatus: 'Verified against official statutory tables',
+        verificationStatus: 'Based on published statutory tax tables',
         defaultGrossAnnual: 75000,
         fieldSupport: {
           supportsFilingStatus: false,
@@ -745,7 +745,7 @@ export const JURISDICTION_MODULES: Record<JurisdictionId, JurisdictionModule> = 
         taxYearLabel: '2024–25 Financial Year',
         effectivePeriodLabel: '1 July 2024 – 30 June 2025',
         verifiedDate: '2025-01-15',
-        verificationStatus: 'Verified against official statutory tables',
+        verificationStatus: 'Based on published statutory tax tables',
         defaultGrossAnnual: 95000,
         fieldSupport: {
           supportsFilingStatus: false,
@@ -809,7 +809,7 @@ export const JURISDICTION_MODULES: Record<JurisdictionId, JurisdictionModule> = 
         taxYearLabel: 'FY 2024–25 (AY 2025–26)',
         effectivePeriodLabel: '1 April 2024 – 31 March 2025',
         verifiedDate: '2025-01-15',
-        verificationStatus: 'Verified against official statutory tables',
+        verificationStatus: 'Based on published statutory tax tables',
         defaultGrossAnnual: 1200000,
         fieldSupport: {
           supportsFilingStatus: false,

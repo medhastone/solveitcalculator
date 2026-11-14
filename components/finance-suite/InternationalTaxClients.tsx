@@ -1024,7 +1024,7 @@ export function CountryTaxTemplateClient({
             Official Authority: {res.profile.authorityName} ({res.profile.taxYear})
           </span>
           <span className="font-mono font-semibold text-emerald-700 dark:text-emerald-400">
-            Verified: {res.profile.dateVerified} · Reviewed by: {res.profile.reviewerName}
+            Last updated: {res.profile.dateVerified} · Schedule: {res.profile.reviewerName}
           </span>
         </div>
         <div className="flex flex-wrap items-center justify-between gap-2 text-on-surface-variant">

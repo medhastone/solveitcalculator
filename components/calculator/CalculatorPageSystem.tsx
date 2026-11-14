@@ -186,7 +186,7 @@ export default function CalculatorPageSystem({
           formulaBox: data.formula.equation,
           closingNote:
             data.limitations[0] ||
-            `Verified methodology based on ${data.sourceReference.organization} (${data.sourceReference.standardName}).`,
+            `Formulas and constants reference ${data.sourceReference.organization} (${data.sourceReference.standardName}).`,
         }}
         understandingResult={{
           paragraph: (

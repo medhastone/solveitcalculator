@@ -210,7 +210,7 @@ export default function SalaryCalculatorClient() {
             <div className="space-y-3 max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-semibold uppercase tracking-wider">
                 <Globe className="w-3.5 h-3.5" />
-                Verified Multi-Jurisdiction Tax Engine
+                Multi-Country Statutory Tax Calculator
               </div>
               <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
                 Salary & Take-Home Pay Calculator
@@ -502,16 +502,38 @@ export default function SalaryCalculatorClient() {
               )}
             </form>
 
-            {/* Verification Badge */}
+            {/* Statutory Reference & Tax Year Metadata */}
             <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-2 text-xs text-slate-600 dark:text-slate-400">
               <div className="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>{activeTaxYearConfig.verificationStatus}</span>
               </div>
               <p>
-                Effective Period: {activeTaxYearConfig.effectivePeriodLabel} •
-                Verified: {activeTaxYearConfig.verifiedDate}
+                Data/tax year: <strong>{activeTaxYearConfig.taxYearLabel}</strong> ({activeTaxYearConfig.effectivePeriodLabel}) •
+                Last updated: <strong>{activeTaxYearConfig.verifiedDate}</strong>
               </p>
+              <div className="flex flex-wrap items-center gap-3 pt-1 text-[11px] font-semibold">
+                <Link
+                  href="/calculation-methodology"
+                  className="text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  Calculation Methodology
+                </Link>
+                <span>•</span>
+                <Link
+                  href="/contact"
+                  className="text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  Contact
+                </Link>
+                <span>•</span>
+                <Link
+                  href="/contact#report-error"
+                  className="text-rose-600 dark:text-rose-400 hover:underline"
+                >
+                  Report an error
+                </Link>
+              </div>
             </div>
           </section>
 
@@ -979,10 +1001,26 @@ export default function SalaryCalculatorClient() {
                 {/* Progressive Tax Bracket Breakdown Table */}
                 <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                      <Scale className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                      Progressive Income Tax Bracket Calculation
-                    </h3>
+                    <div>
+                      <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <Scale className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                        Progressive Income Tax Bracket Calculation ({activeTaxYearConfig.taxYearLabel})
+                      </h3>
+                      {activeTaxYearConfig.sources[0] && (
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                          Source:{' '}
+                          <a
+                            href={activeTaxYearConfig.sources[0].url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+                          >
+                            {activeTaxYearConfig.sources[0].authority} — {activeTaxYearConfig.sources[0].title}
+                          </a>{' '}
+                          (Effective {activeTaxYearConfig.sources[0].effectivePeriod})
+                        </p>
+                      )}
+                    </div>
                     <span className="text-xs text-slate-500 dark:text-slate-400">
                       Based on{' '}
                       {formatCurrencyAmount(
@@ -1170,17 +1208,38 @@ export default function SalaryCalculatorClient() {
             </div>
           </div>
 
-          {/* Non-Advice Disclaimer */}
-          <div className="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-            <strong>Important Tax & Financial Disclaimer:</strong> Results
-            produced by this calculator are educational estimates based on
-            published statutory tables for standard salaried employees and do
-            not constitute personalized tax, payroll, or legal advice. Actual
-            withholding and final tax liability depend on
-            sub-national/state/provincial rules, employer payroll
-            configurations, tax codes, benefit-in-kind adjustments, and personal
-            tax credits. Consult a qualified tax professional or your official
-            national revenue authority for formal guidance.
+          {/* Non-Advice Disclaimer + Contact / Report an Error */}
+          <div className="p-4 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300 leading-relaxed flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <strong>Disclaimer — Estimate only, not tax, payroll, or legal advice:</strong> Results
+              produced by this calculator are educational estimates based on
+              published statutory tables for standard salaried employees. Actual
+              withholding and final tax liability depend on
+              sub-national/state/provincial rules, employer payroll
+              configurations, tax codes, benefit-in-kind adjustments, and personal
+              tax credits. Consult a qualified tax professional or your official
+              national revenue authority for formal guidance.
+            </div>
+            <div className="flex flex-wrap items-center gap-3 shrink-0 font-semibold">
+              <Link
+                href="/calculation-methodology"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Methodology
+              </Link>
+              <Link
+                href="/contact"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Contact
+              </Link>
+              <Link
+                href="/contact#report-error"
+                className="text-rose-600 dark:text-rose-400 hover:underline"
+              >
+                Report an error
+              </Link>
+            </div>
           </div>
         </section>
 

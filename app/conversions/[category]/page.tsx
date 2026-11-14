@@ -28,6 +28,11 @@ export async function generateMetadata({
 
   const config = CONVERSION_CATEGORIES[resolvedSlug];
   const canonicalUrl = `https://solveitcalculator.com${config.canonicalPath}`;
+  const ogImageUrl = `https://solveitcalculator.com/api/og?title=${encodeURIComponent(
+    `${config.h1} ${config.h1Highlight}`.trim()
+  )}&badge=${encodeURIComponent(config.shortLabel)}&subtitle=${encodeURIComponent(
+    config.metaDescription.slice(0, 110)
+  )}&example=${encodeURIComponent(config.topQuestionBanner.oneLineAnswer.slice(0, 72))}`;
 
   return {
     title: config.metaTitle,
@@ -40,12 +45,21 @@ export async function generateMetadata({
       description: config.ogDescription,
       url: canonicalUrl,
       type: 'website',
-      siteName: 'SolveIt Calculator',
+      siteName: 'SolveItCalculator',
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: config.ogTitle,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: config.ogTitle,
       description: config.ogDescription,
+      images: [ogImageUrl],
     },
   };
 }

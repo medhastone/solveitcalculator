@@ -57,11 +57,13 @@ export default function CountryTaxTemplateClient({
         url={result.profile.source.url}
       />
 
-      {/* Verified Reviewer & Country Switcher Strip */}
+      {/* Tax Year, Statutory Schedule & Country Switcher Strip */}
       <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-[var(--bg)] border border-[var(--border)] text-xs">
         <div className="flex items-center gap-2 text-[var(--text)] font-semibold">
-          <UserCheck className="w-4 h-4 text-blue-600" />
-          <span>Reviewed By: {result.profile.reviewerNote}</span>
+          <Calendar className="w-4 h-4 text-blue-600" />
+          <span>
+            Tax Year: {result.profile.taxYear} · Statutory Schedule: {result.profile.source.document}
+          </span>
         </div>
         <div className="flex flex-wrap items-center gap-1.5">
           {(['germany', 'france', 'uae', 'singapore'] as const).map((slug) => {

@@ -630,7 +630,7 @@ export default function CategoryHubPageClient({
                 </div>
                 <div>
                   <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#DCE8FF] text-[#1D4ED8] text-xs font-extrabold mb-1.5">
-                    <span>{liveTools.length} Verified Calculators</span>
+                    <span>{liveTools.length} Online Calculators</span>
                     <span>•</span>
                     <span>Instant Step-by-Step Formulas</span>
                   </div>

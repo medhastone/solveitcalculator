@@ -1701,22 +1701,62 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
             </div>
           </section>
 
-          {/* SECTION 11: Metrology & Regulatory Disclosure */}
+          {/* SECTION 11: Sources, Last Updated, Plain Disclaimer & Error Reporting */}
           <section className="w-full py-8 bg-surface-container-low">
             <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="p-4 rounded-xl bg-surface-container border border-outline-variant/30 text-xs text-on-surface-variant flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-outline text-[20px] shrink-0 mt-0.5">info</span>
-                  <p className="leading-relaxed">
-                    <strong>Actuarial &amp; Metrology Notice:</strong> SolveIt FIRE Forecaster is an educational modeling instrument implementing the Bengen 4% Rule, Guyton-Klinger Guardrails, and Fisher continuous rate compounding. It does not constitute certified financial, tax, legal, or investment advice. All computation executes locally inside your browser sandbox with zero telemetry.
-                  </p>
+              <div className="p-5 rounded-xl bg-surface-container border border-outline-variant/30 text-xs text-on-surface-variant space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/20 pb-2.5">
+                  <div className="flex flex-wrap items-center gap-3 text-on-surface font-semibold">
+                    <span>Last updated: November 13, 2026</span>
+                    <span>·</span>
+                    <span>Data/tax year: 2025–2026 Retirement &amp; CPI Reference Standards</span>
+                  </div>
+                  <div className="flex items-center gap-3 font-bold">
+                    <Link href="/calculation-methodology" className="text-primary hover:underline">
+                      Calculation Methodology
+                    </Link>
+                    <span>•</span>
+                    <Link href="/contact" className="text-primary hover:underline">
+                      Contact
+                    </Link>
+                    <span>•</span>
+                    <Link href="/contact#report-error" className="text-rose-600 dark:text-rose-400 hover:underline">
+                      Report an error
+                    </Link>
+                  </div>
                 </div>
-                <div className="shrink-0 flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1 font-label-caps text-label-caps text-secondary font-semibold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                    AIR-GAPPED ENGINE
-                  </span>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <strong className="text-on-surface">Sources:</strong>
+                  <a
+                    href="https://www.irs.gov/pub/irs-drop/n-24-80.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary font-semibold hover:underline"
+                  >
+                    IRS Notice 2024-80 (2025 Retirement Plan Limits) ↗
+                  </a>
+                  <span>·</span>
+                  <a
+                    href="https://www.investor.gov/additional-resources/information/youth/teachers-classroom-resources/what-compound-interest"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary font-semibold hover:underline"
+                  >
+                    U.S. SEC Investor.gov (Compound Interest &amp; Real Return) ↗
+                  </a>
+                  <span>·</span>
+                  <a
+                    href="https://www.bls.gov/cpi/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary font-semibold hover:underline"
+                  >
+                    U.S. Bureau of Labor Statistics (CPI Inflation Reference) ↗
+                  </a>
                 </div>
+                <p className="leading-relaxed">
+                  <strong className="text-on-surface">Disclaimer:</strong> Estimate only, not financial, tax, legal, or investment advice. SolveIt FIRE Forecaster is an educational modeling tool implementing the 4% Safe Withdrawal Rate rule and Fisher real-return equation. Future market returns and inflation are uncertain.
+                </p>
               </div>
             </div>
           </section>

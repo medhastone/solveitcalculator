@@ -1913,8 +1913,12 @@ export function ensureMinimumSearchFaqs(
     fieldNote: HumanFieldNote;
     benchmarkRows: HumanBenchmarkRow[];
   },
-  minCount = 6
+  minCount = 5
 ): SearchFaqEntry[] {
+  if (existingFaqs.length >= minCount) {
+    return existingFaqs.slice(0, 7);
+  }
+
   const result: SearchFaqEntry[] = [...existingFaqs];
   const seenQuestions = new Set(
     existingFaqs.map((f) => f.question.trim().toLowerCase())
@@ -1935,72 +1939,54 @@ export function ensureMinimumSearchFaqs(
 
   const cleanTitle = context.title.replace(/\s*\(.*?\)\s*/g, '').trim();
 
-  // 2. Add high-intent Google Search "People Also Ask" queries derived from this calculator's exact formula, worked example, practitioner pitfall, and pro tip
+  // 2. Specific fallback queries grounded in formula and worked example (never generic template phrasing)
   pushIfUnique(
-    `What is the exact formula used by the ${cleanTitle}?`,
-    `The core mathematical formula is ${context.formulaText}. ${
+    `What formula does the ${cleanTitle} use?`,
+    `The calculation uses ${context.formulaText}. ${
       context.exampleSteps.length > 0
-        ? `For example (${context.exampleTitle}): ${context.exampleSteps.join(' ')}`
+        ? `For example (${context.exampleTitle}): ${context.exampleSteps[0]}`
         : ''
-    }`
+    }`.trim()
   );
-
-  if (context.fieldNote.commonMistakeTitle && context.fieldNote.commonMistakeText) {
-    pushIfUnique(
-      `What is the most common mistake when calculating ${cleanTitle.toLowerCase()}?`,
-      `${context.fieldNote.commonMistakeTitle}: ${context.fieldNote.commonMistakeText}`
-    );
-  }
 
   if (context.fieldNote.proTipTitle && context.fieldNote.proTipText) {
     pushIfUnique(
-      `What is a quick mental math or practitioner tip for ${cleanTitle.toLowerCase()}?`,
-      `${context.fieldNote.proTipTitle} — ${context.fieldNote.proTipText}`
+      `${context.fieldNote.proTipTitle}?`,
+      context.fieldNote.proTipText
     );
   }
 
-  if (context.benchmarkRows.length >= 2) {
+  if (context.benchmarkRows.length >= 2 && result.length < minCount) {
     const sampleBenchmarks = context.benchmarkRows
       .slice(0, 3)
       .map((r) => `${r.col1}: ${r.col2} (${r.col3})`)
       .join('; ');
     pushIfUnique(
-      `What are the most common reference benchmarks for ${cleanTitle.toLowerCase()}?`,
-      `Key verified reference benchmarks include — ${sampleBenchmarks}. You can view the full reference table on this page or enter your own numbers into the calculator above.`
+      `What are common benchmark figures for ${cleanTitle}?`,
+      `Standard verified values include ${sampleBenchmarks}.`
     );
   }
 
-  // 3. Category-specific Google Search PAA fallback questions to guarantee >= minCount (at least 6-7 FAQs)
   const catLower = context.categoryName.toLowerCase();
-  if (catLower.includes('finance') || catLower.includes('tax') || catLower.includes('business')) {
-    pushIfUnique(
-      `How accurate are the results from this ${cleanTitle}?`,
-      `This ${cleanTitle} uses published statutory formulas, standard compounding conventions, and unrounded floating-point intermediate math before rounding the final currency display. For formal tax filings or loan contracts, always verify with your official statement or advisor.`
-    );
-    pushIfUnique(
-      `Can I use the ${cleanTitle} on mobile and print or copy the breakdown?`,
-      `Yes. The ${cleanTitle} updates immediately on mobile, tablet, and desktop browsers, and includes one-click Copy Result and Print actions with zero sign-up required.`
-    );
-  } else if (catLower.includes('conversion') || catLower.includes('unit')) {
-    pushIfUnique(
-      `Does this ${cleanTitle} use official NIST SP 811 conversion factors?`,
-      `Yes. All unit conversions on SolveItCalculator follow exact International System of Units (SI) and NIST Special Publication 811 standards (such as 1 inch = 25.4 mm and 1 lb = 0.45359237 kg) with full decimal precision.`
-    );
-    pushIfUnique(
-      `How do I reverse the conversion direction in the ${cleanTitle}?`,
-      `Click the Swap Units button between the From and To selectors (or pick any preset pair card) to flip the conversion direction immediately while preserving your input value.`
-    );
-  } else {
-    pushIfUnique(
-      `How do I verify my ${cleanTitle.toLowerCase()} answer step by step?`,
-      `Every result card displays both the final numerical answer and the substituted step-by-step equation (${context.formulaText}) so you can verify how your inputs were evaluated.`
-    );
-    pushIfUnique(
-      `Is the ${cleanTitle} free to use for homework, business, and everyday calculations?`,
-      `Yes. The ${cleanTitle} is 100% free, runs instantaneously in your browser without registration, and works seamlessly on phones, tablets, and computers.`
-    );
+  if (result.length < minCount) {
+    if (catLower.includes('finance') || catLower.includes('tax') || catLower.includes('business')) {
+      pushIfUnique(
+        `Can I print or copy the ${cleanTitle} summary?`,
+        `Yes. Use the Copy result or Share buttons directly below your inputs to save the calculation or copy the page link.`
+      );
+    } else if (catLower.includes('conversion') || catLower.includes('unit')) {
+      pushIfUnique(
+        `Does the ${cleanTitle} follow NIST SP 811 standards?`,
+        `Yes. All unit factors follow exact SI and NIST Special Publication 811 constants before rounding the display output.`
+      );
+    } else {
+      pushIfUnique(
+        `Can I verify each step of the ${cleanTitle} result?`,
+        `Yes. Your result card displays the live calculated figure alongside the exact substituted formula (${context.formulaText}).`
+      );
+    }
   }
 
-  return result.slice(0, Math.max(minCount, existingFaqs.length, 7));
+  return result.slice(0, Math.min(7, Math.max(minCount, result.length)));
 }
 

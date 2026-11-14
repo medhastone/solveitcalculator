@@ -129,7 +129,7 @@ export function VerifiedAuthorityBanner({ source }: { source: VerifiedSourceMeta
           ))}
         </div>
         <span className="font-mono text-emerald-700 dark:text-emerald-400 font-semibold">
-          Verified: {source.dateVerified}
+          Last updated: {source.dateVerified}
         </span>
         <a
           href={source.url}

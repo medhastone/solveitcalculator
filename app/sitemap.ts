@@ -2,6 +2,8 @@ import type { MetadataRoute } from 'next';
 import { MATH_CALCULATORS } from '@/lib/mathCalculatorsData';
 import { GUIDES_DATA } from '@/lib/guidesData';
 
+export const dynamic = 'force-static';
+
 const BASE_URL = 'https://solveitcalculator.com';
 
 interface SitemapPageEntry {

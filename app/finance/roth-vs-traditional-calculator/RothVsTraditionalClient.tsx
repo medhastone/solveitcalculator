@@ -1055,15 +1055,24 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/roth-vs-
               </div>
             </div>
 
-            {/* Verified IRS Statutory Limits Table (2025 & 2024) */}
+            {/* IRS Statutory Limits Table (2025 & 2024) */}
             <div className="p-6 rounded-3xl bg-surface-container border border-outline-variant/60 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-outline-variant/40">
                 <div>
                   <h3 className="text-base font-bold text-on-surface">
-                    Verified IRS Contribution &amp; MAGI Phase-Out Limits ({selectedTaxYear})
+                    IRS Contribution &amp; MAGI Phase-Out Limits ({selectedTaxYear})
                   </h3>
                   <p className="text-xs text-on-surface-variant">
-                    Source: {limitsForYear.verifiedBy} · Verified {limitsForYear.dateVerified} · US Internal Revenue Code §§ 401(k), 402(g), 408A
+                    Source:{' '}
+                    <a
+                      href="https://www.irs.gov/pub/irs-drop/n-24-80.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-primary hover:underline"
+                    >
+                      {limitsForYear.verifiedBy}
+                    </a>{' '}
+                    · Effective Tax Year {selectedTaxYear} (Updated {limitsForYear.dateVerified}) · IRC §§ 401(k), 402(g), 408A
                   </p>
                 </div>
 

@@ -2,24 +2,24 @@ import type { Metadata } from 'next';
 import AboutMethodologyClient from '@/components/about/AboutMethodologyClient';
 
 export const metadata: Metadata = {
-  title: 'Calculation Methodology & Accuracy Testing | SolveItCalculator',
+  title: 'Calculation Methodology, Formulas & Change Log | SolveItCalculator',
   description:
-    'Discover how SolveItCalculator tests calculation accuracy, documents formulas and default assumptions, handles user feedback, and protects your privacy.',
+    'Formulas, IEEE 754 rounding rules, default assumptions, category testing procedures, and visible change log for SolveItCalculator tools.',
   alternates: {
     canonical: 'https://solveitcalculator.com/calculation-methodology',
   },
   openGraph: {
-    title: 'Calculation Methodology & Accuracy Testing | SolveItCalculator',
+    title: 'Calculation Methodology, Formulas & Change Log | SolveItCalculator',
     description:
-      'Transparent formulas, edge-case testing, editable assumptions, and clear correction policies on SolveItCalculator.com.',
+      'Formulas, rounding rules, default assumptions, category testing procedures, and change log on SolveItCalculator.com.',
     url: 'https://solveitcalculator.com/calculation-methodology',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Calculation Methodology & Accuracy Testing | SolveItCalculator',
+    title: 'Calculation Methodology, Formulas & Change Log | SolveItCalculator',
     description:
-      'Transparent formulas, edge-case testing, editable assumptions, and clear correction policies on SolveItCalculator.com.',
+      'Formulas, rounding rules, default assumptions, category testing procedures, and change log on SolveItCalculator.com.',
   },
 };
 

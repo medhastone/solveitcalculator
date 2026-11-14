@@ -527,14 +527,14 @@ export const CONVERSION_CATEGORIES: Record<ConversionCategorySlug, ConversionCat
     canonicalPath: '/conversions/weight',
     categoryLabel: 'Weight & Mass',
     shortLabel: 'Weight',
-    metaTitle: 'Kilograms to Pounds Converter (kg to lbs) | Weight | SolveIt',
+    metaTitle: 'Kg to Lbs Weight Conversion Calculator | SolveItCalculator',
     metaDescription:
-      'Convert kilograms to pounds (kg to lbs), pounds to kilograms, grams to pounds, and ounces using NIST SP 811 factors, quick tables, and worked formulas.',
-    ogTitle: 'Kilograms to Pounds Converter (kg to lbs) | Weight | SolveIt',
+      'Convert kilograms to pounds (kg to lbs), grams, ounces, and stone with NIST SP 811 factors. For example, 60 kg equals 132.28 lbs (60 ÷ 0.45359237).',
+    ogTitle: 'Kg to Lbs Weight Conversion Calculator | SolveItCalculator',
     ogDescription:
-      'Convert kilograms to pounds (kg to lbs), pounds to kilograms, grams to pounds, and ounces using NIST SP 811 factors, quick tables, and worked formulas.',
-    h1: 'Kilograms to Pounds and Weight',
-    h1Highlight: 'Converter',
+      'Convert kilograms to pounds (kg to lbs), grams, ounces, and stone with NIST SP 811 factors. For example, 60 kg equals 132.28 lbs (60 ÷ 0.45359237).',
+    h1: 'Kilograms to Pounds Weight',
+    h1Highlight: 'Calculator',
     subtitle:
       'Convert kilograms to pounds, pounds to kilograms, grams, ounces, stone, and metric tons with conversion factors that follow NIST SP 811.',
     topQuestionBanner: {
@@ -839,14 +839,14 @@ export const CONVERSION_CATEGORIES: Record<ConversionCategorySlug, ConversionCat
           '24 ounces equals exactly 1.5 pounds because there are 16 ounces in 1 pound (24 / 16 = 1.5).',
       },
       {
-        question: 'How much does a gallon of milk weigh in pounds and kilograms?',
+        question: 'What is the exact formula to convert kilograms to pounds?',
         answer:
-          '1 US gallon of whole or 2% milk (16 US cups at 244 g/cup, or 1.031 g/mL) weighs 3,904 grams (3.904 kg) or about 8.61 pounds (3,904 / 453.59237 = 8.6068 lbs), slightly heavier than 1 US gallon of water at 8.34 pounds.',
+          'Divide kilograms by 0.45359237 (or multiply by 2.20462262) because the international avoirdupois pound is defined as exactly 0.45359237 kg.',
       },
       {
-        question: '1 cubic yard is how many tons of gravel or topsoil?',
+        question: 'How many pounds and kilograms are in 1 stone?',
         answer:
-          'Because 1 US short ton equals 2,000 pounds, volume-to-tonnage depends on bulk density: 1 cubic yard (27 ft³) of crushed gravel (~105 lb/ft³) weighs about 2,835 lbs or 1.42 US tons, while screened topsoil (~75–80 lb/ft³) weighs about 1.0 to 1.1 US tons.',
+          'One UK stone equals exactly 14 pounds, which is 6.35029 kilograms. For example, 10 stone equals 140 pounds or 63.50 kg.',
       },
     ],
     auditReport: {

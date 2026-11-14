@@ -100,7 +100,7 @@ export default function UsStateTakeHomeClient() {
           {/* Priority States Quick-Select (CA, NY, TX, FL, WA first) */}
           <div className="space-y-2">
             <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
-              Select US State (Priority Hub + All Verified States)
+              Select US State (Priority Hub + 2025 State Tax Schedules)
             </label>
             <div className="grid grid-cols-5 gap-1.5">
               {PRIORITY_US_STATES.map((code) => (

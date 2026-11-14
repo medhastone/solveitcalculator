@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export interface LiveExchangeRatesPayload {
   base: 'USD';
@@ -110,11 +110,12 @@ async function fetchFromFrankfurter(): Promise<LiveExchangeRatesPayload | null> 
   }
 }
 
-export async function GET(req: NextRequest) {
-  const forceRefresh = req.nextUrl.searchParams.get('refresh') === '1';
+export const dynamic = 'force-static';
+
+export async function GET() {
   const now = Date.now();
 
-  if (!forceRefresh && cachedPayload && now - cachedAtMs < CACHE_TTL_MS) {
+  if (cachedPayload && now - cachedAtMs < CACHE_TTL_MS) {
     return NextResponse.json(cachedPayload);
   }
 
@@ -136,7 +137,7 @@ export async function GET(req: NextRequest) {
     base: 'USD',
     rates: { ...FALLBACK_RATES },
     lastUpdatedUtc: new Date().toUTCString(),
-    provider: 'Verified Market Benchmark',
+    provider: 'Reference Market Baseline',
     isLive: false,
   };
 

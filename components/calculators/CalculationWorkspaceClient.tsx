@@ -1287,6 +1287,24 @@ export default function CalculationWorkspaceClient() {
               </Link>
             ))}
           </div>
+          <div className="mt-6 pt-4 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-2 text-xs text-[#475569]">
+            <span>
+              <strong>Last updated:</strong> November 13, 2026 · Standard PEMDAS algebraic expression evaluator.
+            </span>
+            <div className="flex flex-wrap items-center gap-3 font-bold">
+              <Link href="/calculation-methodology" className="text-[#2457D6] hover:underline">
+                Methodology
+              </Link>
+              <span>·</span>
+              <Link href="/contact" className="text-[#2457D6] hover:underline">
+                Contact
+              </Link>
+              <span>·</span>
+              <Link href="/contact#report-error" className="text-[#E11D48] hover:underline">
+                Report an error
+              </Link>
+            </div>
+          </div>
         </section>
       </div>
     </div>

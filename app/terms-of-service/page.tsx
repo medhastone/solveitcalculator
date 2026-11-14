@@ -104,11 +104,10 @@ export default function TermsOfServicePage() {
               2. Accuracy Standards &amp; Limitation of Liability
             </h2>
             <p>
-              Our editorial and engineering team benchmarks calculator algorithms against primary
-              standards—including NIST Special Publication 811 for unit conversions, published IRS /
-              HMRC / ATO / CRA / CBDT tax schedules, and peer-reviewed equations. However, rounding
-              conventions, sub-national regulatory updates, or user input assumptions can affect real
-              outcomes.
+              SolveItCalculator references primary published standards—including NIST Special
+              Publication 811 for unit conversions, published IRS / HMRC / ATO / CRA / CBDT tax
+              schedules, and peer-reviewed equations. However, rounding conventions, sub-national
+              regulatory updates, or user input assumptions can affect real outcomes.
             </p>
             <p>
               SolveItCalculator.com provides all tools on an &ldquo;as-is&rdquo; and
@@ -126,8 +125,8 @@ export default function TermsOfServicePage() {
             <p>
               You may freely use our calculators, print or copy calculation results, and link to any
               page on SolveItCalculator.com for personal, academic, or commercial day-to-day work.
-              Automated scraping, bulk republication of our proprietary editorial guides, or
-              redistribution of our source code without written permission is prohibited.
+              Automated scraping, bulk republication of our editorial guides, or redistribution of
+              our source code without written permission is prohibited.
             </p>
           </div>
         </section>
@@ -138,10 +137,10 @@ export default function TermsOfServicePage() {
             Have a question about a specific formula or noticed an edge case?
           </span>
           <Link
-            href="/contact"
+            href="/contact#report-error"
             className="inline-flex items-center gap-1.5 font-bold text-[#2457D6] hover:underline"
           >
-            <span>Contact Our Editorial Team</span>
+            <span>Contact Us or Report an Error</span>
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>

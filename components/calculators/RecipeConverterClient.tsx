@@ -1549,16 +1549,39 @@ export default function RecipeConverterClient() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 pt-2">
                 <div className="lg:col-span-7 rounded-xl border border-[#E2E8F0] p-4">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-                    <h3 className="text-sm font-bold text-[#152238] flex items-center gap-1.5">
-                      <BookOpen className="w-4 h-4 text-[#2457D6]" />
-                      Verified Ingredient Weight Chart (1 US Cup)
-                    </h3>
+                    <div>
+                      <h3 className="text-sm font-bold text-[#152238] flex items-center gap-1.5">
+                        <BookOpen className="w-4 h-4 text-[#2457D6]" />
+                        Ingredient Weight Reference Chart (1 US Cup)
+                      </h3>
+                      <p className="text-[11px] text-[#475569] mt-0.5">
+                        Source:{' '}
+                        <a
+                          href="https://fdc.nal.usda.gov/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-semibold text-[#2457D6] hover:underline"
+                        >
+                          USDA FoodData Central
+                        </a>{' '}
+                        &amp;{' '}
+                        <a
+                          href="https://www.kingarthurbaking.com/learn/ingredient-weight-chart"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-semibold text-[#2457D6] hover:underline"
+                        >
+                          King Arthur Baking Weight Chart
+                        </a>{' '}
+                        (2025–2026 Reference)
+                      </p>
+                    </div>
                     <input
                       type="search"
                       value={referenceSearch}
                       onChange={(e) => setReferenceSearch(e.target.value)}
                       placeholder="Filter ingredients..."
-                      aria-label="Filter verified ingredient reference table"
+                      aria-label="Filter ingredient reference table"
                       className="w-full sm:w-48 rounded-lg border border-[#CBD5E1] bg-[#F8FAFC] px-2.5 py-1 text-xs text-[#152238]"
                     />
                   </div>
@@ -1997,6 +2020,57 @@ export default function RecipeConverterClient() {
                 );
               })}
             </div>
+          </div>
+        </section>
+
+        {/* Trust, Sources & Error Reporting Footer Strip */}
+        <section
+          aria-label="Data sources and error reporting"
+          className="rounded-2xl bg-white border border-[#DCE3EE] px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#475569]"
+        >
+          <div>
+            <strong>Last updated:</strong> November 13, 2026 ·{' '}
+            <strong>Sources:</strong>{' '}
+            <a
+              href="https://fdc.nal.usda.gov/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-[#2457D6] hover:underline"
+            >
+              USDA FoodData Central
+            </a>
+            ,{' '}
+            <a
+              href="https://www.kingarthurbaking.com/learn/ingredient-weight-chart"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-[#2457D6] hover:underline"
+            >
+              King Arthur Baking Ingredient Weight Chart
+            </a>
+            , and{' '}
+            <a
+              href="https://www.nist.gov/pml/special-publication-811"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-[#2457D6] hover:underline"
+            >
+              NIST SP 811
+            </a>
+            .
+          </div>
+          <div className="flex flex-wrap items-center gap-3 shrink-0 font-bold">
+            <Link href="/calculation-methodology" className="text-[#2457D6] hover:underline">
+              Methodology
+            </Link>
+            <span>·</span>
+            <Link href="/contact" className="text-[#2457D6] hover:underline">
+              Contact
+            </Link>
+            <span>·</span>
+            <Link href="/contact#report-error" className="text-[#E11D48] hover:underline">
+              Report an error
+            </Link>
           </div>
         </section>
       </main>

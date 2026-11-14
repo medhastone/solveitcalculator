@@ -275,9 +275,14 @@ export default function ProfitMarginClient() {
               <h3 className="text-sm font-bold text-[var(--text)]">
                 Your Margins vs. Cited Benchmark: {result.benchmark.sector}
               </h3>
-              <span className="text-[11px] text-[var(--muted)] font-mono">
-                Source: Prof. Aswath Damodaran, NYU Stern (Jan 2025 Dataset)
-              </span>
+              <a
+                href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/margin.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline font-mono font-semibold"
+              >
+                Source: Prof. Aswath Damodaran, NYU Stern (Jan 2025 US Sector Dataset) ↗
+              </a>
             </div>
 
             <table className="w-full text-xs border-collapse tabular-nums">

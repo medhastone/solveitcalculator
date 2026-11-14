@@ -1661,18 +1661,18 @@ export default function FlooringProjectCalculatorClient() {
           <div className="pt-3 border-t border-[#E2E8F0] grid grid-cols-1 md:grid-cols-2 gap-4 text-[13px]">
             <div className="rounded-xl bg-[#FFFBEB] border border-[#FDE68A] p-4 space-y-1">
               <div className="font-extrabold text-[#B45309] uppercase tracking-wide text-[11.5px]">
-                Installer Field Note · Common Pitfall: Ordering Zero Extra Cartons for Dye Lots
+                Ordering Note · Accounting for Carton Rounding &amp; Dye Lots
               </div>
               <p className="text-[#78350F] leading-relaxed">
-                Porcelain tile and luxury vinyl plank (LVP) are printed in factory production runs (&quot;dye lots&quot; or &quot;calibers&quot;). If you order exact net square footage and come up two planks short on Sunday afternoon, a new box bought three weeks later may have a slightly different shade or milling tongue profile. Always keep 1 unopened spare carton in the closet for future board repairs.
+                Porcelain tile and luxury vinyl plank (LVP) are manufactured in production batches (&quot;dye lots&quot;). Rounding up to full cartons and keeping 1 spare carton from the same batch ensures matching shade and milling profiles if future board replacements are needed.
               </p>
             </div>
             <div className="rounded-xl bg-[#ECFDF5] border border-[#A7F3D0] p-4 space-y-1">
               <div className="font-extrabold text-[#065F46] uppercase tracking-wide text-[11.5px]">
-                Pro Tip · Reuse Row-End Cutoffs to Start the Next Row
+                Calculation Note · Waste Allowance by Layout Pattern
               </div>
               <p className="text-[#064E3B] leading-relaxed">
-                When laying floating LVP or hardwood, the piece you saw off at the right wall (provided it is at least 8 inches / 20 cm long) becomes the starter plank on the left wall of the very next row. Staggering end-joints by at least 6 inches prevents ugly &quot;H-joints&quot; and keeps your actual waste under 7%–8%.
+                Straight parallel plank installations typically add 7%–10% for end-of-row cutoffs, whereas 45-degree diagonal or herringbone layouts generally require 12%–15% additional material.
               </p>
             </div>
           </div>
@@ -1777,6 +1777,24 @@ export default function FlooringProjectCalculatorClient() {
             >
               Material Discount Calculator →
             </Link>
+          </div>
+          <div className="mt-4 pt-3 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-2 text-xs text-[#475569]">
+            <span>
+              <strong>Last updated:</strong> November 13, 2026 · Geometric area and carton rounding estimates only.
+            </span>
+            <div className="flex flex-wrap items-center gap-3 font-bold">
+              <Link href="/calculation-methodology" className="text-[#2457D6] hover:underline">
+                Methodology
+              </Link>
+              <span>·</span>
+              <Link href="/contact" className="text-[#2457D6] hover:underline">
+                Contact
+              </Link>
+              <span>·</span>
+              <Link href="/contact#report-error" className="text-[#E11D48] hover:underline">
+                Report an error
+              </Link>
+            </div>
           </div>
         </section>
       </main>

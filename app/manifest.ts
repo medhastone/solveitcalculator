@@ -1,8 +1,10 @@
 import type { MetadataRoute } from 'next';
 
+export const dynamic = 'force-static';
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'SolveItCalculator — Verified Formulas & Online Calculators',
+    name: 'SolveItCalculator — Step-by-Step Formulas & Online Calculators',
     short_name: 'SolveItCalculator',
     description:
       'Free, fast online calculators with step-by-step formulas and reference tables across Math, Finance & Salary Tax, Home & Construction, Conversions, Health, and Science.',

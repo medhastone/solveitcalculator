@@ -761,10 +761,27 @@ export default function UsFederalTaxClient() {
           {/* Value-Added: Progressive Tax Brackets Breakdown Table & Visual Bars */}
           <div className="p-5 rounded-2xl bg-surface-container border border-outline-variant/60 space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h3 className="text-sm font-bold text-on-surface flex items-center gap-2">
-                <Layers className="w-4 h-4 text-primary" />
-                <span>Tax Bracket Breakdown ({result.filingStatusLabel})</span>
-              </h3>
+              <div>
+                <h3 className="text-sm font-bold text-on-surface flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-primary" />
+                  <span>
+                    {taxYear} US Federal Tax Bracket Breakdown ({result.filingStatusLabel})
+                  </span>
+                </h3>
+                <p className="text-[11px] text-on-surface-variant mt-0.5">
+                  Source:{' '}
+                  <a
+                    href="https://www.irs.gov/pub/irs-drop/rp-24-40.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-primary hover:underline"
+                  >
+                    {taxYear === '2025'
+                      ? 'IRS Revenue Procedure 2024-40 (Tax Year 2025, published Oct 22, 2024)'
+                      : 'IRS Revenue Procedure 2023-34 (Tax Year 2024)'}
+                  </a>
+                </p>
+              </div>
               <button
                 type="button"
                 onClick={handleExportCsv}

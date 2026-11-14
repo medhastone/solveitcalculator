@@ -37,6 +37,36 @@ export async function generateMetadata({
     };
   }
   const canonicalUrl = `https://solveitcalculator.com/math/${tool.slug}`;
+
+  if (tool.slug === 'percentage-calculator') {
+    const title = 'Percentage & Percent Value Calculator | SolveItCalculator';
+    const description =
+      'Calculate any percentage of a number with step-by-step math for discounts, tips, and scores. For example, 25% of 200 equals 50 via (25 × 200) ÷ 100.';
+    const ogImage =
+      'https://solveitcalculator.com/api/og?title=Percentage%20Calculator&badge=Math&subtitle=Find%20exact%20percentages%20with%20step-by-step%20math.&example=25%25%20of%20200%20%3D%2050';
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: canonicalUrl,
+      },
+      openGraph: {
+        title,
+        description,
+        url: canonicalUrl,
+        siteName: 'SolveItCalculator',
+        type: 'website',
+        images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: [ogImage],
+      },
+    };
+  }
+
   const fullTitle = `${tool.name} — Free Step-by-Step Math Calculator | SolveItCalculator`;
   return {
     title: fullTitle,

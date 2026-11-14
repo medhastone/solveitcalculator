@@ -95,6 +95,8 @@ export default function UnitConverter({
   const defaultCfg = CONVERSION_CATEGORIES[initialCategory] || CONVERSION_CATEGORIES.length;
 
   const [category, setCategory] = useState<ConversionCategorySlug>(defaultCfg.slug);
+  const isWeightPilot = category === 'weight';
+
   const [fromUnit, setFromUnit] = useState<string>(
     initialFromUnit && defaultCfg.units.includes(initialFromUnit)
       ? initialFromUnit
@@ -106,7 +108,7 @@ export default function UnitConverter({
       : defaultCfg.defaultToUnit
   );
   const [rawInput, setRawInput] = useState<string>(
-    initialValue ?? defaultCfg.defaultInputValue
+    initialValue ?? (defaultCfg.slug === 'weight' ? '' : defaultCfg.defaultInputValue)
   );
   const [history, setHistory] = useState<UnitHistoryEntry[]>([]);
   const [activePairId, setActivePairId] = useState<string | null>(
@@ -120,7 +122,7 @@ export default function UnitConverter({
     setCategory(newCat);
     setFromUnit(cfg.defaultFromUnit);
     setToUnit(cfg.defaultToUnit);
-    setRawInput(cfg.defaultInputValue);
+    setRawInput(newCat === 'weight' ? '' : cfg.defaultInputValue);
     setActivePairId(cfg.popularPairs[0]?.id ?? null);
   };
 
@@ -278,21 +280,36 @@ export default function UnitConverter({
     }
   };
 
-  const handleReset = () => {
+  const handleSelectPair = (pair: (typeof config.popularPairs)[number]) => {
+    setFromUnit(pair.fromUnit);
+    setToUnit(pair.toUnit);
+    setRawInput(String(pair.sampleInput));
+    setActivePairId(pair.id);
+  };
+
+  const handleLoadSampleWeight = () => {
     setFromUnit(config.defaultFromUnit);
     setToUnit(config.defaultToUnit);
     setRawInput(config.defaultInputValue);
     setActivePairId(config.popularPairs[0]?.id ?? null);
   };
 
+  const handleReset = () => {
+    setFromUnit(config.defaultFromUnit);
+    setToUnit(config.defaultToUnit);
+    setRawInput(isWeightPilot ? '' : config.defaultInputValue);
+    setActivePairId(config.popularPairs[0]?.id ?? null);
+  };
+
   const calculatorCard = (
     <div className="flex flex-col gap-5">
-      {/* STEP 2.5: 1-Line Answer Near the Top of the Page for the Top Question-Type Keyword */}
-      <div
-        role="region"
-        aria-label="Quick answer for top conversion question"
-        className="bg-white rounded-2xl border border-[#CBD5E1] px-5 py-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-      >
+      {/* 1-Line Answer Near Top (rendered inside SingleCalculatorPageShell quickAnswer for weight pilot) */}
+      {!isWeightPilot && (
+        <div
+          role="region"
+          aria-label="Quick answer for top conversion question"
+          className="bg-white rounded-2xl border border-[#CBD5E1] px-5 py-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+        >
         <div className="space-y-0.5">
           <div className="text-xs font-bold text-[#2457D6] flex items-center gap-1.5">
             <HelpCircle className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
@@ -309,25 +326,30 @@ export default function UnitConverter({
           View Common Values Table ↓
         </a>
       </div>
+      )}
 
       {/* Main Converter Input Workbench */}
       <section
         id="calculator"
         aria-label={`${config.categoryLabel} Converter input panel`}
-        className="bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-7 shadow-2xs space-y-6"
+        className={`bg-white rounded-2xl border border-[#E2E8F0] shadow-2xs ${
+          isWeightPilot ? 'p-4 sm:p-6 space-y-4' : 'p-6 sm:p-7 space-y-6'
+        }`}
       >
-        <div className="space-y-4">
+        <div className={isWeightPilot ? 'space-y-3' : 'space-y-4'}>
           <div className="flex items-start justify-between gap-3 flex-wrap">
-            <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-[#EBF2FF] text-[#2457D6] flex items-center justify-center shrink-0 mt-0.5">
-                <Calculator className="w-5 h-5" />
+            <div className="flex items-start gap-2.5 sm:gap-3">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#EBF2FF] text-[#2457D6] flex items-center justify-center shrink-0 mt-0.5">
+                <Calculator className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
-                <h2 className="text-lg sm:text-xl font-extrabold text-[#152238]">
+                <h2 className="text-base sm:text-xl font-extrabold text-[#152238]">
                   Convert {config.categoryLabel}
                 </h2>
                 <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
-                  Enter a number, pick your starting and target units, or select a popular pair below.
+                  {isWeightPilot
+                    ? 'Enter a weight value and pick your From/To units.'
+                    : 'Enter a number, pick your starting and target units, or select a popular pair below.'}
                 </p>
               </div>
             </div>
@@ -336,7 +358,7 @@ export default function UnitConverter({
           {/* Canonical Category Links */}
           <nav
             aria-label="Canonical unit conversion categories"
-            className="flex flex-wrap gap-1.5"
+            className={isWeightPilot ? 'hidden sm:flex flex-wrap gap-1.5' : 'flex flex-wrap gap-1.5'}
           >
             {CONVERSION_CATEGORY_SLUGS.map((catSlug) => {
               const catCfg = CONVERSION_CATEGORIES[catSlug];
@@ -360,32 +382,37 @@ export default function UnitConverter({
           </nav>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
-          <div className="sm:col-span-4">
+        <div className="grid grid-cols-12 gap-3 sm:gap-4 items-end">
+          <div className="col-span-12 sm:col-span-4">
             <label
               htmlFor="uc-val"
-              className="block text-sm font-extrabold text-[#152238] mb-2"
+              className={`block font-extrabold text-[#152238] ${
+                isWeightPilot ? 'text-xs sm:text-sm mb-1' : 'text-sm mb-2'
+              }`}
             >
               Value to Convert <span className="text-[#E11D48]">*</span>
             </label>
-            <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15">
+            <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 min-h-[44px]">
               <input
                 id="uc-val"
                 type="number"
                 step="any"
+                placeholder={`e.g. ${config.defaultInputValue}`}
                 value={rawInput}
                 onChange={(e) => setRawInput(e.target.value)}
-                className="w-full px-4 py-3 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+                className="w-full min-h-[44px] px-3 sm:px-4 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
               />
             </div>
           </div>
 
-          <div className="sm:col-span-3">
+          <div className="col-span-5 sm:col-span-3">
             <label
               htmlFor="uc-from"
-              className="block text-sm font-extrabold text-[#152238] mb-2"
+              className={`block font-extrabold text-[#152238] ${
+                isWeightPilot ? 'text-xs sm:text-sm mb-1' : 'text-sm mb-2'
+              }`}
             >
-              From Unit
+              From
             </label>
             <select
               id="uc-from"
@@ -394,7 +421,7 @@ export default function UnitConverter({
                 setFromUnit(e.target.value);
                 setActivePairId(null);
               }}
-              className="w-full px-3.5 py-3 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238] focus:border-[#2457D6] focus:outline-none cursor-pointer"
+              className="w-full min-h-[44px] px-2.5 sm:px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-xs sm:text-sm font-bold text-[#152238] focus:border-[#2457D6] focus:outline-none cursor-pointer"
             >
               {config.units.map((u) => (
                 <option key={u} value={u}>
@@ -404,25 +431,27 @@ export default function UnitConverter({
             </select>
           </div>
 
-          <div className="sm:col-span-2 flex justify-center">
+          <div className="col-span-2 flex justify-center">
             <button
               type="button"
               onClick={handleSwapUnits}
               aria-label="Swap From and To units"
               title="Swap From and To units"
-              className="w-full sm:w-auto px-3.5 py-3 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#152238] font-bold text-xs inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0"
+              className="w-full sm:w-auto min-h-[44px] min-w-[44px] px-2.5 py-2.5 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#152238] font-bold text-xs inline-flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0"
             >
               <ArrowLeftRight className="w-4 h-4 text-[#2457D6]" />
-              <span className="sm:sr-only">Swap Units</span>
+              <span className="sr-only">Swap Units</span>
             </button>
           </div>
 
-          <div className="sm:col-span-3">
+          <div className="col-span-5 sm:col-span-3">
             <label
               htmlFor="uc-to"
-              className="block text-sm font-extrabold text-[#152238] mb-2"
+              className={`block font-extrabold text-[#152238] ${
+                isWeightPilot ? 'text-xs sm:text-sm mb-1' : 'text-sm mb-2'
+              }`}
             >
-              To Unit
+              To
             </label>
             <select
               id="uc-to"
@@ -431,7 +460,7 @@ export default function UnitConverter({
                 setToUnit(e.target.value);
                 setActivePairId(null);
               }}
-              className="w-full px-3.5 py-3 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238] focus:border-[#2457D6] focus:outline-none cursor-pointer"
+              className="w-full min-h-[44px] px-2.5 sm:px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-xs sm:text-sm font-bold text-[#152238] focus:border-[#2457D6] focus:outline-none cursor-pointer"
             >
               {config.units.map((u) => (
                 <option key={u} value={u}>
@@ -463,19 +492,30 @@ export default function UnitConverter({
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5 pt-1">
-          <button
-            type="button"
-            onClick={handleSaveToHistory}
-            className="sm:col-span-8 inline-flex items-center justify-center gap-2.5 py-3.5 px-6 rounded-xl bg-[#2457D6] hover:bg-[#1D46B0] text-white text-base font-extrabold shadow-xs transition-colors cursor-pointer whitespace-nowrap"
-          >
-            <Calculator className="w-5 h-5" />
-            <span>Convert &amp; Save to History</span>
-          </button>
+        <div className="grid grid-cols-12 gap-2.5 pt-1">
+          {isWeightPilot ? (
+            <button
+              type="button"
+              onClick={handleLoadSampleWeight}
+              className="col-span-7 sm:col-span-8 min-h-[44px] inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#2457D6] hover:bg-[#1D46B0] text-white text-sm sm:text-base font-extrabold shadow-xs transition-colors cursor-pointer whitespace-nowrap"
+            >
+              <Calculator className="w-4 h-4" />
+              <span>Try Sample (60 kg)</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleSaveToHistory}
+              className="col-span-8 min-h-[44px] inline-flex items-center justify-center gap-2.5 py-3 px-5 rounded-xl bg-[#2457D6] hover:bg-[#1D46B0] text-white text-sm sm:text-base font-extrabold shadow-xs transition-colors cursor-pointer whitespace-nowrap"
+            >
+              <Calculator className="w-5 h-5" />
+              <span>Convert &amp; Save to History</span>
+            </button>
+          )}
           <button
             type="button"
             onClick={handleReset}
-            className="sm:col-span-4 inline-flex items-center justify-center gap-2 py-3.5 px-5 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#152238] text-base font-extrabold transition-colors cursor-pointer whitespace-nowrap"
+            className="col-span-5 sm:col-span-4 min-h-[44px] inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-[#152238] text-sm sm:text-base font-extrabold transition-colors cursor-pointer whitespace-nowrap"
           >
             <RotateCcw className="w-4 h-4" />
             <span>Reset</span>
@@ -483,13 +523,24 @@ export default function UnitConverter({
         </div>
 
         {/* Quick Jump to Popular Pairs & Reference Table */}
-        <div className="pt-3 border-t border-[#F1F5F9] flex flex-wrap items-center justify-between gap-2 text-xs text-[#64748B]">
-          <span>Instant live conversion as you type or switch units.</span>
+        <div className="pt-2.5 border-t border-[#F1F5F9] flex flex-wrap items-center justify-between gap-2 text-xs text-[#64748B]">
+          {isWeightPilot ? (
+            <button
+              type="button"
+              onClick={handleSaveToHistory}
+              disabled={rawInput.trim() === ''}
+              className="min-h-[44px] px-3 py-1.5 rounded-lg bg-[#F8FAFC] border border-[#CBD5E1] font-bold text-[#152238] hover:border-[#2457D6] disabled:opacity-50 cursor-pointer"
+            >
+              Save to History
+            </button>
+          ) : (
+            <span>Instant live conversion as you type or switch units.</span>
+          )}
           <div className="flex items-center gap-3 font-bold text-[#2457D6]">
-            <a href="#popular-conversions" className="hover:underline">
-              Popular Unit Pairs ↓
+            <a href="#popular-conversions" className="min-h-[44px] inline-flex items-center hover:underline">
+              Popular Pairs ↓
             </a>
-            <a href="#common-values-table" className="hover:underline">
+            <a href="#common-values-table" className="min-h-[44px] inline-flex items-center hover:underline">
               Lookup Table ↓
             </a>
           </div>
@@ -769,6 +820,15 @@ export default function UnitConverter({
                   </p>
                 </div>
               </div>
+              <a
+                href="https://www.nist.gov/pml/special-publication-811"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-[#047857] text-xs font-bold hover:underline shrink-0"
+              >
+                <span>Source: NIST SP 811 (2008 / 2026 SI Reference)</span>
+                <ExternalLink className="w-3 h-3" aria-hidden="true" />
+              </a>
             </div>
 
             <div className="overflow-x-auto rounded-xl border border-[#E2E8F0]">
@@ -817,7 +877,7 @@ export default function UnitConverter({
                         <td className="py-3 px-4 font-mono text-xs text-[#475569] tabular-nums">
                           {row.workingFormula} = {row.computedOutput} {row.toAbbr}
                         </td>
-                        <td className="py-3 px-4 text-right">
+                        <td className="py-2.5 px-4 text-right">
                           <button
                             type="button"
                             onClick={() =>
@@ -827,7 +887,7 @@ export default function UnitConverter({
                                 row.inputValue
                               )
                             }
-                            className="px-3 py-1 rounded-lg bg-[#EBF2FF] hover:bg-[#2457D6] text-[#2457D6] hover:text-white font-bold text-xs transition-colors cursor-pointer whitespace-nowrap"
+                            className="min-h-[44px] min-w-[44px] px-3.5 py-2 rounded-lg bg-[#EBF2FF] hover:bg-[#2457D6] text-[#2457D6] hover:text-white font-bold text-xs transition-colors cursor-pointer whitespace-nowrap"
                           >
                             Load
                           </button>
@@ -848,21 +908,31 @@ export default function UnitConverter({
             aria-labelledby="unit-guide-heading"
             className="bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-7 shadow-2xs space-y-4"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-[#EBF2FF] text-[#2457D6] flex items-center justify-center shrink-0">
-                <BookOpen className="w-5 h-5" aria-hidden="true" />
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-[#EBF2FF] text-[#2457D6] flex items-center justify-center shrink-0">
+                  <BookOpen className="w-5 h-5" aria-hidden="true" />
+                </div>
+                <div>
+                  <h2
+                    id="unit-guide-heading"
+                    className="text-lg font-extrabold text-[#152238]"
+                  >
+                    {config.categoryLabel} Units, Symbols &amp; Where Each Is Used
+                  </h2>
+                  <p className="text-xs sm:text-sm text-[#475569]">
+                    Official unit symbols, measurement systems, base-unit definitions, and real-world applications.
+                  </p>
+                </div>
               </div>
-              <div>
-                <h2
-                  id="unit-guide-heading"
-                  className="text-lg font-extrabold text-[#152238]"
-                >
-                  {config.categoryLabel} Units, Symbols &amp; Where Each Is Used
-                </h2>
-                <p className="text-xs sm:text-sm text-[#475569]">
-                  Official unit symbols, measurement systems, base-unit definitions, and real-world applications.
-                </p>
-              </div>
+              <a
+                href="https://www.nist.gov/pml/special-publication-811"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-bold text-[#2457D6] hover:underline shrink-0"
+              >
+                Source: NIST SP 811 &amp; BIPM SI Brochure (2026) ↗
+              </a>
             </div>
 
             <div className="overflow-x-auto rounded-xl border border-[#E2E8F0]">
@@ -989,6 +1059,9 @@ export default function UnitConverter({
 
   return (
     <SingleCalculatorPageShell
+      layoutVariant={isWeightPilot ? 'result-below-inputs' : 'default'}
+      useCuratedFaqsOnly={isWeightPilot}
+      schemaAppCategory={isWeightPilot ? 'UtilitiesApplication' : undefined}
       breadcrumbs={[
         { label: 'Home', href: '/' },
         { label: 'Unit Conversions', href: '/conversions' },
@@ -997,6 +1070,35 @@ export default function UnitConverter({
       title={config.h1}
       titleHighlight={config.h1Highlight}
       subtitle={config.subtitle}
+      quickAnswer={
+        isWeightPilot
+          ? {
+              question: config.topQuestionBanner.question,
+              answer: config.topQuestionBanner.oneLineAnswer,
+              targetAnchor: '#common-values-table',
+              targetLabel: 'Lookup table ↓',
+            }
+          : undefined
+      }
+      workedExampleCard={
+        isWeightPilot
+          ? {
+              title: config.formulaCard.exampleTitle,
+              equation: '60 kg ÷ 0.45359237 = 132.28 lbs',
+              steps: config.formulaCard.exampleSteps,
+            }
+          : undefined
+      }
+      matchingGuide={
+        isWeightPilot
+          ? {
+              title: 'How to Convert Metric & Imperial Units (kg, lbs, oz, stone)',
+              description:
+                'Understand NIST SP 811 weight conversion constants, avoirdupois vs troy ounces, and quick mental checks.',
+              href: '/guides/how-to-convert-metric-and-imperial-units',
+            }
+          : undefined
+      }
       heroSymbol="⇄"
       heroBadgeBg="bg-[#EBF2FF]"
       heroBadgeColor="text-[#2457D6]"
@@ -1008,10 +1110,10 @@ export default function UnitConverter({
       )}
       relatedCalculators={UNIT_RELATED_LINKS.filter(
         (item) => item.href !== config.canonicalPath
-      ).slice(0, 4)}
+      ).slice(0, isWeightPilot ? 5 : 4)}
       calculatorCard={calculatorCard}
-      leftColumnSupplement={leftColumnSupplement}
-      rightColumnSupplement={rightColumnSupplement}
+      leftColumnSupplement={isWeightPilot ? undefined : leftColumnSupplement}
+      rightColumnSupplement={isWeightPilot ? undefined : rightColumnSupplement}
       belowWorkbenchContent={belowWorkbenchContent}
       resultCard={{
         promptSummary: `${numericValue.toLocaleString()} ${fromUnit} in ${toUnit}`,
@@ -1020,28 +1122,38 @@ export default function UnitConverter({
         equation: conversion.equation,
         secondaryNote: conversion.secondaryNote,
         isEmpty: isInputEmpty,
-        placeholderMessage: `Enter a ${config.shortLabel.toLowerCase()} value on the left to convert ${fromUnit} to ${toUnit}:`,
+        placeholderMessage: `Enter a ${config.shortLabel.toLowerCase()} value to convert ${fromUnit} to ${toUnit}.`,
       }}
       formulaCard={config.formulaCard}
       howToUseSteps={[
         `Enter the ${config.shortLabel.toLowerCase()} value you want to convert in the input box.`,
-        'Select your From Unit and To Unit, or click any Popular Conversion card to load a pair.',
-        'Click Load in the Common Conversions Table to test benchmark numbers immediately.',
-        'Review the worked equation and the all-units table (conversion factors follow NIST SP 811).',
+        'Select your From Unit and To Unit, or tap Try Sample (60 kg) for an instant conversion.',
+        'Click Load in the Lookup Table below to test benchmark numbers immediately.',
+        'Use Copy or Share to save your conversion; all factors follow NIST SP 811.',
       ]}
       howItWorks={config.howItWorks}
       understandingResult={{
         paragraph: (
           <>
-            Converting{' '}
-            <strong className="font-bold text-[#152238]">
-              {numericValue.toLocaleString()} {fromUnit}
-            </strong>{' '}
-            gives{' '}
-            <strong className="font-bold text-[#152238]">
-              {conversion.formatted} {toUnit}
-            </strong>
-            . All conversion factors on this page follow{' '}
+            {isInputEmpty ? (
+              <>
+                With an example of <strong className="font-bold text-[#152238]">60 Kilograms</strong>, dividing by
+                0.45359237 produces <strong className="font-bold text-[#152238]">132.28 Pounds</strong>.
+              </>
+            ) : (
+              <>
+                Converting{' '}
+                <strong className="font-bold text-[#152238]">
+                  {numericValue.toLocaleString()} {fromUnit}
+                </strong>{' '}
+                gives{' '}
+                <strong className="font-bold text-[#152238]">
+                  {conversion.formatted} {toUnit}
+                </strong>
+                .
+              </>
+            )}{' '}
+            All conversion factors on this page follow{' '}
             <a
               href="https://www.nist.gov/pml/special-publication-811"
               target="_blank"
