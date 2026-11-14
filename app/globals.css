@@ -1233,6 +1233,17 @@ html[data-theme="dark"] button.bg-\[\#152238\] {
   --icon-size: 16px;
 }
 
+@media (max-width: 639px) {
+  .neu-theme-switch.neu-switch-md {
+    --switch-w: 58px;
+    --switch-h: 30px;
+    --switch-pad: 3.5px;
+    --thumb-size: 23px;
+    --thumb-radius: 8px;
+    --icon-size: 14px;
+  }
+}
+
 .neu-theme-switch.neu-switch-lg {
   --switch-w: 78px;
   --switch-h: 38px;

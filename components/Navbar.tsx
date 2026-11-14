@@ -551,8 +551,7 @@ export default function Navbar() {
 
               {/* Premium 3D Neumorphic Theme Switcher (Responsive sm on mobile, md on tablet/desktop) */}
               <div className="inline-flex items-center shrink-0">
-                <ThemeSwitcher size="sm" className="sm:hidden" />
-                <ThemeSwitcher size="md" className="hidden sm:inline-flex" />
+                <ThemeSwitcher size="md" />
               </div>
 
               {/* Quick Search Modal Button */}

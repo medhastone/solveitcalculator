@@ -295,8 +295,10 @@ export default function ThemeSwitcher({
       ? 'neu-switch-lg'
       : 'neu-switch-md';
 
+  const displayClass = /\bhidden\b/.test(className) ? '' : 'inline-flex';
+
   return (
-    <div className={`inline-flex items-center gap-2.5 ${className}`}>
+    <div className={`${displayClass} items-center gap-2.5 ${className}`.trim()}>
       <button
         type="button"
         role="switch"
