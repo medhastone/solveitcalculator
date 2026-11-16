@@ -122,7 +122,6 @@ const STATIC_INDEXABLE_PAGES: SitemapPageEntry[] = [
   { path: '/calculation-methodology', lastmod: '2026-11-12' },
   { path: '/privacy-policy', lastmod: '2026-11-12' },
   { path: '/terms-of-service', lastmod: '2026-11-12' },
-  { path: '/accessibility', lastmod: '2026-11-12' },
   { path: '/contact', lastmod: '2026-11-12' },
 ];
 

@@ -227,14 +227,6 @@ export default function AboutMethodologyClient({
               <Mail className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Contact</span>
             </Link>
-            <span className="text-[#CBD5E1]">•</span>
-            <Link
-              href="/contact#report-error"
-              className="text-[#DC2626] hover:underline inline-flex items-center gap-1"
-            >
-              <AlertTriangle className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Report an error</span>
-            </Link>
           </div>
         </div>
 
@@ -502,15 +494,14 @@ export default function AboutMethodologyClient({
 
               <p className="text-sm text-[#334155] leading-relaxed">
                 If you spot a calculation discrepancy, rounding issue, broken link, or outdated statutory threshold on
-                any page, please report it. Every tool page includes a visible{' '}
-                <strong>&ldquo;Report an error&rdquo;</strong> link in its trust bar and footer.
+                any page, please let us know via our Contact page.
               </p>
 
               <ol className="list-decimal list-inside space-y-1.5 text-xs sm:text-sm text-[#334155]">
                 <li>
                   Open our{' '}
-                  <Link href="/contact#report-error" className="font-bold text-[#0A58ED] hover:underline">
-                    Report a Calculation Error form
+                  <Link href="/contact" className="font-bold text-[#0A58ED] hover:underline">
+                    Contact page
                   </Link>{' '}
                   or email{' '}
                   <a href="mailto:ckchandan9801@gmail.com" className="font-bold text-[#0A58ED] hover:underline">
@@ -534,18 +525,11 @@ export default function AboutMethodologyClient({
 
               <div className="pt-2 flex flex-wrap gap-3">
                 <Link
-                  href="/contact#report-error"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs sm:text-sm font-bold transition-colors"
-                >
-                  <AlertTriangle className="w-4 h-4" aria-hidden="true" />
-                  <span>Report a Calculation Error</span>
-                </Link>
-                <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-[#F8FAFC] text-[#152238] border border-[#CBD5E1] text-xs sm:text-sm font-bold transition-colors"
                 >
                   <Mail className="w-4 h-4 text-[#0A58ED]" aria-hidden="true" />
-                  <span>General Contact &amp; Feedback</span>
+                  <span>Contact &amp; Feedback</span>
                 </Link>
               </div>
             </section>
@@ -806,9 +790,6 @@ export default function AboutMethodologyClient({
           <div className="flex items-center gap-4">
             <Link href="/contact" className="font-bold text-[#0A58ED] hover:underline">
               Contact
-            </Link>
-            <Link href="/contact#report-error" className="font-bold text-[#DC2626] hover:underline">
-              Report an error
             </Link>
           </div>
         </section>

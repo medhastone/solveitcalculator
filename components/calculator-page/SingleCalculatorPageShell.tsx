@@ -1407,16 +1407,6 @@ export default function SingleCalculatorPageShell({
                   <Mail className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>Contact</span>
                 </Link>
-                <span className="text-[#CBD5E1]" aria-hidden="true">
-                  •
-                </span>
-                <Link
-                  href="/contact#report-error"
-                  className="inline-flex items-center gap-1 text-[#DC2626] hover:underline"
-                >
-                  <AlertTriangle className="w-3.5 h-3.5" aria-hidden="true" />
-                  <span>Report an error</span>
-                </Link>
               </div>
             </div>
 
@@ -1463,11 +1453,6 @@ export default function SingleCalculatorPageShell({
               <Link href="/contact" className="inline-flex items-center gap-1 text-[#0A58ED] hover:underline">
                 <Mail className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Contact</span>
-              </Link>
-              <span className="text-[#CBD5E1]" aria-hidden="true">•</span>
-              <Link href="/contact#report-error" className="inline-flex items-center gap-1 text-[#DC2626] hover:underline">
-                <AlertTriangle className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>Report an error</span>
               </Link>
             </div>
           </div>
@@ -1655,10 +1640,6 @@ export default function SingleCalculatorPageShell({
               <div className="flex items-center gap-3 font-bold">
                 <Link href="/contact" className="text-[#0A58ED] hover:underline">
                   Contact
-                </Link>
-                <span className="text-[#CBD5E1]">•</span>
-                <Link href="/contact#report-error" className="text-[#DC2626] hover:underline">
-                  Report an error
                 </Link>
                 <span className="text-[#CBD5E1]">•</span>
                 <a href="#workbench" className="min-h-[44px] inline-flex items-center text-[#2457D6] hover:underline">

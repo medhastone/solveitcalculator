@@ -22,7 +22,6 @@ import {
   FileCheck2,
   HelpCircle,
 } from 'lucide-react';
-import BrandLogo from '@/components/BrandLogo';
 
 type LengthUnit = 'm' | 'cm' | 'ft' | 'in';
 type AreaDisplayUnit = 'm2' | 'sqft';
@@ -377,60 +376,6 @@ export default function FlooringProjectCalculatorClient() {
 
   return (
     <div className="min-h-screen bg-[#F5F7FA] text-[#152238] flex flex-col font-sans">
-      {/* Top Website Header */}
-      <header className="bg-white border-b border-[#DCE3EE] sticky top-0 z-30">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <BrandLogo variant="compact" />
-
-          <nav
-            aria-label="Main Navigation"
-            className="hidden md:flex items-center gap-7 text-[14px] font-semibold text-[#334155]"
-          >
-            <Link
-              href="/math"
-              className="hover:text-[#2457D6] transition-colors py-1"
-            >
-              Math
-            </Link>
-            <Link
-              href="/finance"
-              className="hover:text-[#2457D6] transition-colors py-1"
-            >
-              Finance
-            </Link>
-            <Link
-              href="/conversions"
-              className="hover:text-[#2457D6] transition-colors py-1"
-            >
-              Unit Conversion
-            </Link>
-            <Link
-              href="/date-time"
-              className="hover:text-[#2457D6] transition-colors py-1"
-            >
-              Date and Time
-            </Link>
-            <Link
-              href="/calculators"
-              className="inline-flex items-center gap-1 hover:text-[#2457D6] transition-colors py-1"
-            >
-              <span>All Calculators</span>
-              <ChevronDown className="w-4 h-4 text-[#64748B]" />
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-2">
-            <Link
-              href="/search?q=flooring"
-              aria-label="Search calculators"
-              className="w-10 h-10 rounded-lg border border-[#DCE3EE] bg-[#F8FAFC] hover:bg-[#EEF4FF] hover:border-[#2457D6] flex items-center justify-center text-[#334155] hover:text-[#2457D6] transition-colors"
-            >
-              <Search className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </header>
-
       {/* Hero Banner with Breadcrumb and Flooring Illustration */}
       <section className="bg-gradient-to-r from-[#EEF3FA] via-[#F3F7FC] to-[#E6EFFB] border-b border-[#DCE5F2] relative overflow-hidden">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-7 relative z-10">
@@ -1789,10 +1734,6 @@ export default function FlooringProjectCalculatorClient() {
               <span>·</span>
               <Link href="/contact" className="text-[#2457D6] hover:underline">
                 Contact
-              </Link>
-              <span>·</span>
-              <Link href="/contact#report-error" className="text-[#E11D48] hover:underline">
-                Report an error
               </Link>
             </div>
           </div>

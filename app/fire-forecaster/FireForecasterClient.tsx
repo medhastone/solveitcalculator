@@ -1719,10 +1719,6 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                     <Link href="/contact" className="text-primary hover:underline">
                       Contact
                     </Link>
-                    <span>•</span>
-                    <Link href="/contact#report-error" className="text-rose-600 dark:text-rose-400 hover:underline">
-                      Report an error
-                    </Link>
                   </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1">

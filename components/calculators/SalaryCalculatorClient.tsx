@@ -526,13 +526,6 @@ export default function SalaryCalculatorClient() {
                 >
                   Contact
                 </Link>
-                <span>•</span>
-                <Link
-                  href="/contact#report-error"
-                  className="text-rose-600 dark:text-rose-400 hover:underline"
-                >
-                  Report an error
-                </Link>
               </div>
             </div>
           </section>
@@ -1232,12 +1225,6 @@ export default function SalaryCalculatorClient() {
                 className="text-blue-600 dark:text-blue-400 hover:underline"
               >
                 Contact
-              </Link>
-              <Link
-                href="/contact#report-error"
-                className="text-rose-600 dark:text-rose-400 hover:underline"
-              >
-                Report an error
               </Link>
             </div>
           </div>

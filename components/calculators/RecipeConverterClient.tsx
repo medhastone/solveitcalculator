@@ -2067,10 +2067,6 @@ export default function RecipeConverterClient() {
             <Link href="/contact" className="text-[#2457D6] hover:underline">
               Contact
             </Link>
-            <span>·</span>
-            <Link href="/contact#report-error" className="text-[#E11D48] hover:underline">
-              Report an error
-            </Link>
           </div>
         </section>
       </main>

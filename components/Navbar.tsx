@@ -4,18 +4,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  Calculator,
   Search,
   Menu,
   X,
-  LayoutGrid,
-  BookOpen,
-  Users,
   Globe,
   Coins,
   ChevronDown,
-  Moon,
-  Sun,
   RefreshCw,
   ArrowLeftRight,
 } from 'lucide-react';
@@ -32,38 +26,24 @@ import {
 
 const STORAGE_KEY = 'solveit_a11y_prefs';
 
-const MOBILE_QUICK_LINKS = [
-  { name: 'All Calculators', href: '/calculators' },
-  { name: 'Math', href: '/math' },
-  { name: 'Finance', href: '/finance' },
+const PRIMARY_NAV_LINKS = [
+  { name: 'All Calculators', href: '/calculators', exact: true },
+  { name: 'Finance', href: '/finance', exact: false },
+  { name: 'Math', href: '/math', exact: false },
+  { name: 'Conversions', href: '/conversions', exact: false },
+  { name: 'Health', href: '/health-fitness', exact: false },
+];
+
+const MORE_MENU_LINKS = [
   { name: 'Date & Time', href: '/date-time' },
-  { name: 'Health & Fitness', href: '/health-fitness' },
-  { name: 'Unit Conversions', href: '/conversions' },
-  { name: 'Salary & Tax', href: '/salary-calculator' },
-  { name: 'Workspace', href: '/calculation-workspace' },
-  { name: 'Construction', href: '/construction-project-calculator' },
-  { name: 'Recipe', href: '/recipe-converter' },
+  { name: 'Home & Construction', href: '/home-construction' },
+  { name: 'Science', href: '/science' },
   { name: 'Guides', href: '/guides' },
 ];
 
-const COMMUNITY_LINKS = [
-  { name: 'Calculation Workspace (History & Totals)', href: '/calculation-workspace' },
-  { name: 'Country Salary & Net Pay Calculator', href: '/salary-calculator' },
-  { name: 'Construction Project Calculator', href: '/construction-project-calculator' },
-  { name: 'Recipe Converter (Servings & Grams)', href: '/recipe-converter' },
-  { name: 'How SolveItCalculator Works (About)', href: '/about' },
-  { name: 'Calculation Methodology', href: '/calculation-methodology' },
-  { name: 'Privacy & Accessibility', href: '/privacy-policy' },
-  { name: 'Contact & Report an Error', href: '/contact' },
-  { name: 'Math & Percentage Calculators', href: '/math' },
-  { name: 'Finance & Tax Calculators', href: '/finance' },
-  { name: 'Business & Margin Calculators', href: '/finance/business' },
-  { name: 'Retirement & Super Calculators', href: '/retirement-and-super' },
-  { name: 'Unit & Measurement Converters', href: '/conversions' },
-  { name: 'Date & Time Calculators', href: '/date-time' },
-  { name: 'Home & Construction Calculators', href: '/home-construction' },
-  { name: 'Health & Fitness Calculators', href: '/health-fitness' },
-  { name: 'Science & Lab Calculators', href: '/science' },
+const TRUST_MENU_LINKS = [
+  { name: 'Methodology', href: '/calculation-methodology' },
+  { name: 'About', href: '/about' },
 ];
 
 export default function Navbar() {
@@ -73,25 +53,24 @@ export default function Navbar() {
     currency,
     symbol: currencySymbol,
     rates: currencyRates,
-    isLiveRates,
     isLoadingRates,
     lastUpdatedUtc,
     setCurrency,
     refreshLiveRates,
     convertBetween,
   } = useCurrency();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
   const [currencyMenuOpen, setCurrencyMenuOpen] = useState(false);
   const [quickConvertAmt, setQuickConvertAmt] = useState<number>(1000);
   const [quickFromCode, setQuickFromCode] = useState<GlobalCurrencyCode>('USD');
-  const [communityMenuOpen, setCommunityMenuOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
 
   const langRef = useRef<HTMLDivElement>(null);
   const currRef = useRef<HTMLDivElement>(null);
-  const commRef = useRef<HTMLDivElement>(null);
+  const moreRef = useRef<HTMLDivElement>(null);
 
   // Apply theme to <html> element
   const applyDocumentTheme = (
@@ -123,19 +102,15 @@ export default function Navbar() {
         if (raw) {
           const parsed = JSON.parse(raw);
           const dark = parsed.displayMode === 'dark';
-          setIsDark(dark);
           applyDocumentTheme(
             dark,
             parsed.textSize || 'medium',
             Boolean(parsed.reduceMotion)
           );
-          return;
         }
       } catch {
         // Ignore storage read errors
       }
-      const currentlyDark = document.documentElement.classList.contains('dark');
-      setIsDark(currentlyDark);
     };
 
     syncFromStorage();
@@ -146,7 +121,6 @@ export default function Navbar() {
         customEvent.detail &&
         typeof customEvent.detail.isDark === 'boolean'
       ) {
-        setIsDark(customEvent.detail.isDark);
         applyDocumentTheme(customEvent.detail.isDark);
       } else {
         syncFromStorage();
@@ -161,6 +135,18 @@ export default function Navbar() {
     };
   }, []);
 
+  // Global Ctrl+K / Cmd+K shortcut to open search modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (langRef.current && !langRef.current.contains(e.target as Node)) {
@@ -169,558 +155,476 @@ export default function Navbar() {
       if (currRef.current && !currRef.current.contains(e.target as Node)) {
         setCurrencyMenuOpen(false);
       }
-      if (commRef.current && !commRef.current.contains(e.target as Node)) {
-        setCommunityMenuOpen(false);
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const isMoreActive =
+    pathname?.startsWith('/date-time') ||
+    pathname?.startsWith('/home-construction') ||
+    pathname?.startsWith('/science') ||
+    pathname?.startsWith('/guides') ||
+    pathname?.startsWith('/calculation-methodology') ||
+    pathname?.startsWith('/about');
+
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-white border-b border-[#E2E8F0] shadow-2xs">
-        <div className="max-w-[1360px] mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-2 sm:gap-4 h-14 sm:h-16">
-            {/* Left: Official SolveItCalculator Brand Identity Lockup */}
+      <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-4 sm:gap-8 h-14 sm:h-16">
+            {/* Zone 1: Brand Lockup */}
             <BrandLogo variant="navbar" />
 
-            {/* Desktop Primary Navigation (lg and up) */}
+            {/* Zone 2: Streamlined Desktop Navigation (lg and up) */}
             <nav
               aria-label="Primary navigation"
-              className="hidden lg:flex items-center gap-3.5 xl:gap-5 text-xs xl:text-sm font-semibold text-[#152238] h-full"
+              className="hidden lg:flex items-center gap-2 xl:gap-4 h-full"
             >
-              <Link
-                href="/calculators"
-                className={`relative inline-flex items-center gap-1.5 h-full whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
-                  pathname === '/calculators' || pathname === '/all-calculators'
-                    ? 'text-[#2457D6] font-bold'
-                    : ''
-                }`}
-              >
-                <LayoutGrid className="w-4 h-4" aria-hidden="true" />
-                <span>All Calculators</span>
-                {(pathname === '/calculators' ||
-                  pathname === '/all-calculators') && (
-                  <span
-                    aria-hidden="true"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#2457D6] rounded-full"
-                  />
-                )}
-              </Link>
+              {PRIMARY_NAV_LINKS.map((item) => {
+                const isActive = item.exact
+                  ? pathname === item.href || pathname === '/all-calculators'
+                  : pathname?.startsWith(item.href);
 
-              <Link
-                href="/math"
-                className={`inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
-                  pathname?.startsWith('/math') ? 'text-[#2457D6] font-bold' : ''
-                }`}
-              >
-                <span>Math</span>
-              </Link>
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`relative inline-flex items-center px-2.5 h-full text-sm whitespace-nowrap shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
+                      isActive
+                        ? 'text-[#2457D6] dark:text-blue-400 font-semibold'
+                        : 'text-slate-600 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    <span>{item.name}</span>
+                    {isActive && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute bottom-0 left-2.5 right-2.5 h-[2px] bg-[#2457D6] dark:bg-blue-400 rounded-full"
+                      />
+                    )}
+                  </Link>
+                );
+              })}
 
-              <Link
-                href="/finance"
-                className={`inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
-                  pathname?.startsWith('/finance') ? 'text-[#2457D6] font-bold' : ''
-                }`}
-              >
-                <span>Finance</span>
-              </Link>
-
-              <Link
-                href="/date-time"
-                className={`inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
-                  pathname?.startsWith('/date-time') ? 'text-[#2457D6] font-bold' : ''
-                }`}
-              >
-                <span>Date &amp; Time</span>
-              </Link>
-
-              <Link
-                href="/health-fitness"
-                className={`inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
-                  pathname?.startsWith('/health-fitness')
-                    ? 'text-[#2457D6] font-bold'
-                    : ''
-                }`}
-              >
-                <span>Health &amp; Fitness</span>
-              </Link>
-
-              <Link
-                href="/conversions"
-                className={`inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
-                  pathname?.startsWith('/conversions')
-                    ? 'text-[#2457D6] font-bold'
-                    : ''
-                }`}
-              >
-                <span>Unit Conversions</span>
-              </Link>
-
-              <Link
-                href="/guides"
-                className={`relative inline-flex items-center gap-1.5 h-full whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
-                  pathname?.startsWith('/guides') ||
-                  pathname?.startsWith('/math-guides')
-                    ? 'text-[#2457D6] font-bold'
-                    : ''
-                }`}
-              >
-                <BookOpen className="w-4 h-4" aria-hidden="true" />
-                <span>Guides</span>
-                {(pathname?.startsWith('/guides') ||
-                  pathname?.startsWith('/math-guides')) && (
-                  <span
-                    aria-hidden="true"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#2457D6] rounded-full"
-                  />
-                )}
-              </Link>
-
-              <div className="relative" ref={commRef}>
+              {/* Compact, Clean "More" Dropdown */}
+              <div className="relative h-full flex items-center" ref={moreRef}>
                 <button
                   type="button"
                   data-compact="true"
-                  onClick={() => setCommunityMenuOpen(!communityMenuOpen)}
-                  aria-expanded={communityMenuOpen}
-                  className="compact-control inline-flex items-center gap-1 py-1.5 whitespace-nowrap shrink-0 transition-colors hover:text-[#2457D6] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md"
+                  onClick={() => setMoreMenuOpen(!moreMenuOpen)}
+                  aria-expanded={moreMenuOpen}
+                  className={`compact-control relative inline-flex items-center gap-1 px-2.5 py-1.5 text-sm whitespace-nowrap shrink-0 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
+                    isMoreActive || moreMenuOpen
+                      ? 'text-[#2457D6] dark:text-blue-400 font-semibold'
+                      : 'text-slate-600 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-white'
+                  }`}
                 >
-                  <Users className="w-4 h-4" aria-hidden="true" />
                   <span>More</span>
                   <ChevronDown
-                    className="w-3.5 h-3.5 text-[#475569]"
+                    className={`w-3.5 h-3.5 transition-transform duration-150 ${
+                      moreMenuOpen ? 'rotate-180 text-[#2457D6]' : 'text-slate-400'
+                    }`}
                     aria-hidden="true"
                   />
                 </button>
 
-                {communityMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-64 rounded-xl bg-white border border-[#E2E8F0] shadow-lg py-2 z-50">
-                    {COMMUNITY_LINKS.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setCommunityMenuOpen(false)}
-                        className="block px-4 py-2 text-sm font-medium text-[#152238] hover:bg-[#F5F7FA] hover:text-[#2457D6]"
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
+                {moreMenuOpen && (
+                  <div className="absolute right-0 top-full mt-1.5 w-52 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg py-1.5 z-50">
+                    {MORE_MENU_LINKS.map((item) => {
+                      const active = pathname?.startsWith(item.href);
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setMoreMenuOpen(false)}
+                          className={`block px-3.5 py-2 text-sm transition-colors ${
+                            active
+                              ? 'bg-blue-50/80 dark:bg-blue-950/50 text-[#2457D6] dark:text-blue-400 font-semibold'
+                              : 'text-slate-700 dark:text-slate-200 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-[#2457D6] dark:hover:text-blue-400'
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      );
+                    })}
+
+                    <div className="my-1 border-t border-slate-100 dark:border-slate-800" />
+
+                    {TRUST_MENU_LINKS.map((item) => {
+                      const active = pathname?.startsWith(item.href);
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setMoreMenuOpen(false)}
+                          className={`block px-3.5 py-1.5 text-xs transition-colors ${
+                            active
+                              ? 'text-[#2457D6] dark:text-blue-400 font-semibold'
+                              : 'text-slate-500 dark:text-slate-400 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      );
+                    })}
                   </div>
                 )}
               </div>
             </nav>
 
-            {/* Right: Currency Switcher + Language Selector + Compact Theme Toggle + Search Button + Mobile Menu Button */}
-            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-              {/* Global Finance Currency Switcher (USD, EUR, GBP, INR) */}
-              <div
-                className="relative"
-                ref={currRef}
-                data-no-translate="true"
-              >
-                <button
-                  type="button"
-                  data-compact="true"
-                  onClick={() => setCurrencyMenuOpen(!currencyMenuOpen)}
-                  aria-expanded={currencyMenuOpen}
-                  aria-label="Select display currency (USD, EUR, GBP, INR)"
-                  title={`Active Currency: ${currency} (${currencySymbol}) — Live Rate: 1 USD = ${currencySymbol}${formatExchangeRate(currency, currencyRates[currency] ?? 1.0)}`}
-                  className="compact-control inline-flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg bg-[#EEF3FF] hover:bg-[#DCE7FF] text-[11px] sm:text-xs md:text-sm font-extrabold text-[#2457D6] border border-[#BFDBFE] transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
-                >
-                  <span
-                    className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
-                      isLiveRates ? 'bg-emerald-500' : 'bg-blue-500'
-                    }`}
-                    aria-hidden="true"
-                  />
-                  <Coins className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#2457D6] hidden xs:inline" aria-hidden="true" />
-                  <span>{currency}</span>
-                  <span className="font-mono text-[10px] sm:text-[11px] bg-white px-1 rounded text-[#152238]">
-                    {currencySymbol}
-                  </span>
-                  <ChevronDown
-                    className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#2457D6]"
-                    aria-hidden="true"
-                  />
-                </button>
-
-                {currencyMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-80 rounded-2xl bg-white border border-[#E2E8F0] shadow-xl py-2.5 z-50">
-                    <div className="px-3.5 pb-2 mb-1 border-b border-[#F1F5F9] flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-1.5">
-                        <span
-                          className={`w-2 h-2 rounded-full ${
-                            isLiveRates
-                              ? 'bg-emerald-500 animate-pulse'
-                              : 'bg-blue-500'
-                          }`}
-                        />
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#152238]">
-                          Live FX Rates &amp; Currency Changer
-                        </span>
-                      </div>
-                      <button
-                        type="button"
-                        data-compact="true"
-                        onClick={() => refreshLiveRates()}
-                        disabled={isLoadingRates}
-                        title={
-                          lastUpdatedUtc
-                            ? `Updated: ${lastUpdatedUtc}`
-                            : 'Refresh live FX rates'
-                        }
-                        className="compact-control inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0] text-[10px] font-bold hover:bg-[#D1FAE5] cursor-pointer"
-                      >
-                        <RefreshCw
-                          className={`w-2.5 h-2.5 ${
-                            isLoadingRates ? 'animate-spin' : ''
-                          }`}
-                        />
-                        <span>{isLoadingRates ? 'Syncing' : 'Live Sync'}</span>
-                      </button>
-                    </div>
-
-                    {GLOBAL_CURRENCIES.map((c) => {
-                      const rateVal = currencyRates[c.code] ?? 1.0;
-                      const isSelected = currency === c.code;
-                      return (
-                        <button
-                          key={c.code}
-                          type="button"
-                          data-compact="true"
-                          onClick={() => {
-                            setCurrency(c.code);
-                            setCurrencyMenuOpen(false);
-                          }}
-                          className={`compact-control w-full text-left px-3.5 py-2 text-xs font-medium cursor-pointer flex items-center justify-between ${
-                            isSelected
-                              ? 'bg-[#EEF3FF] text-[#2457D6] font-bold'
-                              : 'text-[#152238] hover:bg-[#F5F7FA]'
-                          }`}
-                        >
-                          <span className="flex items-center gap-2">
-                            <span>{c.flag}</span>
-                            <span>
-                              {c.code} ({c.symbol})
-                            </span>
-                          </span>
-                          <span className="text-[11px] font-mono text-[#475569]">
-                            1 USD = {c.symbol}
-                            {formatExchangeRate(c.code, rateVal)}
-                          </span>
-                        </button>
-                      );
-                    })}
-
-                    {/* Inline Quick Live Currency Changer */}
-                    <div className="mt-2 pt-2.5 px-3.5 border-t border-[#F1F5F9] space-y-2">
-                      <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-[#64748B]">
-                        <span className="inline-flex items-center gap-1">
-                          <ArrowLeftRight className="w-3 h-3 text-[#2457D6]" />
-                          Quick Live Currency Changer
-                        </span>
-                        {lastUpdatedUtc && (
-                          <span className="font-mono text-[9px] text-emerald-700">
-                            Live Mid-Market
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <input
-                          type="number"
-                          min={0}
-                          step="any"
-                          aria-label="Quick currency converter amount"
-                          value={quickConvertAmt}
-                          onChange={(e) =>
-                            setQuickConvertAmt(
-                              Math.max(0, Number(e.target.value))
-                            )
-                          }
-                          className="w-full px-2.5 py-1.5 rounded-lg border border-[#CBD5E1] text-xs font-mono font-bold text-[#152238]"
-                        />
-                        <select
-                          aria-label="Quick currency converter source"
-                          value={quickFromCode}
-                          onChange={(e) =>
-                            setQuickFromCode(
-                              e.target.value as GlobalCurrencyCode
-                            )
-                          }
-                          className="px-2 py-1.5 rounded-lg border border-[#CBD5E1] bg-[#F8FAFC] text-xs font-bold text-[#152238]"
-                        >
-                          {GLOBAL_CURRENCIES.map((c) => (
-                            <option key={c.code} value={c.code}>
-                              {c.code}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="grid grid-cols-2 gap-1.5 pt-0.5">
-                        {GLOBAL_CURRENCIES.map((c) => {
-                          const val = convertBetween(
-                            quickConvertAmt,
-                            quickFromCode,
-                            c.code
-                          );
-                          return (
-                            <button
-                              key={c.code}
-                              type="button"
-                              data-compact="true"
-                              onClick={() => {
-                                setCurrency(c.code);
-                                setCurrencyMenuOpen(false);
-                              }}
-                              className={`compact-control px-2 py-1.5 rounded-lg border text-left text-[11px] cursor-pointer ${
-                                currency === c.code
-                                  ? 'bg-[#2457D6] text-white border-[#2457D6] font-bold'
-                                  : 'bg-[#F8FAFC] text-[#152238] border-[#E2E8F0] hover:border-[#2457D6]'
-                              }`}
-                            >
-                              <div className="text-[9px] opacity-80">
-                                {c.flag} {c.code}
-                              </div>
-                              <div className="font-mono font-bold truncate">
-                                {c.symbol}
-                                {val.toLocaleString(
-                                  c.code === 'INR' ? 'en-IN' : 'en-US',
-                                  {
-                                    maximumFractionDigits: val < 100 ? 2 : 0,
-                                  }
-                                )}
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Language Selector (Hidden on mobile < md to prevent header crowding; available in mobile drawer) */}
-              <div
-                className="relative hidden md:block"
-                ref={langRef}
-                data-no-translate="true"
-              >
-                <button
-                  type="button"
-                  data-compact="true"
-                  onClick={() => setLangMenuOpen(!langMenuOpen)}
-                  aria-expanded={langMenuOpen}
-                  aria-label="Select language"
-                  className="compact-control inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-[#152238] hover:bg-[#F5F7FA] transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
-                >
-                  <Globe className="w-4 h-4 text-[#2457D6]" aria-hidden="true" />
-                  <span>{currentLanguage.label}</span>
-                  <ChevronDown
-                    className="w-3.5 h-3.5 text-[#475569]"
-                    aria-hidden="true"
-                  />
-                </button>
-
-                {langMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-40 rounded-xl bg-white border border-[#E2E8F0] shadow-lg py-1.5 z-50">
-                    {SUPPORTED_LANGUAGES.map((l) => (
-                      <button
-                        key={l.code}
-                        type="button"
-                        data-compact="true"
-                        onClick={() => {
-                          setLang(l.code);
-                          setLangMenuOpen(false);
-                        }}
-                        className={`compact-control w-full text-left px-3.5 py-1.5 text-sm font-medium cursor-pointer flex items-center justify-between ${
-                          lang === l.code
-                            ? 'bg-[#EEF3FF] text-[#2457D6] font-bold'
-                            : 'text-[#152238] hover:bg-[#F5F7FA]'
-                        }`}
-                      >
-                        <span>{l.label}</span>
-                        <span className="text-[11px] uppercase text-[#64748B]">
-                          {l.code}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Premium 3D Neumorphic Theme Switcher (Responsive sm on mobile, md on tablet/desktop) */}
-              <div className="inline-flex items-center shrink-0">
-                <ThemeSwitcher size="md" />
-              </div>
-
-              {/* Quick Search Modal Button */}
+            {/* Zone 3: Clean Utility Controls */}
+            <div className="flex items-center gap-2 shrink-0">
+              {/* Search Trigger */}
               <button
                 type="button"
                 data-compact="true"
                 onClick={() => setSearchOpen(true)}
-                aria-label="Quick search calculators (Ctrl+K)"
-                title="Quick search calculators (Ctrl+K)"
-                className="compact-control w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#EEF3FF] hover:bg-[#DCE7FF] text-[#152238] flex items-center justify-center transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                aria-label="Search calculators (Ctrl+K)"
+                title="Search calculators (Ctrl+K)"
+                className="compact-control inline-flex items-center gap-2 h-9 px-2.5 sm:px-3 rounded-lg bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200/70 dark:hover:bg-slate-700/80 border border-slate-200/80 dark:border-slate-700 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
               >
-                <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2457D6]" aria-hidden="true" />
+                <Search
+                  className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0"
+                  aria-hidden="true"
+                />
+                <span className="hidden md:inline text-xs font-medium text-slate-500 dark:text-slate-400">
+                  Search...
+                </span>
+                <kbd className="hidden xl:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700">
+                  Ctrl K
+                </kbd>
               </button>
 
-              {/* Mobile & Tablet Menu Toggle Button (< lg) */}
+              {/* Unified Currency & Language Control Group */}
+              <div
+                className="inline-flex items-center h-9 rounded-lg border border-slate-200/80 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 p-0.5"
+                data-no-translate="true"
+              >
+                {/* Currency Selector */}
+                <div className="relative h-full" ref={currRef}>
+                  <button
+                    type="button"
+                    data-compact="true"
+                    onClick={() => {
+                      setCurrencyMenuOpen(!currencyMenuOpen);
+                      setLangMenuOpen(false);
+                    }}
+                    aria-expanded={currencyMenuOpen}
+                    aria-label={`Select display currency (currently ${currency})`}
+                    title={`Active Currency: ${currency} (${currencySymbol})`}
+                    className="compact-control inline-flex items-center gap-1 h-full px-2 sm:px-2.5 rounded-md text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 hover:text-[#2457D6] dark:hover:text-blue-400 transition-colors cursor-pointer tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                  >
+                    <span className="font-mono font-bold text-[#2457D6] dark:text-blue-400">
+                      {currencySymbol}
+                    </span>
+                    <span>{currency}</span>
+                    <ChevronDown
+                      className="w-3 h-3 text-slate-400"
+                      aria-hidden="true"
+                    />
+                  </button>
+
+                  {currencyMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-72 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-2.5 z-50">
+                      <div className="px-3.5 pb-2 mb-1 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+                        <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-200">
+                          Currency &amp; FX Rates
+                        </span>
+                        <button
+                          type="button"
+                          data-compact="true"
+                          onClick={() => refreshLiveRates()}
+                          disabled={isLoadingRates}
+                          title={
+                            lastUpdatedUtc
+                              ? `Updated: ${lastUpdatedUtc}`
+                              : 'Refresh exchange rates'
+                          }
+                          className="compact-control inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[10px] font-semibold hover:bg-slate-200/70 cursor-pointer"
+                        >
+                          <RefreshCw
+                            className={`w-2.5 h-2.5 ${
+                              isLoadingRates ? 'animate-spin' : ''
+                            }`}
+                          />
+                          <span>{isLoadingRates ? 'Updating' : 'Refresh'}</span>
+                        </button>
+                      </div>
+
+                      {GLOBAL_CURRENCIES.map((c) => {
+                        const rateVal = currencyRates[c.code] ?? 1.0;
+                        const isSelected = currency === c.code;
+                        return (
+                          <button
+                            key={c.code}
+                            type="button"
+                            data-compact="true"
+                            onClick={() => {
+                              setCurrency(c.code);
+                              setCurrencyMenuOpen(false);
+                            }}
+                            className={`compact-control w-full text-left px-3.5 py-2 text-xs font-medium cursor-pointer flex items-center justify-between ${
+                              isSelected
+                                ? 'bg-blue-50/80 dark:bg-blue-950/50 text-[#2457D6] dark:text-blue-400 font-semibold'
+                                : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800'
+                            }`}
+                          >
+                            <span className="flex items-center gap-2">
+                              <span>{c.flag}</span>
+                              <span>
+                                {c.code} ({c.symbol})
+                              </span>
+                            </span>
+                            <span className="text-[11px] font-mono tabular-nums text-slate-500 dark:text-slate-400">
+                              1 USD = {c.symbol}
+                              {formatExchangeRate(c.code, rateVal)}
+                            </span>
+                          </button>
+                        );
+                      })}
+
+                      {/* Inline Quick Currency Converter */}
+                      <div className="mt-2 pt-2.5 px-3.5 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                        <div className="flex items-center justify-between text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                          <span className="inline-flex items-center gap-1">
+                            <ArrowLeftRight className="w-3 h-3 text-[#2457D6] dark:text-blue-400" />
+                            Quick Convert
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <input
+                            type="number"
+                            min={0}
+                            step="any"
+                            aria-label="Quick currency converter amount"
+                            value={quickConvertAmt}
+                            onChange={(e) =>
+                              setQuickConvertAmt(
+                                Math.max(0, Number(e.target.value))
+                              )
+                            }
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-mono tabular-nums font-semibold text-slate-800 dark:text-slate-100"
+                          />
+                          <select
+                            aria-label="Quick currency converter source"
+                            value={quickFromCode}
+                            onChange={(e) =>
+                              setQuickFromCode(
+                                e.target.value as GlobalCurrencyCode
+                              )
+                            }
+                            className="px-2 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-semibold text-slate-800 dark:text-slate-100"
+                          >
+                            {GLOBAL_CURRENCIES.map((c) => (
+                              <option key={c.code} value={c.code}>
+                                {c.code}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="grid grid-cols-2 gap-1.5 pt-0.5">
+                          {GLOBAL_CURRENCIES.map((c) => {
+                            const val = convertBetween(
+                              quickConvertAmt,
+                              quickFromCode,
+                              c.code
+                            );
+                            return (
+                              <button
+                                key={c.code}
+                                type="button"
+                                data-compact="true"
+                                onClick={() => {
+                                  setCurrency(c.code);
+                                  setCurrencyMenuOpen(false);
+                                }}
+                                className={`compact-control px-2 py-1.5 rounded-lg border text-left text-[11px] cursor-pointer ${
+                                  currency === c.code
+                                    ? 'bg-[#2457D6] text-white border-[#2457D6] font-semibold'
+                                    : 'bg-slate-50 dark:bg-slate-800/70 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-[#2457D6]'
+                                }`}
+                              >
+                                <div className="text-[10px] opacity-80">
+                                  {c.flag} {c.code}
+                                </div>
+                                <div className="font-mono tabular-nums font-semibold truncate">
+                                  {c.symbol}
+                                  {val.toLocaleString(
+                                    c.code === 'INR' ? 'en-IN' : 'en-US',
+                                    {
+                                      maximumFractionDigits: val < 100 ? 2 : 0,
+                                    }
+                                  )}
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Hairline Divider & Compact Language Selector (md and up) */}
+                <span
+                  aria-hidden="true"
+                  className="hidden md:block w-px h-4 bg-slate-200 dark:bg-slate-700"
+                />
+                <div className="relative hidden md:block h-full" ref={langRef}>
+                  <button
+                    type="button"
+                    data-compact="true"
+                    onClick={() => {
+                      setLangMenuOpen(!langMenuOpen);
+                      setCurrencyMenuOpen(false);
+                    }}
+                    aria-expanded={langMenuOpen}
+                    aria-label={`Select language (currently ${currentLanguage.label})`}
+                    title={`Language: ${currentLanguage.label}`}
+                    className="compact-control inline-flex items-center gap-1 h-full px-2 rounded-md text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 hover:text-[#2457D6] dark:hover:text-blue-400 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                  >
+                    <Globe
+                      className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400"
+                      aria-hidden="true"
+                    />
+                    <span className="uppercase">{currentLanguage.code}</span>
+                    <ChevronDown
+                      className="w-3 h-3 text-slate-400"
+                      aria-hidden="true"
+                    />
+                  </button>
+
+                  {langMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-40 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-1.5 z-50">
+                      {SUPPORTED_LANGUAGES.map((l) => (
+                        <button
+                          key={l.code}
+                          type="button"
+                          data-compact="true"
+                          onClick={() => {
+                            setLang(l.code);
+                            setLangMenuOpen(false);
+                          }}
+                          className={`compact-control w-full text-left px-3.5 py-1.5 text-xs font-medium cursor-pointer flex items-center justify-between ${
+                            lang === l.code
+                              ? 'bg-blue-50/80 dark:bg-blue-950/50 text-[#2457D6] dark:text-blue-400 font-semibold'
+                              : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800'
+                          }`}
+                        >
+                          <span>{l.label}</span>
+                          <span className="text-[10px] font-mono uppercase text-slate-400">
+                            {l.code}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Single Responsive Theme Switcher */}
+              <div className="inline-flex items-center shrink-0">
+                <ThemeSwitcher size="md" />
+              </div>
+
+              {/* Mobile & Tablet Navigation Toggle (< lg) */}
               <button
                 type="button"
                 data-compact="true"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="compact-control lg:hidden inline-flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg bg-[#EEF3FF] hover:bg-[#DCE7FF] text-[#152238] border border-[#CBD5E1] text-[11px] sm:text-xs font-extrabold transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                className="compact-control lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/70 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
                 aria-expanded={mobileMenuOpen}
                 aria-label="Toggle navigation menu"
               >
                 {mobileMenuOpen ? (
-                  <>
-                    <X className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
-                    <span className="hidden sm:inline">Close</span>
-                  </>
+                  <X className="w-4 h-4 text-[#2457D6] dark:text-blue-400" aria-hidden="true" />
                 ) : (
-                  <>
-                    <Menu className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
-                    <span className="hidden sm:inline">Menu</span>
-                  </>
+                  <Menu className="w-4 h-4 text-slate-700 dark:text-slate-200" aria-hidden="true" />
                 )}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Always-Visible Mobile & Tablet Quick Navigation Bar (< lg) */}
-        <div className="lg:hidden border-t border-[#E2E8F0] bg-[#F8FAFC]">
-          <nav
-            aria-label="Mobile quick navigation"
-            className="max-w-[1360px] mx-auto px-3 sm:px-6 py-2 flex items-center gap-2 overflow-x-auto no-scrollbar"
-          >
-            {MOBILE_QUICK_LINKS.map((link) => {
-              const isActive =
-                pathname === link.href ||
-                (link.href !== '/' && pathname?.startsWith(link.href));
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shrink-0 transition-colors ${
-                    isActive
-                      ? 'bg-[#2457D6] text-white shadow-2xs'
-                      : 'bg-white text-[#152238] border border-[#E2E8F0] hover:border-[#2457D6] hover:text-[#2457D6]'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* Expandable Full Mobile & Tablet Navigation Drawer (< lg) */}
+        {/* Clean, Simplified Mobile & Tablet Navigation Drawer (< lg) */}
         {mobileMenuOpen && (
           <nav
             aria-label="Mobile navigation drawer"
-            className="lg:hidden border-t border-[#E2E8F0] bg-white px-4 py-4 space-y-4 max-h-[calc(100vh-7rem)] overflow-y-auto shadow-lg"
+            className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4 space-y-4 max-h-[calc(100vh-3.5rem)] overflow-y-auto shadow-lg"
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-              <Link
-                href="/calculators"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-bold text-[#152238] bg-[#F8FAFC] hover:bg-[#EEF3FF] hover:text-[#2457D6]"
-              >
-                <LayoutGrid className="w-4 h-4 text-[#2457D6]" aria-hidden="true" />
-                <span>All Calculators</span>
-              </Link>
-              <Link
-                href="/search"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-bold text-[#152238] bg-[#F8FAFC] hover:bg-[#EEF3FF] hover:text-[#2457D6]"
-              >
-                <Search className="w-4 h-4 text-[#2457D6]" aria-hidden="true" />
-                <span>Search Calculators</span>
-              </Link>
-              <Link
-                href="/guides"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-bold text-[#2457D6] bg-[#EEF3FF] hover:bg-[#DCE7FF]"
-              >
-                <BookOpen className="w-4 h-4 text-[#2457D6]" aria-hidden="true" />
-                <span>Guides &amp; Formulas</span>
-              </Link>
-              <Link
-                href="/calculation-workspace"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-bold text-[#152238] bg-[#F8FAFC] hover:bg-[#EEF3FF] hover:text-[#2457D6]"
-              >
-                <Calculator className="w-4 h-4 text-[#2457D6]" aria-hidden="true" />
-                <span>Calculation Workspace</span>
-              </Link>
-            </div>
-
-            <div className="pt-2 border-t border-[#E2E8F0]">
-              <div className="px-2 pb-2 text-xs font-extrabold uppercase tracking-wider text-[#64748B]">
-                Calculator Categories &amp; Tools
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
-                {COMMUNITY_LINKS.map((item) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+              {[...PRIMARY_NAV_LINKS, ...MORE_MENU_LINKS].map((item) => {
+                const active =
+                  pathname === item.href ||
+                  (item.href !== '/calculators' && pathname?.startsWith(item.href));
+                return (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block px-3 py-2 rounded-lg text-sm font-semibold text-[#152238] hover:bg-[#F5F7FA] hover:text-[#2457D6]"
+                    className={`px-3 py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-colors ${
+                      active
+                        ? 'bg-blue-50 dark:bg-blue-950/60 text-[#2457D6] dark:text-blue-400 border border-blue-200 dark:border-blue-800'
+                        : 'bg-slate-50 dark:bg-slate-800/70 text-slate-800 dark:text-slate-200 border border-slate-200/70 dark:border-slate-800 hover:border-[#2457D6]'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 px-1">
+              <div className="flex items-center gap-4 text-xs font-medium text-slate-600 dark:text-slate-400">
+                {TRUST_MENU_LINKS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="hover:text-[#2457D6] dark:hover:text-blue-400"
                   >
                     {item.name}
                   </Link>
                 ))}
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="hover:text-[#2457D6] dark:hover:text-blue-400"
+                >
+                  Contact
+                </Link>
               </div>
-            </div>
 
-            {/* Mobile Global Currency Selector */}
-            <div className="pt-3 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-2 px-2">
-              <span className="text-xs font-bold text-[#64748B] flex items-center gap-1.5">
-                <Coins className="w-3.5 h-3.5" aria-hidden="true" />
-                Currency:
-              </span>
               <div
                 className="flex flex-wrap items-center gap-1.5"
                 data-no-translate="true"
               >
+                <Coins className="w-3.5 h-3.5 text-slate-400 mr-0.5" aria-hidden="true" />
                 {GLOBAL_CURRENCIES.map((c) => (
                   <button
                     key={c.code}
                     type="button"
                     data-compact="true"
                     onClick={() => setCurrency(c.code)}
-                    className={`compact-control px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer ${
+                    className={`compact-control px-2 py-1 rounded text-xs font-semibold tabular-nums cursor-pointer ${
                       currency === c.code
                         ? 'bg-[#2457D6] text-white'
-                        : 'bg-[#F8FAFC] text-[#152238] border border-[#E2E8F0]'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
                     }`}
                   >
-                    {c.flag} {c.code} ({c.symbol})
+                    {c.code}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Mobile Appearance / 3D Neumorphic Theme Switcher + System Option */}
-            <div className="pt-3 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-2 px-2">
-              <span className="text-xs font-bold text-[#64748B] flex items-center gap-1.5">
-                {isDark ? (
-                  <Moon className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
-                ) : (
-                  <Sun className="w-3.5 h-3.5 text-amber-500" aria-hidden="true" />
-                )}
-                Theme Mode:
-              </span>
-              <ThemeSwitcher size="md" showSystemOption={true} />
-            </div>
-
             {/* Mobile Language Selector */}
-            <div className="pt-3 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-2 px-2">
-              <span className="text-xs font-bold text-[#64748B] flex items-center gap-1.5">
+            <div className="pt-2.5 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 px-1">
+              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                 <Globe className="w-3.5 h-3.5" aria-hidden="true" />
                 Language:
               </span>
@@ -734,10 +638,10 @@ export default function Navbar() {
                     type="button"
                     data-compact="true"
                     onClick={() => setLang(l.code)}
-                    className={`compact-control px-2.5 py-1 rounded-md text-xs font-bold cursor-pointer ${
+                    className={`compact-control px-2 py-1 rounded text-xs font-semibold cursor-pointer ${
                       lang === l.code
                         ? 'bg-[#2457D6] text-white'
-                        : 'bg-[#F8FAFC] text-[#152238] border border-[#E2E8F0]'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
                     }`}
                   >
                     {l.label}

@@ -60,6 +60,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: '/accessibility',
+        destination: '/privacy-policy',
+        permanent: true,
+      },
+      {
         source: '/math-guides/percentages',
         destination: '/guides/how-to-calculate-a-percentage',
         permanent: true,

@@ -17,6 +17,7 @@ const STATIC_REDIRECTS = [
   ['/unit-converter', '/conversions/length'],
   ['/recipe-converters', '/recipe-converter'],
   ['/privacy-and-accessibility', '/privacy-policy'],
+  ['/accessibility', '/privacy-policy'],
   ['/math-guides/percentages', '/guides/how-to-calculate-a-percentage'],
   ['/salary-tax-calculator', '/finance/take-home-pay-calculator'],
   ['/articles', '/guides'],

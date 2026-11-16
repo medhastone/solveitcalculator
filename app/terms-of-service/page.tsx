@@ -51,10 +51,6 @@ export default function TermsOfServicePage() {
               Privacy Policy
             </Link>
             <span>•</span>
-            <Link href="/accessibility" className="text-[#2457D6] font-semibold hover:underline">
-              Accessibility
-            </Link>
-            <span>•</span>
             <Link
               href="/calculation-methodology"
               className="text-[#2457D6] font-semibold hover:underline"
@@ -137,10 +133,10 @@ export default function TermsOfServicePage() {
             Have a question about a specific formula or noticed an edge case?
           </span>
           <Link
-            href="/contact#report-error"
+            href="/contact"
             className="inline-flex items-center gap-1.5 font-bold text-[#2457D6] hover:underline"
           >
-            <span>Contact Us or Report an Error</span>
+            <span>Contact Us</span>
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>

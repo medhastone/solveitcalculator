@@ -210,16 +210,16 @@ export default function BrandLogo({
           <div className="flex flex-col">
             <span
               data-no-translate="true"
-              className="text-[21px] sm:text-[23px] font-extrabold tracking-[-0.035em] leading-none text-[#152238]"
+              className="text-[21px] sm:text-[23px] font-extrabold tracking-[-0.035em] leading-none text-[#152238] dark:text-slate-100"
             >
-              SolveIt<span className="text-[#2457D6]">Calculator</span>
+              SolveIt<span className="text-[#2457D6] dark:text-blue-400">Calculator</span>
             </span>
-            <span className="mt-1.5 inline-flex items-center gap-1.5 text-[11.5px] font-semibold tracking-tight text-[#475569]">
+            <span className="mt-1.5 inline-flex items-center gap-1.5 text-[11.5px] font-semibold tracking-tight text-[#475569] dark:text-slate-400">
               <ShieldCheck
                 className="w-3.5 h-3.5 text-[#10B981] shrink-0"
                 aria-hidden="true"
               />
-              <span>Verified Formulas &amp; Decision Tools</span>
+              <span>Transparent Formulas &amp; Primary Sources</span>
             </span>
           </div>
         </Link>
@@ -237,9 +237,9 @@ export default function BrandLogo({
         <BrandMark size="sm" />
         <span
           data-no-translate="true"
-          className="text-[19px] font-extrabold tracking-[-0.035em] text-[#152238]"
+          className="text-[19px] font-extrabold tracking-[-0.035em] text-[#152238] dark:text-slate-100"
         >
-          SolveIt<span className="text-[#2457D6]">Calculator</span>
+          SolveIt<span className="text-[#2457D6] dark:text-blue-400">Calculator</span>
         </span>
       </Link>
     );
@@ -250,14 +250,14 @@ export default function BrandLogo({
     <Link
       href={href}
       aria-label="SolveItCalculator Home"
-      className={`group flex items-center gap-2 sm:gap-2.5 whitespace-nowrap shrink-0 min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-xl ${className}`}
+      className={`group flex items-center gap-2.5 whitespace-nowrap shrink-0 min-w-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-xl ${className}`}
     >
-      <BrandMark size="md" className="w-[30px] h-[30px] sm:w-[36px] sm:h-[36px]" />
+      <BrandMark size="md" className="w-[30px] h-[30px] sm:w-[34px] sm:h-[34px]" />
       <span
         data-no-translate="true"
-        className="text-[17px] sm:text-[21px] font-extrabold tracking-[-0.035em] text-[#152238]"
+        className="text-[17px] sm:text-[20px] font-extrabold tracking-[-0.035em] text-[#152238] dark:text-slate-100"
       >
-        SolveIt<span className="text-[#2457D6]">Calculator</span>
+        SolveIt<span className="text-[#2457D6] dark:text-blue-400">Calculator</span>
       </span>
     </Link>
   );

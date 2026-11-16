@@ -1029,18 +1029,6 @@ export default function PrivacyAccessibilityClient({
                     Terms of Service
                   </Link>
                 </li>
-                <li className="flex items-center gap-2">
-                  <span
-                    className="w-1.5 h-1.5 rounded-full bg-[#0A58ED] shrink-0"
-                    aria-hidden="true"
-                  />
-                  <Link
-                    href="/accessibility"
-                    className="text-[#0A58ED] font-semibold hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A58ED] rounded-xs"
-                  >
-                    Accessibility Statement
-                  </Link>
-                </li>
               </ul>
             </section>
 

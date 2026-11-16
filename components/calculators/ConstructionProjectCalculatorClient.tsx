@@ -2,8 +2,6 @@
 
 import React, { useState, useMemo, useRef } from 'react';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import {
   calculateConstructionProject,
   switchMeasurementSystemPreservingDimensions,
@@ -271,8 +269,6 @@ export default function ConstructionProjectCalculatorClient() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-slate-950 text-[#0F172A] dark:text-slate-100 transition-colors">
-      <Navbar />
-
       {/* Page Header & Breadcrumb */}
       <section className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
@@ -2221,18 +2217,9 @@ export default function ConstructionProjectCalculatorClient() {
             >
               Contact
             </Link>
-            <span className="text-slate-300 dark:text-slate-700">•</span>
-            <Link
-              href="/contact#report-error"
-              className="text-rose-600 dark:text-rose-400 hover:underline font-semibold"
-            >
-              Report an error
-            </Link>
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }
