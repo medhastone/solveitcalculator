@@ -1,7 +1,6 @@
 import React from 'react';
 import { Calculator } from 'lucide-react';
 import { CalculatorSystemData } from '@/lib/calculatorSystemData';
-import CalculatorJsonLd from '@/components/calculator-page/CalculatorJsonLd';
 import SingleCalculatorPageShell, {
   RelatedCalculatorLink,
   SidebarIconVariant,
@@ -51,23 +50,6 @@ export default function CalculatorPageSystem({
   children,
   currencySymbol,
 }: CalculatorPageSystemProps) {
-  const jsonLdBreadcrumbs = [
-    { name: 'Home', url: 'https://solveitcalculator.com' },
-    {
-      name: data.categoryName || 'Finance',
-      url: `https://solveitcalculator.com${data.categoryPath || '/finance'}`,
-    },
-    ...(data.subcategoryName && data.subcategoryPath
-      ? [
-          {
-            name: data.subcategoryName,
-            url: `https://solveitcalculator.com${data.subcategoryPath}`,
-          },
-        ]
-      : []),
-    { name: data.name, url: data.canonicalUrl },
-  ];
-
   const shellBreadcrumbs = [
     { label: 'Home', href: '/' },
     { label: data.categoryName || 'Finance', href: data.categoryPath || '/finance' },
@@ -148,18 +130,8 @@ export default function CalculatorPageSystem({
   );
 
   return (
-    <>
-      <CalculatorJsonLd
-        name={data.name}
-        description={data.shortAnswer}
-        url={data.canonicalUrl}
-        category="FinanceApplication"
-        breadcrumbs={jsonLdBreadcrumbs}
-        faqs={data.faqs}
-      />
-
-      <SingleCalculatorPageShell
-        breadcrumbs={shellBreadcrumbs}
+    <SingleCalculatorPageShell
+      breadcrumbs={shellBreadcrumbs}
         title={data.name}
         subtitle={data.shortAnswer}
         heroSymbol={heroSymbol}
@@ -218,6 +190,5 @@ export default function CalculatorPageSystem({
               ]
         }
       />
-    </>
   );
 }

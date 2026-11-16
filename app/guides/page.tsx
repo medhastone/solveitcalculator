@@ -23,6 +23,50 @@ export const metadata: Metadata = {
   },
 };
 
+const GUIDES_HUB_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': 'https://solveitcalculator.com/guides#collection',
+      url: 'https://solveitcalculator.com/guides',
+      name: 'Educational Guides & Formula Tutorials | SolveItCalculator',
+      description:
+        'Plain-English educational guides explaining math, percentage, finance, home project, and tax formulas step by step with worked examples.',
+      isPartOf: {
+        '@id': 'https://solveitcalculator.com/#website',
+      },
+      dateModified: '2026-11-16',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://solveitcalculator.com/guides#breadcrumb',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://solveitcalculator.com',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Guides',
+          item: 'https://solveitcalculator.com/guides',
+        },
+      ],
+    },
+  ],
+};
+
 export default function GuidesHubPage() {
-  return <GuidesHubClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(GUIDES_HUB_JSON_LD) }}
+      />
+      <GuidesHubClient />
+    </>
+  );
 }

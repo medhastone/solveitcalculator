@@ -37,6 +37,9 @@ const HOME_JSON_LD = {
       name: 'SolveItCalculator',
       description:
         'Free, formula-verified online calculators with step-by-step worked examples and authoritative reference tables.',
+      publisher: {
+        '@id': 'https://solveitcalculator.com/#organization',
+      },
       potentialAction: {
         '@type': 'SearchAction',
         target: {
@@ -51,12 +54,32 @@ const HOME_JSON_LD = {
       '@id': 'https://solveitcalculator.com/#organization',
       name: 'SolveItCalculator',
       url: 'https://solveitcalculator.com',
+      email: 'info@solveitcalculator.com',
       logo: {
         '@type': 'ImageObject',
         url: 'https://solveitcalculator.com/apple-icon',
         width: 180,
         height: 180,
       },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        email: 'info@solveitcalculator.com',
+        contactType: 'customer support',
+        url: 'https://solveitcalculator.com/contact',
+      },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': 'https://solveitcalculator.com/#webpage',
+      url: 'https://solveitcalculator.com',
+      name: 'SolveItCalculator — Free Online Calculators, Step-by-Step Formulas & Reference Charts',
+      isPartOf: {
+        '@id': 'https://solveitcalculator.com/#website',
+      },
+      about: {
+        '@id': 'https://solveitcalculator.com/#organization',
+      },
+      dateModified: '2026-11-16',
     },
   ],
 };

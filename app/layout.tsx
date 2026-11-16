@@ -24,6 +24,17 @@ export const metadata: Metadata = {
   description:
     'Free, fast online calculators with live step-by-step formulas and reference tables across Math, Finance & Salary Tax, Home & Construction, Unit & Recipe Conversion, Date & Time, Health, and Science.',
   manifest: '/manifest.webmanifest',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -39,6 +50,7 @@ export const metadata: Metadata = {
       'Calculate percentages, construction materials, recipe conversions, country take-home salary, loans, mortgages, BMI, and more with 100% transparent formulas.',
     url: 'https://solveitcalculator.com',
     siteName: 'SolveItCalculator',
+    locale: 'en_US',
     type: 'website',
   },
   twitter: {

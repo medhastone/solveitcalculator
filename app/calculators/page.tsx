@@ -24,6 +24,50 @@ export const metadata: Metadata = {
   },
 };
 
+const CALCULATORS_DIRECTORY_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': 'https://solveitcalculator.com/calculators#collection',
+      url: 'https://solveitcalculator.com/calculators',
+      name: 'All Calculators Directory: Math, Finance & Units | SolveItCalculator',
+      description:
+        'Browse 91 verified online calculators grouped by category across Math, Finance & Tax, Unit Conversion, Date & Time, Health & Fitness, Construction, and Science.',
+      isPartOf: {
+        '@id': 'https://solveitcalculator.com/#website',
+      },
+      dateModified: '2026-11-16',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://solveitcalculator.com/calculators#breadcrumb',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://solveitcalculator.com',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'All Calculators',
+          item: 'https://solveitcalculator.com/calculators',
+        },
+      ],
+    },
+  ],
+};
+
 export default function AllCalculatorsPage() {
-  return <AllCalculatorsDirectoryClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(CALCULATORS_DIRECTORY_JSON_LD) }}
+      />
+      <AllCalculatorsDirectoryClient />
+    </>
+  );
 }

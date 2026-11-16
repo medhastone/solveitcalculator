@@ -23,6 +23,50 @@ export const metadata: Metadata = {
   },
 };
 
+const METHODOLOGY_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://solveitcalculator.com/calculation-methodology#webpage',
+      url: 'https://solveitcalculator.com/calculation-methodology',
+      name: 'Calculation Methodology, Formulas & Change Log | SolveItCalculator',
+      description:
+        'Formulas, IEEE 754 rounding rules, default assumptions, category testing procedures, and visible change log for SolveItCalculator tools.',
+      dateModified: '2026-11-16',
+      isPartOf: {
+        '@id': 'https://solveitcalculator.com/#website',
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://solveitcalculator.com/calculation-methodology#breadcrumb',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://solveitcalculator.com',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Calculation Methodology',
+          item: 'https://solveitcalculator.com/calculation-methodology',
+        },
+      ],
+    },
+  ],
+};
+
 export default function CalculationMethodologyPage() {
-  return <AboutMethodologyClient pageVariant="methodology" />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(METHODOLOGY_JSON_LD) }}
+      />
+      <AboutMethodologyClient pageVariant="methodology" />
+    </>
+  );
 }

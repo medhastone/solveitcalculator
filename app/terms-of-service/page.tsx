@@ -22,9 +22,49 @@ export const metadata: Metadata = {
   },
 };
 
+const TERMS_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://solveitcalculator.com/terms-of-service#webpage',
+      url: 'https://solveitcalculator.com/terms-of-service',
+      name: 'Terms of Service & Educational Disclaimer | SolveItCalculator',
+      description:
+        'Read the Terms of Service, acceptable use guidelines, and educational disclaimer for using calculators, formulas, and reference tables on SolveItCalculator.com.',
+      dateModified: '2026-11-16',
+      isPartOf: {
+        '@id': 'https://solveitcalculator.com/#website',
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://solveitcalculator.com/terms-of-service#breadcrumb',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://solveitcalculator.com',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Terms of Service',
+          item: 'https://solveitcalculator.com/terms-of-service',
+        },
+      ],
+    },
+  ],
+};
+
 export default function TermsOfServicePage() {
   return (
     <main className="min-h-screen bg-[#F5F7FA] text-[#152238] py-10 sm:py-14">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(TERMS_JSON_LD) }}
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header Card */}
         <section className="bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-8 shadow-2xs space-y-4">
