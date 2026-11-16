@@ -374,10 +374,13 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
 
   if (!mounted || !data) {
     return (
-      <div className="bg-surface min-h-screen flex flex-col items-center justify-center text-on-surface-variant font-data-mono">
+      <main
+        id="main-content"
+        className="bg-surface min-h-screen flex flex-col items-center justify-center text-on-surface-variant font-data-mono"
+      >
         <span className="material-symbols-outlined text-[36px] animate-spin text-primary mb-3">progress_activity</span>
         <span>Calibrating Actuarial Trinity Engine...</span>
-      </div>
+      </main>
     );
   }
 

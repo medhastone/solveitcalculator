@@ -140,6 +140,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             ref={inputRef}
             id="modal-calculator-search"
             type="text"
+            role="combobox"
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -147,9 +148,13 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             }}
             placeholder="Search calculators (e.g., percentage, flooring, workspace, loan, BMI)..."
             aria-autocomplete="list"
-            aria-controls="modal-search-results-list"
+            aria-haspopup="listbox"
+            aria-expanded={results.length > 0}
+            aria-controls={
+              results.length > 0 ? 'modal-search-results-list' : undefined
+            }
             aria-activedescendant={
-              activeIndex >= 0 && results[activeIndex]
+              results.length > 0 && activeIndex >= 0 && results[activeIndex]
                 ? `modal-result-${results[activeIndex].id}`
                 : undefined
             }

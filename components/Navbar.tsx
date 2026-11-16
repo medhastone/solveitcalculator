@@ -13,9 +13,13 @@ import {
   RefreshCw,
   ArrowLeftRight,
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import BrandLogo from './BrandLogo';
-import SearchModal from './SearchModal';
 import ThemeSwitcher from './ThemeSwitcher';
+
+const SearchModal = dynamic(() => import('./SearchModal'), {
+  ssr: false,
+});
 import { SUPPORTED_LANGUAGES, useLanguage } from '@/lib/i18n';
 import {
   GLOBAL_CURRENCIES,
@@ -653,7 +657,9 @@ export default function Navbar() {
         )}
       </header>
 
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      {searchOpen && (
+        <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      )}
     </>
   );
 }

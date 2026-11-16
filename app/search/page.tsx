@@ -19,9 +19,12 @@ export default function SearchPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#F5F7FA] py-16 text-center text-[#152238] font-medium">
+        <main
+          id="main-content"
+          className="min-h-screen bg-[#F5F7FA] py-16 text-center text-[#152238] font-medium"
+        >
           Loading search results...
-        </div>
+        </main>
       }
     >
       <SearchResultsClient />

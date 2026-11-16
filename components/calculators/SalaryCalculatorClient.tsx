@@ -177,7 +177,10 @@ export default function SalaryCalculatorClient() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 pb-8">
+    <main
+      id="main-content"
+      className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 pb-8"
+    >
       <GlobalFinanceCurrencyBar />
       <div className="max-w-7xl mx-auto space-y-8 pt-6 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb Navigation */}
@@ -1384,6 +1387,6 @@ export default function SalaryCalculatorClient() {
           </div>
         </section>
       </div>
-    </div>
+    </main>
   );
 }

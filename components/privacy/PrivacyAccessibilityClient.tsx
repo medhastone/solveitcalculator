@@ -658,7 +658,9 @@ export default function PrivacyAccessibilityClient({
                   type="button"
                   onClick={() => setTechnicalOpen(!technicalOpen)}
                   aria-expanded={technicalOpen}
-                  aria-controls="technical-details-panel"
+                  aria-controls={
+                    technicalOpen ? 'technical-details-panel' : undefined
+                  }
                   className="w-full px-4 py-3.5 flex items-center justify-between gap-3 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A58ED]"
                 >
                   <div className="flex items-center gap-3">

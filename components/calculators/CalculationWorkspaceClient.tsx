@@ -295,7 +295,7 @@ export default function CalculationWorkspaceClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] text-[#152238]">
+    <main id="main-content" className="min-h-screen bg-[#F5F7FA] text-[#152238]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Breadcrumb Navigation */}
         <nav aria-label="Breadcrumb" className="mb-4">
@@ -1303,6 +1303,6 @@ export default function CalculationWorkspaceClient() {
           </div>
         </section>
       </div>
-    </div>
+    </main>
   );
 }

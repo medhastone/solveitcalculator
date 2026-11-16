@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import HomePageClient from '@/components/home/HomePageClient';
+import HomePageContent from '@/components/home/HomePageContent';
 
 export const metadata: Metadata = {
   title:
@@ -68,7 +68,7 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(HOME_JSON_LD) }}
       />
-      <HomePageClient />
+      <HomePageContent />
     </>
   );
 }

@@ -1142,7 +1142,10 @@ export default function SingleCalculatorPageShell({
   })();
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] text-[#152238] relative overflow-hidden">
+    <main
+      id="main-content"
+      className="min-h-screen bg-[#F5F7FA] text-[#152238] relative overflow-hidden"
+    >
       {isOutsideFinanceLayout && <GlobalFinanceCurrencyBar />}
       <script
         type="application/ld+json"
@@ -1729,6 +1732,6 @@ export default function SingleCalculatorPageShell({
           </section>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
