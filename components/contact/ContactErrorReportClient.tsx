@@ -321,8 +321,14 @@ export default function ContactErrorReportClient() {
               <p className="text-sm sm:text-base lg:text-[17px] text-[#475569] leading-relaxed">
                 We&apos;re always happy to hear from you. You can share
                 feedback, suggest a new calculator, or report a calculation
-                error. Your input helps us improve SolveItCalculator for
-                everyone.
+                issue. Reach us using the form below or email us directly at{' '}
+                <a
+                  href="mailto:info@solveitcalculator.com"
+                  className="font-bold text-[#0A58ED] hover:underline"
+                >
+                  info@solveitcalculator.com
+                </a>
+                .
               </p>
             </div>
 

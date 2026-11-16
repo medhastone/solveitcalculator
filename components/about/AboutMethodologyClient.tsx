@@ -276,10 +276,10 @@ export default function AboutMethodologyClient({
                   <span className="mx-2 text-[#CBD5E1]">|</span>
                   <span className="font-extrabold text-[#152238]">Direct Email:</span>{' '}
                   <a
-                    href="mailto:ckchandan9801@gmail.com"
+                    href="mailto:info@solveitcalculator.com"
                     className="text-[#0A58ED] font-semibold hover:underline"
                   >
-                    ckchandan9801@gmail.com
+                    info@solveitcalculator.com
                   </a>
                 </div>
                 <Link
@@ -504,8 +504,8 @@ export default function AboutMethodologyClient({
                     Contact page
                   </Link>{' '}
                   or email{' '}
-                  <a href="mailto:ckchandan9801@gmail.com" className="font-bold text-[#0A58ED] hover:underline">
-                    ckchandan9801@gmail.com
+                  <a href="mailto:info@solveitcalculator.com" className="font-bold text-[#0A58ED] hover:underline">
+                    info@solveitcalculator.com
                   </a>
                   .
                 </li>

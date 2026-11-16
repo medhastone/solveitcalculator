@@ -94,7 +94,7 @@ export default function Footer() {
               </li>
             </ul>
 
-            {/* Direct Quick Actions */}
+            {/* Direct Quick Actions & Email */}
             <div className="pt-2 flex flex-wrap items-center gap-2.5">
               <Link
                 href="/calculators"
@@ -109,6 +109,16 @@ export default function Footer() {
               >
                 <span>About Us</span>
               </Link>
+            </div>
+
+            <div className="pt-1 text-xs text-slate-600 dark:text-slate-400">
+              <span className="font-semibold text-slate-800 dark:text-slate-200">Email:</span>{' '}
+              <a
+                href="mailto:info@solveitcalculator.com"
+                className="font-semibold text-[#2457D6] dark:text-blue-400 hover:underline"
+              >
+                info@solveitcalculator.com
+              </a>
             </div>
           </div>
 
