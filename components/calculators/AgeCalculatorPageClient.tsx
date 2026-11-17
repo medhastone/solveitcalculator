@@ -23,7 +23,7 @@ const DATE_RELATED_LINKS: RelatedCalculatorLink[] = [
   {
     name: 'Days From Today Calculator',
     description: 'Add or subtract days from any calendar date for project deadlines.',
-    href: '/days-from-today',
+    href: '/days-from-today-calculator',
     iconVariant: 'tag-amber',
   },
   {

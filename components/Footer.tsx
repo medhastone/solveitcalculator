@@ -1,11 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import {
-  ShieldCheck,
-  Lock,
-  BookOpen,
-  ArrowUpRight,
-} from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
 const FOOTER_CATEGORY_LINKS = [
@@ -59,7 +53,7 @@ export default function Footer() {
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8">
         {/* Main Structured 5-Column Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6 pb-9 border-b border-slate-200 dark:border-slate-800">
-          {/* Column 1: Brand Identity, Mission & Standards (4 cols) */}
+          {/* Column 1: Brand Identity & Mission (4 cols) */}
           <div className="sm:col-span-2 lg:col-span-4 space-y-4 pr-0 lg:pr-4">
             <BrandLogo variant="footer" />
 
@@ -68,58 +62,6 @@ export default function Footer() {
               worked examples, and primary source citations across math, personal finance,
               tax, unit conversions, health, construction, and science.
             </p>
-
-            {/* Clean Trust & Standards Highlights */}
-            <ul className="space-y-2 pt-1 text-xs text-slate-600 dark:text-slate-400">
-              <li className="flex items-center gap-2">
-                <ShieldCheck
-                  className="w-4 h-4 text-[#16856B] shrink-0"
-                  aria-hidden="true"
-                />
-                <span>Conversion factors from NIST SP 811 &amp; statutory tax tables</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Lock
-                  className="w-4 h-4 text-[#2457D6] dark:text-blue-400 shrink-0"
-                  aria-hidden="true"
-                />
-                <span>100% browser-private — inputs never leave your device</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <BookOpen
-                  className="w-4 h-4 text-[#D97706] shrink-0"
-                  aria-hidden="true"
-                />
-                <span>Every tool shows its formula, assumptions &amp; primary sources</span>
-              </li>
-            </ul>
-
-            {/* Direct Quick Actions & Email */}
-            <div className="pt-2 flex flex-wrap items-center gap-2.5">
-              <Link
-                href="/calculators"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#2457D6] hover:bg-[#1D47B0] text-white text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
-              >
-                <span>All Calculators</span>
-                <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
-              </Link>
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 hover:text-[#2457D6] dark:hover:text-blue-400 border border-slate-200 dark:border-slate-700 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
-              >
-                <span>About Us</span>
-              </Link>
-            </div>
-
-            <div className="pt-1 text-xs text-slate-600 dark:text-slate-400">
-              <span className="font-semibold text-slate-800 dark:text-slate-200">Email:</span>{' '}
-              <a
-                href="mailto:info@solveitcalculator.com"
-                className="font-semibold text-[#2457D6] dark:text-blue-400 hover:underline"
-              >
-                info@solveitcalculator.com
-              </a>
-            </div>
           </div>
 
           {/* Column 2: Calculator Categories (2 cols) */}

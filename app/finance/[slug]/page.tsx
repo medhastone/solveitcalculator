@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import { notFound, permanentRedirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import MissingFinanceCalculatorsClient, {
   MissingFinanceSlug,
 } from '@/components/calculators/MissingFinanceCalculatorsClient';
@@ -51,14 +51,6 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  if (slug === 'margin-and-markup-calculator') {
-    return {
-      title: 'Gross Margin Calculator | SolveItCalculator',
-      alternates: {
-        canonical: 'https://solveitcalculator.com/finance/margin-calculator',
-      },
-    };
-  }
   const meta =
     FINANCE_CANONICAL_SLUGS[
       slug as Exclude<MissingFinanceSlug, 'margin-and-markup-calculator'>
@@ -95,9 +87,6 @@ export default async function MissingFinanceToolPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  if (slug === 'margin-and-markup-calculator') {
-    permanentRedirect('/finance/margin-calculator');
-  }
   if (!(slug in FINANCE_CANONICAL_SLUGS)) {
     notFound();
   }

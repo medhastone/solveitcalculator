@@ -765,7 +765,7 @@ export const FINANCE_CATALOG = [
         description: 'Estimate your Financial Independence number, target retirement timeline, Coast FIRE, and safe withdrawal rates (3%–5%).',
         category: 'Retirement & Pension',
         categorySlug: 'retirement',
-        path: '/finance/fire-forecaster',
+        path: '/fire-forecaster',
         keywords: [
             'retirement',
             'fire',

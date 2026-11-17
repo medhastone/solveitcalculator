@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { notFound, permanentRedirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import UnitConverter from '@/components/calculators/UnitConverter';
 import {
   CONVERSION_CATEGORIES,
@@ -20,9 +20,9 @@ export async function generateMetadata({
 }: ConversionCategoryPageProps): Promise<Metadata> {
   const { category } = await params;
   const resolvedSlug = resolveConversionCategorySlug(category);
-  if (!resolvedSlug) {
+  if (!resolvedSlug || category !== resolvedSlug) {
     return {
-      title: 'Unit Converter | SolveIt Calculator',
+      title: 'Unit Converter | SolveItCalculator',
     };
   }
 
@@ -70,12 +70,8 @@ export default async function ConversionCategoryPage({
   const { category } = await params;
   const resolvedSlug = resolveConversionCategorySlug(category);
 
-  if (!resolvedSlug) {
+  if (!resolvedSlug || category !== resolvedSlug) {
     notFound();
-  }
-
-  if (category !== resolvedSlug) {
-    permanentRedirect(CONVERSION_CATEGORIES[resolvedSlug].canonicalPath);
   }
 
   return <UnitConverter initialCategory={resolvedSlug} />;
