@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { useCurrency, formatWithGlobalCurrency } from '@/lib/currency';
-import GlobalFinanceCurrencyBar from '@/components/finance-suite/GlobalFinanceCurrencyBar';
 
 export default function FireForecasterClient() {
   const [mounted, setMounted] = useState(false);
@@ -410,7 +409,6 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
 
   return (
     <div className="bg-surface font-body-md text-body-md text-on-surface min-h-screen flex flex-col">
-      <GlobalFinanceCurrencyBar />
       <main className="w-full pt-0 bg-surface flex-1">
         <div className="flex flex-col w-full">
           

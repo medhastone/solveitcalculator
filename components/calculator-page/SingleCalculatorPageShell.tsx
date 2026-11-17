@@ -40,7 +40,6 @@ import {
 } from '@/lib/humanEditorialCatalog';
 import { resolveToolTrustMetadata } from '@/lib/trustMetadataCatalog';
 import { useCurrency, formatExchangeRate } from '@/lib/currency';
-import GlobalFinanceCurrencyBar from '@/components/finance-suite/GlobalFinanceCurrencyBar';
 
 export type SidebarIconVariant =
   | 'chart-green'
@@ -272,9 +271,6 @@ export default function SingleCalculatorPageShell({
     categoryHref.startsWith('/finance') ||
     categoryName.toLowerCase().includes('finance') ||
     Boolean(pathname?.startsWith('/finance'));
-
-  const isOutsideFinanceLayout =
-    isFinanceCalculator && !pathname?.startsWith('/finance');
 
   const displayHeroSymbol =
     isFinanceCalculator &&
@@ -1146,7 +1142,6 @@ export default function SingleCalculatorPageShell({
       id="main-content"
       className="min-h-screen bg-[#F5F7FA] text-[#152238] relative overflow-hidden"
     >
-      {isOutsideFinanceLayout && <GlobalFinanceCurrencyBar />}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph) }}
@@ -1158,7 +1153,7 @@ export default function SingleCalculatorPageShell({
         className="pointer-events-none absolute top-0 left-0 right-0 h-[340px] bg-gradient-to-b from-[#EDF3FC] via-[#F3F7FC] to-transparent"
       />
 
-      <div className={`relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 ${isCompactStack ? 'pt-3 sm:pt-5 pb-14 space-y-4 sm:space-y-6' : 'pt-5 pb-14 space-y-6'}`}>
+      <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 pb-14 space-y-3 sm:space-y-4">
         {/* Breadcrumb Navigation */}
         <nav aria-label="Breadcrumb">
           <ol className="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#2457D6]">

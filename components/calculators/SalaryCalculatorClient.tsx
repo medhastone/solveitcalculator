@@ -37,7 +37,6 @@ import {
   formatCurrencyAmount as baseFormatCurrencyAmount,
 } from '@/lib/salaryTaxEngine';
 import { useCurrency, formatWithGlobalCurrency } from '@/lib/currency';
-import GlobalFinanceCurrencyBar from '@/components/finance-suite/GlobalFinanceCurrencyBar';
 
 export default function SalaryCalculatorClient() {
   const { currency: globalCurrency, applyExchangeRate } = useCurrency();
@@ -181,8 +180,7 @@ export default function SalaryCalculatorClient() {
       id="main-content"
       className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 pb-8"
     >
-      <GlobalFinanceCurrencyBar />
-      <div className="max-w-7xl mx-auto space-y-8 pt-6 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-6 pt-4 px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb Navigation */}
         <nav
           aria-label="Breadcrumb"
