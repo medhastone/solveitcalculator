@@ -145,11 +145,24 @@ export default function Navbar() {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setSearchOpen((prev) => !prev);
+      } else if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+        setCurrencyMenuOpen(false);
+        setLangMenuOpen(false);
+        setMoreMenuOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Close mobile drawer and menus when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setCurrencyMenuOpen(false);
+    setLangMenuOpen(false);
+    setMoreMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -178,15 +191,15 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-40 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-4 sm:gap-8 h-14 sm:h-16">
+        <div className="max-w-[1320px] mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-2 sm:gap-4 lg:gap-5 xl:gap-8 h-[52px] sm:h-16">
             {/* Zone 1: Brand Lockup */}
             <BrandLogo variant="navbar" />
 
             {/* Zone 2: Streamlined Desktop Navigation (lg and up) */}
             <nav
               aria-label="Primary navigation"
-              className="hidden lg:flex items-center gap-2 xl:gap-4 h-full"
+              className="hidden lg:flex items-center gap-0.5 xl:gap-3 h-full"
             >
               {PRIMARY_NAV_LINKS.map((item) => {
                 const isActive = item.exact
@@ -197,7 +210,7 @@ export default function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`relative inline-flex items-center px-2.5 h-full text-sm whitespace-nowrap shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
+                    className={`relative inline-flex items-center px-2 xl:px-2.5 h-full text-[13px] xl:text-sm whitespace-nowrap shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
                       isActive
                         ? 'text-[#2457D6] dark:text-blue-400 font-semibold'
                         : 'text-slate-600 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-white'
@@ -207,7 +220,7 @@ export default function Navbar() {
                     {isActive && (
                       <span
                         aria-hidden="true"
-                        className="absolute bottom-0 left-2.5 right-2.5 h-[2px] bg-[#2457D6] dark:bg-blue-400 rounded-full"
+                        className="absolute bottom-0 left-2 xl:left-2.5 right-2 xl:right-2.5 h-[2px] bg-[#2457D6] dark:bg-blue-400 rounded-full"
                       />
                     )}
                   </Link>
@@ -221,7 +234,7 @@ export default function Navbar() {
                   data-compact="true"
                   onClick={() => setMoreMenuOpen(!moreMenuOpen)}
                   aria-expanded={moreMenuOpen}
-                  className={`compact-control relative inline-flex items-center gap-1 px-2.5 py-1.5 text-sm whitespace-nowrap shrink-0 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
+                  className={`compact-control relative inline-flex items-center gap-1 px-2 xl:px-2.5 py-1.5 text-[13px] xl:text-sm whitespace-nowrap shrink-0 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6] rounded-md ${
                     isMoreActive || moreMenuOpen
                       ? 'text-[#2457D6] dark:text-blue-400 font-semibold'
                       : 'text-slate-600 dark:text-slate-300 font-medium hover:text-slate-900 dark:hover:text-white'
@@ -281,21 +294,25 @@ export default function Navbar() {
             </nav>
 
             {/* Zone 3: Clean Utility Controls */}
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
               {/* Search Trigger */}
               <button
                 type="button"
                 data-compact="true"
-                onClick={() => setSearchOpen(true)}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setCurrencyMenuOpen(false);
+                  setSearchOpen(true);
+                }}
                 aria-label="Search calculators (Ctrl+K)"
                 title="Search calculators (Ctrl+K)"
-                className="compact-control inline-flex items-center gap-2 h-9 px-2.5 sm:px-3 rounded-lg bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200/70 dark:hover:bg-slate-700/80 border border-slate-200/80 dark:border-slate-700 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                className="compact-control inline-flex items-center justify-center gap-1.5 w-8 h-8 sm:w-auto sm:h-9 sm:px-2.5 xl:px-3 rounded-lg bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200/70 dark:hover:bg-slate-700/80 border border-slate-200/80 dark:border-slate-700 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
               >
                 <Search
                   className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0"
                   aria-hidden="true"
                 />
-                <span className="hidden md:inline text-xs font-medium text-slate-500 dark:text-slate-400">
+                <span className="hidden md:inline lg:hidden xl:inline text-xs font-medium text-slate-500 dark:text-slate-400">
                   Search...
                 </span>
                 <kbd className="hidden xl:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700">
@@ -305,7 +322,7 @@ export default function Navbar() {
 
               {/* Unified Currency & Language Control Group */}
               <div
-                className="inline-flex items-center h-9 rounded-lg border border-slate-200/80 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 p-0.5"
+                className="hidden min-[360px]:inline-flex items-center h-8 sm:h-9 rounded-lg border border-slate-200/80 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 p-0.5 shrink-0"
                 data-no-translate="true"
               >
                 {/* Currency Selector */}
@@ -316,16 +333,17 @@ export default function Navbar() {
                     onClick={() => {
                       setCurrencyMenuOpen(!currencyMenuOpen);
                       setLangMenuOpen(false);
+                      setMobileMenuOpen(false);
                     }}
                     aria-expanded={currencyMenuOpen}
                     aria-label={`Select display currency (currently ${currency})`}
                     title={`Active Currency: ${currency} (${currencySymbol})`}
-                    className="compact-control inline-flex items-center gap-1 h-full px-2 sm:px-2.5 rounded-md text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 hover:text-[#2457D6] dark:hover:text-blue-400 transition-colors cursor-pointer tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                    className="compact-control inline-flex items-center gap-0.5 sm:gap-1 h-full px-1.5 sm:px-2.5 rounded-md text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-700 hover:text-[#2457D6] dark:hover:text-blue-400 transition-colors cursor-pointer tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
                   >
                     <span className="font-mono font-bold text-[#2457D6] dark:text-blue-400">
                       {currencySymbol}
                     </span>
-                    <span>{currency}</span>
+                    <span className="hidden min-[420px]:inline">{currency}</span>
                     <ChevronDown
                       className="w-3 h-3 text-slate-400"
                       aria-hidden="true"
@@ -333,7 +351,7 @@ export default function Navbar() {
                   </button>
 
                   {currencyMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-72 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-2.5 z-50">
+                    <div className="fixed left-3 right-3 top-[56px] sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-72 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-2.5 z-50">
                       <div className="px-3.5 pb-2 mb-1 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
                         <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-200">
                           Currency &amp; FX Rates
@@ -539,8 +557,12 @@ export default function Navbar() {
               <button
                 type="button"
                 data-compact="true"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="compact-control lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/70 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                onClick={() => {
+                  setCurrencyMenuOpen(false);
+                  setLangMenuOpen(false);
+                  setMobileMenuOpen(!mobileMenuOpen);
+                }}
+                className="compact-control lg:hidden inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/70 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
                 aria-expanded={mobileMenuOpen}
                 aria-label="Toggle navigation menu"
               >
@@ -554,11 +576,11 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Clean, Simplified Mobile & Tablet Navigation Drawer (< lg) */}
+        {/* Clean, Compact Mobile & Tablet Navigation Drawer (< lg) */}
         {mobileMenuOpen && (
           <nav
             aria-label="Mobile navigation drawer"
-            className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4 space-y-4 max-h-[calc(100vh-3.5rem)] overflow-y-auto shadow-lg"
+            className="lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3.5 sm:px-6 py-3.5 space-y-3 max-h-[calc(100dvh-3.25rem)] overflow-y-auto overscroll-contain shadow-lg"
           >
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
               {[...PRIMARY_NAV_LINKS, ...MORE_MENU_LINKS].map((item) => {
@@ -570,67 +592,52 @@ export default function Navbar() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`px-3 py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-colors ${
+                    className={`flex items-center min-h-[40px] px-3 py-2 rounded-lg text-[13px] sm:text-sm font-semibold transition-colors truncate ${
                       active
                         ? 'bg-blue-50 dark:bg-blue-950/60 text-[#2457D6] dark:text-blue-400 border border-blue-200 dark:border-blue-800'
                         : 'bg-slate-50 dark:bg-slate-800/70 text-slate-800 dark:text-slate-200 border border-slate-200/70 dark:border-slate-800 hover:border-[#2457D6]'
                     }`}
                   >
-                    {item.name}
+                    <span className="truncate">{item.name}</span>
                   </Link>
                 );
               })}
             </div>
 
-            <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 px-1">
-              <div className="flex items-center gap-4 text-xs font-medium text-slate-600 dark:text-slate-400">
-                {TRUST_MENU_LINKS.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="hover:text-[#2457D6] dark:hover:text-blue-400"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-                <Link
-                  href="/contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="hover:text-[#2457D6] dark:hover:text-blue-400"
-                >
-                  Contact
-                </Link>
-              </div>
-
-              <div
-                className="flex flex-wrap items-center gap-1.5"
-                data-no-translate="true"
-              >
-                <Coins className="w-3.5 h-3.5 text-slate-400 mr-0.5" aria-hidden="true" />
+            {/* Compact Currency Switcher inside Drawer */}
+            <div
+              className="pt-2.5 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2"
+              data-no-translate="true"
+            >
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 inline-flex items-center gap-1.5">
+                <Coins className="w-3.5 h-3.5" aria-hidden="true" />
+                Currency
+              </span>
+              <div className="flex flex-wrap items-center gap-1.5">
                 {GLOBAL_CURRENCIES.map((c) => (
                   <button
                     key={c.code}
                     type="button"
                     data-compact="true"
                     onClick={() => setCurrency(c.code)}
-                    className={`compact-control px-2 py-1 rounded text-xs font-semibold tabular-nums cursor-pointer ${
+                    className={`compact-control inline-flex items-center gap-1 min-h-[34px] px-2.5 py-1 rounded-md text-xs font-semibold tabular-nums cursor-pointer transition-colors ${
                       currency === c.code
                         ? 'bg-[#2457D6] text-white'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
                     }`}
                   >
-                    {c.code}
+                    <span>{c.symbol}</span>
+                    <span>{c.code}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Mobile Language Selector */}
-            <div className="pt-2.5 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 px-1">
-              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+            {/* Compact Language Selector inside Drawer (< md, since md+ shows it in top bar) */}
+            <div className="md:hidden pt-2.5 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 inline-flex items-center gap-1.5">
                 <Globe className="w-3.5 h-3.5" aria-hidden="true" />
-                Language:
+                Language
               </span>
               <div
                 className="flex flex-wrap items-center gap-1.5"
@@ -642,7 +649,7 @@ export default function Navbar() {
                     type="button"
                     data-compact="true"
                     onClick={() => setLang(l.code)}
-                    className={`compact-control px-2 py-1 rounded text-xs font-semibold cursor-pointer ${
+                    className={`compact-control min-h-[34px] px-2.5 py-1 rounded-md text-xs font-semibold cursor-pointer transition-colors ${
                       lang === l.code
                         ? 'bg-[#2457D6] text-white'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
@@ -652,6 +659,27 @@ export default function Navbar() {
                   </button>
                 ))}
               </div>
+            </div>
+
+            {/* Footer Trust Links inside Drawer */}
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-slate-600 dark:text-slate-400">
+              {TRUST_MENU_LINKS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="inline-flex items-center min-h-[36px] hover:text-[#2457D6] dark:hover:text-blue-400"
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <Link
+                href="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="inline-flex items-center min-h-[36px] hover:text-[#2457D6] dark:hover:text-blue-400"
+              >
+                Contact
+              </Link>
             </div>
           </nav>
         )}
