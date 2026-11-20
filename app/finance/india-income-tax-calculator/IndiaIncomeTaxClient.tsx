@@ -131,10 +131,10 @@ export default function IndiaIncomeTaxClient() {
                 Annual Gross Salary (₹)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={grossSalary}
                 onChange={(e) => setGrossSalary(Math.max(0, Number(e.target.value)))}
-                className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -157,10 +157,10 @@ export default function IndiaIncomeTaxClient() {
                 Sec 80C (Max ₹1.5L)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={deduction80C}
                 onChange={(e) => setDeduction80C(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold tabular-nums"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <div>
@@ -168,10 +168,10 @@ export default function IndiaIncomeTaxClient() {
                 Sec 80D Medical
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={deduction80D}
                 onChange={(e) => setDeduction80D(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold tabular-nums"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <div>
@@ -179,10 +179,10 @@ export default function IndiaIncomeTaxClient() {
                 HRA Exemption u/s 10(13A)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={hraExemption}
                 onChange={(e) => setHraExemption(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold tabular-nums"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <div>
@@ -190,10 +190,10 @@ export default function IndiaIncomeTaxClient() {
                 Sec 24(b) Home Loan Int.
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={homeLoanInterest24b}
                 onChange={(e) => setHomeLoanInterest24b(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold tabular-nums"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <div>
@@ -201,10 +201,10 @@ export default function IndiaIncomeTaxClient() {
                 Sec 80CCD(1B) NPS (₹50k)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={npsExtra80CCD1B}
                 onChange={(e) => setNpsExtra80CCD1B(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold tabular-nums"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <div>
@@ -212,10 +212,10 @@ export default function IndiaIncomeTaxClient() {
                 Employer NPS 80CCD(2)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={employerNps80CCD2}
                 onChange={(e) => setEmployerNps80CCD2(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold tabular-nums"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
           </div>

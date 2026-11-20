@@ -117,10 +117,10 @@ export default function SalaryToHourlyClient() {
                 {inputMode === 'annual' ? 'Annual Gross Salary ($)' : 'Hourly Wage ($/hr)'}
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={amount}
                 onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -162,12 +162,12 @@ export default function SalaryToHourlyClient() {
                 Scheduled Weeks / Yr
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 min={1}
                 max={52}
                 value={weeksPerYear}
                 onChange={(e) => setWeeksPerYear(Math.max(1, Math.min(52, Number(e.target.value))))}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold tabular-nums"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <div>
@@ -175,12 +175,12 @@ export default function SalaryToHourlyClient() {
                 Unpaid Leave (Weeks)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 min={0}
                 max={51}
                 value={unpaidLeaveWeeks}
                 onChange={(e) => setUnpaidLeaveWeeks(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold tabular-nums"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
           </div>
@@ -199,12 +199,12 @@ export default function SalaryToHourlyClient() {
               <div className="flex justify-between items-center">
                 <span className="text-xs text-[var(--muted)]">Paid Holidays + PTO Days / Yr:</span>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   min={0}
                   max={60}
                   value={paidHolidayDays}
                   onChange={(e) => setPaidHolidayDays(Math.max(0, Number(e.target.value)))}
-                  className="w-20 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 py-1 text-xs font-bold tabular-nums"
+                  className="w-20 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                 />
               </div>
             )}

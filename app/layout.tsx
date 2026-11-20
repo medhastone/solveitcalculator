@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import localFont from 'next/font/local';
 import './globals.css';
 import AppShell from '@/components/AppShell';
+import {
+  buildCoreCalculatorJsonLd,
+  getCoreCalculatorSeoByPath,
+} from '@/lib/coreCalculatorSeoContent';
 
 const plusJakarta = localFont({
   src: '../node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2',
@@ -99,11 +104,30 @@ const THEME_INIT_SCRIPT = `
 })();
 `;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  let coreSchemaJson: string | null = null;
+  const isStaticExport =
+    process.env.GITHUB_PAGES === 'true' || process.env.STATIC_EXPORT === 'true';
+
+  if (!isStaticExport) {
+    try {
+      const requestHeaders = await headers();
+      const pathname = requestHeaders.get('x-pathname');
+      const coreSeoEntry = getCoreCalculatorSeoByPath(pathname);
+      if (coreSeoEntry) {
+        coreSchemaJson = JSON.stringify(
+          buildCoreCalculatorJsonLd(coreSeoEntry)
+        );
+      }
+    } catch {
+      coreSchemaJson = null;
+    }
+  }
+
   return (
     <html
       lang="en"
@@ -117,6 +141,12 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="alternate icon" href="/icon" type="image/png" />
         <link rel="apple-touch-icon" href="/apple-icon" />
+        {coreSchemaJson && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: coreSchemaJson }}
+          />
+        )}
       </head>
       <body
         suppressHydrationWarning

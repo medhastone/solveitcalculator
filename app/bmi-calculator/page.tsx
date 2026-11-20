@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import BmiCalculator from '@/components/calculators/BmiCalculator';
+import CoreCalculatorSeoSection from '@/components/calculator-page/CoreCalculatorSeoSection';
 
 const PAGE_TITLE = 'Adult Body Mass Index (BMI) Calculator | SolveItCalculator';
 const PAGE_DESCRIPTION =
@@ -38,12 +39,15 @@ export const metadata: Metadata = {
 
 export default function BmiPage() {
   return (
-    <BmiCalculator
-      initialMode="bmi"
-      customTitle="BMI Calculator"
-      customSubtitle="Calculate adult Body Mass Index (BMI) and WHO healthy weight range in Metric (kg/cm) or US Imperial (lbs/in) units."
-      customHeroSymbol="BMI"
-      isPilotTemplate={true}
-    />
+    <>
+      <BmiCalculator
+        initialMode="bmi"
+        customTitle="BMI Calculator"
+        customSubtitle="Calculate adult Body Mass Index (BMI) and WHO healthy weight range in Metric (kg/cm) or US Imperial (lbs/in) units."
+        customHeroSymbol="BMI"
+        isPilotTemplate={true}
+      />
+      <CoreCalculatorSeoSection slug="bmi-calculator" />
+    </>
   );
 }

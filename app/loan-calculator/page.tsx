@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import LoanCalculator from '@/components/calculators/LoanCalculator';
+import CoreCalculatorSeoSection from '@/components/calculator-page/CoreCalculatorSeoSection';
 
 export const metadata: Metadata = {
   title: 'Loan Calculator — Monthly Payments, Interest & Early Payoff | SolveItCalculator',
@@ -24,5 +25,10 @@ export const metadata: Metadata = {
 };
 
 export default function LoanPage() {
-  return <LoanCalculator />;
+  return (
+    <>
+      <LoanCalculator />
+      <CoreCalculatorSeoSection slug="loan-calculator" />
+    </>
+  );
 }

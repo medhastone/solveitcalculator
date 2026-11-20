@@ -902,7 +902,7 @@ export default function RecipeConverterClient() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search recipe converters..."
-                  className="w-full py-1.5 px-1 text-sm sm:text-[15px] text-[#152238] placeholder:text-[#64748B] bg-transparent focus:outline-none"
+                  className="w-full py-2.5 px-1 text-base sm:text-[15px] text-[#152238] placeholder:text-[#64748B] bg-transparent focus:outline-none min-h-[44px]"
                 />
                 {searchQuery && (
                   <button
@@ -1187,7 +1187,7 @@ export default function RecipeConverterClient() {
                         type="text"
                         value={recipeTitle}
                         onChange={(e) => setRecipeTitle(e.target.value)}
-                        className="w-full rounded-lg border border-[#CBD5E1] bg-white px-3 py-1.5 text-sm text-[#152238] focus:border-[#2457D6] focus:outline-none"
+                        className="w-full rounded-lg border border-[#CBD5E1] bg-white px-3 py-2.5 text-base text-[#152238] focus:border-[#2457D6] focus:outline-none min-h-[44px]"
                       />
                     </div>
                     <div>
@@ -1199,12 +1199,12 @@ export default function RecipeConverterClient() {
                       </label>
                       <input
                         id="orig-servings-input"
-                        type="number"
+                        type="number" inputMode="decimal"
                         min="0.1"
                         step="any"
                         value={originalServings}
                         onChange={(e) => setOriginalServings(e.target.value)}
-                        className="w-full rounded-lg border border-[#CBD5E1] bg-white px-3 py-1.5 text-sm font-mono tabular-nums text-[#152238] focus:border-[#2457D6] focus:outline-none"
+                        className="w-full rounded-lg border border-[#CBD5E1] bg-white px-3 py-2.5 text-base font-mono tabular-nums text-[#152238] focus:border-[#2457D6] focus:outline-none min-h-[44px]"
                       />
                     </div>
                     <div>
@@ -1216,12 +1216,12 @@ export default function RecipeConverterClient() {
                       </label>
                       <input
                         id="desired-servings-input"
-                        type="number"
+                        type="number" inputMode="decimal"
                         min="0.1"
                         step="any"
                         value={desiredServings}
                         onChange={(e) => setDesiredServings(e.target.value)}
-                        className="w-full rounded-lg border border-[#CBD5E1] bg-white px-3 py-1.5 text-sm font-mono tabular-nums text-[#152238] focus:border-[#2457D6] focus:outline-none"
+                        className="w-full rounded-lg border border-[#CBD5E1] bg-white px-3 py-2.5 text-base font-mono tabular-nums text-[#152238] focus:border-[#2457D6] focus:outline-none min-h-[44px]"
                       />
                     </div>
                   </div>
@@ -1388,7 +1388,7 @@ export default function RecipeConverterClient() {
                                     ingredientQuery: e.target.value,
                                   })
                                 }
-                                className="w-full rounded-lg border border-[#CBD5E1] bg-white px-2.5 py-1.5 text-xs sm:text-sm text-[#152238]"
+                                className="w-full rounded-lg border border-[#CBD5E1] bg-white px-2.5 py-2.5 text-base text-[#152238] min-h-[44px]"
                               />
                             </div>
                           </div>
@@ -1411,7 +1411,7 @@ export default function RecipeConverterClient() {
                                     quantityInput: e.target.value,
                                   })
                                 }
-                                className="w-24 rounded-lg border border-[#CBD5E1] bg-white px-2.5 py-1.5 text-sm font-mono tabular-nums text-[#152238]"
+                                className="w-24 rounded-lg border border-[#CBD5E1] bg-white px-2.5 py-2.5 text-base font-mono tabular-nums text-[#152238] min-h-[44px]"
                               />
                               <select
                                 aria-label={`From unit ${index + 1}`}
@@ -1582,7 +1582,7 @@ export default function RecipeConverterClient() {
                       onChange={(e) => setReferenceSearch(e.target.value)}
                       placeholder="Filter ingredients..."
                       aria-label="Filter ingredient reference table"
-                      className="w-full sm:w-48 rounded-lg border border-[#CBD5E1] bg-[#F8FAFC] px-2.5 py-1 text-xs text-[#152238]"
+                      className="w-full sm:w-48 rounded-lg border border-[#CBD5E1] bg-[#F8FAFC] px-2.5 py-2.5 text-base text-[#152238] min-h-[44px]"
                     />
                   </div>
                   <div className="overflow-x-auto max-h-56 overflow-y-auto border border-[#E2E8F0] rounded-lg">
@@ -2011,11 +2011,12 @@ export default function RecipeConverterClient() {
                         aria-hidden="true"
                       />
                     </button>
-                    {isOpen && (
-                      <div className="px-3.5 pb-3 pt-1 text-xs text-[#475569] leading-relaxed border-t border-[#E2E8F0] bg-white">
-                        {faq.answer}
-                      </div>
-                    )}
+                    <div
+                      hidden={!isOpen}
+                      className="px-3.5 pb-3 pt-1 text-xs text-[#475569] leading-relaxed border-t border-[#E2E8F0] bg-white"
+                    >
+                      {faq.answer}
+                    </div>
                   </div>
                 );
               })}
@@ -2023,52 +2024,6 @@ export default function RecipeConverterClient() {
           </div>
         </section>
 
-        {/* Trust, Sources & Error Reporting Footer Strip */}
-        <section
-          aria-label="Data sources and error reporting"
-          className="rounded-2xl bg-white border border-[#DCE3EE] px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#475569]"
-        >
-          <div>
-            <strong>Last updated:</strong> November 13, 2026 ·{' '}
-            <strong>Sources:</strong>{' '}
-            <a
-              href="https://fdc.nal.usda.gov/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-[#2457D6] hover:underline"
-            >
-              USDA FoodData Central
-            </a>
-            ,{' '}
-            <a
-              href="https://www.kingarthurbaking.com/learn/ingredient-weight-chart"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-[#2457D6] hover:underline"
-            >
-              King Arthur Baking Ingredient Weight Chart
-            </a>
-            , and{' '}
-            <a
-              href="https://www.nist.gov/pml/special-publication-811"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-[#2457D6] hover:underline"
-            >
-              NIST SP 811
-            </a>
-            .
-          </div>
-          <div className="flex flex-wrap items-center gap-3 shrink-0 font-bold">
-            <Link href="/calculation-methodology" className="text-[#2457D6] hover:underline">
-              Methodology
-            </Link>
-            <span>·</span>
-            <Link href="/contact" className="text-[#2457D6] hover:underline">
-              Contact
-            </Link>
-          </div>
-        </section>
       </main>
     </div>
   );

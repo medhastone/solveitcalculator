@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { MATH_CALCULATORS } from '@/lib/mathCalculatorsData';
 import MathToolDetailClient from '@/components/math/MathToolDetailClient';
+import CoreCalculatorSeoSection from '@/components/calculator-page/CoreCalculatorSeoSection';
 
 export async function generateStaticParams() {
   return MATH_CALCULATORS.map((tool) => ({
@@ -85,5 +86,12 @@ export default async function MathToolDetailPage({
     notFound();
   }
 
-  return <MathToolDetailClient tool={tool} />;
+  return (
+    <>
+      <MathToolDetailClient tool={tool} />
+      {tool.slug === 'percentage-calculator' && (
+        <CoreCalculatorSeoSection slug="percentage-calculator" />
+      )}
+    </>
+  );
 }

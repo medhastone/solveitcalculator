@@ -155,10 +155,10 @@ export default function W2Vs1099Client() {
                 W-2 Base Salary ($/yr)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={w2Salary}
                 onChange={(e) => setW2Salary(Math.max(0, Number(e.target.value)))}
-                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -180,10 +180,10 @@ export default function W2Vs1099Client() {
                 Employer Health Subsidy ($/yr)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={w2EmployerHealthBenefit}
                 onChange={(e) => setW2EmployerHealthBenefit(Math.max(0, Number(e.target.value)))}
-                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -285,10 +285,10 @@ export default function W2Vs1099Client() {
                     1099 Hourly Rate ($/hr)
                   </label>
                   <input
-                    type="number"
+                    type="number" inputMode="decimal"
                     value={contractorHourlyRate}
                     onChange={(e) => setContractorHourlyRate(Math.max(0, Number(e.target.value)))}
-                    className="w-24 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                    className="w-24 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                   />
                 </div>
                 <UnboxedSlider
@@ -310,10 +310,10 @@ export default function W2Vs1099Client() {
                     Billable Hours / Year
                   </label>
                   <input
-                    type="number"
+                    type="number" inputMode="decimal"
                     value={contractorBillableHoursPerYear}
                     onChange={(e) => setContractorBillableHoursPerYear(Math.max(1, Number(e.target.value)))}
-                    className="w-24 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                    className="w-24 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                   />
                 </div>
                 <UnboxedSlider
@@ -336,10 +336,10 @@ export default function W2Vs1099Client() {
                   1099 Annual Gross ($/yr)
                 </label>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   value={contractorAnnualGross}
                   onChange={(e) => setContractorAnnualGross(Math.max(0, Number(e.target.value)))}
-                  className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                  className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                 />
               </div>
               <UnboxedSlider
@@ -362,10 +362,10 @@ export default function W2Vs1099Client() {
                 Business Expenses ($/yr)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={contractorBusinessExpenses}
                 onChange={(e) => setContractorBusinessExpenses(Math.max(0, Number(e.target.value)))}
-                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -387,10 +387,10 @@ export default function W2Vs1099Client() {
                 1099 Health Insurance ($/yr)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={contractorHealthInsuranceCost}
                 onChange={(e) => setContractorHealthInsuranceCost(Math.max(0, Number(e.target.value)))}
-                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider

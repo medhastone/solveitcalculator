@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import MortgageCalculator from '@/components/calculators/MortgageCalculator';
+import CoreCalculatorSeoSection from '@/components/calculator-page/CoreCalculatorSeoSection';
 
 const PAGE_TITLE = 'Home Mortgage Payment & PITI Calculator | SolveItCalculator';
 const PAGE_DESCRIPTION =
@@ -37,5 +38,10 @@ export const metadata: Metadata = {
 };
 
 export default function MortgagePage() {
-  return <MortgageCalculator />;
+  return (
+    <>
+      <MortgageCalculator />
+      <CoreCalculatorSeoSection slug="mortgage-calculator" />
+    </>
+  );
 }

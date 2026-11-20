@@ -69,10 +69,10 @@ export default function SelfEmploymentTaxClient() {
                 Net Business Profit (Schedule C)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={netBusinessProfit}
                 onChange={(e) => setNetBusinessProfit(Math.max(0, Number(e.target.value)))}
-                className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm font-bold tabular-nums"
+                className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -114,10 +114,10 @@ export default function SelfEmploymentTaxClient() {
                 Other W-2 Wages (Offsets $176,100 SS Cap)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={otherW2Wages}
                 onChange={(e) => setOtherW2Wages(Math.max(0, Number(e.target.value)))}
-                className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm font-bold tabular-nums"
+                className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider

@@ -244,7 +244,7 @@ export default function RestoredDateTimeCalculatorsClient({
                   type="date"
                   value={baseDate}
                   onChange={(e) => setBaseDate(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
                 />
               </div>
               <div>
@@ -284,12 +284,12 @@ export default function RestoredDateTimeCalculatorsClient({
                 </label>
                 <input
                   id="dft-days"
-                  type="number"
+                  type="number" inputMode="numeric"
                   min={0}
                   max={36500}
                   value={offsetDays}
                   onChange={(e) => setOffsetDays(Math.max(0, Number(e.target.value)))}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
                 />
               </div>
               <div>
@@ -298,12 +298,12 @@ export default function RestoredDateTimeCalculatorsClient({
                 </label>
                 <input
                   id="dft-weeks"
-                  type="number"
+                  type="number" inputMode="numeric"
                   min={0}
                   max={5200}
                   value={offsetWeeks}
                   onChange={(e) => setOffsetWeeks(Math.max(0, Number(e.target.value)))}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
                 />
               </div>
             </div>
@@ -418,7 +418,7 @@ export default function RestoredDateTimeCalculatorsClient({
                   type="date"
                   value={bizStart}
                   onChange={(e) => setBizStart(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
                 />
               </div>
               <div>
@@ -430,7 +430,7 @@ export default function RestoredDateTimeCalculatorsClient({
                   type="date"
                   value={bizEnd}
                   onChange={(e) => setBizEnd(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
                 />
               </div>
               <div>
@@ -439,12 +439,12 @@ export default function RestoredDateTimeCalculatorsClient({
                 </label>
                 <input
                   id="biz-hol"
-                  type="number"
+                  type="number" inputMode="decimal"
                   min={0}
                   max={100}
                   value={holidaysCount}
                   onChange={(e) => setHolidaysCount(Math.max(0, Number(e.target.value)))}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
                 />
               </div>
             </div>
@@ -539,7 +539,7 @@ export default function RestoredDateTimeCalculatorsClient({
                   type="text"
                   value={eventName}
                   onChange={(e) => setEventName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
                 />
               </div>
               <div>
@@ -551,7 +551,7 @@ export default function RestoredDateTimeCalculatorsClient({
                   type="date"
                   value={fromDate}
                   onChange={(e) => setFromDate(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
                 />
               </div>
               <div>
@@ -563,7 +563,7 @@ export default function RestoredDateTimeCalculatorsClient({
                   type="date"
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
                 />
               </div>
             </div>
@@ -662,7 +662,7 @@ export default function RestoredDateTimeCalculatorsClient({
                   </label>
                   <input
                     id={`wh-day-${idx}`}
-                    type="number"
+                    type="number" inputMode="decimal"
                     step="0.25"
                     min={0}
                     max={24}
@@ -672,7 +672,7 @@ export default function RestoredDateTimeCalculatorsClient({
                       next[idx] = Math.max(0, Number(e.target.value));
                       setDailyHours(next);
                     }}
-                    className="w-full px-3 py-2 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                    className="w-full px-3 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
                   />
                 </div>
               ))}
@@ -683,12 +683,12 @@ export default function RestoredDateTimeCalculatorsClient({
               </label>
               <input
                 id="wh-wage"
-                type="number"
+                type="number" inputMode="decimal"
                 step="0.5"
                 min={0}
                 value={hourlyWage}
                 onChange={(e) => setHourlyWage(Math.max(0, Number(e.target.value)))}
-                className="w-full px-3.5 py-2 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
               />
             </div>
           </section>
@@ -775,7 +775,7 @@ export default function RestoredDateTimeCalculatorsClient({
                 </label>
                 <input
                   id="tm-mins"
-                  type="number"
+                  type="number" inputMode="decimal"
                   min={1}
                   max={360}
                   value={timerMinutes}
@@ -785,7 +785,7 @@ export default function RestoredDateTimeCalculatorsClient({
                     setIsRunning(false);
                     setSecondsLeft(m * 60);
                   }}
-                  className="w-40 px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238]"
+                  className="w-40 px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
                 />
               </div>
               <div className="flex flex-wrap gap-2">
@@ -907,7 +907,7 @@ export default function RestoredDateTimeCalculatorsClient({
                 type="time"
                 value={time24}
                 onChange={(e) => setTime24(e.target.value)}
-                className="w-full max-w-xs px-4 py-3 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238]"
+                className="w-full max-w-xs px-4 py-3 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
               />
             </div>
             <div className="flex flex-wrap gap-2">
@@ -1001,11 +1001,11 @@ export default function RestoredDateTimeCalculatorsClient({
               </label>
               <input
                 id="tu-h"
-                type="number"
+                type="number" inputMode="decimal"
                 min={0}
                 value={inputHours}
                 onChange={(e) => setInputHours(Math.max(0, Number(e.target.value)))}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
               />
             </div>
             <div>
@@ -1014,11 +1014,11 @@ export default function RestoredDateTimeCalculatorsClient({
               </label>
               <input
                 id="tu-m"
-                type="number"
+                type="number" inputMode="decimal"
                 min={0}
                 value={inputMinutes}
                 onChange={(e) => setInputMinutes(Math.max(0, Number(e.target.value)))}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
               />
             </div>
             <div>
@@ -1027,11 +1027,11 @@ export default function RestoredDateTimeCalculatorsClient({
               </label>
               <input
                 id="tu-s"
-                type="number"
+                type="number" inputMode="decimal"
                 min={0}
                 value={inputSeconds}
                 onChange={(e) => setInputSeconds(Math.max(0, Number(e.target.value)))}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                className="w-full px-4 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
               />
             </div>
           </div>

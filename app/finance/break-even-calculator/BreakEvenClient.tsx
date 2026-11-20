@@ -63,10 +63,10 @@ export default function BreakEvenClient() {
                 Total Fixed Costs ($)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={fixedCosts}
                 onChange={(e) => setFixedCosts(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -88,10 +88,10 @@ export default function BreakEvenClient() {
                 Variable Cost per Unit ($/unit)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={variableCostPerUnit}
                 onChange={(e) => setVariableCostPerUnit(Math.max(0, Number(e.target.value)))}
-                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -113,10 +113,10 @@ export default function BreakEvenClient() {
                 Selling Price per Unit ($/unit)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={pricePerUnit}
                 onChange={(e) => setPricePerUnit(Math.max(0, Number(e.target.value)))}
-                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -138,10 +138,10 @@ export default function BreakEvenClient() {
                 Target Profit ($)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={targetProfit}
                 onChange={(e) => setTargetProfit(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-bold tabular-nums"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <div>
@@ -149,10 +149,10 @@ export default function BreakEvenClient() {
                 Forecast Sales (Units)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={expectedActualUnits}
                 onChange={(e) => setExpectedActualUnits(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-bold tabular-nums"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
           </div>

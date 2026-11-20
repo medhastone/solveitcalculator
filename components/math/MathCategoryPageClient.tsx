@@ -348,9 +348,10 @@ export default function MathCategoryPageClient() {
     []
   );
 
-  const filteredTools = useMemo(() => {
+  const matchingToolIds = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    return directoryCalculators.filter((tool) => {
+    const set = new Set<string>();
+    directoryCalculators.forEach((tool) => {
       const matchesCategory =
         selectedFilter === 'All' || tool.category === selectedFilter;
       const matchesQuery =
@@ -359,9 +360,13 @@ export default function MathCategoryPageClient() {
         tool.description.toLowerCase().includes(q) ||
         tool.category.toLowerCase().includes(q) ||
         (tool.displayBadge && tool.displayBadge.toLowerCase().includes(q)) ||
-        tool.commonUseCase.toLowerCase().includes(q);
-      return matchesCategory && matchesQuery;
+        tool.commonUseCase.toLowerCase().includes(q) ||
+        tool.formulaPreview.toLowerCase().includes(q);
+      if (matchesCategory && matchesQuery) {
+        set.add(tool.id);
+      }
     });
+    return set;
   }, [directoryCalculators, searchQuery, selectedFilter]);
 
   const subcategoryGroups = useMemo(() => {
@@ -375,6 +380,7 @@ export default function MathCategoryPageClient() {
     return orderedCats
       .map((cat) => ({
         name: cat,
+        slug: cat.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
         tools: directoryCalculators.filter((t) => t.category === cat),
       }))
       .filter((g) => g.tools.length > 0);
@@ -387,16 +393,19 @@ export default function MathCategoryPageClient() {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (filteredTools.length === 1) {
-      router.push(`/math/${filteredTools[0].slug}`);
+    const matched = directoryCalculators.filter((t) => matchingToolIds.has(t.id));
+    if (matched.length === 1) {
+      router.push(`/math/${matched[0].slug}`);
     }
   };
 
-  const renderToolCard = (tool: MathCalculatorItem) => (
+  const renderToolCard = (tool: MathCalculatorItem, isHidden = false) => (
     <div
       key={tool.id}
       role="listitem"
-      className="group rounded-xl bg-white border border-slate-200/90 px-4 py-3.5 hover:border-[#2457D6] hover:shadow-xs transition-all"
+      className={`group rounded-xl bg-white border border-slate-200/90 px-4 py-3.5 hover:border-[#2457D6] hover:shadow-xs transition-all ${
+        isHidden ? 'hidden' : ''
+      }`}
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
         <div className="flex items-start sm:items-center gap-3.5 min-w-0">
@@ -412,6 +421,9 @@ export default function MathCategoryPageClient() {
             <p className="text-xs sm:text-sm text-slate-600 mt-0.5 leading-snug">
               {tool.description}
             </p>
+            <div className="mt-1.5 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#F8FAFC] border border-slate-200/90 text-[11px] font-mono font-semibold text-[#2457D6] tabular-nums">
+              <span>Formula: {tool.formulaPreview}</span>
+            </div>
           </div>
         </div>
 
@@ -434,9 +446,6 @@ export default function MathCategoryPageClient() {
       </div>
     </div>
   );
-
-  const isDefaultGroupedView =
-    selectedFilter === 'All' && searchQuery.trim().length === 0;
 
   return (
     <div className="min-h-screen bg-[#F5F7FA] text-[#152238]">
@@ -469,10 +478,10 @@ export default function MathCategoryPageClient() {
             <div className="flex-1 max-w-4xl">
               <div className="flex items-start gap-4">
                 <div
-                  className="w-16 h-16 rounded-2xl bg-[#DCE8FF] border border-[#C6DBFF] text-[#2457D6] flex items-center justify-center shrink-0 shadow-2xs"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#DCE8FF] border border-[#C6DBFF] text-[#2457D6] flex items-center justify-center shrink-0 shadow-2xs"
                   aria-hidden="true"
                 >
-                  <Calculator className="w-8 h-8 stroke-[2.2]" />
+                  <Calculator className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.2]" />
                 </div>
                 <div>
                   <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#DCE8FF] text-[#1D4ED8] text-xs font-extrabold mb-1.5">
@@ -482,11 +491,11 @@ export default function MathCategoryPageClient() {
                   </div>
                   <h1
                     id="math-category-heading"
-                    className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#152238]"
+                    className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#152238]"
                   >
                     Math Calculators
                   </h1>
-                  <p className="mt-1.5 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
+                  <p className="mt-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
                     Pick the right math solver for your calculation—find percentages, markdowns, and percentage change, add or simplify fractions, scale ratios, summarize datasets with mean and median, or solve roots, logarithms, and quadratic equations step by step.
                   </p>
                 </div>
@@ -496,7 +505,7 @@ export default function MathCategoryPageClient() {
                 onSubmit={handleSearchSubmit}
                 role="search"
                 aria-label="Find a math calculator"
-                className="mt-5 flex items-center bg-white rounded-xl border border-slate-200/90 shadow-xs p-1.5 focus-within:ring-2 focus-within:ring-[#2457D6] focus-within:border-[#2457D6] transition-all"
+                className="mt-4 flex items-center bg-white rounded-xl border border-slate-200/90 shadow-xs p-1.5 focus-within:ring-2 focus-within:ring-[#2457D6] focus-within:border-[#2457D6] transition-all"
               >
                 <label htmlFor="math-category-search" className="sr-only">
                   Find a math calculator
@@ -531,10 +540,26 @@ export default function MathCategoryPageClient() {
                 </button>
               </form>
 
+              {/* Popular Searches Direct Links Bar */}
+              <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
+                <span className="font-extrabold text-[#152238] mr-1">
+                  Popular Searches:
+                </span>
+                {popularMathTools.slice(0, 6).map((item) => (
+                  <Link
+                    key={item.id}
+                    href={`/math/${item.slug}`}
+                    className="px-2.5 py-1 rounded-md bg-white hover:bg-[#EEF3FF] text-[#2457D6] border border-[#C6DBFF] font-semibold transition-colors shadow-2xs"
+                  >
+                    {item.name.replace(/\s+Calculator$/i, '')} →
+                  </Link>
+                ))}
+              </div>
+
               <div
                 role="group"
                 aria-label="Filter math calculators by topic"
-                className="mt-3.5 flex flex-wrap items-center gap-2"
+                className="mt-3 flex flex-wrap items-center gap-2"
               >
                 {MATH_FILTER_CATEGORIES.map((category) => {
                   const isActive = selectedFilter === category;
@@ -569,37 +594,26 @@ export default function MathCategoryPageClient() {
                   );
                 })}
               </div>
-            </div>
 
-            <div
-              aria-hidden="true"
-              className="hidden xl:flex items-center justify-center relative w-64 h-44 shrink-0 select-none"
-            >
-              <div className="w-44 h-44 rounded-full bg-[#DCE8FF]/70 flex items-center justify-center relative">
-                <div className="absolute -left-2 top-3 w-11 h-11 rounded-xl bg-[#60A5FA] text-white font-serif font-bold text-2xl flex items-center justify-center shadow-sm -rotate-12">
-                  π
-                </div>
-                <div className="absolute -left-5 bottom-8 w-11 h-10 rounded-xl bg-[#D1FAE5] text-[#16856B] font-extrabold text-base flex items-center justify-center shadow-sm -rotate-6">
-                  √x
-                </div>
-                <div className="w-24 h-32 rounded-2xl bg-[#2457D6] p-2.5 shadow-md rotate-12 flex flex-col justify-between border-2 border-[#3B82F6]">
-                  <div className="h-6 rounded-md bg-[#93C5FD]/90 w-full" />
-                  <div className="grid grid-cols-3 gap-1.5">
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-[#60A5FA]" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-[#60A5FA]" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-[#FBBF24]" />
-                  </div>
-                </div>
-                <div className="absolute -right-3 top-12 w-11 h-11 rounded-xl bg-[#FBBF24] text-white font-extrabold text-xl flex items-center justify-center shadow-sm rotate-12">
-                  %
-                </div>
-              </div>
+              {/* Quick Jump Anchor Chips */}
+              <nav
+                aria-label="Quick jump to math subcategories"
+                className="mt-3 pt-3 border-t border-slate-200/80 flex flex-wrap items-center gap-1.5 text-xs"
+              >
+                <span className="font-extrabold text-[#152238] mr-1">
+                  Quick Jump:
+                </span>
+                {subcategoryGroups.map((group) => (
+                  <a
+                    key={group.slug}
+                    href={`#math-group-${group.slug}`}
+                    onClick={() => setSelectedFilter('All')}
+                    className="px-2.5 py-1 rounded-md bg-white/90 hover:bg-[#EEF3FF] text-[#152238] hover:text-[#2457D6] border border-slate-200 font-semibold transition-colors"
+                  >
+                    {group.name} ({group.tools.length})
+                  </a>
+                ))}
+              </nav>
             </div>
           </div>
         </div>
@@ -608,76 +622,62 @@ export default function MathCategoryPageClient() {
       {/* Main Content Container */}
       <main className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-7">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
+          {/* All subcategory tool links remain rendered in HTML DOM for crawlers */}
           <div className="lg:col-span-8 space-y-8">
-            {isDefaultGroupedView ? (
-              <>
-                {subcategoryGroups.map((group) => (
-                  <section
-                    key={group.name}
-                    aria-labelledby={`math-group-${group.name}`}
-                    className="space-y-3.5"
-                  >
-                    <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-2.5">
-                      <div className="flex items-center gap-2.5">
-                        <LayoutGrid
-                          className="w-5 h-5 text-[#2457D6]"
-                          aria-hidden="true"
-                        />
-                        <h2
-                          id={`math-group-${group.name}`}
-                          className="text-xl font-extrabold text-[#152238] tracking-tight"
-                        >
-                          {group.name} Calculators
-                        </h2>
-                      </div>
-                      <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#DCE8FF] text-[#2457D6]">
-                        {group.tools.length}{' '}
-                        {group.tools.length === 1 ? 'Tool' : 'Tools'}
-                      </span>
+            {subcategoryGroups.map((group) => {
+              const visibleTools = group.tools.filter((t) =>
+                matchingToolIds.has(t.id)
+              );
+              const isGroupHidden = visibleTools.length === 0;
+              return (
+                <section
+                  key={group.name}
+                  id={`math-group-${group.slug}`}
+                  aria-labelledby={`math-group-heading-${group.slug}`}
+                  className={`scroll-mt-24 space-y-3.5 ${isGroupHidden ? 'hidden' : ''}`}
+                >
+                  <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-2.5">
+                    <div className="flex items-center gap-2.5">
+                      <LayoutGrid
+                        className="w-5 h-5 text-[#2457D6]"
+                        aria-hidden="true"
+                      />
+                      <h2
+                        id={`math-group-heading-${group.slug}`}
+                        className="text-xl font-extrabold text-[#152238] tracking-tight"
+                      >
+                        {group.name} Calculators
+                      </h2>
                     </div>
-                    <div className="space-y-3" role="list">
-                      {group.tools.map((tool) => renderToolCard(tool))}
-                    </div>
-                  </section>
-                ))}
-              </>
-            ) : (
-              <div>
-                <div className="mb-4">
-                  <div className="flex items-center gap-2">
-                    <LayoutGrid
-                      className="w-5 h-5 text-[#2457D6]"
-                      aria-hidden="true"
-                    />
-                    <h2 className="text-xl font-extrabold text-[#152238] tracking-tight">
-                      {selectedFilter === 'All'
-                        ? `Matching Math Calculators (${filteredTools.length})`
-                        : `${selectedFilter} Calculators (${filteredTools.length})`}
-                    </h2>
+                    <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#DCE8FF] text-[#2457D6]">
+                      {visibleTools.length}{' '}
+                      {visibleTools.length === 1 ? 'Tool' : 'Tools'}
+                    </span>
                   </div>
-                </div>
-
-                {filteredTools.length > 0 ? (
                   <div className="space-y-3" role="list">
-                    {filteredTools.map((tool) => renderToolCard(tool))}
+                    {group.tools.map((tool) =>
+                      renderToolCard(tool, !matchingToolIds.has(tool.id))
+                    )}
                   </div>
-                ) : (
-                  <div className="rounded-xl bg-white border border-slate-200 p-8 text-center">
-                    <p className="text-base font-bold text-[#152238]">
-                      No matching math calculators found
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSearchQuery('');
-                        setSelectedFilter('All');
-                      }}
-                      className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2457D6] text-white text-xs sm:text-sm font-semibold hover:bg-[#1d47b0] transition-colors cursor-pointer"
-                    >
-                      Reset Filters
-                    </button>
-                  </div>
-                )}
+                </section>
+              );
+            })}
+
+            {matchingToolIds.size === 0 && (
+              <div className="rounded-xl bg-white border border-slate-200 p-8 text-center">
+                <p className="text-base font-bold text-[#152238]">
+                  No matching math calculators found
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedFilter('All');
+                  }}
+                  className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2457D6] text-white text-xs sm:text-sm font-semibold hover:bg-[#1d47b0] transition-colors cursor-pointer"
+                >
+                  Reset Filters
+                </button>
               </div>
             )}
 

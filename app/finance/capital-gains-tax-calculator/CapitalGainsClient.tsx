@@ -130,10 +130,10 @@ export default function CapitalGainsClient() {
                 Purchase Price (Cost Basis)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={purchasePrice}
                 onChange={(e) => setPurchasePrice(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -156,10 +156,10 @@ export default function CapitalGainsClient() {
                 Gross Sale Price
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={salePrice}
                 onChange={(e) => setSalePrice(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -181,10 +181,10 @@ export default function CapitalGainsClient() {
               Selling Fees / Commissions ($)
             </label>
             <input
-              type="number"
+              type="number" inputMode="decimal"
               value={sellingFees}
               onChange={(e) => setSellingFees(Math.max(0, Number(e.target.value)))}
-              className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+              className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
             />
           </div>
 
@@ -198,7 +198,7 @@ export default function CapitalGainsClient() {
                 type="date"
                 value={purchaseDate}
                 onChange={(e) => setPurchaseDate(e.target.value)}
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-semibold min-h-[44px]"
               />
             </div>
             <div>
@@ -209,7 +209,7 @@ export default function CapitalGainsClient() {
                 type="date"
                 value={saleDate}
                 onChange={(e) => setSaleDate(e.target.value)}
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-semibold min-h-[44px]"
               />
             </div>
           </div>
@@ -221,10 +221,10 @@ export default function CapitalGainsClient() {
                 Other Taxable Ordinary Income ($/yr)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={otherTaxableIncome}
                 onChange={(e) => setOtherTaxableIncome(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider

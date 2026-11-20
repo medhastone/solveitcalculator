@@ -62,20 +62,22 @@ export function SuiteSlider({
   };
 
   return (
-    <div className="w-full space-y-1 pt-1">
-      <input
-        type="range"
-        aria-label={ariaLabel}
-        min={min}
-        max={max}
-        step={step}
-        value={clamped}
-        onChange={(e) => onChange(Number(e.target.value))}
-        style={{
-          background: `linear-gradient(to right, var(--primary, #2563eb) 0%, var(--primary, #2563eb) ${pct}%, var(--color-surface-container-highest, #cbd5e1) ${pct}%, var(--color-surface-container-highest, #cbd5e1) 100%)`,
-        }}
-        className="thin-slider w-full cursor-pointer"
-      />
+    <div className="w-full space-y-1">
+      <div className="min-h-[44px] flex items-center">
+        <input
+          type="range"
+          aria-label={ariaLabel}
+          min={min}
+          max={max}
+          step={step}
+          value={clamped}
+          onChange={(e) => onChange(Number(e.target.value))}
+          style={{
+            background: `linear-gradient(to right, var(--primary, #2563eb) 0%, var(--primary, #2563eb) ${pct}%, var(--color-surface-container-highest, #cbd5e1) ${pct}%, var(--color-surface-container-highest, #cbd5e1) 100%)`,
+          }}
+          className="thin-slider w-full cursor-pointer"
+        />
+      </div>
       {(minLabel || midLabel || maxLabel) && (
         <div className="flex justify-between text-[11px] font-medium text-on-surface-variant/80 font-mono tabular-nums">
           <span>{adaptLabel(minLabel)}</span>

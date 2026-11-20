@@ -17,6 +17,7 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 import { GUIDES_DATA, GUIDE_CATEGORIES } from '@/lib/guidesData';
+import { getGuidePrimaryCalculator } from '@/lib/internalLinkingMap';
 
 interface TocItem {
   id: string;
@@ -283,6 +284,28 @@ export default function PercentageGuideClient() {
                 number, and how to find percentage increase and decrease with
                 clear examples and step-by-step explanations.
               </p>
+
+              {(() => {
+                const primaryCalc = getGuidePrimaryCalculator(
+                  'how-to-calculate-a-percentage'
+                );
+                if (!primaryCalc) return null;
+                return (
+                  <div className="mt-4 flex flex-wrap items-center gap-3">
+                    <Link
+                      href={primaryCalc.calculatorPath}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#2457D6] hover:bg-[#1D46B0] text-white text-sm font-bold shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#152238]"
+                    >
+                      <Calculator className="w-4 h-4 shrink-0" aria-hidden="true" />
+                      <span>{primaryCalc.ctaLabel}</span>
+                      <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+                    </Link>
+                    <span className="text-xs text-[#475569] font-medium">
+                      {primaryCalc.tagline}
+                    </span>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Right Clean Educational Graphic (Calculator + Ascending Bars + % Badge) */}
@@ -1216,11 +1239,12 @@ export default function PercentageGuideClient() {
                           aria-hidden="true"
                         />
                       </button>
-                      {isOpen && (
-                        <p className="mt-2 text-xs text-[#475569] leading-relaxed">
-                          {faq.answer}
-                        </p>
-                      )}
+                      <p
+                        hidden={!isOpen}
+                        className="mt-2 text-xs text-[#475569] leading-relaxed"
+                      >
+                        {faq.answer}
+                      </p>
                     </div>
                   );
                 })}

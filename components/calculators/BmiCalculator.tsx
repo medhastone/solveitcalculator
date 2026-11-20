@@ -530,13 +530,13 @@ export default function BmiCalculator({
               <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6]">
                 <input
                   id="health-age"
-                  type="number"
+                  type="number" inputMode="numeric"
                   min={15}
                   max={110}
                   step="1"
                   value={age}
                   onChange={(e) => setAge(Math.max(15, Number(e.target.value)))}
-                  className="w-full px-4 py-2.5 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+                  className="w-full px-4 py-2.5 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none min-h-[44px]"
                 />
                 <span className="px-3.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
                   years
@@ -704,7 +704,7 @@ export default function BmiCalculator({
             </label>
             <input
               id="bf-neck"
-              type="number"
+              type="number" inputMode="decimal"
               step="0.5"
               value={unitSystem === 'metric' ? neckCm : neckIn}
               onChange={(e) =>
@@ -712,7 +712,7 @@ export default function BmiCalculator({
                   ? setNeckCm(Math.max(15, Number(e.target.value)))
                   : setNeckIn(Math.max(6, Number(e.target.value)))
               }
-              className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
             />
           </div>
           <div>
@@ -721,7 +721,7 @@ export default function BmiCalculator({
             </label>
             <input
               id="bf-waist"
-              type="number"
+              type="number" inputMode="decimal"
               step="0.5"
               value={unitSystem === 'metric' ? waistCm : waistIn}
               onChange={(e) =>
@@ -729,7 +729,7 @@ export default function BmiCalculator({
                   ? setWaistCm(Math.max(35, Number(e.target.value)))
                   : setWaistIn(Math.max(14, Number(e.target.value)))
               }
-              className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
             />
           </div>
           {sex === 'female' && (
@@ -739,7 +739,7 @@ export default function BmiCalculator({
               </label>
               <input
                 id="bf-hip"
-                type="number"
+                type="number" inputMode="decimal"
                 step="0.5"
                 value={unitSystem === 'metric' ? hipCm : hipIn}
                 onChange={(e) =>
@@ -747,7 +747,7 @@ export default function BmiCalculator({
                     ? setHipCm(Math.max(40, Number(e.target.value)))
                     : setHipIn(Math.max(16, Number(e.target.value)))
                 }
-                className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-bold text-[#152238]"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-bold text-[#152238] min-h-[44px]"
               />
             </div>
           )}

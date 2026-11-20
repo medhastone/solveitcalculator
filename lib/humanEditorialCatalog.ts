@@ -1559,13 +1559,13 @@ export function resolveHumanEditorialProfile(params: {
       archetype: 'business-margin',
       sectionOrderVariant,
       headings: {
-        formulaSectionH2: `${cleanSubject} Equation & Unit Economics`,
-        exampleSectionH2: `Real Storefront & P&L Pricing Walkthrough`,
-        howToUseH2: `Entering Cost, Revenue & Pricing Inputs`,
+        formulaSectionH2: `How to Calculate ${cleanSubject} (Formula & Equation)`,
+        exampleSectionH2: `${cleanSubject} Step-by-Step Worked Example`,
+        howToUseH2: `How to Use the ${cleanSubject} Calculator`,
         howItWorksH2: `How ${cleanSubject} Drives Bottom-Line Profit`,
-        understandingResultH2: `Reading Your ${cleanSubject} Numbers Without Confusing Markup and Margin`,
-        faqSectionH2: `Pricing & Unit Economics Q&A`,
-        relatedSectionH2: `More Pricing, Margin & Break-Even Tools`,
+        understandingResultH2: `How to Interpret Your ${cleanSubject} Result (Margin vs. Markup)`,
+        faqSectionH2: `Frequently Asked Questions About ${cleanSubject}`,
+        relatedSectionH2: `Related Pricing, Margin & Break-Even Calculators`,
       },
       fieldNote: {
         kicker: 'Unit Economics Field Note · The Margin vs. Markup Trap',
@@ -1579,7 +1579,7 @@ export function resolveHumanEditorialProfile(params: {
           'Never multiply cost by (1 + Margin%). Divide your unit cost by (1 − target margin decimal) so your P&L hits the exact margin percentage after the sale.',
       },
       benchmarkTable: {
-        heading: 'Gross Margin vs. Markup Conversion Reference Table',
+        heading: `${cleanSubject} Reference Table: Margin vs. Markup Multipliers`,
         subheading:
           'Side-by-side lookup showing what markup multiplier is required on a $100 unit cost to achieve your target gross margin.',
         columns: ['Target Gross Margin', 'Required Markup %', 'Selling Price on $100 Cost', 'Gross Profit Kept'],
@@ -1608,12 +1608,12 @@ export function resolveHumanEditorialProfile(params: {
       archetype: 'tax-statutory',
       sectionOrderVariant,
       headings: {
-        formulaSectionH2: `Statutory ${cleanSubject} Formula & Bracket Logic`,
-        exampleSectionH2: `Paystub & Tax Return Walkthrough`,
-        howToUseH2: `Entering Gross Pay, Filing Status & Pre-Tax Deductions`,
-        howItWorksH2: `How Progressive Tax Brackets & Payroll Withholdings Actually Work`,
-        understandingResultH2: `Marginal Bracket Rate vs. Effective Tax Rate on Your Paycheck`,
-        faqSectionH2: `Payroll, Withholding & Tax Filing Questions`,
+        formulaSectionH2: `How to Calculate ${cleanSubject} (Statutory Tax Formula)`,
+        exampleSectionH2: `${cleanSubject} Worked Paystub & Tax Example`,
+        howToUseH2: `How to Use the ${cleanSubject} Calculator`,
+        howItWorksH2: `How Progressive Tax Brackets & Payroll Withholdings Work`,
+        understandingResultH2: `Understanding Your ${cleanSubject}: Marginal vs. Effective Tax Rate`,
+        faqSectionH2: `Frequently Asked Questions About ${cleanSubject}`,
         relatedSectionH2: `Related Salary, Tax & Take-Home Calculators`,
       },
       fieldNote: {
@@ -1628,7 +1628,7 @@ export function resolveHumanEditorialProfile(params: {
           'Every $1,000 directed into a pre-tax 401(k), traditional pension, or HSA comes off the very top of your taxable income—saving you your highest marginal federal + state rate immediately.',
       },
       benchmarkTable: {
-        heading: 'Standard Pay Frequency & Work-Hour Conversion Multipliers',
+        heading: `${cleanSubject} Reference Table: Pay Frequency & Hourly Multipliers`,
         subheading:
           'How payroll systems translate a $100,000 annual salary across standard pay cadences (assuming 40 hrs/week, 52 weeks/year = 2,080 hours).',
         columns: ['Pay Frequency', 'Paychecks / Year', 'Gross Per Paycheck ($100k/yr)', 'Hours Covered Per Check'],
@@ -1661,13 +1661,13 @@ export function resolveHumanEditorialProfile(params: {
       archetype: 'financial-scenario',
       sectionOrderVariant,
       headings: {
-        formulaSectionH2: `${cleanSubject} Mathematical Model & Key Variables`,
-        exampleSectionH2: `Real-World Portfolio & Cash-Flow Scenario`,
-        howToUseH2: `Configuring Your Balances, Rates & Time Horizon`,
-        howItWorksH2: `The Mechanics Behind ${cleanSubject}`,
-        understandingResultH2: `Evaluating Your ${cleanSubject} Projection Under Real Market Conditions`,
-        faqSectionH2: `Planning & Strategy Questions`,
-        relatedSectionH2: `More Finance & Retirement Planning Tools`,
+        formulaSectionH2: `How to Calculate ${cleanSubject} (Formula & Variables)`,
+        exampleSectionH2: `${cleanSubject} Step-by-Step Worked Example`,
+        howToUseH2: `How to Use the ${cleanSubject} Calculator`,
+        howItWorksH2: `How the ${cleanSubject} Formula Works`,
+        understandingResultH2: `How to Interpret Your ${cleanSubject} Results`,
+        faqSectionH2: `Frequently Asked Questions About ${cleanSubject}`,
+        relatedSectionH2: `Related Finance & Retirement Planning Calculators`,
       },
       fieldNote: {
         kicker: 'Financial Planning Field Note · Real vs. Nominal Purchasing Power',
@@ -1681,7 +1681,7 @@ export function resolveHumanEditorialProfile(params: {
           'Divide total closing costs by your monthly payment savings (e.g., $4,200 closing costs ÷ $175/mo savings = 24 months). If you plan to sell or move before month 24, refinancing loses money.',
       },
       benchmarkTable: {
-        heading: 'Long-Term Savings Rate vs. Years to Financial Independence',
+        heading: `${cleanSubject} Reference Table: Savings Rate vs. Years to Goal`,
         subheading:
           'How the percentage of take-home pay you invest determines how many years it takes to build a 25× annual-expense portfolio (assuming 5% real inflation-adjusted return).',
         columns: ['Savings Rate (% of Net Pay)', 'Annual Expenses Covered', 'Approx. Years to 25× Expenses', 'Safe 4% Withdrawal Target'],
@@ -1711,13 +1711,13 @@ export function resolveHumanEditorialProfile(params: {
       archetype: 'personal-lab',
       sectionOrderVariant,
       headings: {
-        formulaSectionH2: `${cleanSubject} Equation & Unit Consistency`,
-        exampleSectionH2: `Step-by-Step Worked Lab & Practical Example`,
-        howToUseH2: `Entering Your Measurements & Units`,
-        howItWorksH2: `How the ${cleanSubject} Relationship Works`,
-        understandingResultH2: `Checking Significant Figures & Unit Prefixes`,
-        faqSectionH2: `Practical & Lab Questions`,
-        relatedSectionH2: `Related Science & Time Tools`,
+        formulaSectionH2: `How to Calculate ${cleanSubject} (Formula & Units)`,
+        exampleSectionH2: `${cleanSubject} Step-by-Step Worked Example`,
+        howToUseH2: `How to Use the ${cleanSubject} Calculator`,
+        howItWorksH2: `How the ${cleanSubject} Equation Works`,
+        understandingResultH2: `Understanding Your ${cleanSubject} Result & Units`,
+        faqSectionH2: `Frequently Asked Questions About ${cleanSubject}`,
+        relatedSectionH2: `Related Science, Lab & Time Calculators`,
       },
       fieldNote: {
         kicker: 'Lab & Engineering Field Note · Unit Prefix Mismatches',
@@ -1731,7 +1731,7 @@ export function resolveHumanEditorialProfile(params: {
           'If your scale reads to 2 decimal places (12.45 g) and your graduated cylinder reads to 2 significant figures (50 mL), round your final reported lab answer to match the least precise measurement.',
       },
       benchmarkTable: {
-        heading: 'Standard Time-to-Decimal & SI Unit Prefix Reference',
+        heading: `${cleanSubject} Reference Table: Time-to-Decimal & SI Unit Prefixes`,
         subheading:
           'Quick lookup for converting clock minutes to decimal payroll hours and standard metric lab prefixes.',
         columns: ['Clock Minutes / Prefix', 'Decimal Hours / Multiplier', 'Scientific Notation', 'Everyday Example'],
@@ -1751,13 +1751,13 @@ export function resolveHumanEditorialProfile(params: {
     archetype: 'math-proof',
     sectionOrderVariant,
     headings: {
-      formulaSectionH2: `${cleanSubject} Formula & Algebraic Identity`,
-      exampleSectionH2: `Worked Step-by-Step Verification`,
-      howToUseH2: `Entering Your Numbers & Parameters`,
-      howItWorksH2: `Why the ${cleanSubject} Method Works`,
-      understandingResultH2: `Practical Applications & Sanity-Checking Your Answer`,
-      faqSectionH2: `Common Questions About ${cleanSubject}`,
-      relatedSectionH2: `More Math & Algebra Calculators`,
+      formulaSectionH2: `How to Calculate ${cleanSubject} (Formula & Rule)`,
+      exampleSectionH2: `${cleanSubject} Step-by-Step Worked Example`,
+      howToUseH2: `How to Use the ${cleanSubject} Calculator`,
+      howItWorksH2: `How the ${cleanSubject} Method Works`,
+      understandingResultH2: `How to Verify Your ${cleanSubject} Answer`,
+      faqSectionH2: `Frequently Asked Questions About ${cleanSubject}`,
+      relatedSectionH2: `Related Math & Algebra Calculators`,
     },
     fieldNote: {
       kicker: 'Math & Problem-Solving Field Note · Order of Operations & Sign Checks',
@@ -1771,7 +1771,7 @@ export function resolveHumanEditorialProfile(params: {
         'Before reading the exact decimal, round the inputs to easy whole numbers to predict the rough size of the answer. If you expect ~150 and see 1,500, you immediately spot a slipped decimal.',
     },
     benchmarkTable: {
-      heading: 'Essential Mathematical Identities, Powers & Reference Constants',
+      heading: `${cleanSubject} Reference Table: Identities & Verification Benchmarks`,
       subheading:
         'Quick verification benchmarks for powers, roots, order of operations, and statistical measures.',
       columns: ['Mathematical Rule / Identity', 'Symbolic Form', 'Concrete Numerical Check', 'Key Edge Case to Watch'],
@@ -1811,6 +1811,66 @@ export interface SearchFaqEntry {
 }
 
 const SLUG_GOOGLE_SEARCH_FAQS: Record<string, SearchFaqEntry[]> = {
+  'loan-calculator': [
+    {
+      question: 'What is the monthly payment on a $25,000 loan for 5 years?',
+      answer:
+        'At a 6.5% annual interest rate over 60 months (5 years), a $25,000 loan costs $489.15 per month, with $4,349.12 in total interest paid over the life of the loan.',
+    },
+    {
+      question: 'How do you calculate monthly loan payments manually?',
+      answer:
+        'Divide your annual interest rate by 12 to get the monthly rate (r), then apply the standard amortization formula: M = P × [r(1 + r)ⁿ] ÷ [(1 + r)ⁿ − 1], where P is the loan principal and n is the total number of monthly payments.',
+    },
+    {
+      question: 'Does paying extra principal each month lower my monthly payment or shorten my loan term?',
+      answer:
+        'On a standard fixed-rate auto or personal loan, extra principal payments reduce your remaining balance immediately, which cuts future interest charges and pays off the loan months earlier while keeping your scheduled monthly bill the same.',
+    },
+  ],
+  'mortgage-calculator': [
+    {
+      question: 'How much house can I afford on a $100,000 salary?',
+      answer:
+        'Under the standard 28/36 lender qualification rule, a $100,000 gross income ($8,333/month) supports a maximum total monthly housing payment (PITI) of about $2,333, which typically corresponds to a $320,000 to $370,000 home depending on down payment and current mortgage rates.',
+    },
+    {
+      question: 'What is included in a monthly PITI mortgage payment?',
+      answer:
+        'PITI stands for Principal, Interest, Property Taxes, and Homeowners Insurance. If your down payment is less than 20% on a conventional loan, Private Mortgage Insurance (PMI) and any HOA dues are also added to your total monthly payment.',
+    },
+  ],
+  'compound-interest-calculator': [
+    {
+      question: 'What is the Rule of 72 in compound interest?',
+      answer:
+        'The Rule of 72 estimates how many years it takes to double your money by dividing 72 by your annual rate of return. At an 8% annual compound return, your balance doubles in approximately 72 ÷ 8 = 9 years.',
+    },
+    {
+      question: 'Is daily or monthly compounding better for savings?',
+      answer:
+        'Daily compounding yields slightly more interest than monthly compounding because interest is added to your principal 365 times per year instead of 12, though the difference on a 5% APY account is only a few dollars per $10,000.',
+    },
+  ],
+  'bmi-calculator': [
+    {
+      question: 'What is a healthy BMI range for adults?',
+      answer:
+        'According to WHO and CDC guidelines, a standard healthy adult BMI ranges from 18.5 to 24.9 kg/m². A BMI below 18.5 is classified as underweight, 25.0 to 29.9 as overweight, and 30.0 or higher as obesity.',
+    },
+    {
+      question: 'How is BMI calculated in metric vs. US customary units?',
+      answer:
+        'In metric units, divide weight in kilograms by height in meters squared (BMI = kg ÷ m²). In US units, divide weight in pounds by height in inches squared and multiply by 703 (BMI = 703 × lb ÷ in²).',
+    },
+  ],
+  'age-calculator': [
+    {
+      question: 'How does the chronological age calculator handle leap years?',
+      answer:
+        'Our chronological age calculator counts exact calendar month lengths (28, 29, 30, or 31 days) and includes every February 29 leap day between your birth date and the target date.',
+    },
+  ],
   'discount-calculator': [
     {
       question: 'How do you calculate 20% off a price in your head?',

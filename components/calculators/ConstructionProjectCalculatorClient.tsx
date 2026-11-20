@@ -604,7 +604,7 @@ export default function ConstructionProjectCalculatorClient() {
                                   }))
                                 }
                                 placeholder="15"
-                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                               />
                             </div>
                             <div>
@@ -629,7 +629,7 @@ export default function ConstructionProjectCalculatorClient() {
                                   }))
                                 }
                                 placeholder="6"
-                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                               />
                             </div>
                           </div>
@@ -647,7 +647,7 @@ export default function ConstructionProjectCalculatorClient() {
                                 }))
                               }
                               aria-invalid={Boolean(result.fieldErrors.length)}
-                              className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                              className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                             />
                             <select
                               aria-label="Length measurement unit"
@@ -710,7 +710,7 @@ export default function ConstructionProjectCalculatorClient() {
                                   }))
                                 }
                                 placeholder="12"
-                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                               />
                             </div>
                             <div>
@@ -735,7 +735,7 @@ export default function ConstructionProjectCalculatorClient() {
                                   }))
                                 }
                                 placeholder="0"
-                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                               />
                             </div>
                           </div>
@@ -753,7 +753,7 @@ export default function ConstructionProjectCalculatorClient() {
                                 }))
                               }
                               aria-invalid={Boolean(result.fieldErrors.width)}
-                              className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                              className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                             />
                             <select
                               aria-label="Width measurement unit"
@@ -811,7 +811,7 @@ export default function ConstructionProjectCalculatorClient() {
                             }))
                           }
                           aria-invalid={Boolean(result.fieldErrors.thickness)}
-                          className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                          className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                         />
                         <select
                           aria-label="Slab thickness measurement unit"
@@ -868,7 +868,7 @@ export default function ConstructionProjectCalculatorClient() {
                               }))
                             }
                             aria-invalid={Boolean(result.fieldErrors.diameter)}
-                            className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                            className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                           />
                           <select
                             aria-label="Hole diameter unit"
@@ -929,7 +929,7 @@ export default function ConstructionProjectCalculatorClient() {
                                   }))
                                 }
                                 placeholder="3"
-                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                               />
                             </div>
                             <div>
@@ -954,7 +954,7 @@ export default function ConstructionProjectCalculatorClient() {
                                   }))
                                 }
                                 placeholder="6"
-                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                                className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                               />
                             </div>
                           </div>
@@ -972,7 +972,7 @@ export default function ConstructionProjectCalculatorClient() {
                                 }))
                               }
                               aria-invalid={Boolean(result.fieldErrors.depth)}
-                              className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                              className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                             />
                             <select
                               aria-label="Hole depth unit"
@@ -1012,7 +1012,7 @@ export default function ConstructionProjectCalculatorClient() {
                         </label>
                         <input
                           id="dimension-holes-count"
-                          type="number"
+                          type="number" inputMode="numeric"
                           min="1"
                           max="10000"
                           step="1"
@@ -1024,7 +1024,7 @@ export default function ConstructionProjectCalculatorClient() {
                             }))
                           }
                           aria-invalid={Boolean(result.fieldErrors.numberOfHoles)}
-                          className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                          className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                         />
                         {result.fieldErrors.numberOfHoles && (
                           <p className="mt-1 text-xs font-medium text-red-600 dark:text-red-400">
@@ -1395,7 +1395,7 @@ export default function ConstructionProjectCalculatorClient() {
                     <div className="flex items-center gap-2">
                       <input
                         id="waste-percentage-input"
-                        type="number"
+                        type="number" inputMode="decimal"
                         min="0"
                         max="100"
                         step="0.5"
@@ -1407,7 +1407,7 @@ export default function ConstructionProjectCalculatorClient() {
                           }))
                         }
                         aria-invalid={Boolean(result.fieldErrors.wastePercent)}
-                        className="w-32 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                        className="w-32 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                       />
                       <span className="text-sm font-bold text-slate-600 dark:text-slate-300">
                         %
@@ -1677,7 +1677,7 @@ export default function ConstructionProjectCalculatorClient() {
                             ? 'e.g. 20'
                             : 'Enter yield from bag label'
                         }
-                        className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                        className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                       />
                       <select
                         aria-label="Package coverage or bag yield unit"
@@ -1775,7 +1775,7 @@ export default function ConstructionProjectCalculatorClient() {
                           }))
                         }
                         placeholder="Enter price per package"
-                        className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 pl-8 pr-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                        className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 pl-8 pr-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                       />
                     </div>
                     {result.fieldErrors.unitOrPackagePrice && (
@@ -1811,7 +1811,7 @@ export default function ConstructionProjectCalculatorClient() {
                             }))
                           }
                           placeholder="Enter unit price"
-                          className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 pl-8 pr-3.5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                          className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 pl-8 pr-3.5 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                         />
                       </div>
                       <select

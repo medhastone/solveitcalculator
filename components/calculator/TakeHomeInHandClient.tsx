@@ -157,10 +157,10 @@ export default function TakeHomeInHandClient({ initialMode }: { initialMode: 'us
                     Annual Cost to Company (CTC ₹)
                   </label>
                   <input
-                    type="number"
+                    type="number" inputMode="decimal"
                     value={annualCtc}
                     onChange={(e) => setAnnualCtc(Math.max(0, Number(e.target.value)))}
-                    className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                    className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                   />
                 </div>
                 <UnboxedSlider
@@ -402,10 +402,10 @@ export default function TakeHomeInHandClient({ initialMode }: { initialMode: 'us
                 <div className="flex justify-between items-center">
                   <label className="text-xs font-bold uppercase text-[var(--muted)]">Annual Salary ($)</label>
                   <input
-                    type="number"
+                    type="number" inputMode="decimal"
                     value={usSalary}
                     onChange={(e) => setUsSalary(Math.max(0, Number(e.target.value)))}
-                    className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                    className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                   />
                 </div>
                 <UnboxedSlider
@@ -424,19 +424,19 @@ export default function TakeHomeInHandClient({ initialMode }: { initialMode: 'us
                 <div>
                   <label className="block text-xs font-bold uppercase text-[var(--muted)] mb-1">401(k) ($/yr)</label>
                   <input
-                    type="number"
+                    type="number" inputMode="decimal"
                     value={us401k}
                     onChange={(e) => setUs401k(Math.max(0, Number(e.target.value)))}
-                    className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold tabular-nums"
+                    className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-bold uppercase text-[var(--muted)] mb-1">HSA/Health ($/yr)</label>
                   <input
-                    type="number"
+                    type="number" inputMode="decimal"
                     value={usHsa}
                     onChange={(e) => setUsHsa(Math.max(0, Number(e.target.value)))}
-                    className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold tabular-nums"
+                    className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                   />
                 </div>
               </div>

@@ -91,10 +91,10 @@ export default function MarkupClient() {
                 Unit Cost ($)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={cost}
                 onChange={(e) => setCost(Math.max(0, Number(e.target.value)))}
-                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -117,10 +117,10 @@ export default function MarkupClient() {
                   Markup Percentage: {markupPct}%
                 </label>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   value={markupPct}
                   onChange={(e) => setMarkupPct(Number(e.target.value))}
-                  className="w-24 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                  className="w-24 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                 />
               </div>
               <UnboxedSlider
@@ -142,10 +142,10 @@ export default function MarkupClient() {
                   List Selling Price ($)
                 </label>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   value={sellingPrice}
                   onChange={(e) => setSellingPrice(Math.max(0, Number(e.target.value)))}
-                  className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                  className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                 />
               </div>
             </div>
@@ -158,12 +158,12 @@ export default function MarkupClient() {
                 Promo Discount (%)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 min={0}
                 max={95}
                 value={discountPct}
                 onChange={(e) => setDiscountPct(Math.max(0, Math.min(95, Number(e.target.value))))}
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-bold tabular-nums"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <div>
@@ -171,13 +171,13 @@ export default function MarkupClient() {
                 Sales Tax / GST / VAT (%)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 min={0}
                 max={50}
                 step={0.25}
                 value={taxGstVatPct}
                 onChange={(e) => setTaxGstVatPct(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-bold tabular-nums"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
           </div>

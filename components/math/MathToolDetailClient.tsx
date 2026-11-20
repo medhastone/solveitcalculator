@@ -452,20 +452,12 @@ export default function MathToolDetailClient({
       </div>
 
       <form onSubmit={handleCalculate} className={isPercentageMain ? 'space-y-4' : 'space-y-5'} noValidate>
-        <div
-          className={
-            isPercentageMain
-              ? 'grid grid-cols-2 gap-3 sm:gap-4'
-              : 'grid grid-cols-1 sm:grid-cols-2 gap-5'
-          }
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Field A */}
           <div>
             <label
               htmlFor="math-val-a"
-              className={`block font-extrabold text-[#152238] ${
-                isPercentageMain ? 'text-xs sm:text-sm mb-1' : 'text-sm mb-2'
-              }`}
+              className="block text-sm font-extrabold text-[#152238] py-1"
             >
               {tool.defaultInputs.labelA}{' '}
               <span className="text-[#E11D48]" aria-hidden="true">
@@ -475,7 +467,7 @@ export default function MathToolDetailClient({
             <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 transition-all min-h-[44px]">
               <input
                 id="math-val-a"
-                type="number"
+                type="number" inputMode="decimal"
                 step="any"
                 required
                 placeholder={`e.g. ${tool.defaultInputs.valueA}`}
@@ -487,7 +479,7 @@ export default function MathToolDetailClient({
                     setErrorMsg(null);
                   }
                 }}
-                className="w-full min-h-[44px] px-3 sm:px-4 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+                className="w-full min-h-[44px] px-3 sm:px-4 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
               />
               <span className="px-3 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center justify-center shrink-0 select-none">
                 {tool.defaultInputs.unitA || (isPercentageMain ? '%' : 'Value')}
@@ -504,9 +496,7 @@ export default function MathToolDetailClient({
           <div>
             <label
               htmlFor="math-val-b"
-              className={`block font-extrabold text-[#152238] ${
-                isPercentageMain ? 'text-xs sm:text-sm mb-1' : 'text-sm mb-2'
-              }`}
+              className="block text-sm font-extrabold text-[#152238] py-1"
             >
               {tool.defaultInputs.labelB}{' '}
               <span className="text-[#E11D48]" aria-hidden="true">
@@ -516,7 +506,7 @@ export default function MathToolDetailClient({
             <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 transition-all min-h-[44px]">
               <input
                 id="math-val-b"
-                type="number"
+                type="number" inputMode="decimal"
                 step="any"
                 required
                 placeholder={`e.g. ${tool.defaultInputs.valueB}`}
@@ -528,7 +518,7 @@ export default function MathToolDetailClient({
                     setErrorMsg(null);
                   }
                 }}
-                className="w-full min-h-[44px] px-3 sm:px-4 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+                className="w-full min-h-[44px] px-3 sm:px-4 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
               />
               <span className="px-2.5 sm:px-3.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center justify-center shrink-0 select-none">
                 {tool.defaultInputs.unitB || (isPercentageMain ? '#' : 'Value')}
@@ -556,7 +546,7 @@ export default function MathToolDetailClient({
               <div className="flex items-stretch max-w-xs rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 transition-all">
                 <input
                   id="math-val-c"
-                  type="number"
+                  type="number" inputMode="decimal"
                   step="any"
                   required
                   value={rawC}
@@ -567,7 +557,7 @@ export default function MathToolDetailClient({
                       setErrorMsg(null);
                     }
                   }}
-                  className="w-full px-4 py-3 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+                  className="w-full px-4 py-3 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none min-h-[44px]"
                 />
                 <span className="px-3.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center justify-center shrink-0 select-none">
                   Value

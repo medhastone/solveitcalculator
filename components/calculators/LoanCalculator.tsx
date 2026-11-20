@@ -46,6 +46,21 @@ export default function LoanCalculator() {
   const [loanAmount, setLoanAmount] = useState<number>(25000);
   const [interestRate, setInterestRate] = useState<number>(6.5);
   const [loanTermMonths, setLoanTermMonths] = useState<number>(60);
+  const [termUnit, setTermUnit] = useState<'months' | 'years'>('months');
+
+  const displayedTermValue =
+    termUnit === 'years'
+      ? Number((loanTermMonths / 12).toFixed(2))
+      : loanTermMonths;
+
+  const handleTermValueChange = (rawVal: number) => {
+    const clean = Math.max(1, rawVal);
+    if (termUnit === 'years') {
+      setLoanTermMonths(Math.min(480, Math.max(1, Math.round(clean * 12))));
+    } else {
+      setLoanTermMonths(Math.min(480, Math.max(1, Math.round(clean))));
+    }
+  };
 
   const result = useMemo(() => {
     const P = Math.max(0, loanAmount);
@@ -74,26 +89,85 @@ export default function LoanCalculator() {
     setLoanAmount(25000);
     setInterestRate(6.5);
     setLoanTermMonths(60);
+    setTermUnit('months');
   };
+
+  const loanPresets = [
+    {
+      label: `${symbol}15k Auto · 48 mo @ 5.9%`,
+      onSelect: () => {
+        setLoanAmount(15000);
+        setInterestRate(5.9);
+        setLoanTermMonths(48);
+      },
+    },
+    {
+      label: `${symbol}25k Personal · 60 mo @ 6.5%`,
+      onSelect: () => {
+        setLoanAmount(25000);
+        setInterestRate(6.5);
+        setLoanTermMonths(60);
+      },
+    },
+    {
+      label: `${symbol}35k Auto · 72 mo @ 6.9%`,
+      onSelect: () => {
+        setLoanAmount(35000);
+        setInterestRate(6.9);
+        setLoanTermMonths(72);
+      },
+    },
+    {
+      label: `${symbol}60k Business · 84 mo @ 7.5%`,
+      onSelect: () => {
+        setLoanAmount(60000);
+        setInterestRate(7.5);
+        setLoanTermMonths(84);
+      },
+    },
+  ];
 
   const calculatorCard = (
     <section
       id="calculator"
       aria-label="Loan Payment Calculator input panel"
-      className="bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-7 shadow-2xs space-y-6"
+      className="bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-7 shadow-2xs space-y-5"
     >
-      <div className="flex items-start gap-3">
-        <div className="w-9 h-9 rounded-xl bg-[#EBF2FF] text-[#2457D6] flex items-center justify-center shrink-0 mt-0.5">
-          <Calculator className="w-5 h-5" />
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex items-start gap-3">
+          <div className="w-9 h-9 rounded-xl bg-[#EBF2FF] text-[#2457D6] flex items-center justify-center shrink-0 mt-0.5">
+            <Calculator className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="text-lg sm:text-xl font-extrabold text-[#152238]">
+              Calculate Monthly Loan Payment
+            </h2>
+            <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
+              Enter principal, APR, and term in months or years to compute your exact monthly payment.
+            </p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-lg sm:text-xl font-extrabold text-[#152238]">
-            Calculate Monthly Loan Payment
-          </h2>
-          <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
-            Enter your loan amount, annual interest rate, and loan term to find your monthly payment.
-          </p>
-        </div>
+      </div>
+
+      {/* Quick Term & Rate Chips inside Workbench */}
+      <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+        <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#64748B] mr-1">
+          Term:
+        </span>
+        {[36, 48, 60, 72, 84].map((mo) => (
+          <button
+            key={mo}
+            type="button"
+            onClick={() => setLoanTermMonths(mo)}
+            className={`px-2.5 py-1 rounded-md text-xs font-bold tabular-nums border transition-colors cursor-pointer ${
+              loanTermMonths === mo
+                ? 'bg-[#2457D6] text-white border-[#2457D6]'
+                : 'bg-[#F8FAFC] hover:bg-[#EEF3FF] text-[#152238] border-[#CBD5E1]'
+            }`}
+          >
+            {mo} mo ({mo / 12} yr)
+          </button>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -141,25 +215,57 @@ export default function LoanCalculator() {
         </div>
 
         <div>
-          <label htmlFor="loan-term" className="block text-sm font-extrabold text-[#152238] mb-2">
-            Loan Term (Months) <span className="text-[#E11D48]">*</span>
-          </label>
+          <div className="flex items-center justify-between gap-1 mb-2">
+            <label htmlFor="loan-term" className="block text-sm font-extrabold text-[#152238]">
+              Loan Term <span className="text-[#E11D48]">*</span>
+            </label>
+            <div
+              role="group"
+              aria-label="Loan term unit toggle"
+              className="inline-flex rounded-lg border border-[#CBD5E1] bg-[#F8FAFC] p-0.5 text-[11px] font-bold"
+            >
+              <button
+                type="button"
+                onClick={() => setTermUnit('months')}
+                className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
+                  termUnit === 'months'
+                    ? 'bg-[#2457D6] text-white'
+                    : 'text-[#475569] hover:text-[#152238]'
+                }`}
+              >
+                Mo
+              </button>
+              <button
+                type="button"
+                onClick={() => setTermUnit('years')}
+                className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
+                  termUnit === 'years'
+                    ? 'bg-[#2457D6] text-white'
+                    : 'text-[#475569] hover:text-[#152238]'
+                }`}
+              >
+                Yr
+              </button>
+            </div>
+          </div>
           <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15">
             <input
               id="loan-term"
               type="number"
               min={1}
-              max={360}
-              step={12}
-              value={loanTermMonths}
-              onChange={(e) => setLoanTermMonths(Math.max(1, Number(e.target.value)))}
+              max={termUnit === 'years' ? 40 : 480}
+              step={termUnit === 'years' ? 1 : 12}
+              value={displayedTermValue}
+              onChange={(e) => handleTermValueChange(Number(e.target.value))}
               className="w-full px-4 py-3 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
             />
-            <span className="px-3.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
-              mo
+            <span className="px-3 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
+              {termUnit === 'years' ? 'yr' : 'mo'}
             </span>
           </div>
-          <p className="text-xs text-[#64748B] mt-1.5">e.g. 60 months (5 years)</p>
+          <p className="text-xs text-[#64748B] mt-1.5 tabular-nums">
+            = {loanTermMonths} months ({(loanTermMonths / 12).toFixed(1)} years)
+          </p>
         </div>
       </div>
 
@@ -201,6 +307,7 @@ export default function LoanCalculator() {
       otherCalculatorsTitle="Other Finance Calculators"
       otherCalculators={LOAN_RELATED_LINKS}
       relatedCalculators={LOAN_RELATED_LINKS.slice(0, 4)}
+      presets={loanPresets}
       calculatorCard={calculatorCard}
       resultCard={{
         promptSummary: `Monthly payment for ${formatCurrency(loanAmount)} over ${loanTermMonths} months`,

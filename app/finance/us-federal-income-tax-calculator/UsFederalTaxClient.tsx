@@ -365,13 +365,13 @@ export default function UsFederalTaxClient() {
               <span className="absolute left-3 text-sm font-bold text-on-surface-variant">$</span>
               <input
                 id="wages-input"
-                type="number"
+                type="number" inputMode="decimal"
                 min={0}
                 max={5000000}
                 step={2500}
                 value={wages}
                 onChange={(e) => setWages(Math.max(0, Number(e.target.value)))}
-                className="w-full pl-7 pr-3 py-2 rounded-xl bg-surface border border-outline-variant/60 text-sm font-bold text-on-surface tabular-nums focus:outline-none focus:border-primary"
+                className="w-full pl-7 pr-3 py-2.5 rounded-xl bg-surface border border-outline-variant/60 text-base font-bold text-on-surface tabular-nums focus:outline-none focus:border-primary min-h-[44px]"
               />
             </div>
 
@@ -413,13 +413,13 @@ export default function UsFederalTaxClient() {
                 <span className="absolute left-3 text-xs font-bold text-on-surface-variant">$</span>
                 <input
                   id="other-income-input"
-                  type="number"
+                  type="number" inputMode="decimal"
                   min={0}
                   max={2000000}
                   step={500}
                   value={otherIncome}
                   onChange={(e) => setOtherIncome(Math.max(0, Number(e.target.value)))}
-                  className="w-full pl-6 pr-3 py-1.5 rounded-xl bg-surface border border-outline-variant/60 text-xs font-semibold text-on-surface tabular-nums focus:outline-none focus:border-primary"
+                  className="w-full pl-6 pr-3 py-2.5 rounded-xl bg-surface border border-outline-variant/60 text-base font-semibold text-on-surface tabular-nums focus:outline-none focus:border-primary min-h-[44px]"
                 />
               </div>
             </div>
@@ -440,13 +440,13 @@ export default function UsFederalTaxClient() {
                   <span className="absolute left-2.5 text-xs text-on-surface-variant">$</span>
                   <input
                     id="input-401k"
-                    type="number"
+                    type="number" inputMode="decimal"
                     min={0}
                     max={31000}
                     step={500}
                     value={traditional401k}
                     onChange={(e) => setTraditional401k(Math.max(0, Number(e.target.value)))}
-                    className="w-full pl-5 pr-2 py-1.5 rounded-lg bg-surface border border-outline-variant/60 text-xs font-semibold text-on-surface tabular-nums"
+                    className="w-full pl-5 pr-2 py-2.5 rounded-lg bg-surface border border-outline-variant/60 text-base font-semibold text-on-surface tabular-nums min-h-[44px]"
                   />
                 </div>
               </div>
@@ -459,13 +459,13 @@ export default function UsFederalTaxClient() {
                   <span className="absolute left-2.5 text-xs text-on-surface-variant">$</span>
                   <input
                     id="input-hsa"
-                    type="number"
+                    type="number" inputMode="decimal"
                     min={0}
                     max={8550}
                     step={250}
                     value={hsa}
                     onChange={(e) => setHsa(Math.max(0, Number(e.target.value)))}
-                    className="w-full pl-5 pr-2 py-1.5 rounded-lg bg-surface border border-outline-variant/60 text-xs font-semibold text-on-surface tabular-nums"
+                    className="w-full pl-5 pr-2 py-2.5 rounded-lg bg-surface border border-outline-variant/60 text-base font-semibold text-on-surface tabular-nums min-h-[44px]"
                   />
                 </div>
               </div>
@@ -528,12 +528,12 @@ export default function UsFederalTaxClient() {
                     </label>
                     <input
                       id="input-salt"
-                      type="number"
+                      type="number" inputMode="decimal"
                       min={0}
                       step={500}
                       value={saltTax}
                       onChange={(e) => setSaltTax(Math.max(0, Number(e.target.value)))}
-                      className="w-full px-2 py-1 rounded-lg bg-surface border border-outline-variant/60 text-xs font-semibold tabular-nums"
+                      className="w-full px-2 py-2.5 rounded-lg bg-surface border border-outline-variant/60 text-base font-semibold tabular-nums min-h-[44px]"
                     />
                   </div>
                   <div>
@@ -542,12 +542,12 @@ export default function UsFederalTaxClient() {
                     </label>
                     <input
                       id="input-mortgage"
-                      type="number"
+                      type="number" inputMode="decimal"
                       min={0}
                       step={500}
                       value={mortgageInterest}
                       onChange={(e) => setMortgageInterest(Math.max(0, Number(e.target.value)))}
-                      className="w-full px-2 py-1 rounded-lg bg-surface border border-outline-variant/60 text-xs font-semibold tabular-nums"
+                      className="w-full px-2 py-2.5 rounded-lg bg-surface border border-outline-variant/60 text-base font-semibold tabular-nums min-h-[44px]"
                     />
                   </div>
                   <div>
@@ -556,12 +556,12 @@ export default function UsFederalTaxClient() {
                     </label>
                     <input
                       id="input-charity"
-                      type="number"
+                      type="number" inputMode="decimal"
                       min={0}
                       step={250}
                       value={charity}
                       onChange={(e) => setCharity(Math.max(0, Number(e.target.value)))}
-                      className="w-full px-2 py-1 rounded-lg bg-surface border border-outline-variant/60 text-xs font-semibold tabular-nums"
+                      className="w-full px-2 py-2.5 rounded-lg bg-surface border border-outline-variant/60 text-base font-semibold tabular-nums min-h-[44px]"
                     />
                   </div>
                   <div>
@@ -570,12 +570,12 @@ export default function UsFederalTaxClient() {
                     </label>
                     <input
                       id="input-medical"
-                      type="number"
+                      type="number" inputMode="decimal"
                       min={0}
                       step={500}
                       value={medicalExpenses}
                       onChange={(e) => setMedicalExpenses(Math.max(0, Number(e.target.value)))}
-                      className="w-full px-2 py-1 rounded-lg bg-surface border border-outline-variant/60 text-xs font-semibold tabular-nums"
+                      className="w-full px-2 py-2.5 rounded-lg bg-surface border border-outline-variant/60 text-base font-semibold tabular-nums min-h-[44px]"
                     />
                   </div>
                 </div>
@@ -592,12 +592,12 @@ export default function UsFederalTaxClient() {
                 </label>
                 <input
                   id="input-children"
-                  type="number"
+                  type="number" inputMode="numeric"
                   min={0}
                   max={10}
                   value={qualifyingChildren}
                   onChange={(e) => setQualifyingChildren(Math.max(0, Number(e.target.value)))}
-                  className="w-full px-2.5 py-1.5 rounded-lg bg-surface border border-outline-variant/60 text-xs font-semibold tabular-nums"
+                  className="w-full px-2.5 py-2.5 rounded-lg bg-surface border border-outline-variant/60 text-base font-semibold tabular-nums min-h-[44px]"
                 />
               </div>
 
@@ -609,12 +609,12 @@ export default function UsFederalTaxClient() {
                   <span className="absolute left-2.5 text-xs text-on-surface-variant">$</span>
                   <input
                     id="input-withheld"
-                    type="number"
+                    type="number" inputMode="decimal"
                     min={0}
                     step={500}
                     value={taxesWithheld}
                     onChange={(e) => setTaxesWithheld(Math.max(0, Number(e.target.value)))}
-                    className="w-full pl-5 pr-2 py-1.5 rounded-lg bg-surface border border-outline-variant/60 text-xs font-semibold tabular-nums"
+                    className="w-full pl-5 pr-2 py-2.5 rounded-lg bg-surface border border-outline-variant/60 text-base font-semibold tabular-nums min-h-[44px]"
                   />
                 </div>
               </div>

@@ -139,10 +139,10 @@ export default function UsStateTakeHomeClient() {
                 Gross Annual Salary
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={annualSalary}
                 onChange={(e) => setAnnualSalary(Math.max(0, Number(e.target.value)))}
-                className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm font-bold tabular-nums"
+                className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -203,10 +203,10 @@ export default function UsStateTakeHomeClient() {
                 Pre-Tax 401(k) Deferral ($/yr)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={preTax401k}
                 onChange={(e) => setPreTax401k(Math.max(0, Number(e.target.value)))}
-                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -229,10 +229,10 @@ export default function UsStateTakeHomeClient() {
                 Pre-Tax HSA &amp; Medical ($/yr)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={preTaxHsaAndHealth}
                 onChange={(e) => setPreTaxHsaAndHealth(Math.max(0, Number(e.target.value)))}
-                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider

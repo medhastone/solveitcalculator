@@ -88,10 +88,10 @@ export default function CanadaTaxClient() {
                 Annual Gross Income (CA$)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={grossIncome}
                 onChange={(e) => setGrossIncome(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -113,10 +113,10 @@ export default function CanadaTaxClient() {
                 RRSP Deduction (CA$/yr)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={rrspDeduction}
                 onChange={(e) => setRrspDeduction(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider

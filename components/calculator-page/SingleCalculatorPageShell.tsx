@@ -1,13 +1,11 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Calculator,
   Check,
-  Copy,
-  Printer,
   ChevronRight,
   ArrowRight,
   Settings,
@@ -25,21 +23,20 @@ import {
   Clock,
   Activity,
   BarChart3,
-  Share2,
-  Hash,
   Table,
-  ShieldCheck,
   Compass,
   AlertTriangle,
   ExternalLink,
-  Mail,
 } from 'lucide-react';
 import {
   resolveHumanEditorialProfile,
   ensureMinimumSearchFaqs,
 } from '@/lib/humanEditorialCatalog';
 import { resolveToolTrustMetadata } from '@/lib/trustMetadataCatalog';
+import { getCoreCalculatorSeoBySlug } from '@/lib/coreCalculatorSeoContent';
+import { getCalculatorInternalLinks } from '@/lib/internalLinkingMap';
 import { useCurrency, formatExchangeRate } from '@/lib/currency';
+import HighContrastResultCard from '@/components/calculator-page/HighContrastResultCard';
 
 export type SidebarIconVariant =
   | 'chart-green'
@@ -58,6 +55,12 @@ export interface RelatedCalculatorLink {
   description: string;
   href: string;
   iconVariant?: SidebarIconVariant;
+  intentBadge?: string;
+}
+
+export interface QuickPresetItem {
+  label: string;
+  onSelect: () => void;
 }
 
 export interface FaqItem {
@@ -118,6 +121,8 @@ export interface SingleCalculatorShellProps {
   otherCalculatorsTitle: string;
   otherCalculators: RelatedCalculatorLink[];
   relatedCalculators: RelatedCalculatorLink[];
+  /** Optional 1-click scenario presets rendered above the calculator inputs */
+  presets?: QuickPresetItem[];
   /** Interactive calculator card content (either custom children or standard panel) */
   calculatorCard: React.ReactNode;
   /** Render calculatorCard full-width (12 cols) when the client component already contains its own 2-column Input + Live Result layout */
@@ -266,6 +271,46 @@ export default function SingleCalculatorPageShell({
     useCurrency();
   const [copied, setCopied] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+  const workbenchRef = useRef<HTMLDivElement>(null);
+
+  const setNativeElementValue = useCallback(
+    (el: HTMLInputElement | HTMLSelectElement, value: string) => {
+      const proto =
+        el instanceof HTMLSelectElement
+          ? window.HTMLSelectElement.prototype
+          : window.HTMLInputElement.prototype;
+      const descriptor = Object.getOwnPropertyDescriptor(proto, 'value');
+      if (descriptor && descriptor.set) {
+        descriptor.set.call(el, value);
+      } else {
+        el.value = value;
+      }
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    },
+    []
+  );
+
+  // Hydrate calculator inputs from URL query parameters on mount
+  useEffect(() => {
+    if (typeof window === 'undefined' || !workbenchRef.current) return;
+    const params = new URLSearchParams(window.location.search);
+    if (Array.from(params.keys()).length === 0) return;
+
+    const elements = Array.from(
+      workbenchRef.current.querySelectorAll<HTMLInputElement | HTMLSelectElement>(
+        'input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]), select'
+      )
+    );
+
+    elements.forEach((el, idx) => {
+      const key = el.id || el.name || `in_${idx}`;
+      const paramVal = params.get(key);
+      if (paramVal !== null && paramVal.trim() !== '') {
+        setNativeElementValue(el, paramVal);
+      }
+    });
+  }, [setNativeElementValue]);
 
   const isFinanceCalculator =
     categoryHref.startsWith('/finance') ||
@@ -317,19 +362,61 @@ export default function SingleCalculatorPageShell({
   const handleCopyResult = () => {
     if (!resultCard) return;
     const textToCopy = `${resultCard.promptSummary} ${resultCard.promptSuffix ?? 'is:'} ${resultCard.mainValue} (${resultCard.equation})`;
-    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      });
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch(() => {
+          const ta = document.createElement('textarea');
+          ta.value = textToCopy;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        });
+    } else if (typeof document !== 'undefined') {
+      const ta = document.createElement('textarea');
+      ta.value = textToCopy;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
   const handleCopyShareLink = () => {
-    const shareUrl =
-      typeof window !== 'undefined'
-        ? window.location.href
-        : `https://solveitcalculator.com${pathname || ''}`;
+    let shareUrl = `https://solveitcalculator.com${pathname || ''}`;
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      if (workbenchRef.current) {
+        const elements = Array.from(
+          workbenchRef.current.querySelectorAll<HTMLInputElement | HTMLSelectElement>(
+            'input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]), select'
+          )
+        );
+        elements.forEach((el, idx) => {
+          const key = el.id || el.name || `in_${idx}`;
+          if (el.value !== undefined && el.value.trim() !== '') {
+            url.searchParams.set(key, el.value.trim());
+          }
+        });
+        window.history.replaceState(null, '', url.toString());
+      }
+      shareUrl = url.toString();
+    }
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
       navigator.clipboard.writeText(shareUrl).then(() => {
         setLinkCopied(true);
@@ -376,6 +463,34 @@ export default function SingleCalculatorPageShell({
         ?.toLowerCase() || '',
     [pathname, title]
   );
+
+  const hasCoreSeoOverride = Boolean(getCoreCalculatorSeoBySlug(cleanToolSlug));
+
+  const internalLinkEntry = useMemo(
+    () => getCalculatorInternalLinks(pathname),
+    [pathname]
+  );
+
+  const effectiveRelatedCalculators = useMemo<RelatedCalculatorLink[]>(() => {
+    if (internalLinkEntry && internalLinkEntry.relatedCalculators.length === 3) {
+      const intentTags = [
+        'Next Step',
+        'Compare Scenario',
+        'Companion Formula',
+      ];
+      return internalLinkEntry.relatedCalculators.map((calc, idx) => {
+        const existingMatch = relatedCalculators.find((r) => r.href === calc.path);
+        return {
+          name: calc.name,
+          description: calc.description,
+          href: calc.path,
+          iconVariant: existingMatch?.iconVariant || 'calculator',
+          intentBadge: existingMatch?.intentBadge || intentTags[idx],
+        };
+      });
+    }
+    return relatedCalculators.slice(0, 3);
+  }, [internalLinkEntry, relatedCalculators]);
 
   const trustMeta = useMemo(
     () =>
@@ -499,185 +614,32 @@ export default function SingleCalculatorPageShell({
   const isCompactStack = layoutVariant === 'result-below-inputs';
 
   const renderedResultCard = (
-    <section
+    <HighContrastResultCard
       id="live-result-card"
-      role="status"
-      aria-live="polite"
-      aria-label="Your calculation result"
-      className={`scroll-mt-24 rounded-2xl border shadow-2xs flex flex-col justify-between transition-colors ${
-        isCompactStack
-          ? 'p-4 sm:p-5 min-h-[164px] gap-3'
-          : 'p-6 sm:p-7 min-h-[268px] gap-4'
-      } ${
-        hasValidResult
-          ? 'bg-[#ECFDF5] border-[#A7F3D0]'
-          : 'bg-[#F8FAFC] border-[#CBD5E1]'
-      }`}
-    >
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex items-start gap-3">
-          <div
-            aria-hidden="true"
-            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center shrink-0 mt-0.5 shadow-2xs ${
-              hasValidResult
-                ? 'bg-[#16A34A] text-white'
-                : 'bg-[#E2E8F0] text-[#475569]'
-            }`}
-          >
-            {hasValidResult ? (
-              <Check className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.75]" />
-            ) : (
-              <Calculator className="w-4 h-4 sm:w-5 sm:h-5" />
-            )}
-          </div>
-          <div>
-            <div
-              className={`inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider mb-0.5 ${
-                hasValidResult ? 'text-[#065F46]' : 'text-[#475569]'
-              }`}
-            >
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${
-                  hasValidResult ? 'bg-[#16A34A]' : 'bg-[#94A3B8]'
-                }`}
-              />
-              {hasValidResult
-                ? 'Calculated Result'
-                : 'Ready to Calculate'}
-            </div>
-            <h2 className="text-base sm:text-lg font-extrabold text-[#152238]">
-              Your result
-            </h2>
-            <p className="text-xs sm:text-sm text-[#152238] mt-0.5">
-              {hasValidResult && resultCard ? (
-                <>
-                  <span className="font-bold text-[#16856B]">
-                    {resultCard.promptSummary}
-                  </span>{' '}
-                  <span className="font-semibold">
-                    {resultCard.promptSuffix ?? 'is:'}
-                  </span>
-                </>
-              ) : (
-                <span className="text-[#475569] font-medium">
-                  {resultCard?.placeholderMessage ||
-                    'Enter values in the calculator inputs above to compute your result.'}
-                </span>
-              )}
-            </p>
-          </div>
-        </div>
-
-        {/* Copy, Share & Print buttons (all >= 44px tap target) */}
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            disabled={!hasValidResult}
-            onClick={handleCopyResult}
-            className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-[#F8FAFC] disabled:opacity-50 disabled:cursor-not-allowed border border-[#CBD5E1] text-xs font-bold text-[#2457D6] shadow-2xs transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
-          >
-            {copied ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-[#16856B]" aria-hidden="true" />
-                <span className="text-[#16856B]">Copied!</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>Copy</span>
-              </>
-            )}
-          </button>
-          <button
-            type="button"
-            onClick={handleCopyShareLink}
-            aria-label="Share calculator link"
-            className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-[#F8FAFC] border border-[#CBD5E1] text-xs font-bold text-[#2457D6] shadow-2xs transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
-          >
-            {linkCopied ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-[#16856B]" aria-hidden="true" />
-                <span className="text-[#16856B]">Link Copied!</span>
-              </>
-            ) : (
-              <>
-                <Share2 className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>Share</span>
-              </>
-            )}
-          </button>
-          {!isCompactStack && (
-            <button
-              type="button"
-              onClick={handlePrint}
-              className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-[#F8FAFC] border border-[#CBD5E1] text-xs font-bold text-[#2457D6] shadow-2xs transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
-            >
-              <Printer className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Print</span>
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Large Readable Numerical Answer or Zero-Shift Placeholder */}
-      <div className={`pl-0 sm:pl-11 ${isCompactStack ? 'min-h-[52px]' : ''}`}>
-        {hasValidResult && resultCard ? (
-          <>
-            <div className="text-2xl sm:text-4xl font-extrabold text-[#15803D] tracking-tight tabular-nums break-words">
-              {resultCard.mainValue}
-            </div>
-            {resultCard.secondaryNote && (
-              <p className="text-xs sm:text-sm font-semibold text-[#16856B] mt-1">
-                {resultCard.secondaryNote}
-              </p>
-            )}
-          </>
-        ) : (
-          <>
-            <div
-              aria-hidden="true"
-              className="text-2xl sm:text-3xl font-extrabold text-[#94A3B8] tracking-tight tabular-nums select-none"
-            >
-              —
-            </div>
-            <p className="text-xs font-medium text-[#64748B] mt-0.5">
-              Your calculated result will appear here when you enter values above.
-            </p>
-          </>
-        )}
-      </div>
-
-      {/* Complete Equation Sub-Card */}
-      <div
-        className={`rounded-xl px-3.5 py-2.5 space-y-1 border ${
-          hasValidResult
-            ? 'bg-white/90 border-[#D1FAE5]'
-            : 'bg-white border-[#E2E8F0]'
-        }`}
-      >
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="text-xs font-bold text-[#152238]">
-            {hasValidResult
-              ? 'Formula & Live Calculation:'
-              : 'Formula:'}
-          </div>
-          {isFinanceCalculator && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#EEF3FF] text-[#2457D6] text-[11px] font-bold font-mono">
-              <Coins className="w-3 h-3" />
-              {currency} ({globalCurrencySymbol}) ·{' '}
-              {applyExchangeRate
+      hasValidResult={hasValidResult}
+      promptSummary={resultCard?.promptSummary}
+      promptSuffix={resultCard?.promptSuffix ?? 'is:'}
+      mainValue={resultCard?.mainValue}
+      equation={resultCard?.equation}
+      fallbackFormula={formulaCard.formulaText}
+      secondaryNote={resultCard?.secondaryNote}
+      placeholderMessage={resultCard?.placeholderMessage}
+      onCopyResult={handleCopyResult}
+      copiedExternal={copied}
+      onShareLink={handleCopyShareLink}
+      linkCopiedExternal={linkCopied}
+      onPrint={handlePrint}
+      showPrint={!isCompactStack}
+      currencyBadgeText={
+        isFinanceCalculator
+          ? `${currency} (${globalCurrencySymbol}) · ${
+              applyExchangeRate
                 ? `1 USD = ${globalCurrencySymbol}${formatExchangeRate(currency, rates[currency] ?? 1.0)}`
-                : '1:1 Nominal'}
-            </span>
-          )}
-        </div>
-        <div className="text-xs sm:text-sm font-extrabold text-[#152238] tracking-wide tabular-nums break-words">
-          {hasValidResult && resultCard
-            ? resultCard.equation
-            : formulaCard.formulaText}
-        </div>
-      </div>
-    </section>
+                : '1:1 Nominal'
+            }`
+          : undefined
+      }
+    />
   );
 
   const renderedWorkedExampleCard = workedExampleCard ? (
@@ -1142,10 +1104,12 @@ export default function SingleCalculatorPageShell({
       id="main-content"
       className="min-h-screen bg-[#F5F7FA] text-[#152238] relative overflow-hidden"
     >
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph) }}
-      />
+      {!hasCoreSeoOverride && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph) }}
+        />
+      )}
 
       {/* Subtle soft background radial accents */}
       <div
@@ -1153,7 +1117,11 @@ export default function SingleCalculatorPageShell({
         className="pointer-events-none absolute top-0 left-0 right-0 h-[340px] bg-gradient-to-b from-[#EDF3FC] via-[#F3F7FC] to-transparent"
       />
 
-      <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 pb-14 space-y-3 sm:space-y-4">
+      <div
+        className={`relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 ${
+          hasCoreSeoOverride ? 'pb-6' : 'pb-14'
+        } space-y-3 sm:space-y-4`}
+      >
         {/* Breadcrumb Navigation */}
         <nav aria-label="Breadcrumb">
           <ol className="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#2457D6]">
@@ -1189,60 +1157,27 @@ export default function SingleCalculatorPageShell({
           </ol>
         </nav>
 
-        {/* Hero Header Band */}
-        <header className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6">
-          <div className="flex items-start gap-3 sm:gap-5 max-w-3xl">
+        {/* Compact Hero Header Band */}
+        <header className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3 sm:gap-4">
+          <div className="flex items-start gap-3 sm:gap-4 max-w-4xl">
             <div
               aria-hidden="true"
-              className={`w-11 h-11 sm:w-14 sm:h-14 rounded-2xl ${heroBadgeBg} ${heroBadgeColor} border border-white shadow-xs flex items-center justify-center shrink-0 text-xl sm:text-2xl font-extrabold select-none`}
+              className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${heroBadgeBg} ${heroBadgeColor} border border-white shadow-xs flex items-center justify-center shrink-0 text-lg sm:text-xl font-extrabold select-none mt-0.5`}
             >
               {displayHeroSymbol}
             </div>
 
-            <div className="space-y-1 sm:space-y-2">
-              <h1 className="text-2xl sm:text-4xl lg:text-[40px] font-extrabold tracking-tight leading-tight">
+            <div className="space-y-1.5">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight">
                 {renderHighlightedTitle()}
               </h1>
               {!quickAnswer && (
-                <p className="text-sm sm:text-base text-[#475569] leading-relaxed max-w-2xl">
+                <p className="text-xs sm:text-sm text-[#475569] leading-relaxed max-w-3xl">
                   {subtitle}
                 </p>
               )}
             </div>
           </div>
-
-          {!isCompactStack && (
-            <div
-              aria-hidden="true"
-              className="hidden md:flex items-center justify-center relative w-[250px] h-[126px] shrink-0 select-none"
-            >
-              <div className="absolute inset-x-2 inset-y-2 rounded-[36px] bg-gradient-to-br from-[#DCE8FF] via-[#E8F1FF] to-[#F0F6FF] border border-white/80 shadow-inner" />
-              <div className="relative z-10 -mr-3 -mt-2 w-14 h-14 rounded-2xl bg-white shadow-md border border-[#DCE8FF] p-2.5 flex items-end justify-center gap-1.5 -rotate-6">
-                <span className="w-2 h-4 rounded-full bg-[#93C5FD]" />
-                <span className="w-2 h-6 rounded-full bg-[#3B82F6]" />
-                <span className="w-2 h-8 rounded-full bg-[#2457D6]" />
-              </div>
-              <div className="relative z-20 w-20 h-24 rounded-2xl bg-gradient-to-b from-[#3B73F5] to-[#1D4ED8] p-2.5 shadow-lg border border-white/30 -rotate-6 flex flex-col justify-between">
-                <div className="w-full h-5 rounded-md bg-[#EBF2FF] flex items-center justify-end px-1.5">
-                  <span className="w-6 h-1.5 rounded-full bg-[#93C5FD]" />
-                </div>
-                <div className="grid grid-cols-3 gap-1.5 pt-1">
-                  <span className="h-2.5 rounded-xs bg-white/90" />
-                  <span className="h-2.5 rounded-xs bg-white/90" />
-                  <span className="h-2.5 rounded-xs bg-[#93C5FD]" />
-                  <span className="h-2.5 rounded-xs bg-white/90" />
-                  <span className="h-2.5 rounded-xs bg-white/90" />
-                  <span className="h-2.5 rounded-xs bg-[#93C5FD]" />
-                  <span className="h-2.5 rounded-xs bg-white/90" />
-                  <span className="h-2.5 rounded-xs bg-white/90" />
-                  <span className="h-2.5 rounded-xs bg-[#34D399]" />
-                </div>
-              </div>
-              <div className="relative z-30 -ml-2 -mt-4 w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FF6B6B] to-[#E11D48] text-white shadow-md border border-white/40 rotate-6 flex items-center justify-center font-extrabold text-xl">
-                {displayHeroSymbol}
-              </div>
-            </div>
-          )}
         </header>
 
         {/* Plain 1-2 Sentence Quick Answer Directly Under H1 */}
@@ -1250,7 +1185,7 @@ export default function SingleCalculatorPageShell({
           <div
             role="region"
             aria-label="Direct answer summary"
-            className="bg-white rounded-xl border border-[#CBD5E1] px-4 py-3 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5"
+            className="bg-white rounded-xl border border-[#CBD5E1] px-4 py-2.5 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2"
           >
             <p className="text-xs sm:text-sm text-[#152238] leading-snug font-medium">
               {quickAnswer.answer}
@@ -1266,76 +1201,11 @@ export default function SingleCalculatorPageShell({
           </div>
         )}
 
-        {/* Default layout puts Quick-Jump above workbench; compact stack places it below */}
-        {!isCompactStack && (
-          <div className="rounded-xl bg-white border border-[#E2E8F0] px-4 py-2.5 shadow-2xs flex flex-wrap items-center justify-between gap-3">
-            <nav
-              aria-label="On-page section navigation"
-              className="flex flex-wrap items-center gap-2 text-xs"
-            >
-              <span className="font-extrabold text-[#152238] flex items-center gap-1 mr-1">
-                <Hash className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
-                Jump to:
-              </span>
-              <a
-                href="#workbench"
-                className="min-h-[44px] inline-flex items-center px-2.5 py-1 rounded-lg bg-[#EEF3FF] text-[#2457D6] font-bold hover:bg-[#DCE7FF] transition-colors"
-              >
-                Calculator
-              </a>
-              <a
-                href="#formula"
-                className="min-h-[44px] inline-flex items-center px-2.5 py-1 rounded-lg bg-[#F8FAFC] hover:bg-[#EEF3FF] text-[#152238] hover:text-[#2457D6] border border-[#E2E8F0] font-semibold transition-colors"
-              >
-                Formula &amp; Example
-              </a>
-              <a
-                href="#field-notes"
-                className="min-h-[44px] inline-flex items-center px-2.5 py-1 rounded-lg bg-[#F8FAFC] hover:bg-[#EEF3FF] text-[#152238] hover:text-[#2457D6] border border-[#E2E8F0] font-semibold transition-colors"
-              >
-                Calculation Notes
-              </a>
-              <a
-                href="#reference-table"
-                className="min-h-[44px] inline-flex items-center px-2.5 py-1 rounded-lg bg-[#ECFDF5] hover:bg-[#D1FAE5] text-[#065F46] border border-[#A7F3D0] font-bold transition-colors"
-              >
-                Reference Lookup Table
-              </a>
-              <a
-                href="#faq"
-                className="min-h-[44px] inline-flex items-center px-2.5 py-1 rounded-lg bg-[#F8FAFC] hover:bg-[#EEF3FF] text-[#152238] hover:text-[#2457D6] border border-[#E2E8F0] font-semibold transition-colors"
-              >
-                FAQs
-              </a>
-            </nav>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={handleCopyShareLink}
-                className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#F8FAFC] hover:bg-[#EEF3FF] text-[#152238] hover:text-[#2457D6] border border-[#CBD5E1] text-xs font-bold transition-colors cursor-pointer"
-              >
-                {linkCopied ? (
-                  <>
-                    <Check className="w-3.5 h-3.5 text-[#16856B]" aria-hidden="true" />
-                    <span className="text-[#16856B]">Link Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <Share2 className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
-                    <span>Share Calculator</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Top Workbench: either stacked result-below-inputs (Pilot template) or side-by-side */}
-        <div id="workbench" className="scroll-mt-24">
+        {/* Top Workbench: High-contrast result card positioned immediately below inputs on all viewports */}
+        <div id="workbench" ref={workbenchRef} className="scroll-mt-24">
           {fullWidthWorkbench ? (
             <div className="w-full">{calculatorCard}</div>
-          ) : isCompactStack ? (
+          ) : (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
               <div className="lg:col-span-7 flex flex-col gap-4">
                 {calculatorCard}
@@ -1344,160 +1214,74 @@ export default function SingleCalculatorPageShell({
               <div className="lg:col-span-5 flex flex-col gap-4">
                 {renderedWorkedExampleCard}
                 {rightColumnSupplement ?? defaultRightColumnSupplement}
-                {leftColumnSupplement}
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start lg:items-stretch">
-              <div className="lg:col-span-6 flex flex-col gap-5 min-h-[480px]">
-                {calculatorCard}
-                {leftColumnSupplement ?? defaultLeftColumnSupplement}
-              </div>
-              <div className="lg:col-span-6 flex flex-col gap-5 min-h-[480px]">
-                {renderedResultCard}
-                {rightColumnSupplement ?? defaultRightColumnSupplement}
+                {leftColumnSupplement ?? (!isCompactStack ? defaultLeftColumnSupplement : null)}
               </div>
             </div>
           )}
         </div>
 
-        {/* Trust Signals Bar: Last updated, Data/tax year, Primary Sources, Disclaimer & Report an Error */}
-        {trustMeta ? (
-          <section
-            aria-label="Data sources, tax year, and disclaimer"
-            className="rounded-2xl bg-white border border-[#DCE5F2] p-4 sm:p-5 shadow-2xs space-y-3 text-xs"
-          >
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#F1F5F9] pb-2.5">
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[#334155]">
-                <span className="inline-flex items-center gap-1.5 font-bold text-[#152238]">
-                  <Clock className="w-3.5 h-3.5 text-[#0A58ED]" aria-hidden="true" />
-                  <span>Last updated: {trustMeta.lastUpdated}</span>
-                </span>
-                {trustMeta.dataTaxYear && (
-                  <>
-                    <span className="text-[#CBD5E1]" aria-hidden="true">
-                      |
-                    </span>
-                    <span className="font-bold text-[#152238]">
-                      Data/tax year:{' '}
-                      <span className="font-semibold text-[#0A58ED]">
-                        {trustMeta.dataTaxYear}
-                      </span>
-                    </span>
-                  </>
-                )}
-              </div>
 
-              <div className="flex items-center gap-3 font-bold">
-                <Link
-                  href="/calculation-methodology"
-                  className="text-[#0A58ED] hover:underline"
-                >
-                  Methodology
-                </Link>
-                <span className="text-[#CBD5E1]" aria-hidden="true">
-                  •
-                </span>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-1 text-[#0A58ED] hover:underline"
-                >
-                  <Mail className="w-3.5 h-3.5" aria-hidden="true" />
-                  <span>Contact</span>
-                </Link>
-              </div>
-            </div>
-
-            {trustMeta.sources.length > 0 && (
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[#475569]">
-                <span className="font-extrabold text-[#152238]">Sources:</span>
-                {trustMeta.sources.map((src, idx) => (
-                  <React.Fragment key={src.url + idx}>
-                    <a
-                      href={src.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 font-semibold text-[#0A58ED] hover:underline"
-                    >
-                      <span>{src.label}</span>
-                      <ExternalLink className="w-3 h-3 shrink-0" aria-hidden="true" />
-                    </a>
-                    {idx < trustMeta.sources.length - 1 && (
-                      <span className="text-[#CBD5E1]" aria-hidden="true">
-                        ·
-                      </span>
-                    )}
-                  </React.Fragment>
-                ))}
-              </div>
-            )}
-
-            {trustMeta.disclaimer && (
-              <p className="text-[11px] sm:text-xs text-[#475569] bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl px-3.5 py-2 leading-relaxed">
-                <strong className="font-extrabold text-[#152238]">Disclaimer:</strong>{' '}
-                {trustMeta.disclaimer}
-              </p>
-            )}
-          </section>
-        ) : (
-          <div className="rounded-xl bg-white border border-[#DCE5F2] px-4 py-2.5 shadow-2xs flex flex-wrap items-center justify-between gap-2 text-xs text-[#475569]">
-            <span>
-              Last updated: <strong className="text-[#152238]">November 13, 2026</strong> ·{' '}
-              <Link href="/calculation-methodology" className="font-bold text-[#0A58ED] hover:underline">
-                Calculation Methodology
-              </Link>
-            </span>
-            <div className="flex items-center gap-3 font-bold">
-              <Link href="/contact" className="inline-flex items-center gap-1 text-[#0A58ED] hover:underline">
-                <Mail className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>Contact</span>
-              </Link>
-            </div>
-          </div>
-        )}
-
-        {/* Quick-Jump Bar placed below workbench on compact pilot layout */}
-        {isCompactStack && (
-          <div className="rounded-xl bg-white border border-[#E2E8F0] px-4 py-2 shadow-2xs flex flex-wrap items-center justify-between gap-2">
-            <nav
-              aria-label="On-page section navigation"
-              className="flex flex-wrap items-center gap-2 text-xs"
-            >
-              <span className="font-extrabold text-[#152238] flex items-center gap-1 mr-1">
-                <Hash className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
-                Jump to:
-              </span>
-              <a
-                href="#reference-table"
-                className="min-h-[44px] inline-flex items-center px-3 py-1.5 rounded-lg bg-[#ECFDF5] hover:bg-[#D1FAE5] text-[#065F46] border border-[#A7F3D0] font-bold transition-colors"
-              >
-                Lookup Table
-              </a>
-              <a
-                href="#formula"
-                className="min-h-[44px] inline-flex items-center px-3 py-1.5 rounded-lg bg-[#F8FAFC] hover:bg-[#EEF3FF] text-[#152238] hover:text-[#2457D6] border border-[#E2E8F0] font-semibold transition-colors"
-              >
-                Formula &amp; Steps
-              </a>
-              <a
-                href="#faq"
-                className="min-h-[44px] inline-flex items-center px-3 py-1.5 rounded-lg bg-[#F8FAFC] hover:bg-[#EEF3FF] text-[#152238] hover:text-[#2457D6] border border-[#E2E8F0] font-semibold transition-colors"
-              >
-                FAQs
-              </a>
-              <a
-                href="#related-tools"
-                className="min-h-[44px] inline-flex items-center px-3 py-1.5 rounded-lg bg-[#F8FAFC] hover:bg-[#EEF3FF] text-[#152238] hover:text-[#2457D6] border border-[#E2E8F0] font-semibold transition-colors"
-              >
-                Related Tools
-              </a>
-            </nav>
-          </div>
-        )}
 
         {/* Optional Full-Width Reference Sections Directly Below Workbench */}
         {belowWorkbenchContent && (
           <div className="space-y-6">{belowWorkbenchContent}</div>
+        )}
+
+        {/* Related Formula Guide Callout Box (1–2 Most Relevant Guides) */}
+        {internalLinkEntry && internalLinkEntry.guides.length > 0 && (
+          <aside
+            aria-label="Related formula guide"
+            className="rounded-2xl bg-gradient-to-r from-[#EEF4FF] via-[#F4F8FF] to-white border border-[#BFDBFE] p-4 sm:p-5 shadow-2xs space-y-3"
+          >
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <div
+                  aria-hidden="true"
+                  className="w-6 h-6 rounded-lg bg-[#2457D6] text-white flex items-center justify-center shrink-0"
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                </div>
+                <h2 className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-[#2457D6]">
+                  {internalLinkEntry.guides.length > 1
+                    ? 'Related Guides'
+                    : 'Related Guide'}
+                </h2>
+              </div>
+              <Link
+                href="/guides"
+                className="text-xs font-bold text-[#2457D6] hover:underline whitespace-nowrap"
+              >
+                All Formula Guides →
+              </Link>
+            </div>
+
+            <div
+              className={`grid grid-cols-1 ${
+                internalLinkEntry.guides.length > 1 ? 'md:grid-cols-2' : ''
+              } gap-3`}
+            >
+              {internalLinkEntry.guides.map((guide) => (
+                <Link
+                  key={guide.slug}
+                  href={guide.href}
+                  className="group flex items-center justify-between gap-3 rounded-xl bg-white hover:bg-[#F8FBFF] border border-[#CFE0FC] hover:border-[#2457D6] px-4 py-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                >
+                  <div className="min-w-0">
+                    <div className="text-sm font-extrabold text-[#152238] group-hover:text-[#2457D6] transition-colors leading-snug">
+                      {guide.title}
+                    </div>
+                    <p className="text-xs text-[#475569] leading-relaxed mt-0.5 line-clamp-2">
+                      {guide.description}
+                    </p>
+                  </div>
+                  <ArrowRight
+                    className="w-4 h-4 text-[#2457D6] shrink-0 group-hover:translate-x-0.5 transition-transform"
+                    aria-hidden="true"
+                  />
+                </Link>
+              ))}
+            </div>
+          </aside>
         )}
 
         {/* Variant 1 & 3 place the Domain Benchmark Table directly under the Workbench for immediate comparison */}
@@ -1525,27 +1309,44 @@ export default function SingleCalculatorPageShell({
               </div>
 
               <ul className="divide-y divide-[#F1F5F9]">
-                {otherCalculators.map((item, idx) => (
-                  <li key={idx} className="py-3.5 first:pt-1 last:pb-0">
-                    <Link
-                      href={item.href}
-                      className="group flex items-center justify-between gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
-                    >
-                      <div className="flex items-start gap-3 min-w-0">
-                        <SidebarIconBadge variant={item.iconVariant} />
-                        <div className="min-w-0">
-                          <div className="text-sm font-extrabold text-[#152238] group-hover:text-[#2457D6] transition-colors truncate">
-                            {item.name}
+                {otherCalculators.map((item, idx) => {
+                  const defaultIntentLabels = [
+                    'Next Step',
+                    'Compare Scenario',
+                    'Formula Companion',
+                    'Related Check',
+                    'Quick Lookup',
+                  ];
+                  const badgeText =
+                    item.intentBadge ||
+                    defaultIntentLabels[idx % defaultIntentLabels.length];
+                  return (
+                    <li key={idx} className="py-3.5 first:pt-1 last:pb-0">
+                      <Link
+                        href={item.href}
+                        className="group flex items-center justify-between gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                      >
+                        <div className="flex items-start gap-3 min-w-0">
+                          <SidebarIconBadge variant={item.iconVariant} />
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="text-sm font-extrabold text-[#152238] group-hover:text-[#2457D6] transition-colors truncate">
+                                {item.name}
+                              </span>
+                              <span className="px-1.5 py-0.5 rounded bg-[#F1F5F9] text-[10px] font-bold text-[#475569]">
+                                {badgeText}
+                              </span>
+                            </div>
+                            <p className="text-xs text-[#64748B] leading-snug line-clamp-2 mt-0.5">
+                              {item.description}
+                            </p>
                           </div>
-                          <p className="text-xs text-[#64748B] leading-snug line-clamp-2 mt-0.5">
-                            {item.description}
-                          </p>
                         </div>
-                      </div>
-                      <ArrowRight className="w-4 h-4 text-[#2457D6] shrink-0 group-hover:translate-x-0.5 transition-transform" />
-                    </Link>
-                  </li>
-                ))}
+                        <ArrowRight className="w-4 h-4 text-[#2457D6] shrink-0 group-hover:translate-x-0.5 transition-transform" />
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
@@ -1583,75 +1384,81 @@ export default function SingleCalculatorPageShell({
 
         {/* Lower Section Row: Frequently Asked Questions + Related Calculators (Swapped horizontal order on even vs odd variants) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start lg:items-stretch">
-          {/* Frequently Asked Questions */}
-          <section
-            id="faq"
-            className={`scroll-mt-24 lg:col-span-7 bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-7 shadow-2xs flex flex-col justify-between gap-4 ${
-              editorialProfile.sectionOrderVariant % 2 === 1 ? 'lg:order-2' : 'lg:order-1'
-            }`}
-          >
-            <div className="space-y-4">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-[#2457D6] text-white flex items-center justify-center shrink-0">
-                    <HelpCircle className="w-4 h-4" />
+          {/* Frequently Asked Questions (suppressed on flagship pages served by SSR CoreCalculatorSeoSection) */}
+          {!hasCoreSeoOverride && (
+            <section
+              id="faq"
+              className={`scroll-mt-24 lg:col-span-7 bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-7 shadow-2xs flex flex-col justify-between gap-4 ${
+                editorialProfile.sectionOrderVariant % 2 === 1 ? 'lg:order-2' : 'lg:order-1'
+              }`}
+            >
+              <div className="space-y-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-6 h-6 rounded-full bg-[#2457D6] text-white flex items-center justify-center shrink-0">
+                      <HelpCircle className="w-4 h-4" />
+                    </div>
+                    <h2 className="text-lg font-extrabold text-[#152238]">
+                      {editorialProfile.headings.faqSectionH2}
+                    </h2>
                   </div>
-                  <h2 className="text-lg font-extrabold text-[#152238]">
-                    {editorialProfile.headings.faqSectionH2}
-                  </h2>
+
+                  <Link
+                    href={categoryHref}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-[#2457D6] hover:underline"
+                  >
+                    <span>View All {categoryName} Tools</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
 
-                <Link
-                  href={categoryHref}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-[#2457D6] hover:underline"
-                >
-                  <span>View All {categoryName} Tools</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                <dl className="space-y-3">
+                  {enrichedFaqs.map((faq, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] p-4 space-y-1.5"
+                    >
+                      <dt className="text-sm font-extrabold text-[#152238] leading-snug">
+                        {faq.question}
+                      </dt>
+                      <dd className="text-xs sm:text-sm text-[#475569] leading-relaxed">
+                        {faq.answer}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
 
-              <dl className="space-y-3">
-                {enrichedFaqs.map((faq, idx) => (
-                  <div
-                    key={idx}
-                    className="rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] p-4 space-y-1.5"
-                  >
-                    <dt className="text-sm font-extrabold text-[#152238] leading-snug">
-                      {faq.question}
-                    </dt>
-                    <dd className="text-xs sm:text-sm text-[#475569] leading-relaxed">
-                      {faq.answer}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-
-            <div className="pt-3 border-t border-[#F1F5F9] flex flex-wrap items-center justify-between gap-2 text-xs text-[#64748B]">
-              <span>
-                Formulas and constants reference published standards (see{' '}
-                <Link href="/calculation-methodology" className="font-bold text-[#0A58ED] hover:underline">
-                  Methodology
-                </Link>
-                ).
-              </span>
-              <div className="flex items-center gap-3 font-bold">
-                <Link href="/contact" className="text-[#0A58ED] hover:underline">
-                  Contact
-                </Link>
-                <span className="text-[#CBD5E1]">•</span>
-                <a href="#workbench" className="min-h-[44px] inline-flex items-center text-[#2457D6] hover:underline">
-                  Back to Calculator ↑
-                </a>
+              <div className="pt-3 border-t border-[#F1F5F9] flex flex-wrap items-center justify-between gap-2 text-xs text-[#64748B]">
+                <span>
+                  Formulas and constants reference published standards (see{' '}
+                  <Link href="/calculation-methodology" className="font-bold text-[#0A58ED] hover:underline">
+                    Methodology
+                  </Link>
+                  ).
+                </span>
+                <div className="flex items-center gap-3 font-bold">
+                  <Link href="/contact" className="text-[#0A58ED] hover:underline">
+                    Contact
+                  </Link>
+                  <span className="text-[#CBD5E1]">•</span>
+                  <a href="#workbench" className="min-h-[44px] inline-flex items-center text-[#2457D6] hover:underline">
+                    Back to Calculator ↑
+                  </a>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
 
-          {/* Related Calculators & Matching Guide */}
+          {/* Related Calculators & Matching Guide Grouped by Search Intent */}
           <section
             id="related-tools"
-            className={`lg:col-span-5 bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-7 shadow-2xs flex flex-col justify-between gap-4 ${
-              editorialProfile.sectionOrderVariant % 2 === 1 ? 'lg:order-1' : 'lg:order-2'
+            className={`${
+              hasCoreSeoOverride ? 'lg:col-span-12' : 'lg:col-span-5'
+            } bg-white rounded-2xl border border-[#E2E8F0] p-6 sm:p-7 shadow-2xs flex flex-col justify-between gap-4 ${
+              !hasCoreSeoOverride && editorialProfile.sectionOrderVariant % 2 === 1
+                ? 'lg:order-1'
+                : 'lg:order-2'
             }`}
           >
             <div className="space-y-4">
@@ -1662,28 +1469,55 @@ export default function SingleCalculatorPageShell({
                 </h2>
               </div>
 
-              <ul className="divide-y divide-[#F1F5F9]">
-                {relatedCalculators.map((item, idx) => (
-                  <li key={idx} className="py-1.5 first:pt-0 last:pb-0">
-                    <Link
-                      href={item.href}
-                      className="min-h-[44px] py-1.5 group flex items-center justify-between gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+              <ul
+                className={
+                  hasCoreSeoOverride
+                    ? 'grid grid-cols-1 md:grid-cols-3 gap-4'
+                    : 'divide-y divide-[#F1F5F9]'
+                }
+              >
+                {effectiveRelatedCalculators.map((item, idx) => {
+                  const intentTags = [
+                    'Next Step',
+                    'Compare Scenario',
+                    'Companion Formula',
+                  ];
+                  const badgeText =
+                    item.intentBadge || intentTags[idx % intentTags.length];
+                  return (
+                    <li
+                      key={item.href}
+                      className={
+                        hasCoreSeoOverride
+                          ? 'rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] p-3.5 hover:border-[#BFDBFE] transition-colors'
+                          : 'py-1.5 first:pt-0 last:pb-0'
+                      }
                     >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <SidebarIconBadge variant={item.iconVariant} />
-                        <div className="min-w-0">
-                          <div className="text-sm font-extrabold text-[#152238] group-hover:text-[#2457D6] transition-colors truncate">
-                            {item.name}
+                      <Link
+                        href={item.href}
+                        className="min-h-[44px] py-1.5 group flex items-center justify-between gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457D6]"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <SidebarIconBadge variant={item.iconVariant} />
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="text-sm font-extrabold text-[#152238] group-hover:text-[#2457D6] transition-colors truncate">
+                                {item.name}
+                              </span>
+                              <span className="px-1.5 py-0.5 rounded bg-[#EEF3FF] text-[10px] font-bold text-[#2457D6]">
+                                {badgeText}
+                              </span>
+                            </div>
+                            <p className="text-xs text-[#64748B] line-clamp-2 mt-0.5">
+                              {item.description}
+                            </p>
                           </div>
-                          <p className="text-xs text-[#64748B] truncate mt-0.5">
-                            {item.description}
-                          </p>
                         </div>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-[#2457D6] shrink-0 group-hover:translate-x-0.5 transition-transform" />
-                    </Link>
-                  </li>
-                ))}
+                        <ChevronRight className="w-4 h-4 text-[#2457D6] shrink-0 group-hover:translate-x-0.5 transition-transform" />
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
 
               {matchingGuide && (

@@ -1,13 +1,25 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-import { useCurrency, formatWithGlobalCurrency } from '@/lib/currency';
+import { useCurrency, formatWithGlobalCurrency, type GlobalCurrencyCode } from '@/lib/currency';
 
-export default function FireForecasterClient() {
-  const [mounted, setMounted] = useState(false);
-  const { symbol: globalSymbol, currency: globalCurrency, rates, applyExchangeRate } =
-    useCurrency();
+interface FireForecasterClientProps {
+  initialYear?: number;
+  initialMonth?: number;
+}
+
+export default function FireForecasterClient({
+  initialYear = 2026,
+  initialMonth = 10,
+}: FireForecasterClientProps = {}) {
+  const {
+    symbol: globalSymbol,
+    currency: globalCurrency,
+    setCurrency,
+    rates,
+    applyExchangeRate,
+  } = useCurrency();
 
   // Core Parameters
   const [currentAge, setCurrentAge] = useState<number>(30);
@@ -25,11 +37,7 @@ export default function FireForecasterClient() {
   const [activeTab, setActiveTab] = useState('forecaster');
   const [copyFeedback, setCopyFeedback] = useState('');
   const [codeCopyFeedback, setCodeCopyFeedback] = useState('');
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const curSym = globalSymbol;
 
@@ -82,11 +90,10 @@ export default function FireForecasterClient() {
     const fireAgeYears = Math.floor(projectedFireAge);
     const fireAgeMonths = Math.round((projectedFireAge - fireAgeYears) * 12);
 
-    // Target Date
-    const now = new Date();
-    const targetDate = new Date(now.getFullYear(), now.getMonth() + months, 1);
+    // Target Date (SSR-deterministic using server-supplied year/month)
+    const targetDate = new Date(Date.UTC(initialYear, initialMonth + months, 1));
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const targetDateStr = `${monthNames[targetDate.getMonth()]} ${targetDate.getFullYear()}`;
+    const targetDateStr = `${monthNames[targetDate.getUTCMonth()]} ${targetDate.getUTCFullYear()}`;
 
     // Nominal Future FIRE Number
     const nominalFutureFactor = Math.pow(1 + netInflation, yearsToFire);
@@ -112,7 +119,7 @@ export default function FireForecasterClient() {
       leanMonths++;
     }
     const leanAge = currentAge + (leanMonths / 12);
-    const leanDate = new Date(now.getFullYear(), now.getMonth() + leanMonths, 1);
+    const leanDate = new Date(Date.UTC(initialYear, initialMonth + leanMonths, 1));
 
     // 2. Coast FIRE (at age 60 or targetAge without further contributions)
     const coastTargetAge = Math.max(targetAge, 60);
@@ -131,7 +138,7 @@ export default function FireForecasterClient() {
       fatMonths++;
     }
     const fatAge = currentAge + (fatMonths / 12);
-    const fatDate = new Date(now.getFullYear(), now.getMonth() + fatMonths, 1);
+    const fatDate = new Date(Date.UTC(initialYear, initialMonth + fatMonths, 1));
 
     // Scenario Sensitivity Matrix Helper
     const solveScenario = (addContrib: number, expenseFactor: number) => {
@@ -279,6 +286,8 @@ export default function FireForecasterClient() {
     currentAge,
     targetAge,
     chartSpan,
+    initialYear,
+    initialMonth,
     fmt,
   ]);
 
@@ -370,18 +379,6 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
     setTaxDrag(0.5);
     setSwr(4.0);
   }, []);
-
-  if (!mounted || !data) {
-    return (
-      <main
-        id="main-content"
-        className="bg-surface min-h-screen flex flex-col items-center justify-center text-on-surface-variant font-data-mono"
-      >
-        <span className="material-symbols-outlined text-[36px] animate-spin text-primary mb-3">progress_activity</span>
-        <span>Calibrating Actuarial Trinity Engine...</span>
-      </main>
-    );
-  }
 
   // Generate SVG Points for Chart
   const svgWidth = 880;
@@ -556,17 +553,18 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                       <h2 className="font-headline-md text-headline-md text-on-surface">Model Parameters</h2>
                       <p className="font-body-sm text-body-sm text-on-surface-variant">Calibrate wealth velocity &amp; expenditure</p>
                     </div>
-                    <select 
-                      value={currency}
-                      onChange={(e) => setCurrency(e.target.value)}
+                    <select
+                      aria-label="Display currency"
+                      value={globalCurrency}
+                      onChange={(e) => setCurrency(e.target.value as GlobalCurrencyCode)}
                       className="px-2.5 py-1 rounded bg-surface-container-low font-data-mono text-data-mono text-xs text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30 cursor-pointer"
                     >
-                      <option value="$">USD ($)</option>
-                      <option value="€">EUR (€)</option>
-                      <option value="£">GBP (£)</option>
-                      <option value="C$">CAD ($)</option>
-                      <option value="A$">AUD ($)</option>
-                      <option value="¥">JPY (¥)</option>
+                      <option value="USD">USD ($)</option>
+                      <option value="EUR">EUR (€)</option>
+                      <option value="GBP">GBP (£)</option>
+                      <option value="CAD">CAD ($)</option>
+                      <option value="AUD">AUD ($)</option>
+                      <option value="JPY">JPY (¥)</option>
                     </select>
                   </div>
 
@@ -580,12 +578,12 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         <div className="relative flex items-center">
                           <input 
                             id="current-age"
-                            type="number"
+                            type="number" inputMode="numeric"
                             min="16"
                             max="90"
                             value={currentAge}
                             onChange={(e) => setCurrentAge(Number(e.target.value) || 0)}
-                            className="w-full bg-surface px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                            className="w-full bg-surface px-3 py-2.5 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30 text-base min-h-[44px]"
                           />
                           <span className="absolute right-3 font-body-sm text-body-sm text-outline">yrs</span>
                         </div>
@@ -610,12 +608,12 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         <div className="relative flex items-center">
                           <input 
                             id="target-retirement-age"
-                            type="number"
+                            type="number" inputMode="numeric"
                             min="20"
                             max="95"
                             value={targetAge}
                             onChange={(e) => setTargetAge(Number(e.target.value) || 0)}
-                            className="w-full bg-surface px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                            className="w-full bg-surface px-3 py-2.5 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30 text-base min-h-[44px]"
                           />
                           <span className="absolute right-3 font-body-sm text-body-sm text-outline">yrs</span>
                         </div>
@@ -646,12 +644,12 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         <span className="absolute left-3 font-body-md text-body-md text-outline font-bold">{curSym}</span>
                         <input 
                           id="current-savings"
-                          type="number"
+                          type="number" inputMode="decimal"
                           min="0"
                           step="1000"
                           value={currentSavings}
                           onChange={(e) => setCurrentSavings(Number(e.target.value) || 0)}
-                          className="w-full bg-surface pl-8 pr-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                          className="w-full bg-surface pl-8 pr-3 py-2.5 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30 text-base min-h-[44px]"
                         />
                       </div>
                       <input 
@@ -680,12 +678,12 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         <span className="absolute left-3 font-body-md text-body-md text-outline font-bold">{curSym}</span>
                         <input 
                           id="monthly-contributions"
-                          type="number"
+                          type="number" inputMode="decimal"
                           min="0"
                           step="50"
                           value={monthlyContribution}
                           onChange={(e) => setMonthlyContribution(Number(e.target.value) || 0)}
-                          className="w-full bg-surface pl-8 pr-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                          className="w-full bg-surface pl-8 pr-3 py-2.5 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30 text-base min-h-[44px]"
                         />
                       </div>
                       {/* Presets */}
@@ -745,12 +743,12 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         <span className="absolute left-3 font-body-md text-body-md text-outline font-bold">{curSym}</span>
                         <input 
                           id="annual-expenses"
-                          type="number"
+                          type="number" inputMode="decimal"
                           min="10000"
                           step="1000"
                           value={annualExpenses}
                           onChange={(e) => setAnnualExpenses(Number(e.target.value) || 0)}
-                          className="w-full bg-surface pl-8 pr-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                          className="w-full bg-surface pl-8 pr-3 py-2.5 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30 text-base min-h-[44px]"
                         />
                       </div>
                       <input 
@@ -776,13 +774,13 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         <div className="relative flex items-center">
                           <input 
                             id="nominal-return"
-                            type="number"
+                            type="number" inputMode="decimal"
                             step="0.1"
                             min="1"
                             max="20"
                             value={nominalReturn}
                             onChange={(e) => setNominalReturn(Number(e.target.value) || 0)}
-                            className="w-full bg-surface px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                            className="w-full bg-surface px-3 py-2.5 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30 text-base min-h-[44px]"
                           />
                           <span className="absolute right-3 font-body-sm text-body-sm text-outline">%</span>
                         </div>
@@ -806,13 +804,13 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         <div className="relative flex items-center">
                           <input 
                             id="inflation-rate"
-                            type="number"
+                            type="number" inputMode="decimal"
                             step="0.1"
                             min="0"
                             max="10"
                             value={inflationRate}
                             onChange={(e) => setInflationRate(Number(e.target.value) || 0)}
-                            className="w-full bg-surface px-3 py-2 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30"
+                            className="w-full bg-surface px-3 py-2.5 rounded-lg font-data-mono text-data-mono text-on-surface font-bold focus:outline-none focus:ring-2 focus:ring-primary-container border border-outline-variant/30 text-base min-h-[44px]"
                           />
                           <span className="absolute right-3 font-body-sm text-body-sm text-outline">%</span>
                         </div>
@@ -1603,8 +1601,8 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                   </div>
                 </div>
 
-                <div className="rounded-lg bg-neutral-900 p-4 overflow-x-auto text-neutral-100 font-data-mono text-xs leading-relaxed border border-neutral-800">
-                  <div className="flex items-center justify-between pb-2 mb-2 border-b border-neutral-700/50 text-neutral-400 text-[11px]">
+                <div className="rounded-lg bg-[#F8FAFC] dark:bg-neutral-900 p-4 overflow-x-auto text-[#0F172A] dark:text-neutral-100 font-data-mono text-xs leading-relaxed border border-[#CBD5E1] dark:border-neutral-800">
+                  <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#E2E8F0] dark:border-neutral-700/50 text-[#475569] dark:text-neutral-400 text-[11px]">
                     <span>SolveIt_FIRE_Engine.js</span>
                     <span>IEEE 754 Precision Compliant</span>
                   </div>
@@ -1691,69 +1689,14 @@ function calculateFIRE({ currentAge, currentSavings, monthlyContribution, annual
                         expand_more
                       </span>
                     </button>
-                    {openFaq === idx && (
-                      <div className="px-4 pb-4 text-sm text-on-surface-variant leading-relaxed border-t border-surface-container-low pt-3">
-                        {item.a}
-                      </div>
-                    )}
+                    <div
+                      hidden={openFaq !== idx}
+                      className="px-4 pb-4 text-sm text-on-surface-variant leading-relaxed border-t border-surface-container-low pt-3"
+                    >
+                      {item.a}
+                    </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          </section>
-
-          {/* SECTION 11: Sources, Last Updated, Plain Disclaimer & Error Reporting */}
-          <section className="w-full py-8 bg-surface-container-low">
-            <div className="max-w-max-width-canvas mx-auto px-gutter-mobile lg:px-gutter-desktop">
-              <div className="p-5 rounded-xl bg-surface-container border border-outline-variant/30 text-xs text-on-surface-variant space-y-3">
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-outline-variant/20 pb-2.5">
-                  <div className="flex flex-wrap items-center gap-3 text-on-surface font-semibold">
-                    <span>Last updated: November 13, 2026</span>
-                    <span>·</span>
-                    <span>Data/tax year: 2025–2026 Retirement &amp; CPI Reference Standards</span>
-                  </div>
-                  <div className="flex items-center gap-3 font-bold">
-                    <Link href="/calculation-methodology" className="text-primary hover:underline">
-                      Calculation Methodology
-                    </Link>
-                    <span>•</span>
-                    <Link href="/contact" className="text-primary hover:underline">
-                      Contact
-                    </Link>
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <strong className="text-on-surface">Sources:</strong>
-                  <a
-                    href="https://www.irs.gov/pub/irs-drop/n-24-80.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary font-semibold hover:underline"
-                  >
-                    IRS Notice 2024-80 (2025 Retirement Plan Limits) ↗
-                  </a>
-                  <span>·</span>
-                  <a
-                    href="https://www.investor.gov/additional-resources/information/youth/teachers-classroom-resources/what-compound-interest"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary font-semibold hover:underline"
-                  >
-                    U.S. SEC Investor.gov (Compound Interest &amp; Real Return) ↗
-                  </a>
-                  <span>·</span>
-                  <a
-                    href="https://www.bls.gov/cpi/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary font-semibold hover:underline"
-                  >
-                    U.S. Bureau of Labor Statistics (CPI Inflation Reference) ↗
-                  </a>
-                </div>
-                <p className="leading-relaxed">
-                  <strong className="text-on-surface">Disclaimer:</strong> Estimate only, not financial, tax, legal, or investment advice. SolveIt FIRE Forecaster is an educational modeling tool implementing the 4% Safe Withdrawal Rate rule and Fisher real-return equation. Future market returns and inflation are uncertain.
-                </p>
               </div>
             </div>
           </section>

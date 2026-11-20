@@ -22,6 +22,7 @@ import {
   GUIDE_CATEGORIES,
 } from '@/lib/guidesData';
 import { resolveHumanEditorialProfile } from '@/lib/humanEditorialCatalog';
+import { getGuidePrimaryCalculator } from '@/lib/internalLinkingMap';
 
 interface GuideArticleTemplateProps {
   guide: GuideArticleData;
@@ -37,6 +38,7 @@ export default function GuideArticleTemplate({
   const router = useRouter();
   const [activeSection, setActiveSection] = useState<string>('section-1');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const primaryCalculator = getGuidePrimaryCalculator(guide.slug);
   const [switcherOpen, setSwitcherOpen] = useState(false);
 
   const currentIndex = Math.max(
@@ -716,6 +718,22 @@ export default function GuideArticleTemplate({
               <p className="mt-3.5 text-base sm:text-[17px] text-[#334155] leading-relaxed max-w-2xl">
                 {guide.heroIntro}
               </p>
+
+              {primaryCalculator && (
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <Link
+                    href={primaryCalculator.calculatorPath}
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#2457D6] hover:bg-[#1D46B0] text-white text-sm font-bold shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#152238]"
+                  >
+                    <Calculator className="w-4 h-4 shrink-0" aria-hidden="true" />
+                    <span>{primaryCalculator.ctaLabel}</span>
+                    <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+                  </Link>
+                  <span className="text-xs text-[#475569] font-medium">
+                    {primaryCalculator.tagline}
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Right Clean Educational Graphic (Calculator + Ascending Bars + Symbol Badge) */}
@@ -1079,11 +1097,12 @@ export default function GuideArticleTemplate({
                           aria-hidden="true"
                         />
                       </button>
-                      {isOpen && (
-                        <p className="mt-2 text-xs text-[#475569] leading-relaxed">
-                          {faq.answer}
-                        </p>
-                      )}
+                      <p
+                        hidden={!isOpen}
+                        className="mt-2 text-xs text-[#475569] leading-relaxed"
+                      >
+                        {faq.answer}
+                      </p>
                     </div>
                   );
                 })}

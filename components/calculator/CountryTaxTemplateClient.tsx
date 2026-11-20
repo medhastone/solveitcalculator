@@ -115,10 +115,10 @@ export default function CountryTaxTemplateClient({
                   Annual Gross Income ({result.profile.currencyCode})
                 </label>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   value={grossIncome}
                   onChange={(e) => setGrossIncome(Math.max(0, Number(e.target.value)))}
-                  className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                  className="w-36 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                 />
               </div>
               <UnboxedSlider
@@ -157,10 +157,10 @@ export default function CountryTaxTemplateClient({
                   Additional Tax Deductions ({sym}/yr)
                 </label>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   value={optionalDeductions}
                   onChange={(e) => setOptionalDeductions(Math.max(0, Number(e.target.value)))}
-                  className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                  className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                 />
               </div>
             </div>

@@ -1,6 +1,8 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import FireForecasterClient from './FireForecasterClient';
+import ServerCalculatorReferenceSection from '@/components/calculator-page/ServerCalculatorReferenceSection';
+import CalculatorInternalLinksBand from '@/components/calculator-page/CalculatorInternalLinksBand';
 
 export const metadata: Metadata = {
   title: 'FIRE Forecaster & Financial Independence Calculator | SolveItCalculator',
@@ -91,13 +93,31 @@ const FIRE_FORECASTER_JSON_LD = {
 };
 
 export default function FireForecasterPage() {
+  const now = new Date();
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(FIRE_FORECASTER_JSON_LD) }}
       />
-      <FireForecasterClient />
+      <FireForecasterClient
+        initialYear={now.getUTCFullYear()}
+        initialMonth={now.getUTCMonth()}
+      />
+      <ServerCalculatorReferenceSection
+        title="FIRE Forecaster"
+        formulaHeading="FIRE Number & Real Return Formula Explanation"
+        formulaExpression="FIRE Number = Annual Expenses ÷ Safe Withdrawal Rate  |  Real Return = [(1 + Nominal − Tax Drag) ÷ (1 + Inflation)] − 1"
+        formulaExplanation="Your Financial Independence target divides expected annual retirement spending by your Safe Withdrawal Rate (SWR), such as 4.0% (25× expenses) or 3.5% (28.57× expenses). Portfolio growth is compounded monthly in inflation-adjusted real dollars using the Fisher equation so your target stays in today's purchasing power."
+        exampleHeading="Worked FIRE Example"
+        exampleSummary="Example: $54,000 annual spending at a 4.0% Safe Withdrawal Rate with $185,000 invested and $3,250/month saved at 8.5% nominal return (2.5% inflation, 0.5% tax drag)."
+        exampleSteps={[
+          'Calculate the FIRE target: $54,000 ÷ 0.04 = $1,350,000 in today’s dollars.',
+          'Compute real annual return: [(1 + 0.080) ÷ (1 + 0.025)] − 1 = 5.37% real annual yield.',
+          'Compound $185,000 plus $3,250/month at the monthly real yield until the portfolio crosses $1,350,000.',
+        ]}
+      />
+      <CalculatorInternalLinksBand calculatorPath="/fire-forecaster" />
     </>
   );
 }

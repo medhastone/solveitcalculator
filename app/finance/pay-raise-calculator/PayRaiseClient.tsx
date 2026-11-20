@@ -91,10 +91,10 @@ export default function PayRaiseClient() {
                 Current {payPeriod} Pay ($)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={currentPay}
                 onChange={(e) => setCurrentPay(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
           </div>
@@ -136,11 +136,11 @@ export default function PayRaiseClient() {
                 {raiseMode === 'percentage' ? `Raise Percentage (${raiseValue}%)` : `New ${payPeriod} Pay ($)`}
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 step={raiseMode === 'percentage' ? 0.5 : 500}
                 value={raiseValue}
                 onChange={(e) => setRaiseValue(Number(e.target.value))}
-                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             {raiseMode === 'percentage' && (

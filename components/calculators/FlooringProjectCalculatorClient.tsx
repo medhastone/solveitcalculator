@@ -612,7 +612,7 @@ export default function FlooringProjectCalculatorClient() {
                         calculation.lengthValid
                           ? 'border-[#CBD5E1] focus:border-[#2457D6] focus:ring-[#2457D6]/20'
                           : 'border-[#E53E3E] bg-[#FFF5F5] focus:ring-[#E53E3E]/20'
-                      }`}
+                      } text-base min-h-[44px]`}
                     />
                     <select
                       aria-label="Room length unit"
@@ -656,7 +656,7 @@ export default function FlooringProjectCalculatorClient() {
                         calculation.widthValid
                           ? 'border-[#CBD5E1] focus:border-[#2457D6] focus:ring-[#2457D6]/20'
                           : 'border-[#E53E3E] bg-[#FFF5F5] focus:ring-[#E53E3E]/20'
-                      }`}
+                      } text-base min-h-[44px]`}
                     />
                     <select
                       aria-label="Room width unit"
@@ -746,7 +746,7 @@ export default function FlooringProjectCalculatorClient() {
                       {/* Left Width Vertical Label */}
                       <div className="flex flex-col items-center justify-center text-[12px] font-bold text-[#2457D6] w-7 shrink-0">
                         <span className="w-[1.5px] h-6 bg-[#2457D6]/50" />
-                        <span className=" -rotate-90 whitespace-nowrap py-1">
+                        <span className="-rotate-90 whitespace-nowrap py-1">
                           Width ({calculation.safeWidth} {widthUnit})
                         </span>
                         <span className="w-[1.5px] h-6 bg-[#2457D6]/50" />
@@ -1022,7 +1022,7 @@ export default function FlooringProjectCalculatorClient() {
                         step="1"
                         value={wasteInput}
                         onChange={(e) => setWasteInput(e.target.value)}
-                        className="w-full rounded-lg border border-[#CBD5E1] px-3.5 py-2.5 text-[16px] font-semibold text-[#152238] bg-white focus:outline-none focus:border-[#2457D6] focus:ring-2 focus:ring-[#2457D6]/20"
+                        className="w-full rounded-lg border border-[#CBD5E1] px-3.5 py-2.5 text-[16px] font-semibold text-[#152238] bg-white focus:outline-none focus:border-[#2457D6] focus:ring-2 focus:ring-[#2457D6]/20 text-base min-h-[44px]"
                       />
                       <div className="rounded-lg border border-[#CBD5E1] bg-[#F8FAFC] px-4 py-2.5 text-[14px] font-bold text-[#152238] flex items-center justify-center shrink-0">
                         %
@@ -1204,7 +1204,7 @@ export default function FlooringProjectCalculatorClient() {
                         value={pricePerUnitInput}
                         onChange={(e) => setPricePerUnitInput(e.target.value)}
                         placeholder="500"
-                        className="w-full px-3 py-2.5 text-[16px] font-semibold text-[#152238] focus:outline-none"
+                        className="w-full px-3 py-2.5 text-[16px] font-semibold text-[#152238] focus:outline-none text-base min-h-[44px]"
                       />
                       <span className="bg-[#F8FAFC] border-l border-[#CBD5E1] px-2.5 py-2.5 text-[12.5px] font-semibold text-[#475569] flex items-center whitespace-nowrap">
                         per {areaSymbol}
@@ -1443,12 +1443,12 @@ export default function FlooringProjectCalculatorClient() {
                     </label>
                     <input
                       id="box-coverage-input"
-                      type="number"
+                      type="number" inputMode="decimal"
                       min="0.1"
                       step="0.01"
                       value={boxCoverageInput}
                       onChange={(e) => setBoxCoverageInput(e.target.value)}
-                      className="w-full rounded-lg border border-[#CBD5E1] px-3 py-2 text-[14px] font-semibold text-[#152238] bg-white"
+                      className="w-full rounded-lg border border-[#CBD5E1] px-3 py-2.5 text-[14px] font-semibold text-[#152238] bg-white text-base min-h-[44px]"
                     />
                   </div>
                   <div className="rounded-lg bg-[#EEF4FF] border border-[#C7DCFF] p-3 text-[13px]">
@@ -1483,12 +1483,12 @@ export default function FlooringProjectCalculatorClient() {
                     </label>
                     <input
                       id="underlayment-cost-input"
-                      type="number"
+                      type="number" inputMode="decimal"
                       min="0"
                       step="any"
                       value={underlaymentCostInput}
                       onChange={(e) => setUnderlaymentCostInput(e.target.value)}
-                      className="w-full rounded-lg border border-[#CBD5E1] px-3 py-2 text-[14px] font-semibold text-[#152238] bg-white"
+                      className="w-full rounded-lg border border-[#CBD5E1] px-3 py-2.5 text-[14px] font-semibold text-[#152238] bg-white text-base min-h-[44px]"
                     />
                   </div>
                   <div>
@@ -1500,12 +1500,12 @@ export default function FlooringProjectCalculatorClient() {
                     </label>
                     <input
                       id="installation-cost-input"
-                      type="number"
+                      type="number" inputMode="decimal"
                       min="0"
                       step="any"
                       value={installationCostInput}
                       onChange={(e) => setInstallationCostInput(e.target.value)}
-                      className="w-full rounded-lg border border-[#CBD5E1] px-3 py-2 text-[14px] font-semibold text-[#152238] bg-white"
+                      className="w-full rounded-lg border border-[#CBD5E1] px-3 py-2.5 text-[14px] font-semibold text-[#152238] bg-white text-base min-h-[44px]"
                     />
                   </div>
                 </div>
@@ -1722,20 +1722,6 @@ export default function FlooringProjectCalculatorClient() {
             >
               Material Discount Calculator →
             </Link>
-          </div>
-          <div className="mt-4 pt-3 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-2 text-xs text-[#475569]">
-            <span>
-              <strong>Last updated:</strong> November 13, 2026 · Geometric area and carton rounding estimates only.
-            </span>
-            <div className="flex flex-wrap items-center gap-3 font-bold">
-              <Link href="/calculation-methodology" className="text-[#2457D6] hover:underline">
-                Methodology
-              </Link>
-              <span>·</span>
-              <Link href="/contact" className="text-[#2457D6] hover:underline">
-                Contact
-              </Link>
-            </div>
           </div>
         </section>
       </main>

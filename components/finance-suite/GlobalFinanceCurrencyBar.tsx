@@ -281,14 +281,14 @@ export default function GlobalFinanceCurrencyBar({
                   </label>
                   <input
                     id="live-fx-converter-amount"
-                    type="number"
+                    type="number" inputMode="decimal"
                     min={0}
                     step="any"
                     value={converterAmount}
                     onChange={(e) =>
                       setConverterAmount(Math.max(0, Number(e.target.value)))
                     }
-                    className="w-full px-3 py-2 rounded-lg border border-[#CBD5E1] bg-white text-sm font-mono font-bold text-[#152238] focus:outline-none focus:border-[#2457D6]"
+                    className="w-full px-3 py-2.5 rounded-lg border border-[#CBD5E1] bg-white text-base font-mono font-bold text-[#152238] focus:outline-none focus:border-[#2457D6] min-h-[44px]"
                   />
                 </div>
 
@@ -500,7 +500,7 @@ export default function GlobalFinanceCurrencyBar({
                         </div>
                       ) : (
                         <input
-                          type="number"
+                          type="number" inputMode="decimal"
                           aria-label={`Exchange rate for ${item.code} per 1 USD`}
                           min={0.0001}
                           step={item.code === 'INR' ? 0.05 : 0.0001}
@@ -509,7 +509,7 @@ export default function GlobalFinanceCurrencyBar({
                             const val = parseFloat(e.target.value);
                             if (val > 0) setCustomRate(item.code, val);
                           }}
-                          className="w-full px-2.5 py-1.5 rounded-lg bg-white border border-[#CBD5E1] text-xs font-mono font-bold text-[#152238] focus:outline-none focus:border-[#2457D6]"
+                          className="w-full px-2.5 py-2.5 rounded-lg bg-white border border-[#CBD5E1] text-base font-mono font-bold text-[#152238] focus:outline-none focus:border-[#2457D6] min-h-[44px]"
                         />
                       )}
                       <div className="mt-1 text-[10px] font-mono text-[#64748B] flex items-center justify-between">

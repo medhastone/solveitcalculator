@@ -84,10 +84,10 @@ export default function MarginClient() {
                   Unit Cost / COGS ($)
                 </label>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   value={cost}
                   onChange={(e) => setCost(Math.max(0, Number(e.target.value)))}
-                  className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                  className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                 />
               </div>
               <UnboxedSlider
@@ -111,10 +111,10 @@ export default function MarginClient() {
                   Selling Price / Revenue ($)
                 </label>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   value={priceOrRevenue}
                   onChange={(e) => setPriceOrRevenue(Math.max(0, Number(e.target.value)))}
-                  className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                  className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                 />
               </div>
               <UnboxedSlider
@@ -138,10 +138,10 @@ export default function MarginClient() {
                   Target Gross Margin (%): {targetMarginPct}%
                 </label>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   value={targetMarginPct}
                   onChange={(e) => setTargetMarginPct(Math.min(99.9, Number(e.target.value)))}
-                  className="w-24 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                  className="w-24 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
                 />
               </div>
               <UnboxedSlider

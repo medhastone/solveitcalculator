@@ -414,13 +414,13 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/401k-cal
                   {currencyObj.symbol}
                 </span>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   min={10000}
                   max={1000000}
                   step={2500}
                   value={currentSalary}
                   onChange={(e) => setCurrentSalary(Math.max(1000, Number(e.target.value)))}
-                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-surface border border-outline-variant text-sm font-semibold text-on-surface focus:outline-hidden focus:ring-2 focus:ring-primary/20 font-mono"
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-surface border border-outline-variant text-base font-semibold text-on-surface focus:outline-hidden focus:ring-2 focus:ring-primary/20 font-mono min-h-[44px]"
                 />
               </div>
 
@@ -463,12 +463,12 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/401k-cal
                   <span className="text-sm font-bold text-primary font-mono">{currentAge} Yrs</span>
                 </div>
                 <input
-                  type="number"
+                  type="number" inputMode="numeric"
                   min={18}
                   max={retirementAge - 1}
                   value={currentAge}
                   onChange={(e) => setCurrentAge(Math.max(18, Math.min(retirementAge - 1, Number(e.target.value))))}
-                  className="w-full px-3 py-2 rounded-xl bg-surface border border-outline-variant text-sm font-semibold text-on-surface font-mono"
+                  className="w-full px-3 py-2.5 rounded-xl bg-surface border border-outline-variant text-base font-semibold text-on-surface font-mono min-h-[44px]"
                 />
                 <PrecisionSlider
                   min={18}
@@ -488,12 +488,12 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/401k-cal
                   <span className="text-sm font-bold text-primary font-mono">{retirementAge} Yrs</span>
                 </div>
                 <input
-                  type="number"
+                  type="number" inputMode="numeric"
                   min={currentAge + 1}
                   max={80}
                   value={retirementAge}
                   onChange={(e) => setRetirementAge(Math.max(currentAge + 1, Math.min(80, Number(e.target.value))))}
-                  className="w-full px-3 py-2 rounded-xl bg-surface border border-outline-variant text-sm font-semibold text-on-surface font-mono"
+                  className="w-full px-3 py-2.5 rounded-xl bg-surface border border-outline-variant text-base font-semibold text-on-surface font-mono min-h-[44px]"
                 />
                 <PrecisionSlider
                   min={50}
@@ -520,13 +520,13 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/401k-cal
 
               <div className="relative">
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   min={0}
                   max={100}
                   step={0.5}
                   value={contributionPercent}
                   onChange={(e) => setContributionPercent(Math.max(0, Math.min(100, Number(e.target.value))))}
-                  className="w-full pl-4 pr-9 py-2.5 rounded-xl bg-surface border border-outline-variant text-sm font-semibold text-on-surface focus:outline-hidden focus:ring-2 focus:ring-primary/20 font-mono"
+                  className="w-full pl-4 pr-9 py-2.5 rounded-xl bg-surface border border-outline-variant text-base font-semibold text-on-surface focus:outline-hidden focus:ring-2 focus:ring-primary/20 font-mono min-h-[44px]"
                 />
                 <Percent className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant" />
               </div>
@@ -688,13 +688,13 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/401k-cal
                   {currencyObj.symbol}
                 </span>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   min={0}
                   max={2000000}
                   step={5000}
                   value={currentBalance}
                   onChange={(e) => setCurrentBalance(Math.max(0, Number(e.target.value)))}
-                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-surface border border-outline-variant text-sm font-semibold text-on-surface focus:outline-hidden focus:ring-2 focus:ring-primary/20 font-mono"
+                  className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-surface border border-outline-variant text-base font-semibold text-on-surface focus:outline-hidden focus:ring-2 focus:ring-primary/20 font-mono min-h-[44px]"
                 />
               </div>
 
@@ -736,13 +736,13 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/401k-cal
                   <span className="text-sm font-bold text-primary font-mono">{annualReturnPercent}%</span>
                 </div>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   min={1}
                   max={15}
                   step={0.5}
                   value={annualReturnPercent}
                   onChange={(e) => setAnnualReturnPercent(Math.max(0.1, Number(e.target.value)))}
-                  className="w-full px-3 py-2 rounded-xl bg-surface border border-outline-variant text-sm font-semibold text-on-surface font-mono"
+                  className="w-full px-3 py-2.5 rounded-xl bg-surface border border-outline-variant text-base font-semibold text-on-surface font-mono min-h-[44px]"
                 />
                 <PrecisionSlider
                   min={4}
@@ -762,13 +762,13 @@ Generated via SolveIt Calculator (https://solveitcalculator.com/finance/401k-cal
                   <span className="text-sm font-bold text-primary font-mono">{salaryGrowthPercent}%/yr</span>
                 </div>
                 <input
-                  type="number"
+                  type="number" inputMode="decimal"
                   min={0}
                   max={10}
                   step={0.5}
                   value={salaryGrowthPercent}
                   onChange={(e) => setSalaryGrowthPercent(Math.max(0, Number(e.target.value)))}
-                  className="w-full px-3 py-2 rounded-xl bg-surface border border-outline-variant text-sm font-semibold text-on-surface font-mono"
+                  className="w-full px-3 py-2.5 rounded-xl bg-surface border border-outline-variant text-base font-semibold text-on-surface font-mono min-h-[44px]"
                 />
                 <PrecisionSlider
                   min={0}

@@ -163,6 +163,68 @@ const GUIDE_LASTMOD_BY_SLUG: Record<string, string> = {
   'how-to-calculate-net-salary-and-sales-tax': '2026-11-16',
 };
 
+/**
+ * Temporarily deferred Low-priority calculator URLs (43 of 91 calculators).
+ * Kept live (200 OK) so existing internal links never 404, but excluded from
+ * sitemap.xml during initial crawl-budget concentration on the 48 High + Medium
+ * calculator URLs, category hubs, 13 formula guides, and editorial pages.
+ * Remove any path from this set to re-include it once core indexation matures.
+ */
+const DEFERRED_LOW_PRIORITY_CALCULATORS: ReadonlySet<string> = new Set([
+  // Workspace & Niche Standalone (6)
+  '/calculation-workspace',
+  '/fire-forecaster',
+  '/construction-project-calculator',
+  '/recipe-converter',
+  '/timer-stopwatch',
+  '/time-unit-converter',
+
+  // Niche, Duplicate & Country-Specific Finance/Tax (16)
+  '/finance/bonus-tax-calculator',
+  '/finance/1099-vs-w2-calculator',
+  '/finance/us-state-take-home-calculator',
+  '/finance/uk-paye-calculator',
+  '/finance/canada-income-tax-calculator',
+  '/finance/india-income-tax-calculator',
+  '/finance/in-hand-salary-calculator',
+  '/finance/hra-exemption-calculator',
+  '/finance/india-capital-gains-tax-calculator',
+  '/finance/germany-income-tax-calculator',
+  '/finance/france-income-tax-calculator',
+  '/finance/singapore-income-tax-calculator',
+  '/finance/uae-income-tax-calculator',
+  '/finance/safe-withdrawal-rate-calculator',
+  '/finance/real-rate-of-return-calculator',
+  '/finance/margin-calculator',
+
+  // Niche Unit Converters (5)
+  '/conversions/speed',
+  '/conversions/digital',
+  '/conversions/energy',
+  '/conversions/fuel-economy',
+  '/conversions/torque',
+
+  // Niche Science Calculators (4)
+  '/science/force-calculator',
+  '/science/ohms-law-calculator',
+  '/science/molarity-calculator',
+  '/science/density-calculator',
+
+  // Niche Math Calculators (12)
+  '/math/percent-error-calculator',
+  '/math/percentage-to-decimal-calculator',
+  '/math/percentage-to-fraction-calculator',
+  '/math/fraction-to-decimal-calculator',
+  '/math/square-root-calculator',
+  '/math/exponent-calculator',
+  '/math/log-calculator',
+  '/math/absolute-value-calculator',
+  '/math/gcd-and-lcm-calculator',
+  '/math/equation-solver',
+  '/math/quadratic-equation-calculator',
+  '/math/matrix-calculator',
+]);
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const entriesMap = new Map<string, string>();
 
@@ -182,8 +244,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entriesMap.set(path, lastmod);
   }
 
-  return Array.from(entriesMap.entries()).map(([path, lastmod]) => ({
-    url: `${BASE_URL}${path === '/' ? '' : path}`,
-    lastModified: new Date(`${lastmod}T00:00:00.000Z`),
-  }));
+  return Array.from(entriesMap.entries())
+    .filter(([path]) => !DEFERRED_LOW_PRIORITY_CALCULATORS.has(path))
+    .map(([path, lastmod]) => ({
+      url: `${BASE_URL}${path === '/' ? '' : path}`,
+      lastModified: new Date(`${lastmod}T00:00:00.000Z`),
+    }));
 }
+

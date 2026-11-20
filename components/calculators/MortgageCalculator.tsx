@@ -196,131 +196,137 @@ export default function MortgageCalculator() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
         <div>
-          <label htmlFor="mtg-price" className="block text-xs sm:text-sm font-extrabold text-[#152238] mb-1">
+          <label htmlFor="mtg-price" className="block text-sm font-extrabold text-[#152238] py-1">
             Home Price ({symbol}) <span className="text-[#E11D48]">*</span>
           </label>
           <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 min-h-[44px]">
             <input
               id="mtg-price"
               type="number"
+              inputMode="decimal"
               min={1000}
               step={5000}
               placeholder="e.g. 400000"
               value={rawHomePrice}
               onChange={(e) => setRawHomePrice(e.target.value)}
-              className="w-full min-h-[44px] px-3 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+              className="w-full min-h-[44px] px-3.5 py-2.5 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
             />
-            <span className="px-2.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
+            <span className="px-3 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
               {symbol}
             </span>
           </div>
         </div>
 
         <div>
-          <label htmlFor="mtg-down" className="block text-xs sm:text-sm font-extrabold text-[#152238] mb-1">
+          <label htmlFor="mtg-down" className="block text-sm font-extrabold text-[#152238] py-1">
             Down Payment (%) <span className="text-[#E11D48]">*</span>
           </label>
           <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 min-h-[44px]">
             <input
               id="mtg-down"
               type="number"
+              inputMode="decimal"
               min={0}
               max={95}
               step={1}
               placeholder="e.g. 20"
               value={rawDownPaymentPct}
               onChange={(e) => setRawDownPaymentPct(e.target.value)}
-              className="w-full min-h-[44px] px-3 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+              className="w-full min-h-[44px] px-3.5 py-2.5 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
             />
-            <span className="px-2.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
+            <span className="px-3 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
               %
             </span>
           </div>
         </div>
 
         <div>
-          <label htmlFor="mtg-rate" className="block text-xs sm:text-sm font-extrabold text-[#152238] mb-1">
+          <label htmlFor="mtg-rate" className="block text-sm font-extrabold text-[#152238] py-1">
             Interest Rate (%) <span className="text-[#E11D48]">*</span>
           </label>
           <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 min-h-[44px]">
             <input
               id="mtg-rate"
               type="number"
+              inputMode="decimal"
               min={0}
               max={25}
               step={0.125}
               placeholder="e.g. 6.5"
               value={rawInterestRate}
               onChange={(e) => setRawInterestRate(e.target.value)}
-              className="w-full min-h-[44px] px-3 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+              className="w-full min-h-[44px] px-3.5 py-2.5 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
             />
-            <span className="px-2.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
+            <span className="px-3 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
               %
             </span>
           </div>
         </div>
 
         <div>
-          <label htmlFor="mtg-term" className="block text-xs sm:text-sm font-extrabold text-[#152238] mb-1">
+          <label htmlFor="mtg-term" className="block text-sm font-extrabold text-[#152238] py-1">
             Loan Term (Yrs) <span className="text-[#E11D48]">*</span>
           </label>
           <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 min-h-[44px]">
             <input
               id="mtg-term"
               type="number"
+              inputMode="numeric"
               min={1}
               max={40}
               step={5}
               placeholder="e.g. 30"
               value={rawLoanTermYears}
               onChange={(e) => setRawLoanTermYears(e.target.value)}
-              className="w-full min-h-[44px] px-3 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+              className="w-full min-h-[44px] px-3.5 py-2.5 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
             />
-            <span className="px-2.5 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
+            <span className="px-3 bg-[#F1F5F9] border-l border-[#CBD5E1] text-xs font-bold text-[#475569] flex items-center">
               Yrs
             </span>
           </div>
         </div>
 
         <div>
-          <label htmlFor="mtg-tax" className="block text-xs sm:text-sm font-extrabold text-[#152238] mb-1">
+          <label htmlFor="mtg-tax" className="block text-sm font-extrabold text-[#152238] py-1">
             Property Tax ({symbol}/yr)
           </label>
           <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 min-h-[44px]">
             <input
               id="mtg-tax"
               type="number"
+              inputMode="decimal"
               min={0}
               step={100}
               placeholder="e.g. 4800"
               value={rawPropertyTaxAnnual}
               onChange={(e) => setRawPropertyTaxAnnual(e.target.value)}
-              className="w-full min-h-[44px] px-3 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+              className="w-full min-h-[44px] px-3.5 py-2.5 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
             />
-            <span className="px-2 bg-[#F1F5F9] border-l border-[#CBD5E1] text-[11px] font-bold text-[#475569] flex items-center">
+            <span className="px-3 bg-[#F1F5F9] border-l border-[#CBD5E1] text-[11px] font-bold text-[#475569] flex items-center">
               /yr
             </span>
           </div>
         </div>
 
         <div>
-          <label htmlFor="mtg-ins" className="block text-xs sm:text-sm font-extrabold text-[#152238] mb-1">
+          <label htmlFor="mtg-ins" className="block text-sm font-extrabold text-[#152238] py-1">
             Home Insurance ({symbol}/yr)
           </label>
           <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 min-h-[44px]">
             <input
               id="mtg-ins"
               type="number"
+              inputMode="decimal"
               min={0}
               step={100}
               placeholder="e.g. 1500"
               value={rawHomeInsuranceAnnual}
               onChange={(e) => setRawHomeInsuranceAnnual(e.target.value)}
-              className="w-full min-h-[44px] px-3 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+              className="w-full min-h-[44px] px-3.5 py-2.5 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
             />
-            <span className="px-2 bg-[#F1F5F9] border-l border-[#CBD5E1] text-[11px] font-bold text-[#475569] flex items-center">
+            <span className="px-3 bg-[#F1F5F9] border-l border-[#CBD5E1] text-[11px] font-bold text-[#475569] flex items-center">
               /yr
             </span>
           </div>

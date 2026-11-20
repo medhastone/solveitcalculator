@@ -395,12 +395,12 @@ export default function UnitConverter({
             <div className="flex items-stretch rounded-xl border border-[#CBD5E1] bg-white overflow-hidden focus-within:border-[#2457D6] focus-within:ring-3 focus-within:ring-[#2457D6]/15 min-h-[44px]">
               <input
                 id="uc-val"
-                type="number"
+                type="number" inputMode="decimal"
                 step="any"
                 placeholder={`e.g. ${config.defaultInputValue}`}
                 value={rawInput}
                 onChange={(e) => setRawInput(e.target.value)}
-                className="w-full min-h-[44px] px-3 sm:px-4 bg-white text-sm sm:text-base font-bold text-[#152238] tabular-nums focus:outline-none"
+                className="w-full min-h-[44px] px-3 sm:px-4 bg-white text-base font-bold text-[#152238] tabular-nums focus:outline-none"
               />
             </div>
           </div>

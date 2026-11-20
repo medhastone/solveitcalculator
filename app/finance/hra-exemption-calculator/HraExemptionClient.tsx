@@ -106,10 +106,10 @@ export default function HraExemptionClient() {
                 Basic Salary (₹/year)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={basicSalaryAnnual}
                 onChange={(e) => setBasicSalaryAnnual(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -131,10 +131,10 @@ export default function HraExemptionClient() {
               Dearness Allowance (DA ₹/year)
             </label>
             <input
-              type="number"
+              type="number" inputMode="decimal"
               value={dearnessAllowanceAnnual}
               onChange={(e) => setDearnessAllowanceAnnual(Math.max(0, Number(e.target.value)))}
-              className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+              className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
             />
           </div>
 
@@ -145,10 +145,10 @@ export default function HraExemptionClient() {
                 HRA Received from Employer (₹/yr)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={hraReceivedAnnual}
                 onChange={(e) => setHraReceivedAnnual(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -171,10 +171,10 @@ export default function HraExemptionClient() {
                 Actual Rent Paid (₹/year)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={rentPaidAnnual}
                 onChange={(e) => setRentPaidAnnual(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider

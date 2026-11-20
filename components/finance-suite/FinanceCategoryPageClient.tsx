@@ -748,9 +748,10 @@ export default function FinanceCategoryPageClient() {
   const [selectedFilter, setSelectedFilter] =
     useState<FinanceFilterCategory>('All');
 
-  const filteredTools = useMemo(() => {
+  const matchingToolIds = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    return FINANCE_TOOLS.filter((tool) => {
+    const set = new Set<string>();
+    FINANCE_TOOLS.forEach((tool) => {
       const matchesCat =
         selectedFilter === 'All' || tool.category === selectedFilter;
       const matchesQuery =
@@ -760,11 +761,14 @@ export default function FinanceCategoryPageClient() {
         tool.category.toLowerCase().includes(q) ||
         tool.displayBadge.toLowerCase().includes(q) ||
         tool.formulaNote.toLowerCase().includes(q);
-      return matchesCat && matchesQuery;
+      if (matchesCat && matchesQuery) {
+        set.add(tool.id);
+      }
     });
+    return set;
   }, [searchQuery, selectedFilter]);
 
-  const groupedSubcategories = useMemo(() => {
+  const allSubcategoryGroups = useMemo(() => {
     const order: Exclude<FinanceFilterCategory, 'All'>[] = [
       'Loans & Wealth',
       'Salary & Pay',
@@ -773,19 +777,31 @@ export default function FinanceCategoryPageClient() {
       'Global Taxes',
       'Business',
     ];
-    return order
-      .map((cat) => ({
-        category: cat,
-        meta: SUBCATEGORY_META[cat],
-        tools: filteredTools.filter((t) => t.category === cat),
-      }))
-      .filter((group) => group.tools.length > 0);
-  }, [filteredTools]);
+    return order.map((cat) => ({
+      category: cat,
+      slug: cat.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      meta: SUBCATEGORY_META[cat],
+      tools: FINANCE_TOOLS.filter((t) => t.category === cat),
+    }));
+  }, []);
+
+  const popularFinanceLinks = useMemo(
+    () => [
+      { label: 'Mortgage Calculator', href: '/mortgage-calculator' },
+      { label: 'Loan Payment Calculator', href: '/loan-calculator' },
+      { label: 'Compound Interest', href: '/compound-interest-calculator' },
+      { label: 'US Take-Home Paycheck', href: '/finance/take-home-pay-calculator' },
+      { label: '401(k) & Employer Match', href: '/finance/401k-calculator' },
+      { label: 'Profit Margin & Markup', href: '/finance/profit-margin-calculator' },
+    ],
+    []
+  );
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (filteredTools.length === 1) {
-      router.push(filteredTools[0].href);
+    const matched = FINANCE_TOOLS.filter((t) => matchingToolIds.has(t.id));
+    if (matched.length === 1) {
+      router.push(matched[0].href);
     }
   };
 
@@ -821,24 +837,24 @@ export default function FinanceCategoryPageClient() {
             <div className="flex-1 max-w-4xl">
               <div className="flex items-start gap-4">
                 <div
-                  className="w-16 h-16 rounded-2xl bg-[#DCE8FF] border border-[#C6DBFF] text-[#2457D6] flex items-center justify-center shrink-0 shadow-2xs"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#DCE8FF] border border-[#C6DBFF] text-[#2457D6] flex items-center justify-center shrink-0 shadow-2xs"
                   aria-hidden="true"
                 >
-                  <Coins className="w-8 h-8 stroke-[2.2]" />
+                  <Coins className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.2]" />
                 </div>
                 <div>
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/90 border border-[#C6DBFF] text-[#2457D6] text-xs font-bold mb-2">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/90 border border-[#C6DBFF] text-[#2457D6] text-xs font-bold mb-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
-                    <span>{FINANCE_TOOLS.length} Verified Calculators</span>
+                    <span>{FINANCE_TOOLS.length} Verified Calculators • Formula Previews</span>
                   </div>
                   <h1
                     id="finance-category-heading"
-                    className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#152238]"
+                    className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#152238]"
                   >
                     Finance, Tax &amp; Salary Calculators
                   </h1>
-                  <p className="mt-2 text-sm sm:text-base text-slate-700 leading-relaxed max-w-3xl">
-                    Choosing the right finance calculator depends on whether you are borrowing money, comparing job compensation, filing taxes, or projecting retirement wealth: use our Mortgage, Refinance, Home Affordability, and Loan calculators for debt and housing payments, Take-Home Pay and Salary-to-Hourly converters for paycheck planning, country-specific tax calculators for US, UK, Canada, India, Germany, France, Singapore, and UAE liabilities, or 401(k), Roth vs. Traditional, RMD, Safe Withdrawal Rate, and Compound Interest calculators for long-term investing.
+                  <p className="mt-1.5 text-xs sm:text-sm text-slate-700 leading-relaxed max-w-3xl">
+                    Compare loan and mortgage amortization, calculate net paychecks across US, UK, Canada, India, Germany, France, Singapore, and UAE tax brackets, or project 401(k), Roth, and compound investment returns with transparent formulas.
                   </p>
                 </div>
               </div>
@@ -848,7 +864,7 @@ export default function FinanceCategoryPageClient() {
                 onSubmit={handleSearchSubmit}
                 role="search"
                 aria-label="Find a finance calculator"
-                className="mt-5 flex items-center bg-white rounded-xl border border-slate-200/90 shadow-xs p-1.5 focus-within:ring-2 focus-within:ring-[#2457D6] focus-within:border-[#2457D6] transition-all"
+                className="mt-4 flex items-center bg-white rounded-xl border border-slate-200/90 shadow-xs p-1.5 focus-within:ring-2 focus-within:ring-[#2457D6] focus-within:border-[#2457D6] transition-all"
               >
                 <label htmlFor="finance-category-search" className="sr-only">
                   Find a finance calculator
@@ -872,11 +888,27 @@ export default function FinanceCategoryPageClient() {
                 </button>
               </form>
 
+              {/* Popular Searches Direct Links Bar */}
+              <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
+                <span className="font-extrabold text-[#152238] mr-1">
+                  Popular Searches:
+                </span>
+                {popularFinanceLinks.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="px-2.5 py-1 rounded-md bg-white hover:bg-[#EEF3FF] text-[#2457D6] border border-[#C6DBFF] font-semibold transition-colors shadow-2xs"
+                  >
+                    {item.label} →
+                  </Link>
+                ))}
+              </div>
+
               {/* Filter Controls with Exact Counts */}
               <div
                 role="group"
                 aria-label="Filter finance calculators by topic"
-                className="mt-3.5 flex flex-wrap items-center gap-2"
+                className="mt-3 flex flex-wrap items-center gap-2"
               >
                 {FINANCE_FILTERS.map((category) => {
                   const isActive = selectedFilter === category;
@@ -902,38 +934,26 @@ export default function FinanceCategoryPageClient() {
                   );
                 })}
               </div>
-            </div>
 
-            {/* Right: Decorative Finance Illustration */}
-            <div
-              aria-hidden="true"
-              className="hidden xl:flex items-center justify-center relative w-64 h-44 shrink-0 select-none"
-            >
-              <div className="w-44 h-44 rounded-full bg-[#DCE8FF]/70 flex items-center justify-center relative">
-                <div className="absolute -left-2 top-3 w-11 h-11 rounded-xl bg-[#16856B] text-white font-extrabold text-xl flex items-center justify-center shadow-sm -rotate-12">
-                  $
-                </div>
-                <div className="absolute -left-5 bottom-8 w-11 h-10 rounded-xl bg-[#D1FAE5] text-[#16856B] font-extrabold text-sm flex items-center justify-center shadow-sm -rotate-6">
-                  %
-                </div>
-                <div className="w-24 h-32 rounded-2xl bg-[#2457D6] p-2.5 shadow-md rotate-12 flex flex-col justify-between border-2 border-[#3B82F6]">
-                  <div className="h-6 rounded-md bg-[#93C5FD]/90 w-full" />
-                  <div className="grid grid-cols-3 gap-1.5">
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-[#60A5FA]" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-[#60A5FA]" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-[#FBBF24]" />
-                  </div>
-                </div>
-                <div className="absolute -right-3 top-12 w-11 h-11 rounded-xl bg-[#FBBF24] text-white font-extrabold text-lg flex items-center justify-center shadow-sm rotate-12">
-                  <TrendingUp className="w-5 h-5" />
-                </div>
-              </div>
+              {/* Quick Jump Anchor Chips */}
+              <nav
+                aria-label="Quick jump to finance subcategories"
+                className="mt-3 pt-3 border-t border-slate-200/80 flex flex-wrap items-center gap-1.5 text-xs"
+              >
+                <span className="font-extrabold text-[#152238] mr-1">
+                  Quick Jump:
+                </span>
+                {allSubcategoryGroups.map((group) => (
+                  <a
+                    key={group.slug}
+                    href={`#finance-subcat-${group.slug}`}
+                    onClick={() => setSelectedFilter('All')}
+                    className="px-2.5 py-1 rounded-md bg-white/90 hover:bg-[#EEF3FF] text-[#152238] hover:text-[#2457D6] border border-slate-200 font-semibold transition-colors"
+                  >
+                    {group.category} ({group.tools.length})
+                  </a>
+                ))}
+              </nav>
             </div>
           </div>
         </div>
@@ -991,16 +1011,21 @@ export default function FinanceCategoryPageClient() {
           </div>
         </section>
 
-        {/* Grouped Tool Directory + Sidebar */}
+        {/* Grouped Tool Directory + Sidebar (100% of subcategory links stay rendered in HTML DOM for crawlers) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
           {/* Left Main Column: Grouped Finance Calculators */}
           <div className="lg:col-span-8 space-y-8">
-            {groupedSubcategories.length > 0 ? (
-              groupedSubcategories.map((group) => (
+            {allSubcategoryGroups.map((group) => {
+              const visibleInGroup = group.tools.filter((t) =>
+                matchingToolIds.has(t.id)
+              );
+              const isGroupHidden = visibleInGroup.length === 0;
+              return (
                 <section
                   key={group.category}
-                  aria-labelledby={`finance-subcat-${group.category}`}
-                  className="space-y-3"
+                  id={`finance-subcat-${group.slug}`}
+                  aria-labelledby={`finance-subcat-heading-${group.slug}`}
+                  className={`scroll-mt-24 space-y-3 ${isGroupHidden ? 'hidden' : ''}`}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-200 pb-2.5">
                     <div>
@@ -1010,7 +1035,7 @@ export default function FinanceCategoryPageClient() {
                           aria-hidden="true"
                         />
                         <h2
-                          id={`finance-subcat-${group.category}`}
+                          id={`finance-subcat-heading-${group.slug}`}
                           className="text-lg sm:text-xl font-extrabold text-[#152238] tracking-tight"
                         >
                           {group.meta.title}
@@ -1021,19 +1046,22 @@ export default function FinanceCategoryPageClient() {
                       </p>
                     </div>
                     <span className="text-xs font-bold text-[#2457D6] bg-[#EAF2FF] border border-[#C6DBFF] px-2.5 py-1 rounded-full shrink-0 self-start sm:self-auto">
-                      {group.tools.length}{' '}
-                      {group.tools.length === 1 ? 'Calculator' : 'Calculators'}
+                      {visibleInGroup.length}{' '}
+                      {visibleInGroup.length === 1 ? 'Calculator' : 'Calculators'}
                     </span>
                   </div>
 
                   <div className="space-y-3" role="list">
                     {group.tools.map((tool) => {
                       const IconComponent = tool.icon;
+                      const isCardHidden = !matchingToolIds.has(tool.id);
                       return (
                         <div
                           key={tool.id}
                           role="listitem"
-                          className="group rounded-xl bg-white border border-slate-200/90 px-4 py-3.5 hover:border-[#2457D6] hover:shadow-xs transition-all"
+                          className={`group rounded-xl bg-white border border-slate-200/90 px-4 py-3.5 hover:border-[#2457D6] hover:shadow-xs transition-all ${
+                            isCardHidden ? 'hidden' : ''
+                          }`}
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
                             <div className="flex items-start sm:items-center gap-3.5 min-w-0">
@@ -1053,9 +1081,9 @@ export default function FinanceCategoryPageClient() {
                                 <p className="text-xs sm:text-sm text-slate-600 mt-0.5 leading-snug">
                                   {tool.description}
                                 </p>
-                                <p className="text-[11px] font-mono text-slate-500 mt-1">
-                                  {tool.formulaNote}
-                                </p>
+                                <div className="mt-1.5 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#F8FAFC] border border-slate-200/90 text-[11px] font-mono font-semibold text-[#2457D6] tabular-nums">
+                                  <span>Formula: {tool.formulaNote}</span>
+                                </div>
                               </div>
                             </div>
 
@@ -1080,8 +1108,10 @@ export default function FinanceCategoryPageClient() {
                     })}
                   </div>
                 </section>
-              ))
-            ) : (
+              );
+            })}
+
+            {matchingToolIds.size === 0 && (
               <div className="rounded-xl bg-white border border-slate-200 p-8 text-center">
                 <p className="text-base font-bold text-[#152238]">
                   No matching finance calculators found

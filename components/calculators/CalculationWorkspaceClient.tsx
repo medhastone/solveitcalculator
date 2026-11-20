@@ -408,7 +408,7 @@ export default function CalculationWorkspaceClient() {
                     onKeyDown={handleKeyDown}
                     placeholder="e.g. (125.50 + 42.25) + 8.5%"
                     aria-describedby="live-preview-region"
-                    className="w-full px-4 py-3.5 text-lg sm:text-xl font-extrabold text-[#152238] bg-transparent tabular-nums tracking-tight focus:outline-none"
+                    className="w-full px-4 py-3.5 text-lg sm:text-xl font-extrabold text-[#152238] bg-transparent tabular-nums tracking-tight focus:outline-none min-h-[44px]"
                   />
                   {expression && (
                     <button
@@ -441,7 +441,7 @@ export default function CalculationWorkspaceClient() {
                     onChange={(e) => setNote(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="e.g. Q2 Materials, Grocery subtotal, Lumber + tax..."
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-sm font-semibold text-[#152238] focus:outline-none focus:border-[#2457D6]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-semibold text-[#152238] focus:outline-none focus:border-[#2457D6] min-h-[44px]"
                   />
                 </div>
                 <div className="sm:col-span-4 flex items-end">
@@ -767,7 +767,7 @@ export default function CalculationWorkspaceClient() {
                   onChange={(e) => setSubtotalNameInput(e.target.value)}
                   placeholder="Subtotal name (e.g. Room 1 Sq Ft, Monthly Base)..."
                   aria-label="Named subtotal label"
-                  className="flex-1 px-3.5 py-2 rounded-xl border border-[#CBD5E1] bg-white text-xs sm:text-sm font-semibold text-[#152238] focus:outline-none focus:border-[#2457D6]"
+                  className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] bg-white text-base font-semibold text-[#152238] focus:outline-none focus:border-[#2457D6] min-h-[44px]"
                 />
                 <button
                   type="button"
@@ -1008,7 +1008,7 @@ export default function CalculationWorkspaceClient() {
                                   }}
                                   autoFocus
                                   placeholder="Step description..."
-                                  className="px-2 py-1 rounded border border-[#2457D6] bg-white text-xs font-semibold text-[#152238] focus:outline-none"
+                                  className="px-2 py-2.5 rounded border border-[#2457D6] bg-white text-base font-semibold text-[#152238] focus:outline-none min-h-[44px]"
                                 />
                                 <button
                                   type="button"
@@ -1286,20 +1286,6 @@ export default function CalculationWorkspaceClient() {
                 </p>
               </Link>
             ))}
-          </div>
-          <div className="mt-6 pt-4 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-2 text-xs text-[#475569]">
-            <span>
-              <strong>Last updated:</strong> November 13, 2026 · Standard PEMDAS algebraic expression evaluator.
-            </span>
-            <div className="flex flex-wrap items-center gap-3 font-bold">
-              <Link href="/calculation-methodology" className="text-[#2457D6] hover:underline">
-                Methodology
-              </Link>
-              <span>·</span>
-              <Link href="/contact" className="text-[#2457D6] hover:underline">
-                Contact
-              </Link>
-            </div>
           </div>
         </section>
       </div>

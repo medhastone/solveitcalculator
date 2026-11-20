@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import FlooringProjectCalculatorClient from '@/components/calculators/FlooringProjectCalculatorClient';
+import ServerCalculatorReferenceSection from '@/components/calculator-page/ServerCalculatorReferenceSection';
+import CalculatorInternalLinksBand from '@/components/calculator-page/CalculatorInternalLinksBand';
 
 export const metadata: Metadata = {
   title: 'Flooring & Vinyl Plank Calculator (sq ft & Boxes) | SolveIt',
@@ -98,6 +100,20 @@ export default function FlooringCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(FLOORING_CALCULATOR_JSON_LD) }}
       />
       <FlooringProjectCalculatorClient />
+      <ServerCalculatorReferenceSection
+        title="Flooring Calculator"
+        formulaHeading="Flooring Area & Box Count Formula Explanation"
+        formulaExpression="Total Area = Length × Width × (1 + Waste%)  |  Boxes Required = ceil(Total Area ÷ Sq Ft per Box)"
+        formulaExplanation="Multiply room length by width to find net floor area, apply a cutting waste allowance (typically 10% for straight-lay rooms or 15% for diagonal and herringbone layouts), then divide by the coverage printed on each carton and round up to whole boxes."
+        exampleHeading="Worked Flooring Example"
+        exampleSummary="Example: Installing luxury vinyl plank (20 sq ft per box) in a 14 ft × 12 ft living room with a 10% waste allowance."
+        exampleSteps={[
+          'Find net room area: 14 ft × 12 ft = 168 sq ft.',
+          'Add 10% cutting waste: 168 sq ft × 1.10 = 184.8 total sq ft.',
+          'Divide by carton coverage and round up: ceil(184.8 ÷ 20) = 10 boxes (200 sq ft ordered).',
+        ]}
+      />
+      <CalculatorInternalLinksBand calculatorPath="/home-construction/flooring-calculator" />
     </>
   );
 }

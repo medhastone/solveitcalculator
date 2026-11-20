@@ -18,7 +18,6 @@ import {
   Percent,
   RefreshCw,
   Scale,
-  ShieldCheck,
   Wallet,
 } from 'lucide-react';
 import {
@@ -372,7 +371,7 @@ export default function SalaryCalculatorClient() {
                     value={grossInput}
                     onChange={(e) => setGrossInput(e.target.value)}
                     placeholder="Enter gross pay"
-                    className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 pl-10 pr-4 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 pl-10 pr-4 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[44px]"
                   />
                 </div>
               </div>
@@ -474,7 +473,7 @@ export default function SalaryCalculatorClient() {
                       step="0.5"
                       value={preTaxPensionInput}
                       onChange={(e) => setPreTaxPensionInput(e.target.value)}
-                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 pr-10 py-2 text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 pr-10 py-2.5 text-base font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[44px]"
                     />
                     <span className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-sm font-semibold text-slate-500 dark:text-slate-400 pointer-events-none">
                       %
@@ -502,33 +501,6 @@ export default function SalaryCalculatorClient() {
                 </p>
               )}
             </form>
-
-            {/* Statutory Reference & Tax Year Metadata */}
-            <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-2 text-xs text-slate-600 dark:text-slate-400">
-              <div className="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                <span>{activeTaxYearConfig.verificationStatus}</span>
-              </div>
-              <p>
-                Data/tax year: <strong>{activeTaxYearConfig.taxYearLabel}</strong> ({activeTaxYearConfig.effectivePeriodLabel}) •
-                Last updated: <strong>{activeTaxYearConfig.verifiedDate}</strong>
-              </p>
-              <div className="flex flex-wrap items-center gap-3 pt-1 text-[11px] font-semibold">
-                <Link
-                  href="/calculation-methodology"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  Calculation Methodology
-                </Link>
-                <span>•</span>
-                <Link
-                  href="/contact"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  Contact
-                </Link>
-              </div>
-            </div>
           </section>
 
           {/* Left-Column Companion Card to Balance Height with Right Results Column */}

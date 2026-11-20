@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import CalculationWorkspaceClient from '@/components/calculators/CalculationWorkspaceClient';
+import CalculatorInternalLinksBand from '@/components/calculator-page/CalculatorInternalLinksBand';
 
 export const metadata: Metadata = {
   title: 'Calculation Workspace — Multi-Step Expression & History Calculator | SolveItCalculator',
@@ -68,6 +69,7 @@ export default function CalculationWorkspacePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <CalculationWorkspaceClient />
+      <CalculatorInternalLinksBand calculatorPath="/calculation-workspace" />
     </>
   );
 }

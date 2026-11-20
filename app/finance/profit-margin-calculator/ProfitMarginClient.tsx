@@ -12,6 +12,7 @@ import {
 } from '@/components/calculator/CleanFinanceControls';
 import { RotateCcw, BarChart3, Layers } from 'lucide-react';
 import { useCurrency } from '@/lib/currency';
+import HighContrastResultCard from '@/components/calculator-page/HighContrastResultCard';
 
 export default function ProfitMarginClient() {
   useCurrency();
@@ -73,15 +74,20 @@ export default function ProfitMarginClient() {
           </div>
 
           <div className="space-y-1.5">
-            <div className="flex justify-between items-center">
-              <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+            <div className="flex justify-between items-center gap-2">
+              <label
+                htmlFor="pm-revenue"
+                className="text-xs font-bold uppercase tracking-wider text-[var(--muted)] py-2"
+              >
                 Total Revenue / Sales ($)
               </label>
               <input
+                id="pm-revenue"
                 type="number"
+                inputMode="decimal"
                 value={revenue}
                 onChange={(e) => setRevenue(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -98,15 +104,20 @@ export default function ProfitMarginClient() {
           </div>
 
           <div className="space-y-1.5">
-            <div className="flex justify-between items-center">
-              <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+            <div className="flex justify-between items-center gap-2">
+              <label
+                htmlFor="pm-cogs"
+                className="text-xs font-bold uppercase tracking-wider text-[var(--muted)] py-2"
+              >
                 Cost of Goods Sold (COGS $)
               </label>
               <input
+                id="pm-cogs"
                 type="number"
+                inputMode="decimal"
                 value={cogs}
                 onChange={(e) => setCogs(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -123,15 +134,20 @@ export default function ProfitMarginClient() {
           </div>
 
           <div className="space-y-1.5">
-            <div className="flex justify-between items-center">
-              <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+            <div className="flex justify-between items-center gap-2">
+              <label
+                htmlFor="pm-opex"
+                className="text-xs font-bold uppercase tracking-wider text-[var(--muted)] py-2"
+              >
                 Operating Expenses / SG&amp;A (OPEX $)
               </label>
               <input
+                id="pm-opex"
                 type="number"
+                inputMode="decimal"
                 value={operatingExpenses}
                 onChange={(e) => setOperatingExpenses(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -147,51 +163,70 @@ export default function ProfitMarginClient() {
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-2.5 pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
             <div>
-              <label className="block text-[11px] font-bold uppercase text-[var(--muted)] mb-1">
+              <label
+                htmlFor="pm-da"
+                className="block text-[11px] font-bold uppercase text-[var(--muted)] py-1"
+              >
                 D&amp;A Included ($)
               </label>
               <input
+                id="pm-da"
                 type="number"
+                inputMode="decimal"
                 value={depreciationAndAmortization}
                 onChange={(e) => setDepreciationAndAmortization(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 text-xs font-bold tabular-nums"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <div>
-              <label className="block text-[11px] font-bold uppercase text-[var(--muted)] mb-1">
+              <label
+                htmlFor="pm-interest"
+                className="block text-[11px] font-bold uppercase text-[var(--muted)] py-1"
+              >
                 Interest ($)
               </label>
               <input
+                id="pm-interest"
                 type="number"
+                inputMode="decimal"
                 value={interestExpense}
                 onChange={(e) => setInterestExpense(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 text-xs font-bold tabular-nums"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <div>
-              <label className="block text-[11px] font-bold uppercase text-[var(--muted)] mb-1">
+              <label
+                htmlFor="pm-taxes"
+                className="block text-[11px] font-bold uppercase text-[var(--muted)] py-1"
+              >
                 Taxes ($)
               </label>
               <input
+                id="pm-taxes"
                 type="number"
+                inputMode="decimal"
                 value={taxes}
                 onChange={(e) => setTaxes(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 text-xs font-bold tabular-nums"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] mb-1">
+            <label
+              htmlFor="pm-sector"
+              className="block text-xs font-bold uppercase tracking-wider text-[var(--muted)] py-1"
+            >
               Compare Against NYU Stern (Damodaran) Sector Benchmark
             </label>
             <select
+              id="pm-sector"
               aria-label="Damodaran Industry Sector"
               value={sectorId}
               onChange={(e) => setSectorId(e.target.value)}
-              className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold"
+              className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-semibold min-h-[44px]"
             >
               {DAMODARAN_SECTOR_MARGINS_2025.sectors.map((sec) => (
                 <option key={sec.id} value={sec.id}>
@@ -204,6 +239,16 @@ export default function ProfitMarginClient() {
 
         {/* OUTPUTS */}
         <div className="lg:col-span-7 space-y-5">
+          <HighContrastResultCard
+            hasValidResult={revenue > 0}
+            promptSummary="Net Profit Margin"
+            promptSuffix="is:"
+            mainValue={`${formatPct(result.netMarginPct, 1)} (${formatMoney(result.netProfit)})`}
+            secondaryNote={`Gross Margin: ${formatPct(result.grossMarginPct, 1)} (${formatMoney(result.grossProfit)}) · Operating Margin: ${formatPct(result.operatingMarginPct, 1)}`}
+            equation={`Net Margin = (${formatMoney(result.netProfit)} ÷ ${formatMoney(revenue)}) × 100 = ${formatPct(result.netMarginPct, 1)}`}
+            fallbackFormula="Net Profit Margin = (Net Profit ÷ Revenue) × 100"
+          />
+
           {/* 4-Tier Margin Summary Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="p-4 rounded-2xl border border-blue-500/30 bg-blue-500/5">

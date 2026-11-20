@@ -65,20 +65,22 @@ export function UnboxedSlider({
   };
 
   return (
-    <div className="space-y-1.5 w-full pt-1">
-      <input
-        type="range"
-        aria-label={ariaLabel}
-        min={min}
-        max={max}
-        step={step}
-        value={clamped}
-        onChange={(e) => onChange(Number(e.target.value))}
-        style={{
-          background: `linear-gradient(to right, #2563eb 0%, #2563eb ${pct}%, rgba(148, 163, 184, 0.35) ${pct}%, rgba(148, 163, 184, 0.35) 100%)`,
-        }}
-        className="w-full h-2 rounded-full appearance-none cursor-pointer accent-blue-600"
-      />
+    <div className="space-y-1 w-full">
+      <div className="min-h-[44px] flex items-center">
+        <input
+          type="range"
+          aria-label={ariaLabel}
+          min={min}
+          max={max}
+          step={step}
+          value={clamped}
+          onChange={(e) => onChange(Number(e.target.value))}
+          style={{
+            background: `linear-gradient(to right, #2563eb 0%, #2563eb ${pct}%, rgba(148, 163, 184, 0.35) ${pct}%, rgba(148, 163, 184, 0.35) 100%)`,
+          }}
+          className="w-full h-2 rounded-full appearance-none cursor-pointer accent-blue-600"
+        />
+      </div>
       {(minLabel || midLabel || maxLabel) && (
         <div className="flex justify-between text-[11px] font-medium text-[var(--muted)] select-none tabular-nums">
           <span>{adaptLabel(minLabel)}</span>

@@ -78,12 +78,69 @@ export interface CategoryToolRow {
   href: string;
   category: string;
   displayBadge: string;
+  formulaPreview?: string;
   iconName: CategoryIconName;
   symbolText?: string;
   iconBg: string;
   iconColor: string;
   isPopular?: boolean;
   isComingSoon?: boolean;
+}
+
+const TOOL_FORMULA_PREVIEWS: Record<string, string> = {
+  'length-converter': '1 in = 2.54 cm · 1 m = 3.28084 ft',
+  'area-converter': '1 m² = 10.7639 sq ft · 1 acre = 43,560 sq ft',
+  'weight-mass-converter': '1 kg = 2.20462 lbs · 1 lb = 453.592 g',
+  'liquid-volume-converter': '1 US gal = 3.78541 L · 1 L = 33.814 fl oz',
+  'cooking-measurement-converter': '1 US cup = 236.59 mL = 16 tbsp = 48 tsp',
+  'recipe-scaler-converter': 'Grams = Cups × 236.59 mL × Ingredient Density',
+  'temperature-converter': '°F = (°C × 1.8) + 32 · K = °C + 273.15',
+  'speed-velocity-converter': '1 mph = 1.60934 km/h · 1 m/s = 3.6 km/h',
+  'fuel-economy-converter': 'L/100km = 235.215 ÷ US MPG',
+  'torque-converter': '1 Nm = 0.73756 lb-ft · 1 lb-ft = 1.35582 Nm',
+  'energy-work-converter': '1 kWh = 3.6 MJ · 1 kcal = 4,184 J',
+  'digital-storage-converter': '1 GB (SI) = 1,000 MB · 1 GiB (IEC) = 1,024 MiB',
+  'bmi-calculator': 'BMI = Weight(kg) ÷ [Height(m)]² = 703 × lb ÷ in²',
+  'bmr-calculator': 'BMR = 10×kg + 6.25×cm − 5×Age + S (Mifflin-St Jeor)',
+  'calorie-calculator': 'TDEE = BMR × Activity Multiplier (1.2–1.9)',
+  'macro-calculator': 'kcal = (4 × Protein_g) + (4 × Carbs_g) + (9 × Fat_g)',
+  'body-fat-calculator': 'US Navy Method: log₁₀(Waist − Neck) & Height',
+  'ideal-weight-calculator': 'Devine Formula: Base kg + 2.3 kg per inch > 5 ft',
+  'one-rep-max-calculator': 'Epley 1RM = Weight × (1 + Reps ÷ 30)',
+  'target-heart-rate-calculator': 'THR = ((MaxHR − RestHR) × %Intensity) + RestHR',
+  'pace-calculator': 'Pace = Time ÷ Distance · Speed = Distance ÷ Time',
+  'water-intake-calculator': 'Daily Hydration ≈ Body Weight(kg) × 35 mL',
+  'pregnancy-due-date-calculator': 'Naegele’s Rule: LMP + 280 Days (40 Weeks)',
+  'age-calculator': 'Chronological Age = Exact Calendar Y + M + D',
+  'date-difference-calculator': 'ΔDays = |End Date − Start Date| (Gregorian UTC)',
+  'time-duration-calculator': 'Decimal Hours = Hours + (Minutes ÷ 60) + (Seconds ÷ 3600)',
+  'business-days-calculator': 'Workdays = Total Days − Weekends − Holidays',
+  'time-zone-converter': 'Target Time = Base UTC + Target Offset − Source Offset',
+  'concrete-calculator': 'Cubic Yards (yd³) = (L × W × Depth_ft) ÷ 27',
+  'paint-calculator': 'Gallons = Paintable Wall Area (sq ft) ÷ 350 sq ft/gal',
+  'flooring-calculator': 'Total sq ft = (Room L × W) × (1 + Waste %)',
+  'roofing-calculator': 'Squares = (Footprint Area × Pitch Factor) ÷ 100',
+  'drywall-calculator': 'Sheets = Total Wall & Ceiling Area ÷ (Sheet L × W)',
+  'tile-calculator': 'Tiles = [Room Area ÷ Tile Area] × (1 + 10% Waste)',
+  'mulch-calculator': 'Cubic Yards = (Area sq ft × Depth_in ÷ 12) ÷ 27',
+  'stair-calculator': 'Risers = Total Rise ÷ ~7.5" · 2R + T ≈ 24"–25"',
+  'ohms-law-calculator': 'V = I × R · P = V × I = I² × R',
+  'molarity-calculator': 'Molarity (M) = Moles of Solute ÷ Volume of Solution (L)',
+  'density-calculator': 'Density (ρ) = Mass (m) ÷ Volume (V)',
+  'force-calculator': 'Newton’s Second Law: F = m × a (Newtons)',
+  'kinetic-energy-calculator': 'KE = ½ × m × v² (Joules)',
+  'velocity-calculator': 'v = Δd ÷ Δt · v = v₀ + a × t',
+  'half-life-calculator': 'N(t) = N₀ × (½)^(t ÷ t₁/₂)',
+  'ph-calculator': 'pH = −log₁₀[H⁺] · pH + pOH = 14',
+};
+
+function resolveToolFormulaPreview(tool: CategoryToolRow): string {
+  if (tool.formulaPreview) return tool.formulaPreview;
+  if (TOOL_FORMULA_PREVIEWS[tool.id]) return TOOL_FORMULA_PREVIEWS[tool.id];
+  const slug = tool.href.split('/').filter(Boolean).pop() || '';
+  if (TOOL_FORMULA_PREVIEWS[slug]) return TOOL_FORMULA_PREVIEWS[slug];
+  if (tool.symbolText) return `Standard Relation: ${tool.symbolText}`;
+  return `Verified NIST / Standard Formula`;
 }
 
 export interface RelatedCategoryItem {
@@ -331,19 +388,25 @@ export default function CategoryHubPageClient({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
 
-  const filteredTools = useMemo(() => {
+  const matchingToolIds = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    return config.tools.filter((tool) => {
+    const set = new Set<string>();
+    config.tools.forEach((tool) => {
       const matchesCat =
         selectedFilter === 'All' || tool.category === selectedFilter;
+      const formulaText = resolveToolFormulaPreview(tool).toLowerCase();
       const matchesQuery =
         !q ||
         tool.name.toLowerCase().includes(q) ||
         tool.description.toLowerCase().includes(q) ||
         tool.category.toLowerCase().includes(q) ||
-        tool.displayBadge.toLowerCase().includes(q);
-      return matchesCat && matchesQuery;
+        tool.displayBadge.toLowerCase().includes(q) ||
+        formulaText.includes(q);
+      if (matchesCat && matchesQuery) {
+        set.add(tool.id);
+      }
     });
+    return set;
   }, [config.tools, searchQuery, selectedFilter]);
 
   const subcategoryGroups = useMemo(() => {
@@ -387,8 +450,9 @@ export default function CategoryHubPageClient({
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (filteredTools.length === 1) {
-      router.push(filteredTools[0].href);
+    const matched = config.tools.filter((t) => matchingToolIds.has(t.id));
+    if (matched.length === 1 && matched[0].href) {
+      router.push(matched[0].href);
     }
   };
 
@@ -471,13 +535,16 @@ export default function CategoryHubPageClient({
     ],
   };
 
-  const renderToolCard = (tool: CategoryToolRow) => {
+  const renderToolCard = (tool: CategoryToolRow, isHidden = false) => {
+    const formulaPreviewText = resolveToolFormulaPreview(tool);
     if (tool.isComingSoon || !tool.href) {
       return (
         <div
           key={tool.id}
           role="listitem"
-          className="rounded-xl bg-white/80 border border-dashed border-slate-300 px-4 py-3.5 opacity-85"
+          className={`rounded-xl bg-white/80 border border-dashed border-slate-300 px-4 py-3.5 opacity-85 ${
+            isHidden ? 'hidden' : ''
+          }`}
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
             <div className="flex items-start sm:items-center gap-3.5 min-w-0">
@@ -517,7 +584,9 @@ export default function CategoryHubPageClient({
       <div
         key={tool.id}
         role="listitem"
-        className="group rounded-xl bg-white border border-slate-200/90 px-4 py-3.5 hover:border-[#2457D6] hover:shadow-xs transition-all"
+        className={`group rounded-xl bg-white border border-slate-200/90 px-4 py-3.5 hover:border-[#2457D6] hover:shadow-xs transition-all ${
+          isHidden ? 'hidden' : ''
+        }`}
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
           <div className="flex items-start sm:items-center gap-3.5 min-w-0">
@@ -541,6 +610,9 @@ export default function CategoryHubPageClient({
               <p className="text-xs sm:text-sm text-slate-600 mt-0.5 leading-snug">
                 {tool.description}
               </p>
+              <div className="mt-1.5 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#F8FAFC] border border-slate-200/90 text-[11px] font-mono font-semibold text-[#2457D6] tabular-nums">
+                <span>Formula: {formulaPreviewText}</span>
+              </div>
             </div>
           </div>
 
@@ -563,9 +635,6 @@ export default function CategoryHubPageClient({
       </div>
     );
   };
-
-  const isDefaultGroupedView =
-    selectedFilter === 'All' && searchQuery.trim().length === 0;
 
   return (
     <div className="min-h-screen bg-[#F5F7FA] text-[#152238]">
@@ -620,12 +689,12 @@ export default function CategoryHubPageClient({
             <div className="flex-1 max-w-4xl">
               <div className="flex items-start gap-4">
                 <div
-                  className="w-16 h-16 rounded-2xl bg-[#DCE8FF] border border-[#C6DBFF] text-[#2457D6] flex items-center justify-center shrink-0 shadow-2xs"
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#DCE8FF] border border-[#C6DBFF] text-[#2457D6] flex items-center justify-center shrink-0 shadow-2xs"
                   aria-hidden="true"
                 >
                   <RenderCategoryIcon
                     name={config.headerIconName}
-                    className="w-8 h-8 stroke-[2.2]"
+                    className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.2]"
                   />
                 </div>
                 <div>
@@ -636,11 +705,11 @@ export default function CategoryHubPageClient({
                   </div>
                   <h1
                     id={`${config.id}-category-heading`}
-                    className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#152238]"
+                    className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#152238]"
                   >
                     {config.title}
                   </h1>
-                  <p className="mt-1.5 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
+                  <p className="mt-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
                     {config.introduction}
                   </p>
                 </div>
@@ -651,7 +720,7 @@ export default function CategoryHubPageClient({
                 onSubmit={handleSearchSubmit}
                 role="search"
                 aria-label={config.searchPlaceholder}
-                className="mt-5 flex items-center bg-white rounded-xl border border-slate-200/90 shadow-xs p-1.5 focus-within:ring-2 focus-within:ring-[#2457D6] focus-within:border-[#2457D6] transition-all"
+                className="mt-4 flex items-center bg-white rounded-xl border border-slate-200/90 shadow-xs p-1.5 focus-within:ring-2 focus-within:ring-[#2457D6] focus-within:border-[#2457D6] transition-all"
               >
                 <label
                   htmlFor={`${config.id}-category-search`}
@@ -678,11 +747,32 @@ export default function CategoryHubPageClient({
                 </button>
               </form>
 
+              {/* Popular Searches Direct Links Bar */}
+              {liveTools.length > 0 && (
+                <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
+                  <span className="font-extrabold text-[#152238] mr-1">
+                    Popular Searches:
+                  </span>
+                  {(popularTools.length > 0 ? popularTools : liveTools)
+                    .filter((t) => !t.isComingSoon && Boolean(t.href))
+                    .slice(0, 6)
+                    .map((item) => (
+                      <Link
+                        key={item.id}
+                        href={item.href}
+                        className="px-2.5 py-1 rounded-md bg-white hover:bg-[#EEF3FF] text-[#2457D6] border border-[#C6DBFF] font-semibold transition-colors shadow-2xs"
+                      >
+                        {item.name.split('(')[0].replace(/\s+(Calculator|Converter)$/i, '').trim()} →
+                      </Link>
+                    ))}
+                </div>
+              )}
+
               {/* Filter Controls */}
               <div
                 role="group"
                 aria-label={`Filter ${config.shortTitle.toLowerCase()} calculators by topic`}
-                className="mt-3.5 flex flex-wrap items-center gap-2"
+                className="mt-3 flex flex-wrap items-center gap-2"
               >
                 {config.filters.map((category) => {
                   const isActive = selectedFilter === category;
@@ -718,52 +808,17 @@ export default function CategoryHubPageClient({
                 })}
               </div>
             </div>
-
-            {/* Right: Decorative Category Illustration */}
-            <div
-              aria-hidden="true"
-              className="hidden xl:flex items-center justify-center relative w-64 h-44 shrink-0 select-none"
-            >
-              <div className="w-44 h-44 rounded-full bg-[#DCE8FF]/70 flex items-center justify-center relative">
-                <div className="absolute -left-2 top-3 w-11 h-11 rounded-xl bg-[#16856B] text-white font-extrabold text-sm flex items-center justify-center shadow-sm -rotate-12">
-                  {config.heroBadgeTopLeft}
-                </div>
-                <div className="absolute -left-5 bottom-8 w-11 h-10 rounded-xl bg-[#D1FAE5] text-[#16856B] font-extrabold text-xs flex items-center justify-center shadow-sm -rotate-6">
-                  {config.heroBadgeBottomLeft}
-                </div>
-                <div className="w-24 h-32 rounded-2xl bg-[#2457D6] p-2.5 shadow-md rotate-12 flex flex-col justify-between border-2 border-[#3B82F6]">
-                  <div className="h-6 rounded-md bg-[#93C5FD]/90 w-full" />
-                  <div className="grid grid-cols-3 gap-1.5">
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-[#60A5FA]" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-[#60A5FA]" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-white/90" />
-                    <div className="h-3.5 rounded-xs bg-[#FBBF24]" />
-                  </div>
-                </div>
-                <div className="absolute -right-3 top-12 w-11 h-11 rounded-xl bg-[#FBBF24] text-white font-extrabold text-lg flex items-center justify-center shadow-sm rotate-12">
-                  <RenderCategoryIcon
-                    name={config.headerIconName}
-                    className="w-5 h-5"
-                  />
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Subcategory Silo Quick-Jump Bar */}
           {subcategoryGroups.length > 1 && (
             <nav
               aria-label="Subcategory quick-jump index"
-              className="mt-5 pt-4 border-t border-slate-200/80 flex flex-wrap items-center gap-2 text-xs"
+              className="mt-4 pt-3 border-t border-slate-200/80 flex flex-wrap items-center gap-2 text-xs"
             >
               <span className="font-extrabold text-[#152238] flex items-center gap-1 mr-1">
                 <Hash className="w-3.5 h-3.5 text-[#2457D6]" aria-hidden="true" />
-                Jump to Subcategory:
+                Quick Jump:
               </span>
               {subcategoryGroups.map((group) => (
                 <a
@@ -800,88 +855,67 @@ export default function CategoryHubPageClient({
       {/* Main Two-Column Content */}
       <main className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-7">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
-          {/* Left Main Column */}
+          {/* Left Main Column: All subcategory tool links remain mounted in HTML DOM for crawlers */}
           <div className="lg:col-span-8 space-y-8">
-            {isDefaultGroupedView ? (
-              <>
-                {subcategoryGroups.map((group) => {
-                  const activeCount = group.tools.filter((t) => !t.isComingSoon).length;
-                  return (
-                    <section
-                      key={group.slug}
-                      id={`subcat-${group.slug}`}
-                      aria-labelledby={`heading-${group.slug}`}
-                      className="scroll-mt-28 space-y-3.5"
-                    >
-                      <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-2.5">
-                        <div className="flex items-center gap-2.5">
-                          <LayoutGrid
-                            className="w-5 h-5 text-[#2457D6]"
-                            aria-hidden="true"
-                          />
-                          <h2
-                            id={`heading-${group.slug}`}
-                            className="text-xl font-extrabold text-[#152238] tracking-tight"
-                          >
-                            {group.name} Calculators
-                          </h2>
-                        </div>
-                        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#DCE8FF] text-[#2457D6]">
-                          {activeCount} {activeCount === 1 ? 'Tool' : 'Tools'}
-                        </span>
-                      </div>
-
-                      <div className="space-y-3" role="list">
-                        {group.tools.map((tool) => renderToolCard(tool))}
-                      </div>
-                    </section>
-                  );
-                })}
-              </>
-            ) : (
-              <div>
-                <div className="mb-4">
-                  <div className="flex items-center gap-2">
-                    <LayoutGrid
-                      className="w-5 h-5 text-[#2457D6]"
-                      aria-hidden="true"
-                    />
-                    <h2 className="text-xl font-extrabold text-[#152238] tracking-tight">
-                      {selectedFilter === 'All'
-                        ? `Matching ${config.shortTitle} Calculators (${filteredTools.filter((t) => !t.isComingSoon).length})`
-                        : `${selectedFilter} Calculators (${filteredTools.filter((t) => !t.isComingSoon).length})`}
-                    </h2>
+            {subcategoryGroups.map((group) => {
+              const visibleTools = group.tools.filter((t) =>
+                matchingToolIds.has(t.id)
+              );
+              const activeCount = visibleTools.filter((t) => !t.isComingSoon).length;
+              const isGroupHidden = visibleTools.length === 0;
+              return (
+                <section
+                  key={group.slug}
+                  id={`subcat-${group.slug}`}
+                  aria-labelledby={`heading-${group.slug}`}
+                  className={`scroll-mt-28 space-y-3.5 ${isGroupHidden ? 'hidden' : ''}`}
+                >
+                  <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-2.5">
+                    <div className="flex items-center gap-2.5">
+                      <LayoutGrid
+                        className="w-5 h-5 text-[#2457D6]"
+                        aria-hidden="true"
+                      />
+                      <h2
+                        id={`heading-${group.slug}`}
+                        className="text-xl font-extrabold text-[#152238] tracking-tight"
+                      >
+                        {group.name} Calculators
+                      </h2>
+                    </div>
+                    <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#DCE8FF] text-[#2457D6]">
+                      {activeCount} {activeCount === 1 ? 'Tool' : 'Tools'}
+                    </span>
                   </div>
-                  <p className="text-xs sm:text-sm text-slate-600 mt-0.5 pl-7">
-                    Choose a calculator below to open the interactive tool and formula guide.
-                  </p>
-                </div>
 
-                {filteredTools.length > 0 ? (
                   <div className="space-y-3" role="list">
-                    {filteredTools.map((tool) => renderToolCard(tool))}
+                    {group.tools.map((tool) =>
+                      renderToolCard(tool, !matchingToolIds.has(tool.id))
+                    )}
                   </div>
-                ) : (
-                  <div className="rounded-xl bg-white border border-slate-200 p-8 text-center">
-                    <p className="text-base font-bold text-[#152238]">
-                      No matching {config.shortTitle.toLowerCase()} calculators found
-                    </p>
-                    <p className="text-sm text-slate-600 mt-1">
-                      Try clearing your search query or switching the filter back to
-                      &ldquo;All&rdquo;.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSearchQuery('');
-                        setSelectedFilter('All');
-                      }}
-                      className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2457D6] text-white text-xs sm:text-sm font-semibold hover:bg-[#1d47b0] transition-colors cursor-pointer"
-                    >
-                      Reset Filters
-                    </button>
-                  </div>
-                )}
+                </section>
+              );
+            })}
+
+            {matchingToolIds.size === 0 && (
+              <div className="rounded-xl bg-white border border-slate-200 p-8 text-center">
+                <p className="text-base font-bold text-[#152238]">
+                  No matching {config.shortTitle.toLowerCase()} calculators found
+                </p>
+                <p className="text-sm text-slate-600 mt-1">
+                  Try clearing your search query or switching the filter back to
+                  &ldquo;All&rdquo;.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedFilter('All');
+                  }}
+                  className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#2457D6] text-white text-xs sm:text-sm font-semibold hover:bg-[#1d47b0] transition-colors cursor-pointer"
+                >
+                  Reset Filters
+                </button>
               </div>
             )}
 

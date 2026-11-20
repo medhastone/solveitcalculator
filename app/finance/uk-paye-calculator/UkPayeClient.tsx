@@ -109,10 +109,10 @@ export default function UkPayeClient() {
                 Annual Gross Salary (£)
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={grossSalary}
                 onChange={(e) => setGrossSalary(Math.max(0, Number(e.target.value)))}
-                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-32 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider

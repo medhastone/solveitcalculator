@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import AgeCalculatorPageClient from '@/components/calculators/AgeCalculatorPageClient';
+import CoreCalculatorSeoSection from '@/components/calculator-page/CoreCalculatorSeoSection';
 
 const PAGE_TITLE = 'Age in Years, Months & Days Calculator | SolveItCalculator';
 const PAGE_DESCRIPTION =
@@ -38,5 +39,10 @@ export const metadata: Metadata = {
 
 export default function AgeCalculatorPage() {
   const initialTodayDate = new Date().toISOString().slice(0, 10);
-  return <AgeCalculatorPageClient initialTodayDate={initialTodayDate} />;
+  return (
+    <>
+      <AgeCalculatorPageClient initialTodayDate={initialTodayDate} />
+      <CoreCalculatorSeoSection slug="age-calculator" />
+    </>
+  );
 }

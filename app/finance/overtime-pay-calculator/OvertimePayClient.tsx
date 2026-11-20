@@ -104,10 +104,10 @@ export default function OvertimePayClient() {
                 {payMode === 'hourly' ? 'Regular Hourly Rate ($/hr)' : 'Annual Base Salary ($/yr)'}
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 value={baseRateOrSalary}
                 onChange={(e) => setBaseRateOrSalary(Math.max(0, Number(e.target.value)))}
-                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-sm font-bold tabular-nums"
+                className="w-28 text-right rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
             <UnboxedSlider
@@ -186,12 +186,12 @@ export default function OvertimePayClient() {
                 Extra 2.0x Double-Time Hrs
               </label>
               <input
-                type="number"
+                type="number" inputMode="decimal"
                 min={0}
                 max={40}
                 value={doubleTimeHours20x}
                 onChange={(e) => setDoubleTimeHours20x(Math.max(0, Number(e.target.value)))}
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-bold tabular-nums"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-base font-bold tabular-nums min-h-[44px]"
               />
             </div>
           </div>
